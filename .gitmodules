@@ -1,0 +1,3 @@
+[submodule "libwarty"]
+	path = libwarty
+	url = git://github.com/ItzWarty/libwarty.git

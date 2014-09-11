@@ -23,7 +23,7 @@ namespace Dargon.IO
       public IWritableDargonNode Parent { get { return parent; } set { SetParent(value); } }
       
       IReadOnlyList<IReadableDargonNode> IReadableDargonNode.Children { get { return children; } }
-      IReadOnlyList<IWritableDargonNode> IWritableDargonNode.Children { get { return children; } }
+      public IReadOnlyList<IWritableDargonNode> Children { get { return children; } }
 
       public void AddComponent(Type componentInterface, object component) { components.Add(componentInterface, component); }
       public T GetComponentOrNull<T>() { return (T)components.GetValueOrDefault(typeof(T)); }

@@ -47,6 +47,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\librads\librads.csproj">
+      <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
+      <Name>librads</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
+      <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.lol-impl\libdargon.lol-impl.csproj">
+      <Project>{63E87E61-95CC-4B7D-8162-09D8918485EB}</Project>
+      <Name>libdargon.lol-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdio\libdargon.filesystem.csproj">
+      <Project>{AA2F9174-3FD1-41DC-8F15-D37D134300D4}</Project>
+      <Name>libdargon.filesystem</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

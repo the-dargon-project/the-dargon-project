@@ -43,8 +43,8 @@
     <Compile Include="VersionStringParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libwarty\ItzWarty.csproj">
-      <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
     </ProjectReference>
   </ItemGroup>

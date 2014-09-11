@@ -1,4 +1,10 @@
-﻿namespace Dargon.FileSystem
+﻿
+
+using System;
+
+namespace Dargon.FileSystem
 {
-   public interface IFileSystemHandle { }
+   public interface IFileSystemHandle {
+      bool IsValid { get; }
+   }
 }

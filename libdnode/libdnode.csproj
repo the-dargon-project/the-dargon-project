@@ -46,7 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libwarty\ItzWarty.csproj">
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
       <Name>ItzWarty</Name>
     </ProjectReference>

@@ -3,6 +3,9 @@
    public enum IoResult
    {
       Success,
-      InvalidHandle
+      InvalidHandle,
+      InvalidOperation,
+      Unavailable,
+      NotFound
    }
 }

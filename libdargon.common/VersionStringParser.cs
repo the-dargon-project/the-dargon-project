@@ -33,5 +33,21 @@ namespace Dargon
             result = (result << 8) | UInt32.Parse(parts[i]);
          return result;
       }
+
+      public bool TryGetVersionNumber(string s, out uint versionNumber)
+      {
+         var match = Regex.Match(s, @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+         if (!match.Success) {
+            versionNumber = 0;
+            return false;
+         } else {
+            var parts = match.Value.Split(".");
+            uint result = 0;
+            for (int i = 0; i < 4; i++)
+               result = (result << 8) | UInt32.Parse(parts[i]);
+            versionNumber = result;
+            return true;
+         }
+      }
    }
 }

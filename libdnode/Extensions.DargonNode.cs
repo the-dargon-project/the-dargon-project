@@ -60,17 +60,17 @@ namespace Dargon.IO
 
       public static string GetPath(this IReadableDargonNode node, string delimiter = "/")
       {
-         var q = new Queue<string>();
-         q.Enqueue(node.Name);
+         var s = new Stack<string>();
+         s.Push(node.Name);
          node = node.Parent;
          while (node != null) {
-            q.Enqueue(delimiter);
-            q.Enqueue(node.Name);
+            s.Push(delimiter);
+            s.Push(node.Name);
             node = node.Parent;
          }
          var sb = new StringBuilder();
-         while (q.Any()) {
-            sb.Append(q.Dequeue());
+         while (s.Any()) {
+            sb.Append(s.Pop());
          }
          return sb.ToString();
       }

@@ -1,3 +1,6 @@
 [submodule "libwarty"]
 	path = libwarty
 	url = git://github.com/ItzWarty/libwarty.git
+[submodule "bsdiffnet"]
+	path = bsdiffnet
+	url = https://github.com/LogosBible/bsdiff.net.git

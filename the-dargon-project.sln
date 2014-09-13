@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItzWarty", "..\libwarty\Itz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "librads", "..\librads\librads.csproj", "{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdpm", "libdpatch\libdpm.csproj", "{9699E719-25FA-41DF-B966-B43CF50F9B00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,18 @@ Global
 		{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
 		{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}.TempBuild|Any CPU.Build.0 = Release|Any CPU
 		{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}.TempBuild|x86.ActiveCfg = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.Release|x86.ActiveCfg = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{9699E719-25FA-41DF-B966-B43CF50F9B00}.TempBuild|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

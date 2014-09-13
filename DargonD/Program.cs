@@ -19,9 +19,8 @@ namespace Dargon
    {
       private readonly DaemonConfiguration configuration = new DaemonConfiguration();
       public void Run() { 
-         var lolfs = new RiotFileSystem(configuration.RadsPath, RiotProjectType.GameClient);
-         
-         Dump(lolfs.AllocateRootHandle(), lolfs);
+//         var lolfs = new RiotFileSystem(configuration.RadsPath, RiotProjectType.GameClient);
+//         Dump(lolfs.AllocateRootHandle(), lolfs);
       }
 
       private void Dump(IFileSystemHandle handle, IFileSystem fs)

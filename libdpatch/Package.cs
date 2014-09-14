@@ -22,39 +22,100 @@ namespace Dargon.Patcher
       IRevision GetRevisionOrNull(Guid guid);
    }
 
+   [Flags]
+   public enum ChangeType : byte
+   {
+      Staged = 0x10,
+      Unstaged = 0x20,
+
+      Added = 0x01,
+      Removed = 0x02,
+      Modified = 0x04
+   }
+
    public class LocalRepository
    {
       private const string PATH_DELIMITER = "/";
+      private const string DEFAULT_BRANCH = "master";
 
-      private readonly string path;
+      private readonly string root;
       private readonly string dpmPath;
       private readonly ObjectStore objectStore;
       private readonly FileLock repositoryLock;
       private readonly IndexProvider indexProvider;
+      private readonly ReferenceManager referenceManager;
+      private readonly StateManager stateManager;
+      private readonly ConfigurationManager configurationManager;
       private readonly DpmSerializer serializer = new DpmSerializer();
 
-      public LocalRepository(string path)
+      public LocalRepository(string root)
       {
-         this.path = path;
-         this.dpmPath = Path.Combine(path, ".dpm");
+         this.root = root;
+         this.dpmPath = Path.Combine(root, ".dpm");
+         Util.PrepareDirectory(dpmPath);
          this.objectStore = new ObjectStore(Path.Combine(dpmPath, "objects"));
          this.repositoryLock = new FileLock(Path.Combine(dpmPath, "LOCK"));
+         this.referenceManager = new ReferenceManager(Path.Combine(dpmPath, "refs"));
+         this.stateManager = new StateManager(dpmPath);
+         this.configurationManager = new ConfigurationManager(dpmPath);
          this.indexProvider = new IndexProvider(Path.Combine(dpmPath, "LAST_MODIFIED"));
       }
 
-      public void TrackFile(string internalPath)
+      public string Root { get { return root; } }
+      public HeadDescriptor Head { get { using (repositoryLock.Take()) return stateManager.GetHead(); } }
+
+      public bool GetIsInitialized()
+      {
+         using (repositoryLock.Take())
+         using (var index = indexProvider.Take()) {
+            return index.GetValueOrNull("") != null;
+         }
+      }
+
+      public void Initialize()
+      {
+         using (repositoryLock.Take())
+         using (var index = indexProvider.Take()) {
+            configurationManager.Identity = Environment.UserName;
+
+            var dir = new DirectoryRevision(Hash160.Zero, new Dictionary<string, Hash160>());
+            var hash = objectStore.Put(serializer.SerializeDirectoryRevision(dir));
+            index.Set("", new IndexEntry(GetTrueLastModifiedInternal(""), hash, IndexEntryFlags.Directory));
+            referenceManager.CreateHead(DEFAULT_BRANCH);
+            referenceManager.SetHeadCommitHash(DEFAULT_BRANCH, Hash160.Zero);
+            stateManager.SetHead(DEFAULT_BRANCH);
+         }
+      }
+
+      public void AddFile(string internalPath)
       {
          using (repositoryLock.Take())
          using (var index = indexProvider.Take()) {
             var entry = index.GetValueOrNull(internalPath);
             if (entry == null) {
-               var hash = objectStore.Put(File.ReadAllBytes(GetAbsolutePath(internalPath)));
-               index.Set(internalPath, new IndexEntry(GetTrueLastModified(internalPath), hash, IndexEntryFlags.Added));
+               var fileRevision = new FileRevision(Hash160.Zero, File.ReadAllBytes(GetAbsolutePath(internalPath)));
+               Console.WriteLine("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
+               var hash = objectStore.Put(serializer.SerializeFileRevision(fileRevision));
+               index.Set(internalPath, new IndexEntry(GetTrueLastModifiedInternal(internalPath), hash, IndexEntryFlags.Added));
             }
          }
       }
 
-      public void Untrack(string internalPath, bool deletePhysically = false)
+      public void UpdateFile(string internalPath)
+      {
+         using (repositoryLock.Take())
+         using (var index = indexProvider.Take()) {
+            var entry = index.GetValueOrNull(internalPath);
+            if (entry != null) {
+               entry.Flags |= IndexEntryFlags.Modified;
+               entry.LastModified = GetTrueLastModifiedInternal(internalPath);
+               entry.RevisionHash = objectStore.Put(serializer.SerializeFileRevision(new FileRevision(Hash160.Zero, File.ReadAllBytes(GetAbsolutePath(internalPath)))));
+               index.Set(internalPath, entry);
+            }
+         }
+      }
+
+      public void Remove(string internalPath, bool deletePhysically = false)
       {
          using (repositoryLock.Take())
          using (var index = indexProvider.Take()) {
@@ -77,41 +138,81 @@ namespace Dargon.Patcher
          }
       }
 
-      public void Commit()
+      public Hash160 Commit(string message)
       {
          using (repositoryLock.Take())
          using (var index = indexProvider.Take()) {
-            var changedEntries = EnumerateChangedEntries();
-            var changedEntriesByParentAndName = from entry in changedEntries
-                                                let breadcrumbs = entry.Key.Split('/')
-                                                let parentPath = breadcrumbs.SubArray(0, breadcrumbs.Length - 1).Join(PATH_DELIMITER)
-                                                let name = breadcrumbs[breadcrumbs.Length - 1]
-                                                select new { Name = name, ParentPath = parentPath, Path = entry.Key, Value = entry.Value };
-            var changedEntriesGroupedByParent = changedEntriesByParentAndName.GroupBy(x => x.ParentPath);
-            var changedDirectoriesBinnedByParent = new MultiValueDictionary<string, Tuple<string, >>();
-            foreach (var bin in changedEntriesGroupedByParent) {
-               var childNamesByHash = new Dictionary<string, Hash160>();
-               var removedChildNames = new HashSet<string>();
-               foreach (var child in bin) {
-                  var entry = index.GetValueOrNull(child.Path);
+            var childrenByParentPathLengthDescending = new MultiValueSortedDictionary<string, Tuple<string, ChangeType, IndexEntry>>(new LambdaComparer<string>((a, b) => -a.Length.CompareTo(b.Length)));
+            foreach (var entry in EnumerateChangedFiles()) {
+               if (entry.Value.HasFlag(ChangeType.Staged)) {
+                  var breadcrumbs = entry.Key.Split('/');
+                  var parentPath = breadcrumbs.SubArray(0, breadcrumbs.Length - 1).Join(PATH_DELIMITER);
+                  var name = breadcrumbs[breadcrumbs.Length - 1];
+                  childrenByParentPathLengthDescending.Add(parentPath, new Tuple<string, ChangeType, IndexEntry>(name, entry.Value, index.GetValueOrNull(entry.Key)));
+               }
+            }
+            while (childrenByParentPathLengthDescending.Any()) {
+               var directoryAndChildren = childrenByParentPathLengthDescending.First();
+               childrenByParentPathLengthDescending.Remove(directoryAndChildren.Key);
+
+               var directoryPath = directoryAndChildren.Key;
+               var directoryEntry = index.GetValueOrNull(directoryPath);
+               var directory = serializer.DeserializeDirectoryRevision(directoryEntry.RevisionHash, objectStore.Get(directoryEntry.RevisionHash));
+               var childNamesAndEntries = directoryAndChildren.Value;
+               foreach (var childNameAndEntry in childNamesAndEntries) {
+                  var name = childNameAndEntry.Item1;
+                  var changeType = childNameAndEntry.Item2;
+                  var entry = childNameAndEntry.Item3;
+                  var entryInternalPath = BuildPath(directoryPath, name);
+                  Console.WriteLine("ENTRY INTERNAL PATH " + entryInternalPath + " directory is " + directory + " and entry is named " + name);
+                  var keepInIndex = true;
                   if (entry.Flags.HasFlag(IndexEntryFlags.Added)) {
-                     childNamesByHash.Add(child.Name, entry.RevisionHash);
+                     entry.Flags &= ~IndexEntryFlags.Added;
+                     directory.Children.Add(name, entry.RevisionHash);
                   } else if (entry.Flags.HasFlag(IndexEntryFlags.Removed)) {
-                     removedChildNames.Add(child.Name);
+                     entry.Flags &= ~IndexEntryFlags.Removed;
+                     directory.Children.Remove(name);
+                     keepInIndex = false;
+                  } else if (entry.Flags.HasFlag(IndexEntryFlags.Modified)){
+                     if (entry.Flags.HasFlag(IndexEntryFlags.Directory)) {
+                        // directory update handled below - don't have to update entry revision hash as that's already been done
+                     } else {
+                        entry.RevisionHash = objectStore.Put(File.ReadAllBytes(GetAbsolutePath(entryInternalPath)));
+                        entry.Flags &= ~IndexEntryFlags.Modified;
+                     }
+                     directory.Children[name] = entry.RevisionHash;
+                  }
+                  entry.LastModified = GetTrueLastModifiedInternal(entryInternalPath);
+                  if (keepInIndex) {
+                     index.Set(entryInternalPath, entry);
                   } else {
-                     entry.RevisionHash = objectStore.Put(File.ReadAllBytes(GetAbsolutePath(child.Path)));
-                     index.Set(child.Path, entry);
-                     childNamesByHash.Add(child.Name, entry.RevisionHash);
+                     index.Remove(entryInternalPath);
                   }
                }
-               UpdateModifiedFilesParent(bin.Key, childNamesByHash, removedChildNames);
+               directoryEntry.RevisionHash = objectStore.Put(serializer.SerializeDirectoryRevision(directory));
+               directoryEntry.LastModified = GetTrueLastModifiedInternal(directoryPath);
+               index.Set(directoryPath, directoryEntry);
             }
+
+            var headCommit = GetHeadCommitHash(Head);
+
+            // create new commit object which points to new root object and has parent reference to old commit
+            Console.WriteLine("Adding commit object...");
+            var commitObject = new CommitObject(headCommit, new Hash160[0], GetRootHash(), configurationManager.Identity, message, DateTime.UtcNow.GetUnixTimeMilliseconds());
+            var commitObjectHash = objectStore.Put(serializer.SerializeCommitObject(commitObject));
+            Console.WriteLine("Commit object has hash " + commitObjectHash.ToString("x"));
+
+            // move head forward
+            var head = Head;
+            if (head.Type == HeadType.Branch) {
+               Console.WriteLine("Advancing branch " + head.Value + " to " + commitObjectHash.ToString("x"));
+               referenceManager.SetHeadCommitHash(head.Value, commitObjectHash);
+            } else {
+               stateManager.SetHead(commitObjectHash);
+            }
+
+            return commitObjectHash;
          }
-      }
-
-      public void UpdateModifiedFilesParent(string directoryInternalPath, IEnumerable<KeyValuePair<string, Hash160>> childNamesByHash, HashSet<string> removedChildNames)
-      {
-
       }
 
       public void UpdateModifiedDirectoryParent(string childInternalPath, Hash160 childObjectHash) {
@@ -141,38 +242,116 @@ namespace Dargon.Patcher
          }
       }
 
-      public List<KeyValuePair<string, IndexEntry>> EnumerateChangedEntries()
+      public List<KeyValuePair<string, ChangeType>> EnumerateChangedFiles()
       {
          using (repositoryLock.Take())
          using (var index = indexProvider.Take()) {
-            var entries = index.Enumerate();
-            var changedEntries = new List<KeyValuePair<string, IndexEntry>>(); 
-            foreach (var entry in entries) {
-               if (entry.Value.Flags.HasFlag(IndexEntryFlags.Added) || entry.Value.Flags.HasFlag(IndexEntryFlags.Removed)) {
-                  changedEntries.Add(entry);
-               } else if (GetTrueLastModified(entry.Key) != entry.Value.LastModified) {
-                  var fileRevision = serializer.DeserializeFileRevision(entry.Value.RevisionHash, objectStore.Get(entry.Value.RevisionHash));
-                  var fileRevisionData = fileRevision.Data;
-                  if (fileRevisionData.Length != new FileInfo(GetAbsolutePath(entry.Key)).Length) {
-                     changedEntries.Add(entry);
-                  } else {
-                     var diskContent = File.ReadAllBytes(GetAbsolutePath(entry.Key));
-                     bool equal = true;
-                     for (var i = 0; i < diskContent.Length && equal; i++) {
-                        equal &= fileRevisionData[i] == diskContent[i];
-                     }
-                     if (equal) {
-                        entry.Value.LastModified = GetTrueLastModified(entry.Key);
-                        index.Set(entry.Key, entry.Value);
+            return EnumerateChangedFiles("", index.GetValueOrNull(""));
+         }
+      }
+
+      private List<KeyValuePair<string, ChangeType>> EnumerateChangedFiles(string internalPath, IndexEntry comparedEntry)
+      {
+         using (repositoryLock.Take())
+         using (var index = indexProvider.Take()) {
+            var result = new List<KeyValuePair<string, ChangeType>>();
+            var realDirectoryPath = GetAbsolutePath(internalPath);
+            var directoryRevision = serializer.DeserializeDirectoryRevision(comparedEntry.RevisionHash, objectStore.Get(comparedEntry.RevisionHash));
+            var realEntries = Directory.EnumerateFileSystemEntries(realDirectoryPath).Where(path => new FileInfo(path).Name != ".dpm").ToDictionary(path => new FileInfo(path).Name, path => new { Path = path }); 
+            var indexEntries = directoryRevision.Children.ToDictionary((kvp) => kvp.Key, kvp => new { Path = BuildPath(internalPath, kvp.Key), Hash = kvp.Value });
+            var realFileNames = new HashSet<string>(realEntries.Keys); 
+            var indexFileNames = new HashSet<string>(indexEntries.Keys);
+            var sharedNames = new HashSet<string>(realFileNames).With(set => set.IntersectWith(indexFileNames));
+            var realOnlyNames = new HashSet<string>(realFileNames).With(set => set.ExceptWith(sharedNames));
+            var indexOnlyNames = new HashSet<string>(indexFileNames).With(set => set.ExceptWith(sharedNames));
+            foreach (var fileName in realOnlyNames) {
+               var fileInternalPath = BuildPath(internalPath, fileName);
+               var fileInfo = new FileInfo(GetAbsolutePath(fileInternalPath));
+               if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
+                  throw new NotImplementedException("Add all children of fileInternalPath (Only real entry exists)");
+               } else {
+                  var addedFilePath = BuildPath(internalPath, fileName);
+                  bool staged = index.GetValueOrNull(addedFilePath) != null;
+                  result.Add(new KeyValuePair<string, ChangeType>(addedFilePath, ChangeType.Added | (staged ? ChangeType.Staged : ChangeType.Unstaged)));
+               }
+            }
+            foreach (var fileName in indexOnlyNames) {
+               var fileInternalPath = BuildPath(internalPath, fileName);
+               var entry = indexEntries[fileName];
+               if (serializer.IsDirectoryRevision(objectStore.Get(entry.Hash))) {
+                  throw new NotImplementedException("Add all children of fileInternalPath (Only index entry exists)");
+               } else {
+                  result.Add(new KeyValuePair<string, ChangeType>(BuildPath(internalPath, fileName), ChangeType.Removed | ChangeType.Unstaged));
+               }
+            }
+            foreach (var fileName in sharedNames) {
+               var realEntry = realEntries[fileName];
+               var indexEntry = index.GetValueOrNull(indexEntries[fileName].Path);
+               if (indexEntry.Flags.HasFlag(IndexEntryFlags.Added)) {
+                  result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Added | ChangeType.Staged));
+               } else if (indexEntry.Flags.HasFlag(IndexEntryFlags.Added)) {
+                  result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Removed | ChangeType.Staged));
+               } else if (indexEntry.Flags.HasFlag(IndexEntryFlags.Modified)) {
+                  result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Modified | ChangeType.Staged));
+               } else {
+                  if (GetTrueLastModified(realEntry.Path) != indexEntry.LastModified) {
+                     var fileRevision = serializer.DeserializeFileRevision(indexEntry.RevisionHash, objectStore.Get(indexEntry.RevisionHash));
+                     var fileRevisionData = fileRevision.Data;
+                     if (fileRevisionData.Length != new FileInfo(realEntry.Path).Length) {
+                        result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Modified | ChangeType.Unstaged));
                      } else {
-                        changedEntries.Add(entry);
+                        var diskContent = File.ReadAllBytes(realEntry.Path);
+                        bool equal = Util.ByteArraysEqual(diskContent, fileRevisionData);
+                        if (equal) {
+                           indexEntry.LastModified = GetTrueLastModified(realEntry.Path);
+                           index.Set(indexEntries[fileName].Path, indexEntry);
+                        } else {
+                           result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Modified | ChangeType.Unstaged));
+                        }
                      }
                   }
                }
             }
-            return changedEntries;
+            return result;
          }
       }
+
+      //            var entries = index.Enumerate();
+      //            var changedEntries = new List<Tuple<string, IndexEntry, ChangeType>>(); 
+      //            foreach (var entry in entries) {
+      //               if (entry.Value.Flags.HasFlag(IndexEntryFlags.Directory)) {
+      //                  continue;
+      //               }
+      //
+      //               if (entry.Value.Flags.HasFlag(IndexEntryFlags.Added)) {
+      //                  var changeType = ChangeType.Added;
+      //                  if (entry.Value.Flags.HasFlag(IndexEntryFlags.Added)) {
+      //                     changeType |= ChangeType.Staged;
+      //                  } else {
+      //                     changeType |= ChangeType.Staged;
+      //                  }
+      //                  changedEntries.Add(new Tuple<string, IndexEntry, ChangeType>(entry.Key, entry.Value, ));
+      //               } else if (GetTrueLastModifiedInternal(entry.Key) != entry.Value.LastModified) {
+      //                  var fileRevision = serializer.DeserializeFileRevision(entry.Value.RevisionHash, objectStore.Get(entry.Value.RevisionHash));
+      //                  var fileRevisionData = fileRevision.Data;
+      //                  if (fileRevisionData.Length != new FileInfo(GetAbsolutePath(entry.Key)).Length) {
+      //                     changedEntries.Add(entry);
+      //                  } else {
+      //                     var diskContent = File.ReadAllBytes(GetAbsolutePath(entry.Key));
+      //                     bool equal = true;
+      //                     for (var i = 0; i < diskContent.Length && equal; i++) {
+      //                        equal &= fileRevisionData[i] == diskContent[i];
+      //                     }
+      //                     if (equal) {
+      //                        entry.Value.LastModified = GetTrueLastModifiedInternal(entry.Key);
+      //                        index.Set(entry.Key, entry.Value);
+      //                     } else {
+      //                        changedEntries.Add(entry);
+      //                     }
+      //                  }
+      //               }
+      //            }
+      //            return changedEntries;
 
       public void ResetRepository(Hash160 hash)
       {
@@ -201,7 +380,7 @@ namespace Dargon.Patcher
 
       private void ResetDirectoryHelper(string internalPath, DirectoryRevision newRevision) {
          using (var index = indexProvider.Take()) {
-            var lastModified = GetTrueLastModified(internalPath);
+            var lastModified = GetTrueLastModifiedInternal(internalPath);
             var entry = index.GetValueOrNull(internalPath);
             var oldRevision = GetDirectoryRevision(internalPath, entry.RevisionHash);
             if (lastModified != entry.LastModified || newRevision.Hash != entry.RevisionHash) {
@@ -215,7 +394,7 @@ namespace Dargon.Patcher
                   ResetHelper(BuildPath(internalPath, child.Key), child.Value);
                }
             }
-            entry.LastModified = GetTrueLastModified(internalPath);
+            entry.LastModified = GetTrueLastModifiedInternal(internalPath);
             index.Set(internalPath, entry);
          }
       }
@@ -246,11 +425,11 @@ namespace Dargon.Patcher
       private void ResetFileHelper(string internalPath, FileRevision revision) 
       {
          using (var index = indexProvider.Take()) {
-            var lastModified = GetTrueLastModified(internalPath);
+            var lastModified = GetTrueLastModifiedInternal(internalPath);
             var entry = index.GetValueOrNull(internalPath);
             if (lastModified != entry.LastModified || revision.Hash != entry.RevisionHash) {
                File.WriteAllBytes(GetAbsolutePath(internalPath), revision.Data);
-               entry.LastModified = GetTrueLastModified(internalPath);
+               entry.LastModified = GetTrueLastModifiedInternal(internalPath);
                index.Set(internalPath, entry);
             }
          }
@@ -270,11 +449,69 @@ namespace Dargon.Patcher
          }
       }
 
-      private string GetAbsolutePath(string internalPath) { return Path.Combine(path, internalPath); }
-      private ulong GetTrueLastModified(string internalPath) { return File.GetLastWriteTimeUtc(GetAbsolutePath(internalPath)).GetUnixTimeMilliseconds(); }
-      private string BuildPath(params string[] strings) { return string.Join(PATH_DELIMITER, strings); }
+      public IEnumerable<Hash160> EnumerateObjectStoreKeys() { return objectStore.EnumerateKeys(); }
 
-      
+      public IEnumerable<KeyValuePair<string, IndexEntry>> EnumerateIndexEntries()
+      {
+         using (var index = indexProvider.Take()) {
+            return index.Enumerate();
+         }
+      }
+
+      public Hash160 GetRootHash()
+      {
+         using (var index = indexProvider.Take()) {
+            return index.GetValueOrNull("").RevisionHash;
+         }
+      }
+
+      public Hash160 GetBranchCommitHash(string branch) { using (repositoryLock.Take()) return referenceManager.GetHeadCommitHash(branch); }
+
+      public Hash160 GetCommitRootHash(Hash160 commitHash)
+      {
+         if (commitHash.Equals(Hash160.Zero)) {
+            return Hash160.Zero;
+         }
+
+         using (repositoryLock.Take()) 
+            return serializer.DeserializeCommitObject(commitHash, objectStore.Get(commitHash)).RootRevisionHash;
+      }
+
+      public Hash160 GetHeadCommitHash(HeadDescriptor head)
+      {
+         using (repositoryLock.Take()) {
+            if (head.Type == HeadType.Branch) {
+               return referenceManager.GetHeadCommitHash(head.Value);
+            } else if (head.Type == HeadType.Commit) {
+               return Hash160.Parse(head.Value);
+            } else {
+               throw new NotImplementedException("Unhandled head type " + head.Type);
+            }
+         }
+      }
+
+      private string SanitizeInternalPath(string path) { return path.Trim(new[] { '/', '\\' }); }
+      private string GetAbsolutePath(string internalPath) { return Path.Combine(root, internalPath); }
+      private ulong GetTrueLastModified(string realPath) { return File.GetLastWriteTimeUtc(realPath).GetUnixTimeMilliseconds(); }
+      private ulong GetTrueLastModifiedInternal(string internalPath) { return GetTrueLastModified(GetAbsolutePath(internalPath)); }
+      private string BuildPath(params string[] strings) { return SanitizeInternalPath(string.Join(PATH_DELIMITER, strings)); }
+
+      private class OtherBranch
+      {
+         
+      }
+
+      public void PrintLinearGraph()
+      {
+         var head = stateManager.GetHead();
+         var commitHash = GetHeadCommitHash(head);
+         while (commitHash != Hash160.Zero) {
+            var commit = serializer.DeserializeCommitObject(commitHash, objectStore.Get(commitHash));
+            Console.WriteLine("* " + commitHash.ToString("x").Substring(0, 8) + " - " + commit.Message + " - " + commit.Author);
+            commitHash = commit.ParentHash;
+         }
+      }
+
       //      public IRevision GetRevisionOrNull(Hash160 hash) {
 //         using (repositoryLock.Take()) {
 //            objectStore.Get(hash);
@@ -359,13 +596,17 @@ namespace Dargon.Patcher
 
       private class ObjectStore
       {
+         private readonly bool kDebugEnabled = false;
          private readonly string path;
 
          public ObjectStore(string path) {
             this.path = path;
+            Util.PrepareDirectory(path);
          }
 
-         public byte[] Get(Hash160 hash) { 
+         public byte[] Get(Hash160 hash)
+         {
+            if (kDebugEnabled) Console.WriteLine("Getting data of hash " + hash.ToString("X") + " from path " + GetHashPath(hash));
             return File.ReadAllBytes(GetHashPath(hash));
          }
 
@@ -374,18 +615,132 @@ namespace Dargon.Patcher
             using (var sha1 = new SHA1Managed()) {
                var hash = new Hash160(sha1.ComputeHash(data));
                var path = GetHashPath(hash);
+               if (kDebugEnabled) Console.WriteLine("Putting " + data.Length + " bytes of hash " + hash.ToString("X") + " to path " + path);
                Util.PrepareParentDirectory(path);
                File.WriteAllBytes(path, data);
                return hash;
             }
          }
 
+         public IEnumerable<Hash160> EnumerateKeys()
+         {
+            var files = Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories);
+            return files.Select(file => new FileInfo(file).Name).Where(name => name.Length == Hash160.Size * 2).Select(Hash160.Parse);
+         } 
+
          private string GetHashPath(Hash160 hash)
          {
-            var bucket = (hash.GetHashCode() * 13) % 256;
-            var objectPath = Path.Combine(path, bucket.ToString(), hash.ToString("X"));
+            var bucket = (unchecked((uint)hash.GetHashCode()) * 13) % 256;
+            var objectPath = Path.Combine(path, bucket.ToString("x"), hash.ToString("x"));
             return objectPath;
          }
+      }
+
+      public class ConfigurationManager
+      {
+         private const string IDENTITY_KEY = "identity";
+         private readonly string dpmLocalPath;
+
+         public ConfigurationManager(string dpmLocalPath) {
+            this.dpmLocalPath = dpmLocalPath;
+         }
+
+         public string Identity { get { return this[IDENTITY_KEY]; } set { this[IDENTITY_KEY] = value; } }
+         private string this[string key] { get { return File.ReadAllText(Path.Combine(dpmLocalPath, key), Encoding.UTF8); } set { File.WriteAllText(Path.Combine(dpmLocalPath, key), value, Encoding.UTF8); } }
+      }
+
+      public class StateManager
+      {
+         private const string kHeadTypeBranch = "Branch";
+         private const string kHeadTypeCommit = "Commit";
+
+         private readonly string path;
+         private readonly string headPath;
+
+         public StateManager(string path) {
+            this.path = path;
+            this.headPath = Path.Combine(path, "head");
+         }
+
+         public HeadDescriptor GetHead()
+         {
+            var body = File.ReadAllText(headPath, Encoding.UTF8);
+            var delimiterIndex = body.IndexOf(':');
+            var typeString = body.Substring(0, delimiterIndex).Trim();
+            var valueString = body.Substring(delimiterIndex + 1).Trim();
+            HeadType type = 0;
+            if (typeString.Equals(kHeadTypeBranch, StringComparison.OrdinalIgnoreCase)) {
+               type = HeadType.Branch;
+            } else if (typeString.Equals(kHeadTypeCommit, StringComparison.OrdinalIgnoreCase)) {
+               type = HeadType.Commit;
+            }
+            return new HeadDescriptor(type, valueString);
+         }
+
+         public void SetHead(Hash160 commitHash) { SetHeadInternal(kHeadTypeCommit + ": " + commitHash.ToString("x")); }
+         public void SetHead(string branch) { SetHeadInternal(kHeadTypeBranch + ": " + branch); }
+         public void SetHeadInternal(string value) { File.WriteAllText(headPath, value); }
+      }
+
+      public enum HeadType
+      {
+         Branch,
+         Commit
+      }
+
+      public class HeadDescriptor
+      {
+         private HeadType type;
+         private string value;
+
+         public HeadDescriptor(HeadType type, string value)
+         {
+            this.type = type;
+            this.value = value;
+         }
+
+         public HeadType Type { get { return type; } }
+         public string Value { get { return value; } }
+      }
+
+      public class ReferenceManager
+      {
+         private readonly string path;
+         private readonly string headsPath;
+
+         public ReferenceManager(string path) {
+            this.path = path;
+            this.headsPath = Path.Combine(path, "heads");
+            Util.PrepareDirectory(headsPath);
+         }
+
+         public IReadOnlyDictionary<string, Hash160> EnumerateHeads() { return EnumerateReferences(headsPath); }
+
+         public void CreateHead(string head) { CreateReference(headsPath, head, Hash160.Zero); }
+
+         public void SetHeadCommitHash(string head, Hash160 hash) { SetReferenceCommitHash(headsPath, head, hash); }
+
+         public Hash160 GetHeadCommitHash(string head) { return GetReferenceCommitHash(headsPath, head); }
+
+         public void DeleteHead(string head) { DeleteReference(headsPath, head); }
+
+         private IReadOnlyDictionary<string, Hash160> EnumerateReferences(string parentPath)
+         {
+            var result = new ListDictionary<string, Hash160>();
+            foreach (var filePath in Directory.EnumerateFiles(parentPath)) {
+               var info = new FileInfo(filePath);
+               result.Add(info.Name, GetReferenceCommitHash(parentPath, info.Name));
+            }
+            return result;
+         }
+
+         public void CreateReference(string parentPath, string referenceName, Hash160 commitHash) { SetReferenceCommitHash(parentPath, referenceName, commitHash); }
+
+         private void SetReferenceCommitHash(string parentPath, string referenceName, Hash160 commitHash) { File.WriteAllText(Path.Combine(parentPath, referenceName), commitHash.ToString("x"), Encoding.ASCII); }
+
+         public Hash160 GetReferenceCommitHash(string parentPath, string referenceName) { return Hash160.Parse(File.ReadAllText(Path.Combine(parentPath, referenceName), Encoding.ASCII).Trim()); }
+
+         public void DeleteReference(string parentPath, string referenceName) { File.Delete(Path.Combine(parentPath, referenceName)); }
       }
 
       private interface IIndex : IDisposable
@@ -399,7 +754,7 @@ namespace Dargon.Patcher
       private class IndexProvider : ReferenceCounter<IIndex>, IIndex
       {
          private readonly string path;
-         private readonly IDictionary<string, IndexEntry> lastModifiedByInternalPath = new SortedDictionary<string, IndexEntry>();
+         private readonly IDictionary<string, IndexEntry> entriesByInternalPath = new SortedDictionary<string, IndexEntry>();
          private bool dirty = false;
 
          public IndexProvider(string path) {
@@ -419,7 +774,7 @@ namespace Dargon.Patcher
 
          private void Load()
          {
-            lastModifiedByInternalPath.Clear();
+            entriesByInternalPath.Clear();
 
             if (File.Exists(path)) {
                var data = File.ReadAllBytes(path);
@@ -429,7 +784,7 @@ namespace Dargon.Patcher
                   for (uint i = 0; i < count; i++) {
                      var internalPath = reader.ReadNullTerminatedString();
                      var modified = reader.ReadIndexEntry();
-                     lastModifiedByInternalPath.Add(internalPath, modified);
+                     entriesByInternalPath.Add(internalPath, modified);
                   }
                }
                dirty = false;
@@ -442,8 +797,8 @@ namespace Dargon.Patcher
             Util.PrepareParentDirectory(path);
             using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None)) 
             using (var writer = new BinaryWriter(fs)) {
-               writer.Write((uint)lastModifiedByInternalPath.Count);
-               foreach (var kvp in lastModifiedByInternalPath) {
+               writer.Write((uint)entriesByInternalPath.Count);
+               foreach (var kvp in entriesByInternalPath) {
                   writer.WriteNullTerminatedString(kvp.Key);
                   writer.Write((IndexEntry)kvp.Value);
                }
@@ -455,30 +810,31 @@ namespace Dargon.Patcher
          IndexEntry IIndex.GetValueOrNull(string internalPath)
          {
             IndexEntry result;
-            if (!lastModifiedByInternalPath.TryGetValue(internalPath, out result))
-               return new IndexEntry(0, Hash160.Zero, 0);
+            if (!entriesByInternalPath.TryGetValue(internalPath, out result))
+               return null;
             return result;
          }
 
          void IIndex.Set(string internalPath, IndexEntry value)
          {
-            lastModifiedByInternalPath[internalPath] = value;
+            entriesByInternalPath[internalPath] = value;
             dirty = true;
          }
 
          void IIndex.Remove(string internalPath)
          {
-            lastModifiedByInternalPath.Remove(internalPath);
+            entriesByInternalPath.Remove(internalPath);
             dirty = true;
          }
 
-         IEnumerable<KeyValuePair<string, IndexEntry>> IIndex.Enumerate() { return lastModifiedByInternalPath; } 
+         IEnumerable<KeyValuePair<string, IndexEntry>> IIndex.Enumerate() { return entriesByInternalPath; } 
       }
 
       public class DpmSerializer
       {
          private const uint DIRECTORY_REVISION_MAGIC = 0x444D5044U; // "DPMD"
          private const uint FILE_REVISION_MAGIC = 0x464D5044U; // "DPMF"
+         private const uint COMMIT_OBJECT_MAGIC = 0x434D5044U; // "DPMC"
 
          public DpmSerializer() { }
 
@@ -533,6 +889,62 @@ namespace Dargon.Patcher
             }
          }
 
+         public byte[] SerializeFileRevision(FileRevision fileRevision)
+         {
+            using (var ms = new MemoryStream()) {
+               using (var writer = new BinaryWriter(ms, Encoding.UTF8, true)) {
+                  writer.Write(FILE_REVISION_MAGIC);
+                  var compressedStream = new MemoryStream();
+                  using (var compressionStream = new DeflateStream(compressedStream, CompressionLevel.Optimal))
+                  using (var dataStream = new MemoryStream(fileRevision.Data)) {
+                     dataStream.CopyTo(compressionStream);
+                  }
+                  var data = compressedStream.ToArray();
+                  writer.Write((uint)data.Length);
+                  writer.Write(data);
+               }
+               return ms.ToArray();
+            }
+         }
+
+         public CommitObject DeserializeCommitObject(Hash160 commitHash, byte[] data)
+         {
+            using (var ms = new MemoryStream(data))
+            using (var reader = new BinaryReader(ms)) {
+               var magic = reader.ReadUInt32();
+               if (magic != COMMIT_OBJECT_MAGIC) {
+                  throw new InvalidOperationException("DPMC Magic Mismatch - Expected " + COMMIT_OBJECT_MAGIC + " but found " + magic);
+               }
+
+               var parentCommitHash = reader.ReadHash160();
+               var fakeParentCommitHashes = Util.Generate((int)reader.ReadUInt32(), (i) => reader.ReadHash160());
+               var rootDirectoryHash = reader.ReadHash160();
+               var author = reader.ReadNullTerminatedString();
+               var message = reader.ReadNullTerminatedString();
+               var dateCreated = reader.ReadUInt64();
+               return new CommitObject(parentCommitHash, fakeParentCommitHashes, rootDirectoryHash, author, message, dateCreated);
+            }
+         }
+
+         public byte[] SerializeCommitObject(CommitObject commitObject)
+         {
+            using (var ms = new MemoryStream()) {
+               using (var writer = new BinaryWriter(ms, Encoding.UTF8, true)) {
+                  writer.Write(COMMIT_OBJECT_MAGIC);
+                  writer.Write(commitObject.ParentHash);
+                  writer.Write((uint)commitObject.FakeParentHashes.Length);
+                  foreach (var hash in commitObject.FakeParentHashes) {
+                     writer.Write(hash);
+                  }
+                  writer.Write(commitObject.RootRevisionHash);
+                  writer.WriteNullTerminatedString(commitObject.Author);
+                  writer.WriteNullTerminatedString(commitObject.Message);
+                  writer.Write(commitObject.DateCreated);
+               }
+               return ms.ToArray();
+            }
+         }
+
          public bool IsFileRevision(byte[] blob) { return blob.Length > 4 && BitConverter.ToUInt32(blob, 0) == FILE_REVISION_MAGIC; }
          public bool IsDirectoryRevision(byte[] blob) { return blob.Length > 4 && BitConverter.ToUInt32(blob, 0) == DIRECTORY_REVISION_MAGIC; }
       }
@@ -554,8 +966,8 @@ namespace Dargon.Patcher
 
       public class FileRevision
       {
-         private Hash160 hash;
-         private byte[] data;
+         private readonly Hash160 hash;
+         private readonly byte[] data;
 
          public FileRevision(Hash160 hash, byte[] data)
          {
@@ -565,6 +977,33 @@ namespace Dargon.Patcher
 
          public Hash160 Hash { get { return hash; } }
          public byte[] Data { get { return data; } }
+      }
+
+      public class CommitObject
+      {
+         private readonly Hash160 parentHash;
+         private readonly Hash160[] fakeParentHashes;
+         private readonly Hash160 rootRevisionHash;
+         private readonly string author;
+         private readonly string message;
+         private readonly ulong dateCreated;
+
+         public CommitObject(Hash160 parentHash, Hash160[] fakeParentHashes, Hash160 rootRevisionHash, string author, string message, ulong dateCreated)
+         {
+            this.parentHash = parentHash;
+            this.fakeParentHashes = fakeParentHashes;
+            this.rootRevisionHash = rootRevisionHash;
+            this.author = author;
+            this.message = message;
+            this.dateCreated = dateCreated;
+         }
+
+         public Hash160 ParentHash { get { return parentHash; } }
+         public Hash160[] FakeParentHashes { get { return fakeParentHashes; } }
+         public Hash160 RootRevisionHash { get { return rootRevisionHash; } }
+         public string Message { get { return message; } }
+         public string Author { get { return author; } }
+         public ulong DateCreated { get { return dateCreated; } }
       }
    }
 
@@ -592,16 +1031,8 @@ namespace Dargon.Patcher
    {
       Added       = 0x00000001U,
       Removed     = 0x00000002U,
+      Modified    = 0x00000004U,
       Directory   = 0x01000000U
-   }
-
-   public static class Extensions
-   {
-      public static Hash160 ReadHash160(this BinaryReader reader) { return new Hash160(reader.ReadBytes(Hash160.Size)); }
-      public static void Write(this BinaryWriter writer, Hash160 hash) { writer.Write(hash.GetBytes()); }
-
-      public static IndexEntry ReadIndexEntry(this BinaryReader reader) { return new IndexEntry(reader.ReadUInt64(), reader.ReadHash160(), (IndexEntryFlags)reader.ReadUInt32()); }
-      public static void Write(this BinaryWriter writer, IndexEntry entry) { writer.Write(entry.LastModified); writer.Write(entry.RevisionHash); writer.Write((UInt32)entry.Flags); }
    }
 
    public interface IBranch

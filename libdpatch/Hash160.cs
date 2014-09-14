@@ -19,9 +19,9 @@ namespace Dargon.Patcher
       public static Hash160 Zero { get { return default(Hash160); } }
       public static Hash160 Max { get { return max; } }
 
-      [FieldOffset(0)] private ulong n0;
-      [FieldOffset(8)] private ulong n1;
-      [FieldOffset(16)] private uint n2;
+      [FieldOffset(0)] private readonly ulong n0;
+      [FieldOffset(8)] private readonly ulong n1;
+      [FieldOffset(16)] private readonly uint n2;
 
       public Hash160(byte[] bytes) 
       { 
@@ -66,11 +66,7 @@ namespace Dargon.Patcher
             {
                case 'x':
                case 'X':
-                  var sb = new StringBuilder();
-                  sb.Append(n0.ToString(format));
-                  sb.Append(n1.ToString(format));
-                  sb.Append(n2.ToString(format));
-                  return sb.ToString();
+                  return GetBytes().Select(b => b.ToString("x2")).Join("");
             }
          }
 
@@ -89,12 +85,22 @@ namespace Dargon.Patcher
       public byte[] GetBytes()
       {
          var result = new byte[20];
-         fixed (byte* pResult = result) {
-            *(ulong*)(pResult) = n0;
-            *(ulong*)(pResult + 8) = n0;
-            *(ulong*)(pResult + 16) = n2;
-         }
+         Array.Copy(BitConverter.GetBytes(n0), 0, result, 0, 8);
+         Array.Copy(BitConverter.GetBytes(n1), 0, result, 8, 8);
+         Array.Copy(BitConverter.GetBytes(n2), 0, result, 16, 4);
          return result;
+      }
+
+      public static Hash160 Parse(string s)
+      {
+         var lut = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+         var bytes = new byte[20];
+         for (var i = 0; i < bytes.Length; i++) {
+            var upper = (byte)Array.IndexOf(lut, Char.ToLower(s[i * 2]));
+            var lower = (byte)Array.IndexOf(lut, Char.ToLower(s[i * 2 + 1]));
+            bytes[i] = (byte)(upper * 16 + lower);
+         }
+         return new Hash160(bytes);
       }
    }
 }

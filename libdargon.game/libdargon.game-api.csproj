@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{63E87E61-95CC-4B7D-8162-09D8918485EB}</ProjectGuid>
+    <ProjectGuid>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon</RootNamespace>
-    <AssemblyName>libdargon.lol-impl</AssemblyName>
+    <RootNamespace>Dargon.Game</RootNamespace>
+    <AssemblyName>libdargon.game-api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,25 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="IGameHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\librads\librads.csproj">
-      <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
-      <Name>librads</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdio\libdargon.filesystem.csproj">
+    <ProjectReference Include="..\libdio\libdargon.filesystem-api.csproj">
       <Project>{AA2F9174-3FD1-41DC-8F15-D37D134300D4}</Project>
-      <Name>libdargon.filesystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdnode\libdnode.csproj">
-      <Project>{D28AF7FA-367C-472C-954D-694319528208}</Project>
-      <Name>libdnode</Name>
+      <Name>libdargon.filesystem-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

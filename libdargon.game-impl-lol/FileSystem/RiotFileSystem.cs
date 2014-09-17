@@ -9,11 +9,14 @@ using Dargon.IO;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
 using ItzWarty;
+using NLog;
 
 namespace Dargon.FileSystem
 {
    public class RiotFileSystem : IFileSystem
    {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly string solutionPath;
       private readonly RiotProjectType projectType;
       private readonly ConcurrentDictionary<IReadableDargonNode, InternalHandle> handlesByNode = new ConcurrentDictionary<IReadableDargonNode, InternalHandle>();
@@ -28,7 +31,8 @@ namespace Dargon.FileSystem
          this.Initialize();
       }
 
-      private void Initialize() {
+      private void Initialize()
+      {
          project = new RiotSolutionLoader().Load(solutionPath, projectType).ProjectsByType[projectType];
          var manifest = project.ReleaseManifest;
          var archiveIds = new HashSet<uint>();
@@ -37,19 +41,19 @@ namespace Dargon.FileSystem
          }
 
          var riotArchiveLoader = new RiotArchiveLoader(solutionPath);
+         var successfullyLoadedArchives = new SortedSet<uint>();
+         var unsuccessfullyLoadedArchives = new SortedSet<uint>();
          foreach (var archiveId in archiveIds) {
             RiotArchive archive;
-            if (riotArchiveLoader.TryLoadArchive(archiveId, out archive))
-            {
-               Console.WriteLine("Successfully loaded archive " + archiveId);
+            if (riotArchiveLoader.TryLoadArchive(archiveId, out archive)) {
                archivesById.Add(archiveId, archive);
-            }
-            else
-            {
-               Console.WriteLine("Failed to load archive " + archiveId);
-               // Log: Archive load failed
+               successfullyLoadedArchives.Add(archiveId);
+            } else {
+               unsuccessfullyLoadedArchives.Add(archiveId);
             }
          }
+         logger.Info("Successfully loaded {0} archives: {1}".F(successfullyLoadedArchives.Count, successfullyLoadedArchives.Join(", ")));
+         logger.Warn("Failed to load {0} archives: {1}".F(unsuccessfullyLoadedArchives.Count, unsuccessfullyLoadedArchives.Join(", ")));
       }
 
       public IFileSystemHandle AllocateRootHandle() { return GetNodeHandle(project.ReleaseManifest.Root); }

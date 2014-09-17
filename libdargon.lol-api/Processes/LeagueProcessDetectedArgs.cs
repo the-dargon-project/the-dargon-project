@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Processes.Watching;
+﻿using Dargon.Processes.Watching;
 
-namespace Dargon.Game.LeagueOfLegends
+namespace Dargon.LeagueOfLegends.Processes
 {
    public delegate void LeagueProcessDetectedHandler(LeagueProcessDetectedArgs args);
    public class LeagueProcessDetectedArgs

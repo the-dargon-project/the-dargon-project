@@ -9,12 +9,12 @@ namespace Dargon.Processes.Watching
    {
       public event OnProcessDiscovered ProcessDiscovered;
 
-      private Thread m_stalkerThread;
+      private readonly Thread thread;
 
       /// <summary>
       /// Lock for handling the injectedids list
       /// </summary>
-      private static object m_injectedIdsLock = new object();
+      private readonly object injectedIdsLock = new object();
 
       /// <summary>
       /// Initializes a new instance of a PollingProcessDiscoveryMethod, which finds new processes by
@@ -24,7 +24,7 @@ namespace Dargon.Processes.Watching
       /// </summary>
       public PollingProcessDiscoveryMethod()
       {
-         m_stalkerThread = new Thread(StalkerThreadStart) { IsBackground = true };
+         thread = new Thread(StalkerThreadStart) { IsBackground = true };
       }
 
       /// <summary>
@@ -32,8 +32,8 @@ namespace Dargon.Processes.Watching
       /// </summary>
       public void Start()
       {
-         if (m_stalkerThread.ThreadState != System.Threading.ThreadState.Running)
-            m_stalkerThread.Start();
+         if (thread.ThreadState != System.Threading.ThreadState.Running)
+            thread.Start();
       }
 
       /// <summary>
@@ -41,21 +41,21 @@ namespace Dargon.Processes.Watching
       /// </summary>
       public void Stop()
       {
-         if (m_stalkerThread.ThreadState == System.Threading.ThreadState.Running)
-            m_stalkerThread.Abort();
+         if (thread.ThreadState == System.Threading.ThreadState.Running)
+            thread.Abort();
       }
 
       /// <summary>
       /// Thread Entry Point for our ProcessWatcher Thread
       /// </summary>
-      private static void StalkerThreadStart()
+      private void StalkerThreadStart()
       {
          //The thread runs until it is aborted by Stop.
          //This method restarts when BeginAggregate is called.
          object previousMatchesLock = new object();
 
          //The IDs of running processes which we have injected to.
-         List<int> injectedProcessIds = new List<int>();
+         var injectedProcessIds = new List<int>();
          while (true)
          {
             //Console.WriteLine("Enumerate Processes");
@@ -70,12 +70,12 @@ namespace Dargon.Processes.Watching
                   {
                      //Console.WriteLine("  Found a match");
                      int processId = process.Id;
-                     lock (m_injectedIdsLock)
+                     lock (injectedIdsLock)
                      {
                         if (!injectedProcessIds.Contains(processId))
                         {
                            injectedProcessIds.Add(processId);
-                           process.Exited += (s, e) => { lock (m_injectedIdsLock) injectedProcessIds.Remove(processId); };
+                           process.Exited += (s, e) => { lock (injectedIdsLock) injectedProcessIds.Remove(processId); };
                            //NewProcessFound(this, process);
                         }
                      }

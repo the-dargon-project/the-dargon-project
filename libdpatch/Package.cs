@@ -1,18 +1,12 @@
-﻿using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO.Compression;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using ItzWarty;
+﻿using ItzWarty;
+using ItzWarty.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Security.Cryptography;
-using ItzWarty;
-using ItzWarty.Collections;
+using System.Text;
 
 namespace Dargon.Patcher
 {
@@ -411,7 +405,7 @@ namespace Dargon.Patcher
                }
                try {
                   Directory.Delete(GetAbsolutePath(internalPath), false);
-               } catch (IOException e) {
+               } catch (IOException) {
                   /* eat exception - there are untracked files in the directory */
                }
             } else {

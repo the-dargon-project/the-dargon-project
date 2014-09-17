@@ -1,18 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Mime;
-using System.Threading;
-using Dargon.Game.LeagueOfLegends;
+﻿using Dargon.InjectedModule;
+using Dargon.LeagueOfLegends;
 using Dargon.ModificationRepositories;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
 using Dargon.Tray;
-using ItzWarty;
 using ItzWarty.Services;
 using NLog;
 using NLog.Config;
-using NLog.LayoutRenderers;
 using NLog.Targets;
+using System;
+using System.Threading;
 
 namespace Dargon.Daemon
 {
@@ -24,9 +21,10 @@ namespace Dargon.Daemon
       private readonly ServiceLocator serviceLocator = new ServiceLocator();
       private readonly TrayService trayService;
       private readonly ProcessInjectionService processInjectionService;
-      private readonly ProcessWatcherServiceImpl processWatcherService;
+      private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
-      private readonly LeagueGameService leagueGameService;
+      private readonly InjectedModuleService injectedModuleService;
+      private readonly LeagueGameServiceImpl leagueGameServiceImpl;
       private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
       private bool isShutdownSignalled = false;
       public event EventHandler BeginShutdown;
@@ -43,7 +41,9 @@ namespace Dargon.Daemon
          processWatcherService = new ProcessWatcherServiceImpl(serviceLocator);
          modificationRepositoryService = new ModificationRepositoryServiceImpl(serviceLocator);
 
-         leagueGameService = new LeagueGameService(processWatcherService, modificationRepositoryService);
+         injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
+
+         leagueGameServiceImpl = new LeagueGameServiceImpl(processWatcherService, modificationRepositoryService);
       }
 
       private void InitializeLogging()

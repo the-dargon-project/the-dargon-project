@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "daemon-api", "daemon-api\da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-impl", "libdargon.injection\libdargon.process-impl.csproj", "{747797D1-8A0B-4644-96B0-78D484EBC8B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.game-impl-lol", "libdargon.game-impl-lol\libdargon.game-impl-lol.csproj", "{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.lol-impl", "libdargon.game-impl-lol\libdargon.lol-impl.csproj", "{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.modification-repository-api", "libdargon.modification-repository-api\libdargon.modification-repository-api.csproj", "{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}"
 EndProject
@@ -48,6 +48,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.tray-api", "libdargon.tray-api\libdargon.tray-api.csproj", "{0759F916-00B7-4A23-847A-A12E19DD2777}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.tray-impl", "libdargon.tray-impl\libdargon.tray-impl.csproj", "{6D00D055-8C83-4616-B56E-357665DCC73F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.lol-api", "libdargon.lol-api\libdargon.lol-api.csproj", "{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-api", "libdargon.dargon-injected-module-api\libdargon.injected-module-api.csproj", "{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-impl", "libdargon.injected-module-impl\libdargon.injected-module-impl.csproj", "{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -269,6 +275,42 @@ Global
 		{6D00D055-8C83-4616-B56E-357665DCC73F}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
 		{6D00D055-8C83-4616-B56E-357665DCC73F}.TempBuild|Any CPU.Build.0 = Release|Any CPU
 		{6D00D055-8C83-4616-B56E-357665DCC73F}.TempBuild|x86.ActiveCfg = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}.TempBuild|x86.ActiveCfg = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}.TempBuild|x86.ActiveCfg = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.DummyPlatform|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.DummyPlatform|Any CPU.Build.0 = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.DummyPlatform|x86.ActiveCfg = Debug|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.TempBuild|Any CPU.ActiveCfg = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.TempBuild|Any CPU.Build.0 = Release|Any CPU
+		{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}.TempBuild|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

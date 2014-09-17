@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB5F3378-D1FB-4397-B337-E440837CD185}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Daemon</RootNamespace>
-    <AssemblyName>DargonD</AssemblyName>
+    <RootNamespace>Dargon.InjectedModule</RootNamespace>
+    <AssemblyName>libdargon.injected-module-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,78 +29,39 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DaemonConfiguration.cs" />
-    <Compile Include="DaemonServiceImpl.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="InjectedModuleServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
     </ProjectReference>
-    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
-      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
-      <Name>daemon-api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.dargon-injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>libdargon.injected-module-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.game-impl-lol\libdargon.lol-impl.csproj">
-      <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>
-      <Name>libdargon.lol-impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
-      <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
-      <Name>libdargon.game-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-impl\libdargon.injected-module-impl.csproj">
-      <Project>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</Project>
-      <Name>libdargon.injected-module-impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injection\libdargon.process-impl.csproj">
-      <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>
-      <Name>libdargon.process-impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
-      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>libdargon.modification-repository-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-impl\libdargon.modification-repository-impl.csproj">
-      <Project>{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}</Project>
-      <Name>libdargon.modification-repository-impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.tray-api\libdargon.tray-api.csproj">
-      <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
-      <Name>libdargon.tray-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.tray-impl\libdargon.tray-impl.csproj">
-      <Project>{6D00D055-8C83-4616-B56E-357665DCC73F}</Project>
-      <Name>libdargon.tray-impl</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scratch.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

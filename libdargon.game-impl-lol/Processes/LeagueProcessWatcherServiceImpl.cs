@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using Dargon.Processes.Watching;
 using ItzWarty.Collections;
 using NLog;
 
-namespace Dargon.Game.LeagueOfLegends
+namespace Dargon.LeagueOfLegends.Processes
 {
-   public class LeagueProcessWatcher
+   public class LeagueProcessWatcherServiceImpl : LeagueProcessWatcherService
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -37,8 +36,8 @@ namespace Dargon.Game.LeagueOfLegends
       public event LeagueProcessDetectedHandler LauncherLaunched;
       public const string kLauncherProcessNameLower = "lollauncher";
       public const string kLauncherProcessNameLower1 = "lollauncher.exe";
-      public const string kLauncherProcessNameLower2 = "lol.launcher.exe";
-      public const string kLauncherProcessNameLowerAdmin = "lol.launcher.admin.exe";
+//      public const string kLauncherProcessNameLower2 = "lol.launcher.exe";
+//      public const string kLauncherProcessNameLowerAdmin = "lol.launcher.admin.exe";
 
       /// <summary>
       /// Event fired when the RADS_USER_KERNEL.exe process is launched
@@ -51,7 +50,7 @@ namespace Dargon.Game.LeagueOfLegends
          kGameClientProcessNameLower, 
          kBugSplatProcessNameLower, 
          kPvpNetProcessNameLower, kPvpNetProcessNameLower1,
-         kLauncherProcessNameLower, kLauncherProcessNameLower1, kLauncherProcessNameLower2, kLauncherProcessNameLowerAdmin,
+         kLauncherProcessNameLower, kLauncherProcessNameLower1, //kLauncherProcessNameLower2, kLauncherProcessNameLowerAdmin,
          kRadsUserKernelProcessNameLower
       );
       private bool enabled = false;
@@ -60,7 +59,7 @@ namespace Dargon.Game.LeagueOfLegends
       /// Initializes a new instance of a League of Legends game detector, but does not start the
       /// process detector.
       /// </summary>
-      public LeagueProcessWatcher(ProcessWatcherService processWatcherService)
+      public LeagueProcessWatcherServiceImpl(ProcessWatcherService processWatcherService)
       {
          this.processWatcherService = processWatcherService;
          processWatcherService.Subscribe(HandleNewProcessFound, processNames, false);
@@ -98,7 +97,7 @@ namespace Dargon.Game.LeagueOfLegends
          } else if (lowerProcessName.Contains(kPvpNetProcessNameLower) || lowerProcessName.Contains(kPvpNetProcessNameLower1)) {
             @event = AirClientLaunched;
             processType = LeagueProcessType.PvpNetClient;
-         } else if (lowerProcessName.Contains(kLauncherProcessNameLower) || lowerProcessName.Contains(kLauncherProcessNameLowerAdmin)) {
+         } else if (lowerProcessName.Contains(kLauncherProcessNameLower)) { // || lowerProcessName.Contains(kLauncherProcessNameLowerAdmin)) {
             @event = LauncherLaunched;
             processType = LeagueProcessType.Launcher;
          } else if (lowerProcessName.Contains(kRadsUserKernelProcessNameLower)) {

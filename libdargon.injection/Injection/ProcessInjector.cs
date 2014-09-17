@@ -205,7 +205,7 @@ namespace Dargon.Processes.Injection
                   out remoteThreadId // out ThreadID
                   );
             }
-            catch (Win32Exception exception)
+            catch (Win32Exception)
             {
                //Win32 Exception
                Console.Write("Win32 Exception when creating remote thread... " + ((i < 9) ? " Trying again" : ""));

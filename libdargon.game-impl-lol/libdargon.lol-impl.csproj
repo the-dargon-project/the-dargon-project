@@ -7,8 +7,8 @@
     <ProjectGuid>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Game.LeagueOfLegends</RootNamespace>
-    <AssemblyName>libdargon.game-impl-lol</AssemblyName>
+    <RootNamespace>Dargon.LeagueOfLegends</RootNamespace>
+    <AssemblyName>libdargon.lol-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -37,11 +37,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LeagueGameService.cs" />
+    <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
+    <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
-    <Compile Include="LeagueProcessDetectedArgs.cs" />
-    <Compile Include="LeagueProcessType.cs" />
-    <Compile Include="LeagueProcessWatcher.cs" />
+    <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
+    <Compile Include="Session\LeagueSession.cs" />
+    <Compile Include="Session\Phases\LeaguePhase.cs" />
+    <Compile Include="Session\StateType.cs" />
+    <Compile Include="Session\LeagueSessionWatcherServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +59,10 @@
     <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.lol-api\libdargon.lol-api.csproj">
+      <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
+      <Name>libdargon.lol-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
       <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>

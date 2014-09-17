@@ -6,27 +6,33 @@ using System.Threading.Tasks;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Services;
+using NLog;
 using ParentProcessUtilities = Dargon.Processes.Kernel.ParentProcessUtilities;
 
 namespace Dargon.Processes.Watching
 {
    public class ProcessWatcherServiceImpl : ProcessWatcherService
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly ProcessWatcher processWatcher;
       private readonly MultiValueDictionary<string, Action<CreatedProcessDescriptor>> processSpawnedHandlersByProcessName = new MultiValueDictionary<string, Action<CreatedProcessDescriptor>>();
 
       public ProcessWatcherServiceImpl(IServiceLocator serviceLocator)
       {
+         logger.Info("Initializing Process Watching Service");
          serviceLocator.RegisterService(typeof(ProcessWatcherService), this);
          
          processWatcher = new ProcessWatcher();
          processWatcher.NewProcessFound += HandleProcessWatcherNewProcessFound;
+         processWatcher.Start();
       }
 
       private void HandleProcessWatcherNewProcessFound(object sender, ProcessFoundEventArgs e)
       {
-         var lowerProcessName = e.ProcessName;
+         var lowerProcessName = e.ProcessName.ToLower();
          var handlers = processSpawnedHandlersByProcessName.GetValueOrDefault(lowerProcessName);
+//         Console.WriteLine(lowerProcessName);
          if (handlers != null) {
             foreach (var handler in handlers) {
                handler(new CreatedProcessDescriptor(e.ProcessName, e.ProcessID, e.ParentProcessID));

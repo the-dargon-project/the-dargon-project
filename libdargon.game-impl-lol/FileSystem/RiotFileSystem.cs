@@ -27,8 +27,6 @@ namespace Dargon.FileSystem
       {
          this.solutionPath = solutionPath;
          this.projectType = projectType;
-
-         this.Initialize();
       }
 
       private void Initialize()
@@ -56,7 +54,9 @@ namespace Dargon.FileSystem
          logger.Warn("Failed to load {0} archives: {1}".F(unsuccessfullyLoadedArchives.Count, unsuccessfullyLoadedArchives.Join(", ")));
       }
 
-      public IFileSystemHandle AllocateRootHandle() { return GetNodeHandle(project.ReleaseManifest.Root); }
+      public IFileSystemHandle AllocateRootHandle() { 
+         return GetNodeHandle(project.ReleaseManifest.Root);
+      }
 
       public IoResult AllocateChildrenHandles(IFileSystemHandle handle, out IFileSystemHandle[] childHandles)
       {

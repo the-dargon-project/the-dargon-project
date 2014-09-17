@@ -2,19 +2,23 @@
 using Dargon.IO.RADS;
 using Dargon.ModificationRepositories;
 using Dargon.Processes.Watching;
+using NLog;
 
 namespace Dargon.Game.LeagueOfLegends
 {
-   public class LeagueGameHandler : IGameHandler
+   public class LeagueGameService : IGameHandler
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
       private readonly LeagueProcessWatcher leagueProcessWatcher;
       private readonly RiotFileSystem gameFileSystem;
 
-      public LeagueGameHandler(ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
+      public LeagueGameService(ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
+         logger.Info("Initializing League Game Service");
          this.processWatcherService = processWatcherService;
          this.modificationRepositoryService = modificationRepositoryService;
 
@@ -25,6 +29,6 @@ namespace Dargon.Game.LeagueOfLegends
 
    public class LeagueConfiguration
    {
-      public string RadsPath { get { return @"C:\Riot Games\League of Legends\RADS"; } }
+      public string RadsPath { get { return @"V:\Riot Games\League of Legends\RADS"; } }
    }
 }

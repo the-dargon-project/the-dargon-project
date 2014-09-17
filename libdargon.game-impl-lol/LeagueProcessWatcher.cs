@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using Dargon.Processes.Watching;
 using ItzWarty.Collections;
+using NLog;
 
 namespace Dargon.Game.LeagueOfLegends
 {
    public class LeagueProcessWatcher
    {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       /// <summary>
       /// Event fired when the "League of Legends.exe" in-game client launches.
       /// </summary>
@@ -25,6 +28,7 @@ namespace Dargon.Game.LeagueOfLegends
       /// </summary>
       public event LeagueProcessDetectedHandler AirClientLaunched;
       public const string kPvpNetProcessNameLower = "lolclient";
+      public const string kPvpNetProcessNameLower1 = "lolclient.exe";
       public const string kPvpNetProcessWindowText = "PVP.net Patcher";
 
       /// <summary>
@@ -34,6 +38,7 @@ namespace Dargon.Game.LeagueOfLegends
       public const string kLauncherProcessNameLower = "lollauncher";
       public const string kLauncherProcessNameLower1 = "lollauncher.exe";
       public const string kLauncherProcessNameLower2 = "lol.launcher.exe";
+      public const string kLauncherProcessNameLowerAdmin = "lol.launcher.admin.exe";
 
       /// <summary>
       /// Event fired when the RADS_USER_KERNEL.exe process is launched
@@ -42,7 +47,13 @@ namespace Dargon.Game.LeagueOfLegends
       public const string kRadsUserKernelProcessNameLower = "rads_user_kernel";
 
       private readonly ProcessWatcherService processWatcherService;
-      private readonly IReadOnlyCollection<string> processNames = ImmutableCollection.Of(kGameClientProcessNameLower, kBugSplatProcessNameLower, kPvpNetProcessNameLower, kLauncherProcessNameLower, kRadsUserKernelProcessNameLower);
+      private readonly IReadOnlyCollection<string> processNames = ImmutableCollection.Of(
+         kGameClientProcessNameLower, 
+         kBugSplatProcessNameLower, 
+         kPvpNetProcessNameLower, kPvpNetProcessNameLower1,
+         kLauncherProcessNameLower, kLauncherProcessNameLower1, kLauncherProcessNameLower2, kLauncherProcessNameLowerAdmin,
+         kRadsUserKernelProcessNameLower
+      );
       private bool enabled = false;
 
       /// <summary>
@@ -74,7 +85,7 @@ namespace Dargon.Game.LeagueOfLegends
       /// <param name="e"></param>
       private void HandleNewProcessFound(CreatedProcessDescriptor desc)
       {
-         if (!enabled) 
+         if (!enabled)
             return;
 
          string lowerProcessName = desc.ProcessName.ToLower();
@@ -84,10 +95,10 @@ namespace Dargon.Game.LeagueOfLegends
          if (lowerProcessName.Contains(kGameClientProcessNameLower)) {
             @event = GameClientLaunched;
             processType = LeagueProcessType.GameClient;
-         } else if (lowerProcessName.Contains(kPvpNetProcessNameLower)) {
+         } else if (lowerProcessName.Contains(kPvpNetProcessNameLower) || lowerProcessName.Contains(kPvpNetProcessNameLower1)) {
             @event = AirClientLaunched;
             processType = LeagueProcessType.PvpNetClient;
-         } else if (lowerProcessName.Contains(kLauncherProcessNameLower)) {
+         } else if (lowerProcessName.Contains(kLauncherProcessNameLower) || lowerProcessName.Contains(kLauncherProcessNameLowerAdmin)) {
             @event = LauncherLaunched;
             processType = LeagueProcessType.Launcher;
          } else if (lowerProcessName.Contains(kRadsUserKernelProcessNameLower)) {
@@ -98,12 +109,13 @@ namespace Dargon.Game.LeagueOfLegends
             processType = LeagueProcessType.BugSplat;
          }
 
-         Console.WriteLine((@event == null) + " " + lowerProcessName + " " + processType);
+         logger.Info((@event == null) + " " + lowerProcessName + " " + processType);
 
          if (processType != LeagueProcessType.Invalid) {
             var capture = @event;
             if (capture != null && processType != LeagueProcessType.Invalid)
-               capture(new LeagueProcessDetectedArgs(processType, desc));;
+               capture(new LeagueProcessDetectedArgs(processType, desc));
+            ;
          }
       }
    }

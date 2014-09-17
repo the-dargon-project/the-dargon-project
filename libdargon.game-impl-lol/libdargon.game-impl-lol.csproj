@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LeagueGameHandler.cs" />
+    <Compile Include="LeagueGameService.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
     <Compile Include="LeagueProcessDetectedArgs.cs" />
     <Compile Include="LeagueProcessType.cs" />

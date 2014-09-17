@@ -3,7 +3,7 @@
    class Program
    {
       public static void Main(string[] args) { 
-         var core = new DaemonService();
+         var core = new DaemonServiceImpl();
          core.Run();
       }
    }

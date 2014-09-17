@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using ItzWarty;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
-using ItzWarty;
-using Extensions = ItzWarty.Extensions;
 
 namespace Dargon.Patcher
 {

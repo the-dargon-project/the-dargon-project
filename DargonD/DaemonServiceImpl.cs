@@ -44,6 +44,19 @@ namespace Dargon.Daemon
          injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
 
          leagueGameServiceImpl = new LeagueGameServiceImpl(processWatcherService, modificationRepositoryService);
+
+         RunDebugActions();
+      }
+
+      private void RunDebugActions() 
+      {
+         modificationRepositoryService.ClearModifications();
+         modificationRepositoryService.ImportLegacyModification(
+            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
+            new[] {
+               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
+               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png"
+            });
       }
 
       private void InitializeLogging()

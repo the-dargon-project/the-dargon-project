@@ -259,9 +259,16 @@ namespace Dargon.Patcher
             var indexOnlyNames = new HashSet<string>(indexFileNames).With(set => set.ExceptWith(sharedNames));
             foreach (var fileName in realOnlyNames) {
                var fileInternalPath = BuildPath(internalPath, fileName);
-               var fileInfo = new FileInfo(GetAbsolutePath(fileInternalPath));
+               var fileAbsolutePath = GetAbsolutePath(fileInternalPath);
+               var fileInfo = new FileInfo(fileAbsolutePath);
                if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
-                  throw new NotImplementedException("Add all children of fileInternalPath (Only real entry exists)");
+                  foreach (var fileInNewDirectoryInternalPath in EnumerateFilesInNewDirectory(fileInternalPath)) {
+                     if (index.Contains(fileInNewDirectoryInternalPath)) {
+                        result.Add(new KeyValuePair<string, ChangeType>(fileInNewDirectoryInternalPath, ChangeType.Added | ChangeType.Staged));
+                     } else {
+                        result.Add(new KeyValuePair<string, ChangeType>(fileInNewDirectoryInternalPath, ChangeType.Added | ChangeType.Unstaged));
+                     }
+                  }
                } else {
                   var addedFilePath = BuildPath(internalPath, fileName);
                   bool staged = index.GetValueOrNull(addedFilePath) != null;
@@ -307,6 +314,23 @@ namespace Dargon.Patcher
             }
             return result;
          }
+      }
+
+      private IEnumerable<string> EnumerateFilesInNewDirectory(string newDirectoryInternalPath)
+      {
+         var newDirectoryAbsolutePath = GetAbsolutePath(newDirectoryInternalPath);
+
+         foreach (var dir in Directory.EnumerateDirectories(newDirectoryAbsolutePath)) {
+            var dirInfo = new DirectoryInfo(dir);
+            var results = EnumerateFilesInNewDirectory(BuildPath(newDirectoryInternalPath, dirInfo.Name));
+            foreach (var result in results)
+               yield return result;
+         }
+
+         foreach (var file in Directory.EnumerateFiles(newDirectoryAbsolutePath)) {
+            var fileInfo = new FileInfo(file);
+            yield return BuildPath(newDirectoryInternalPath, fileInfo.Name);
+         }  
       }
 
       //            var entries = index.Enumerate();
@@ -738,6 +762,7 @@ namespace Dargon.Patcher
 
       private interface IIndex : IDisposable
       {
+         bool Contains(string internalPath);
          IndexEntry GetValueOrNull(string internalPath);
          void Set(string internalPath, IndexEntry value);
          void Remove(string internalPath);
@@ -799,6 +824,8 @@ namespace Dargon.Patcher
              
             dirty = false;
          }
+
+         bool IIndex.Contains(string internalPath) { return entriesByInternalPath.ContainsKey(internalPath); }
 
          IndexEntry IIndex.GetValueOrNull(string internalPath)
          {

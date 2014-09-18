@@ -7,6 +7,7 @@
       GameClient,
       PvpNetClient,
       Launcher,
+      Patcher,
       RadsUserKernel,
       BugSplat,
 

@@ -1,8 +1,8 @@
+using System;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.Session.Phases;
 using NLog;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Dargon.LeagueOfLegends.Session
 {
@@ -24,11 +24,29 @@ namespace Dargon.LeagueOfLegends.Session
             phaseContext.HandleRadsUserKernelLaunched(process);
          else if (type == LeagueProcessType.Launcher)
             phaseContext.HandleLauncherLaunched(process);
+         else if (type == LeagueProcessType.Patcher)
+            phaseContext.HandlePatcherLaunched(process);
          else if (type == LeagueProcessType.PvpNetClient)
-            phaseContext.HandlePvpNetLaunched(process);
+            phaseContext.HandleClientLaunched(process);
          else if (type == LeagueProcessType.GameClient)
             phaseContext.HandleGameLaunched(process);
       }
+
+      public void HandleProcessQuit(Process process, LeagueProcessType type)
+      {
+         if (type == LeagueProcessType.RadsUserKernel)
+            ; // hue
+         else if (type == LeagueProcessType.Launcher)
+            phaseContext.HandleLauncherQuit(process);
+         else if(type == LeagueProcessType.Patcher)
+            phaseContext.HandlePatcherQuit(process);
+         else if(type == LeagueProcessType.PvpNetClient)
+            phaseContext.HandleClientQuit(process);
+         else if (type == LeagueProcessType.GameClient)
+            phaseContext.HandleGameQuit(process);
+      }
+   }
+}
 
 //      private void HandleRadsUserKernelLaunched(Process process)
 //      {
@@ -193,5 +211,3 @@ namespace Dargon.LeagueOfLegends.Session
       //         var handler = new DSPExLITProcessTaskList(session.TakeLocallyInitializedTransactionId(), tasks, forceSend);
       //         session.RegisterAndInitializeLITransactionHandler(handler);
       //      }
-   }
-}

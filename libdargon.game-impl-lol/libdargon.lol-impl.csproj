@@ -43,6 +43,13 @@
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
     <Compile Include="Session\LeagueSession.cs" />
     <Compile Include="Session\Phases\LeaguePhase.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseClient.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseContext.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseData.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseGame.cs" />
+    <Compile Include="Session\Phases\LeaguePhasePreClient.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseQuit.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseUninitialized.cs" />
     <Compile Include="Session\StateType.cs" />
     <Compile Include="Session\LeagueSessionWatcherServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

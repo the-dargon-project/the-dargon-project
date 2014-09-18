@@ -14,54 +14,70 @@ namespace Dargon.LeagueOfLegends.Session
    {
       private readonly LeagueProcessWatcherService leagueProcessWatcherService;
 
-      private readonly ConcurrentSet<Process> radsUserKernelProcesses = new ConcurrentSet<Process>();
-      private readonly ConcurrentSet<Process> launcherProcesses = new ConcurrentSet<Process>();
-      private readonly ConcurrentSet<Process> pvpNetClientProcesses = new ConcurrentSet<Process>();
-      private readonly ConcurrentSet<Process> gameClientProcesses = new ConcurrentSet<Process>();
-      private readonly ConcurrentSet<Process> bugsplatProcesses = new ConcurrentSet<Process>();
-      private readonly ConcurrentSet<LeagueSession> sessions = new ConcurrentSet<LeagueSession>();
-      private readonly ConcurrentDictionary<int, LeagueSession> sessionsByProcessId = new ConcurrentDictionary<int, LeagueSession>(); 
-      private readonly IReadOnlyDictionary<LeagueProcessType, ConcurrentSet<Process>> processesByType;
+      private readonly ISet<Process> radsUserKernelProcesses = new HashSet<Process>();
+      private readonly ISet<Process> launcherProcesses = new HashSet<Process>();
+      private readonly ISet<Process> patcherProcesses = new HashSet<Process>();
+      private readonly ISet<Process> pvpNetClientProcesses = new HashSet<Process>();
+      private readonly ISet<Process> gameClientProcesses = new HashSet<Process>();
+      private readonly ISet<Process> bugsplatProcesses = new HashSet<Process>();
+      private readonly ISet<LeagueSession> sessions = new HashSet<LeagueSession>();
+      private readonly Dictionary<int, LeagueSession> sessionsByProcessId = new Dictionary<int, LeagueSession>(); 
+      private readonly object synchronization = new object();
+      private readonly IReadOnlyDictionary<LeagueProcessType, ISet<Process>> processesByType;
 
       public LeagueSessionWatcherServiceImpl(LeagueProcessWatcherService leagueProcessWatcherService) {
          this.leagueProcessWatcherService = leagueProcessWatcherService;
 
-         processesByType = new Dictionary<LeagueProcessType, ConcurrentSet<Process>> {
+         processesByType = new Dictionary<LeagueProcessType, ISet<Process>> {
             { LeagueProcessType.RadsUserKernel, radsUserKernelProcesses },
             { LeagueProcessType.Launcher, launcherProcesses },
+            { LeagueProcessType.Patcher, patcherProcesses },
             { LeagueProcessType.PvpNetClient, pvpNetClientProcesses },
             { LeagueProcessType.GameClient, gameClientProcesses },
             { LeagueProcessType.BugSplat, bugsplatProcesses }
          };
 
+         leagueProcessWatcherService.RadsUserKernelLaunched += HandleLeagueProcessLaunched;
+         leagueProcessWatcherService.LauncherLaunched += HandleLeagueProcessLaunched;
+         leagueProcessWatcherService.PatcherLaunched += HandleLeagueProcessLaunched;
          leagueProcessWatcherService.AirClientLaunched += HandleLeagueProcessLaunched;
          leagueProcessWatcherService.GameClientLaunched += HandleLeagueProcessLaunched;
-         leagueProcessWatcherService.LauncherLaunched += HandleLeagueProcessLaunched;
-         leagueProcessWatcherService.RadsUserKernelLaunched += HandleLeagueProcessLaunched;
       }
 
       private void HandleLeagueProcessLaunched(LeagueProcessDetectedArgs e)
       {
-         var process = Process.GetProcessById(e.ProcessDescriptor.ProcessId);
+         lock (synchronization) {
+            var process = Process.GetProcessById(e.ProcessDescriptor.ProcessId);
 
-         var processTypeList = processesByType[e.ProcessType];
-         processTypeList.TryAdd(process);
+            var processTypeList = processesByType[e.ProcessType];
+            processTypeList.Add(process);
 
-         process.EnableRaisingEvents = true;
-         process.Exited += (a, b) => processTypeList.TryRemove(process);
+            process.EnableRaisingEvents = true;
+            process.Exited += (a, b) => HandleLeagueProcessQuit(e.ProcessDescriptor.ProcessId, process, e.ProcessType, processTypeList);
 
-         if (process.HasExited) {
-            processTypeList.TryRemove(process);
-         }
-
-         bool processKilled = false; // todo: event for process detected allowing for duplicate RUK kill
-         if (!processKilled) {
-            LeagueSession session;
-            if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
-               session = new LeagueSession();
+            if (process.HasExited) {
+               processTypeList.Remove(process);
             }
-            session.HandleProcessLaunched(process, e.ProcessType);
-            sessionsByProcessId.AddOrUpdate(e.ProcessDescriptor.ProcessId, session, (a, b) => session);
+
+            bool processKilled = false; // todo: event for process detected allowing for duplicate RUK kill
+            if (!processKilled) {
+               LeagueSession session;
+               if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
+                  session = new LeagueSession();
+               }
+               session.HandleProcessLaunched(process, e.ProcessType);
+               sessionsByProcessId.Add(e.ProcessDescriptor.ProcessId, session);
+            }
+         }
+      }
+
+      private void HandleLeagueProcessQuit(int processId, Process process, LeagueProcessType processType, ISet<Process> processTypeList) 
+      { 
+         processTypeList.Remove(process);
+         LeagueSession session;
+         if (sessionsByProcessId.TryGetValue(processId, out session)) {
+            session.HandleProcessQuit(process, processType);
+            sessionsByProcessId.Remove(processId);
          }
       }
    }

@@ -32,7 +32,7 @@ namespace Dargon.Processes.Watching
       {
          var lowerProcessName = e.ProcessName.ToLower();
          var handlers = processSpawnedHandlersByProcessName.GetValueOrDefault(lowerProcessName);
-//         Console.WriteLine(lowerProcessName);
+//         logger.Info("HAVE PROCESS " + lowerProcessName);
          if (handlers != null) {
             foreach (var handler in handlers) {
                handler(new CreatedProcessDescriptor(e.ProcessName, e.ProcessID, e.ParentProcessID));

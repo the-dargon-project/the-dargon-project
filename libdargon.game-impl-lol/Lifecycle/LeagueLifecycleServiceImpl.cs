@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dargon.Game;
+using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Session;
+using Dargon.ModificationRepositories;
+using ItzWarty.Collections;
 using NLog;
+
+using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
+using PhaseChangeHandler = System.Action<Dargon.LeagueOfLegends.Session.ILeagueSession, Dargon.LeagueOfLegends.Session.LeagueSessionPhaseChangedArgs>;
 
 namespace Dargon.LeagueOfLegends.Lifecycle
 {
@@ -12,11 +19,18 @@ namespace Dargon.LeagueOfLegends.Lifecycle
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueSessionWatcherService leagueSessionWatcherService;
+      private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
 
-      public LeagueLifecycleServiceImpl(LeagueSessionWatcherService leagueSessionWatcherService) {
+      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueSessionWatcherService leagueSessionWatcherService)
+      {
+         this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.leagueSessionWatcherService = leagueSessionWatcherService;
          leagueSessionWatcherService.SessionCreated += HandleLeagueSessionCreated;
+         phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
+            new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition
+            );
       }
 
       private void HandleLeagueSessionCreated(LeagueSessionWatcherService service, LeagueSessionCreatedArgs e)
@@ -28,6 +42,18 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       private void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
       { 
          logger.Info("Phase Change from " + e.Previous + " to " + e.Current);
+         PhaseChangeHandler handler;
+         if (phaseChangeHandlers.TryGetValue(new PhaseChange(e.Previous, e.Current), out handler)) {
+            handler(session, e);
+         }
+      }
+
+      private void HandleUninitializedToPreclientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
+      {
+         logger.Info("Handling Uninitialized to Preclient Phase Transition!");
+         var mods = leagueModificationRepositoryService.EnumerateModifications();
+         foreach (var mod in mods) {
+         }
       }
    }
 }

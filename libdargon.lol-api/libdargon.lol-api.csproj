@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
+    <Compile Include="Modifications\ILeagueModification.cs" />
+    <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
     <Compile Include="Processes\LeagueProcessType.cs" />
     <Compile Include="Processes\LeagueProcessWatcherService.cs" />
@@ -51,6 +53,10 @@
     <Compile Include="Session\LeagueSessionWatcherService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
+      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
+      <Name>libdargon.modification-api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>

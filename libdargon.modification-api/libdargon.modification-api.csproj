@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}</ProjectGuid>
+    <ProjectGuid>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.ModificationRepositories</RootNamespace>
-    <AssemblyName>libdargon.modification-repository-impl</AssemblyName>
+    <RootNamespace>Dargon.Modifications</RootNamespace>
+    <AssemblyName>libdargon.modification-api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,40 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModificationRepositoryServiceImpl.cs" />
+    <Compile Include="IModification.cs" />
+    <Compile Include="ModificationImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>libdargon.modification-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
-      <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
-      <Name>libdargon.modification-repository-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdpatch\libdpm.csproj">
-      <Project>{9699E719-25FA-41DF-B966-B43CF50F9B00}</Project>
-      <Name>libdpm</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

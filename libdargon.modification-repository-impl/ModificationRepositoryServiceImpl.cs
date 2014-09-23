@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Dargon.Game;
+using Dargon.Modifications;
 using Dargon.Patcher;
 using ItzWarty;
+using ItzWarty.Collections;
 using ItzWarty.Services;
 using NLog;
 
@@ -10,7 +15,7 @@ namespace Dargon.ModificationRepositories
    public class ModificationRepositoryServiceImpl : ModificationRepositoryService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-      private const int PATH_DELIMITER_LENGTH = 1;
+      private readonly ConcurrentSet<IModification> modifications = new ConcurrentSet<IModification>(); 
 
       public ModificationRepositoryServiceImpl(IServiceLocator serviceLocator)
       {
@@ -19,22 +24,23 @@ namespace Dargon.ModificationRepositories
          serviceLocator.RegisterService(typeof(ModificationRepositoryService), this);
       }
 
-      public void ClearModifications() { }
-
-      public void ImportLegacyModification(string root, string[] filePaths)
+      public void ClearModifications() 
       {
-         root = Path.GetFullPath(root);
-         filePaths = Util.Generate(filePaths.Length, i => Path.GetFullPath(filePaths[i]));
+         logger.Info("Clearing All Modifications");
+         modifications.Clear(); 
+      }
+      public void AddModification(IModification modification)
+      {
+         logger.Info("Adding Modification " + modification); 
+         modifications.TryAdd(modification); 
+      }
 
-         var repo = new LocalRepository(root);
-         repo.Initialize();
-
-         foreach (var filePath in filePaths) {
-            var internalPath = filePath.Substring(root.Length + PATH_DELIMITER_LENGTH);
-            repo.AddFile(internalPath);
-         }
-
-         repo.Commit("Initial Commit");
+      public IEnumerable<IModification> EnumerateModifications(GameType gameType)
+      {
+         if (gameType == GameType.Any) 
+            return modifications;
+         else
+            return modifications.Where(mod => mod.GameType == gameType);
       }
    }
 }

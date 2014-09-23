@@ -1,6 +1,7 @@
 ﻿using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends;
 using Dargon.ModificationRepositories;
+using Dargon.Modifications;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
 using Dargon.Tray;
@@ -23,6 +24,7 @@ namespace Dargon.Daemon
       private readonly ProcessInjectionService processInjectionService;
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
+      private readonly ModificationImportService modificationImportService;
       private readonly InjectedModuleService injectedModuleService;
       private readonly LeagueGameServiceImpl leagueGameServiceImpl;
       private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
@@ -40,23 +42,11 @@ namespace Dargon.Daemon
          processInjectionService = new ProcessInjectionServiceImpl(serviceLocator);
          processWatcherService = new ProcessWatcherServiceImpl(serviceLocator);
          modificationRepositoryService = new ModificationRepositoryServiceImpl(serviceLocator);
+         modificationImportService = new ModificationImportServiceImpl(serviceLocator);
 
          injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
 
-         leagueGameServiceImpl = new LeagueGameServiceImpl(processWatcherService, modificationRepositoryService);
-
-         RunDebugActions();
-      }
-
-      private void RunDebugActions() 
-      {
-         modificationRepositoryService.ClearModifications();
-         modificationRepositoryService.ImportLegacyModification(
-            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-            new[] {
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png"
-            });
+         leagueGameServiceImpl = new LeagueGameServiceImpl(processWatcherService, modificationRepositoryService, modificationImportService);
       }
 
       private void InitializeLogging()

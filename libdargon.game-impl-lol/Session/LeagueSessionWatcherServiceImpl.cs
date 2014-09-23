@@ -21,9 +21,10 @@ namespace Dargon.LeagueOfLegends.Session
       private readonly ISet<Process> gameClientProcesses = new HashSet<Process>();
       private readonly ISet<Process> bugsplatProcesses = new HashSet<Process>();
       private readonly ISet<LeagueSession> sessions = new HashSet<LeagueSession>();
-      private readonly Dictionary<int, LeagueSession> sessionsByProcessId = new Dictionary<int, LeagueSession>(); 
+      private readonly Dictionary<int, LeagueSession> sessionsByProcessId = new Dictionary<int, LeagueSession>();
       private readonly object synchronization = new object();
       private readonly IReadOnlyDictionary<LeagueProcessType, ISet<Process>> processesByType;
+      public event LeagueSessionCreatedHandler SessionCreated;
 
       public LeagueSessionWatcherServiceImpl(LeagueProcessWatcherService leagueProcessWatcherService) {
          this.leagueProcessWatcherService = leagueProcessWatcherService;
@@ -64,6 +65,7 @@ namespace Dargon.LeagueOfLegends.Session
                LeagueSession session;
                if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
                   session = new LeagueSession();
+                  OnSessionCreated(new LeagueSessionCreatedArgs(session));
                }
                session.HandleProcessLaunched(process, e.ProcessType);
                sessionsByProcessId.Add(e.ProcessDescriptor.ProcessId, session);
@@ -79,6 +81,12 @@ namespace Dargon.LeagueOfLegends.Session
             session.HandleProcessQuit(process, processType);
             sessionsByProcessId.Remove(processId);
          }
+      }
+
+      protected virtual void OnSessionCreated(LeagueSessionCreatedArgs e)
+      {
+         LeagueSessionCreatedHandler handler = SessionCreated;
+         if (handler != null) handler(this, e);
       }
    }
 }

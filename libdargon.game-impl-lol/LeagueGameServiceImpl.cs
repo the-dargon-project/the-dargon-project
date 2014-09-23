@@ -1,6 +1,7 @@
 ﻿using Dargon.Game;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.FileSystem;
+using Dargon.LeagueOfLegends.Lifecycle;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.ModificationRepositories;
@@ -19,6 +20,7 @@ namespace Dargon.LeagueOfLegends
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
       private readonly LeagueSessionWatcherServiceImpl leagueSessionWatcherService;
       private readonly RiotFileSystem gameFileSystem;
+      private readonly LeagueLifecycleService leagueLifecycleService;
 
       public LeagueGameServiceImpl(ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
@@ -29,6 +31,7 @@ namespace Dargon.LeagueOfLegends
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
          this.leagueSessionWatcherService = new LeagueSessionWatcherServiceImpl(leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(configuration.RadsPath, RiotProjectType.GameClient);
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(leagueSessionWatcherService);
       }
    }
 

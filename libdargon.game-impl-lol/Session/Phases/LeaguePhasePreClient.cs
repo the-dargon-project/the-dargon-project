@@ -4,12 +4,12 @@ using NLog;
 
 namespace Dargon.LeagueOfLegends.Session.Phases
 {
-   public class LeaguePhasePreClient : LeaguePhase
+   public class LeaguePhasePreClient : LeaguePhaseBase
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       public LeaguePhasePreClient(LeaguePhaseContext context)
-         : base(context)
+         : base(context, LeagueSessionPhase.Preclient)
       {
       }
 

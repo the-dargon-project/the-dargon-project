@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace Dargon.LeagueOfLegends.Session.Phases
 {
-   public abstract class LeaguePhase
+   public abstract class LeaguePhaseBase
    {
       protected readonly LeaguePhaseContext context;
+      private readonly LeagueSessionPhase phase;
 
-      protected LeaguePhase(LeaguePhaseContext context) {
+      protected LeaguePhaseBase(LeaguePhaseContext context, LeagueSessionPhase phase)
+      {
          this.context = context;
+         this.phase = phase;
       }
 
-      protected virtual void TransitionTo(LeaguePhase nextPhase, object tag = null) { context.TransitionTo(nextPhase, tag); }
+      public virtual LeagueSessionPhase Phase { get { return phase; } }
+
+      protected virtual void TransitionTo(LeaguePhaseBase nextPhase, object tag = null) { context.TransitionTo(nextPhase, tag); }
 
       public virtual void BeginPhase(BeginPhaseArgs args) { }
       public virtual void EndPhase() { }
@@ -32,16 +37,16 @@ namespace Dargon.LeagueOfLegends.Session.Phases
 
       public class BeginPhaseArgs
       {
-         private readonly LeaguePhase previousPhase;
+         private readonly LeaguePhaseBase previousPhase;
          private readonly object tag;
 
-         public BeginPhaseArgs(LeaguePhase previousPhase, object tag)
+         public BeginPhaseArgs(LeaguePhaseBase previousPhase, object tag)
          {
             this.previousPhase = previousPhase;
             this.tag = tag;
          }
 
-         public LeaguePhase PreviousPhase { get { return previousPhase; } }
+         public LeaguePhaseBase PreviousPhase { get { return previousPhase; } }
          public object Tag { get { return tag; } }
       }
    }

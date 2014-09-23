@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,10 +41,10 @@
     <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
-    <Compile Include="Lifecycle\DerpyLifecycleServiceImpl.cs" />
+    <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
     <Compile Include="Session\LeagueSession.cs" />
-    <Compile Include="Session\Phases\LeaguePhase.cs" />
+    <Compile Include="Session\Phases\LeaguePhaseBase.cs" />
     <Compile Include="Session\Phases\LeaguePhaseClient.cs" />
     <Compile Include="Session\Phases\LeaguePhaseContext.cs" />
     <Compile Include="Session\Phases\LeaguePhaseData.cs" />

@@ -4,11 +4,11 @@ using NLog;
 
 namespace Dargon.LeagueOfLegends.Session.Phases
 {
-   public class LeaguePhaseQuit : LeaguePhase
+   public class LeaguePhaseQuit : LeaguePhaseBase
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      public LeaguePhaseQuit(LeaguePhaseContext context) : base(context) {
+      public LeaguePhaseQuit(LeaguePhaseContext context) : base(context, LeagueSessionPhase.Quit) {
       }
 
       public override void BeginPhase(BeginPhaseArgs args)

@@ -4,11 +4,11 @@ using NLog;
 
 namespace Dargon.LeagueOfLegends.Session.Phases
 {
-   public class LeaguePhaseUninitialized : LeaguePhase
+   public class LeaguePhaseUninitialized : LeaguePhaseBase
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      public LeaguePhaseUninitialized(LeaguePhaseContext context) : base(context) { }
+      public LeaguePhaseUninitialized(LeaguePhaseContext context) : base(context, LeagueSessionPhase.Uninitialized) { }
 
       public override void BeginPhase(BeginPhaseArgs args) { base.BeginPhase(args); logger.Info("Begin Uninitialized League Phase"); }
       public override void EndPhase() { base.EndPhase(); logger.Info("End Uninitialized League Phase"); }

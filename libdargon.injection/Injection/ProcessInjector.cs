@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dargon.Processes.Kernel;
+using NLog;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using Dargon.Processes.Kernel;
-using NLog;
 
 namespace Dargon.Processes.Injection
 {

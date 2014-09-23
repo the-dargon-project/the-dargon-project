@@ -1,8 +1,6 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using Dargon.Game;
+﻿using Dargon.Game;
 using Dargon.Modifications;
+using System.Collections.Generic;
 
 namespace Dargon.ModificationRepositories
 {

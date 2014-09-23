@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using NLog;
 
 namespace Dargon.Processes.Watching
 {

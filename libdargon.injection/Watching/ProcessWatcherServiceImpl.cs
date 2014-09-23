@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ItzWarty;
+﻿using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Services;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ParentProcessUtilities = Dargon.Processes.Kernel.ParentProcessUtilities;
 
 namespace Dargon.Processes.Watching

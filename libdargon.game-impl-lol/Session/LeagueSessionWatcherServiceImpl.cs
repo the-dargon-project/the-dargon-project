@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using Dargon.LeagueOfLegends.Processes;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using Dargon.LeagueOfLegends.Processes;
-using ItzWarty;
-using ItzWarty.Collections;
 
 namespace Dargon.LeagueOfLegends.Session
 {

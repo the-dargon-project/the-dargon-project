@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Game;
-using Dargon.LeagueOfLegends.Modifications;
+﻿using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Session;
-using Dargon.ModificationRepositories;
 using ItzWarty.Collections;
 using NLog;
-
+using System.Collections.Generic;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
 using PhaseChangeHandler = System.Action<Dargon.LeagueOfLegends.Session.ILeagueSession, Dargon.LeagueOfLegends.Session.LeagueSessionPhaseChangedArgs>;
 

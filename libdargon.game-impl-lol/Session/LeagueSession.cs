@@ -1,4 +1,3 @@
-using System;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.Session.Phases;
 using NLog;

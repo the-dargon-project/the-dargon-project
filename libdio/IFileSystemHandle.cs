@@ -1,8 +1,4 @@
-﻿
-
-using System;
-
-namespace Dargon.FileSystem
+﻿namespace Dargon.FileSystem
 {
    public interface IFileSystemHandle {
       HandleState State { get; }

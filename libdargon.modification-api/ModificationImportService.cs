@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dargon.Game;
 
 namespace Dargon.Modifications
 {
    public interface ModificationImportService
    {
-      IModification ImportLegacyModification(string root, string[] filePaths);
+      IModification ImportLegacyModification(string root, string[] filePaths, GameType gameType);
    }
 }

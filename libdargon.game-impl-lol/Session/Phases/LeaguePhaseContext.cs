@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using ItzWarty;
+﻿using ItzWarty;
 using NLog;
+using System.Diagnostics;
 
 namespace Dargon.LeagueOfLegends.Session.Phases
 {

@@ -1,8 +1,7 @@
-﻿using System.Threading;
-using System.Windows.Forms;
-using Dargon.Daemon;
-using Dargon.Properties;
+﻿using Dargon.Daemon;
 using ItzWarty.Services;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Dargon.Tray
 {

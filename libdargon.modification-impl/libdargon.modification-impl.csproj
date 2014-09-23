@@ -35,11 +35,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modification.cs" />
@@ -50,6 +45,10 @@
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
+      <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
+      <Name>libdargon.game-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dargon.Processes.Watching
+﻿namespace Dargon.Processes.Watching
 {
    public class CreatedProcessDescriptor
    {

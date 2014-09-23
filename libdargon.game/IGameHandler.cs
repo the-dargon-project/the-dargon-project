@@ -1,5 +1,4 @@
-﻿
-namespace Dargon.Game
+﻿namespace Dargon.Game
 {
    public interface IGameHandler
    {

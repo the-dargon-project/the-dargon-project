@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Dargon.Game;
+﻿using Dargon.Game;
 using Dargon.Modifications;
-using Dargon.Patcher;
-using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Services;
 using NLog;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dargon.ModificationRepositories
 {
@@ -33,6 +29,12 @@ namespace Dargon.ModificationRepositories
       {
          logger.Info("Adding Modification " + modification); 
          modifications.TryAdd(modification); 
+      }
+
+      public void RemoveModification(IModification modification)
+      {
+         logger.Info("Removing Modification " + modification);
+         modifications.TryRemove(modification);
       }
 
       public IEnumerable<IModification> EnumerateModifications(GameType gameType)

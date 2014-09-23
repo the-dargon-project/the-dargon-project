@@ -50,7 +50,7 @@ namespace Dargon.LeagueOfLegends
             new[] {
                @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
                @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png"
-            });
+            }, GameType.LeagueOfLegends);
          modificationRepositoryService.AddModification(mod);
       }
    }

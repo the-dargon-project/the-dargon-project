@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Dargon.Processes.Watching;
 using ItzWarty.Collections;
 using NLog;
+using System.Collections.Generic;
 
 namespace Dargon.LeagueOfLegends.Processes
 {

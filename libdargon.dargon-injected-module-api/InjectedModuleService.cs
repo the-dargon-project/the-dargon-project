@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Dargon.InjectedModule
+﻿namespace Dargon.InjectedModule
 {
    public interface InjectedModuleService
    {

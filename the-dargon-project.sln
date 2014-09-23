@@ -55,6 +55,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-a
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-impl", "libdargon.injected-module-impl\libdargon.injected-module-impl.csproj", "{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Brainstorming", "Brainstorming", "{EA4B3934-A113-4835-AFAC-F265D3B3A05D}"
+	ProjectSection(SolutionItems) = preProject
+		Brainstorming\22 September 2014 - Resolution and Compilation.txt = Brainstorming\22 September 2014 - Resolution and Compilation.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

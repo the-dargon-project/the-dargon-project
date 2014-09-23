@@ -43,6 +43,7 @@
     <Compile Include="Processes\LeagueProcessType.cs" />
     <Compile Include="Processes\LeagueProcessWatcherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session\LeagueSessionWatcherService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">

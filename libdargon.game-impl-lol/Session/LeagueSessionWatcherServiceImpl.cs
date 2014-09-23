@@ -10,7 +10,7 @@ using ItzWarty.Collections;
 
 namespace Dargon.LeagueOfLegends.Session
 {
-   public class LeagueSessionWatcherServiceImpl
+   public class LeagueSessionWatcherServiceImpl : LeagueSessionWatcherService
    {
       private readonly LeagueProcessWatcherService leagueProcessWatcherService;
 

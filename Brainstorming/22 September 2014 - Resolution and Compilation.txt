@@ -1,0 +1,36 @@
+Name: unknown
+InternalPath				FileRevision	ResolvedPath				CompiledFile
+ArtPack/Client/Characters/Annie/AnnieLoadScreen.dds 	12980a28	DATA/Characters/Annie/Skins/Base/AnnieLoadScreen.dds	FileRevision: c6348a4e93f157
+
+== OR ==
+
+RESOLUTION_TABLE - ModificationResolutionService
+InternalPath				ResolvedPath				FileRevision	
+ArtPack/Client/Characters/Annie/AnnieLoadScreen.dds 	DATA/Characters/Annie/Skins/Base/AnnieLoadScreen.dds	12980a28	
+
+COMPILATION_TABLE - ModificationCompilationService
+FileRevision	Compiled
+12980a28	FileRevision: c6348a4e93f157
+
+---
+
+Resolve(root = DargonNode, path = "C:/lolmodprojects/blah/annie.dds");
+
+---
+Pattern 1: Watch FS
+
+Pattern 2: Trigger resolution/compilation
+  1) Get AIR Client directory layout at launcher init
+  2) Run modification resolution asap (potentially with messy state between two air client patches)
+       DIM Changes: File1 -> File2
+  3) On client start, begin game resolution and compilation
+       DIM Changes: Release Manifest -> Release Manifest
+                    Archive -> Archive
+        ArchiveDat Section -> File Section
+
+---
+Additional Notes: 
+Began DerpyLifecycleServiceImpl which will hook together LeagueSessionWatcherService and future modification service.
+Need modification service to expose ResolveClient and ResolveGame methods for modification objects.
+
+Copied over old file resolution to libdnode.Resolution.Resolver

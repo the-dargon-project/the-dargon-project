@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Dargon.FileSystem;
+﻿using Dargon.FileSystem;
 using Dargon.IO;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
 using ItzWarty;
 using NLog;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Dargon.LeagueOfLegends.FileSystem
 {
@@ -38,6 +37,8 @@ namespace Dargon.LeagueOfLegends.FileSystem
 
       private void Initialize()
       {
+         logger.Info("Initializing Riot Filesystem " + projectType);
+
          project = new RiotSolutionLoader().Load(solutionPath, projectType).ProjectsByType[projectType];
          var manifest = project.ReleaseManifest;
          var archiveIds = new HashSet<uint>();

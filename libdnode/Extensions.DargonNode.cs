@@ -74,5 +74,24 @@ namespace Dargon.IO
          }
          return sb.ToString();
       }
+
+
+      public static IEnumerable<IReadableDargonNode> EnumerateLeaves(this IReadableDargonNode start)
+      {
+         var s = new Stack<IReadableDargonNode>();
+         s.Push(start);
+
+         while (s.Any()) {
+            var node = s.Pop();
+            if (!node.Children.Any()) //If the node has no children, it's a leaf
+            {
+               yield return node;
+            } else //Otherwise, its children might be leaves.
+            {
+               foreach (var child in node.Children)
+                  s.Push(child);
+            }
+         }
+      }
    }
 }

@@ -2,6 +2,7 @@
 using Dargon.IO;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
+using Dargon.LeagueOfLegends.RADS;
 using ItzWarty;
 using NLog;
 using System;
@@ -12,81 +13,82 @@ using System.Threading;
 
 namespace Dargon.LeagueOfLegends.FileSystem
 {
-   // public methods enforce thread safety if necessary
-   // private methods assume thread safety from public method
    public class RiotFileSystem : IFileSystem
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly string solutionPath;
+      private readonly RadsService radsService;
       private readonly RiotProjectType projectType;
       private readonly ConcurrentDictionary<IReadableDargonNode, InternalHandle> handlesByNode = new ConcurrentDictionary<IReadableDargonNode, InternalHandle>();
-      private readonly Dictionary<uint, RiotArchive> archivesById = new Dictionary<uint, RiotArchive>();
+      private readonly Dictionary<uint, IRadsArchiveReference> archiveReferencesById = new Dictionary<uint, IRadsArchiveReference>();
       private readonly ReaderWriterLockSlim synchronization = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
       private readonly object initializationLock = new object();
       private readonly List<SuspendedHandleContext> suspendedHandleContexts = new List<SuspendedHandleContext>(); 
-      private bool initialized = false;
-      private int suspensionCount = 0;
-      private RiotProject project;
+      private volatile IRadsProjectReference projectReference;
 
-      public RiotFileSystem(string solutionPath, RiotProjectType projectType)
+      public RiotFileSystem(RadsService radsService, RiotProjectType projectType)
       {
-         this.solutionPath = solutionPath;
+         this.radsService = radsService;
          this.projectType = projectType;
+
+         radsService.Resumed += HandleRadsServiceResumed;
+         radsService.Suspending += HandleRadsServiceSuspending;
       }
 
-      private void Initialize()
+      private void HandleRadsServiceResumed(object sender, EventArgs eventArgs)
       {
-         logger.Info("Initializing Riot Filesystem " + projectType);
+         LoadingOperation(() => {
+            logger.Info("Resuming LoL File System " + this.projectType);
 
-         project = new RiotSolutionLoader().Load(solutionPath, projectType).ProjectsByType[projectType];
-         var manifest = project.ReleaseManifest;
-         var archiveIds = new HashSet<uint>();
-         foreach (var file in manifest.Files) {
-            archiveIds.Add(file.ArchiveId);
-         }
-
-         var riotArchiveLoader = new RiotArchiveLoader(solutionPath);
-         var successfullyLoadedArchives = new SortedSet<uint>();
-         var unsuccessfullyLoadedArchives = new SortedSet<uint>();
-         foreach (var archiveId in archiveIds) {
-            RiotArchive archive;
-            if (riotArchiveLoader.TryLoadArchive(archiveId, out archive)) {
-               archivesById.Add(archiveId, archive);
-               successfullyLoadedArchives.Add(archiveId);
-            } else {
-               unsuccessfullyLoadedArchives.Add(archiveId);
+            // initialize underlying filesystem 
+            if (suspendedHandleContexts.Any()) {
+               GetProject();
             }
-         }
-         logger.Info("Successfully loaded {0} archives: {1}".F(successfullyLoadedArchives.Count, successfullyLoadedArchives.Join(", ")));
-         logger.Warn("Failed to load {0} archives: {1}".F(unsuccessfullyLoadedArchives.Count, unsuccessfullyLoadedArchives.Join(", ")));
+
+            foreach (var context in this.suspendedHandleContexts) {
+               var handle = context.Handle;
+               var path = context.Path;
+               handle.EndReset(null); // this could be better with a path-to-node resolve method.
+            }
+         });
       }
 
-      // assumes 
-      private void EnsureFileSystemInitialized()
+      private void HandleRadsServiceSuspending(object sender, EventArgs eventArgs)
       {
-         if (!initialized) {
-            lock (initializationLock) {
-               if (!initialized) {
-                  Initialize();
-                  initialized = true;
-               }
+         LoadingOperation(() => {
+            logger.Info("Suspending LoL File System " + this.projectType);
+
+            foreach (var kvp in handlesByNode) {
+               var handle = kvp.Value;
+               suspendedHandleContexts.Add(new SuspendedHandleContext(handle.Node.GetPath(), handle));
+               handle.BeginReset();
             }
-         }
+            handlesByNode.Clear();
+
+            // Free reference to project so that rads service can free file handle
+            if (projectReference != null) {
+               projectReference.Dispose();
+               projectReference = null;
+            }
+
+            foreach (var kvp in archiveReferencesById) {
+               kvp.Value.Dispose();
+            }
+            archiveReferencesById.Clear();
+         });
       }
 
       private T ReadOperation<T>(Func<T> body)
       {
          try {
             synchronization.EnterReadLock();
-            EnsureFileSystemInitialized();
             return body();
          } finally {
             synchronization.ExitReadLock();
          }
       }
 
-      private void SuspensionOperation(Action body)
+      private void LoadingOperation(Action body)
       {
          try {
             synchronization.EnterWriteLock();
@@ -98,7 +100,7 @@ namespace Dargon.LeagueOfLegends.FileSystem
 
       public IFileSystemHandle AllocateRootHandle() { return ReadOperation(AllocateRootHandleInternal); }
 
-      private IFileSystemHandle AllocateRootHandleInternal() { return GetNodeHandle(project.ReleaseManifest.Root); }
+      private IFileSystemHandle AllocateRootHandleInternal() { return GetNodeHandle(GetProject().ReleaseManifest.Root); }
 
       public IoResult AllocateChildrenHandles(IFileSystemHandle handle, out IFileSystemHandle[] childHandles)
       {
@@ -146,7 +148,9 @@ namespace Dargon.LeagueOfLegends.FileSystem
          }
 
          RiotArchive archive;
-         if (!archivesById.TryGetValue(asFile.ArchiveId, out archive)) {
+         try {
+            archive = GetArchiveOrNull(asFile.ArchiveId);
+         } catch (ArchiveNotFoundException) {
             return new Tuple<IoResult, byte[]>(IoResult.Unavailable, null);
          }
 
@@ -186,38 +190,6 @@ namespace Dargon.LeagueOfLegends.FileSystem
 
          path = internalHandle.Node.GetPath();
          return IoResult.Success;
-      }
-
-      public void Suspend() { SuspensionOperation(SuspendInternal); }
-
-      private void SuspendInternal()
-      {
-         logger.Info("Suspending LoL File System " + this.projectType);
-         if (Interlocked.Increment(ref suspensionCount) == 1) {
-            foreach (var kvp in handlesByNode) {
-               var handle = kvp.Value;
-               suspendedHandleContexts.Add(new SuspendedHandleContext(handle.Node.GetPath(), handle));
-               handle.BeginReset();
-            }
-            handlesByNode.Clear();
-         }
-      }
-
-      public void Resume() { SuspensionOperation(ResumeInternal); }
-
-      private void ResumeInternal() { 
-         logger.Info("Resuming LoL File System " + this.projectType);
-         if (Interlocked.Decrement(ref suspensionCount) == 0) {
-            if (suspendedHandleContexts.Any()) {
-               Initialize(); // initialize underlying filesystem
-            }
-
-            foreach (var context in this.suspendedHandleContexts) {
-               var handle = context.Handle;
-               var path = context.Path;
-               handle.EndReset(null); // this could be better with a path-to-node resolve method.
-            }
-         }
       }
 
       private InternalHandle GetNodeHandle(IReadableDargonNode node)
@@ -265,6 +237,33 @@ namespace Dargon.LeagueOfLegends.FileSystem
          public override string ToString() { return "[RFS Handle to " + Node.GetPath() + " ]"; }
       }
 
+      // Assumes thread safety from ReadOperation
+      private RiotProject GetProject() 
+      {
+         if (projectReference == null) {
+            lock (initializationLock) {
+               if (projectReference == null) {
+                  projectReference = radsService.GetProjectReference(projectType);
+               }
+            }
+         }
+         return projectReference.Value; 
+      }
+
+      private RiotArchive GetArchiveOrNull(uint archiveId)
+      {
+         IRadsArchiveReference reference;
+         if (!archiveReferencesById.TryGetValue(archiveId, out reference)) {
+            lock (initializationLock) {
+               if (!archiveReferencesById.TryGetValue(archiveId, out reference)) {
+                  reference = radsService.GetArchiveReference(archiveId);
+                  archiveReferencesById.Add(archiveId, reference);
+               }
+            }
+         }
+         return reference.Value;
+      }
+
       private class SuspendedHandleContext
       {
          private readonly string path;
@@ -280,4 +279,8 @@ namespace Dargon.LeagueOfLegends.FileSystem
          public InternalHandle Handle { get { return handle; } }
       }
    }
+
+   // public methods enforce thread safety if necessary
+
+   // private methods assume thread safety from public method
 }

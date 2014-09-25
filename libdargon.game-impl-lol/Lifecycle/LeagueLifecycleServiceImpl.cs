@@ -1,5 +1,9 @@
-﻿using Dargon.LeagueOfLegends.Modifications;
+﻿using System.Linq;
+using Dargon.IO.RADS;
+using Dargon.LeagueOfLegends.Modifications;
+using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
+using Dargon.Modifications;
 using ItzWarty.Collections;
 using NLog;
 using System.Collections.Generic;
@@ -13,16 +17,21 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
+      private readonly LeagueModificationResolutionService leagueModificationResolutionService;
       private readonly LeagueSessionWatcherService leagueSessionWatcherService;
+      private readonly RadsService radsService;
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
 
-      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueSessionWatcherService leagueSessionWatcherService)
+      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
       {
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
+         this.leagueModificationResolutionService = leagueModificationResolutionService;
          this.leagueSessionWatcherService = leagueSessionWatcherService;
+         this.radsService = radsService;
          leagueSessionWatcherService.SessionCreated += HandleLeagueSessionCreated;
          phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
-            new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition
+            new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
+            new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition
             );
       }
 
@@ -44,8 +53,54 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       private void HandleUninitializedToPreclientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Uninitialized to Preclient Phase Transition!");
-         var mods = leagueModificationRepositoryService.EnumerateModifications();
+         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client);
+
+         radsService.Suspend();
+
+         EnsureAllModificationResolutionTasksCompleted(resolutionTasks);
+
+         // TODO: Inject
+      }
+
+      private void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
+      {
+         logger.Info("Handling Preclient to Client Phase Transition!");
+         radsService.Resume();
+
+         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client | ModificationTargetType.Game);
+         EnsureAllModificationResolutionTasksCompleted(resolutionTasks);
+
+         // TODO: Inject
+      }
+
+      private List<IResolutionTask> ResolveAllModifications(List<IModification> mods, ModificationTargetType targetType)
+      {
+         var resolutionTasks = new List<IResolutionTask>(mods.Count);
          foreach (var mod in mods) {
+            resolutionTasks.Add(leagueModificationResolutionService.ResolveModification(mod, targetType));
+         }
+         return resolutionTasks;
+      }
+
+      private static void EnsureAllModificationResolutionTasksCompleted(List<IResolutionTask> resolutionTasks)
+      {
+         foreach (var task in resolutionTasks) {
+            var currentTask = task;
+            bool done = false;
+            while (!done) {
+               currentTask.WaitForTermination();
+               if (currentTask.Status == ResolutionStatus.Cancelled) {
+                  currentTask = currentTask.NextTask;
+                  if (currentTask == null) {
+                     logger.Warn("Warning: resolution task " + currentTask + " cancelled and has no next resolution task");
+                     done = true;
+                  }
+               } else if (currentTask.Status == ResolutionStatus.Completed) {
+                  done = true;
+               }
+            }
          }
       }
    }

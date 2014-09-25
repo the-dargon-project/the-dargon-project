@@ -41,9 +41,15 @@
     <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
+    <Compile Include="Modifications\LeagueModificationResolutionServiceImpl.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryServiceImpl.cs" />
+    <Compile Include="Modifications\ResolutionTask.cs" />
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
+    <Compile Include="RADS\ArchiveNotFoundException.cs" />
+    <Compile Include="RADS\RadsArchiveReference.cs" />
+    <Compile Include="RADS\RadsProjectReference.cs" />
+    <Compile Include="RADS\RadsServiceImpl.cs" />
     <Compile Include="Session\LeagueSession.cs" />
     <Compile Include="Session\Phases\LeaguePhaseBase.cs" />
     <Compile Include="Session\Phases\LeaguePhaseClient.cs" />
@@ -65,6 +71,10 @@
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
       <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
+      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Name>daemon-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>

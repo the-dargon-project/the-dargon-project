@@ -4,6 +4,6 @@ namespace Dargon.Modifications
 {
    public interface ModificationImportService
    {
-      IModification ImportLegacyModification(string root, string[] filePaths, GameType gameType);
+      IModification ImportLegacyModification(GameType gameType, string root, string[] filePaths);
    }
 }

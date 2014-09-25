@@ -1,4 +1,5 @@
-﻿using Dargon.Game;
+﻿using System;
+using Dargon.Game;
 using Dargon.Patcher;
 using ItzWarty;
 using ItzWarty.Services;
@@ -14,7 +15,7 @@ namespace Dargon.Modifications
 
       public ModificationImportServiceImpl(ServiceLocator serviceLocator) { serviceLocator.RegisterService(typeof(ModificationImportService), this); }
 
-      public IModification ImportLegacyModification(string root, string[] filePaths, GameType gameType)
+      public IModification ImportLegacyModification(GameType gameType, string root, string[] filePaths)
       {
          root = Path.GetFullPath(root);
          filePaths = Util.Generate(filePaths.Length, i => Path.GetFullPath(filePaths[i]));
@@ -29,7 +30,7 @@ namespace Dargon.Modifications
          }
 
          repo.Commit("Initial Commit");
-         return new Modification(root, gameType);
+         return new Modification(gameType, Guid.NewGuid(), root);
       }
    }
 }

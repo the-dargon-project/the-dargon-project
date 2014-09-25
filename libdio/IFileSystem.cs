@@ -10,8 +10,5 @@ namespace Dargon.FileSystem
       void FreeHandle(IFileSystemHandle handle);
       void FreeHandles(IEnumerable<IFileSystemHandle> handles);
       IoResult GetPath(IFileSystemHandle handle, out string path);
-
-      void Suspend();
-      void Resume();
    }
 }

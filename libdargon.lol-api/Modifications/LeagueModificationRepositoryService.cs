@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using Dargon.ModificationRepositories;
+using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
-   public interface LeagueModificationRepositoryService
+   public interface LeagueModificationRepositoryService : ModificationRepositoryService
    {
-      void ClearModifications();
-      void AddModification(ILeagueModification modification);
-      void RemoveModification(ILeagueModification modification);
-      IEnumerable<ILeagueModification> EnumerateModifications();
+      IEnumerable<IModification> EnumerateModifications();
    }
 }

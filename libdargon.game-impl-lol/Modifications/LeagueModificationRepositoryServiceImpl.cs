@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dargon.Game;
 using Dargon.ModificationRepositories;
+using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
@@ -22,15 +23,29 @@ namespace Dargon.LeagueOfLegends.Modifications
          }
       }
 
-      public void AddModification(ILeagueModification modification) {
+      public void AddModification(IModification modification) {
          if (modification.GameType != GameType.LeagueOfLegends) {
             throw new ArgumentException("Expected League of Legends modification");
          }
          modificationRepositoryService.AddModification(modification);
       }
 
-      public void RemoveModification(ILeagueModification modification) { modificationRepositoryService.RemoveModification(modification); }
-      
-      public IEnumerable<ILeagueModification> EnumerateModifications() { return modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends).Cast<ILeagueModification>(); }
+      public void RemoveModification(IModification modification)
+      {
+         if (modification.GameType != GameType.LeagueOfLegends) {
+            throw new ArgumentException("Expected League of Legends modification");
+         }
+         modificationRepositoryService.RemoveModification(modification);
+      }
+
+      public IEnumerable<IModification> EnumerateModifications(GameType gameType)
+      {
+         if (gameType != GameType.LeagueOfLegends) {
+            throw new InvalidOperationException("League Modification Repository Service only supports League of Legends modifications");
+         }
+         return modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends);
+      }
+
+      public IEnumerable<IModification> EnumerateModifications() { return EnumerateModifications(GameType.LeagueOfLegends); }
    }
 }

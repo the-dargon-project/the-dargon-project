@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Dargon.IO.Resolution
 {
-   public unsafe class Resolver
+   public class Resolver
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 

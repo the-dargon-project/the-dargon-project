@@ -36,21 +36,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
-    <Compile Include="Modifications\ILeagueModification.cs" />
+    <Compile Include="Modifications\IResolutionTask.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
+    <Compile Include="Modifications\LeagueModificationResolutionService.cs" />
+    <Compile Include="Modifications\ModificationTargetType.cs" />
+    <Compile Include="Modifications\ResolutionStatus.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
     <Compile Include="Processes\LeagueProcessType.cs" />
     <Compile Include="Processes\LeagueProcessWatcherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RADS\IRadsArchiveReference.cs" />
+    <Compile Include="RADS\IRadsProjectReference.cs" />
+    <Compile Include="RADS\RadsService.cs" />
     <Compile Include="Session\ILeagueSession.cs" />
     <Compile Include="Session\LeagueSessionPhase.cs" />
     <Compile Include="Session\LeagueSessionPhaseChangedArgs.cs" />
     <Compile Include="Session\LeagueSessionWatcherService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\librads\librads.csproj">
+      <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
+      <Name>librads</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
       <Name>libdargon.modification-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
+      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
+      <Name>libdargon.modification-repository-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>

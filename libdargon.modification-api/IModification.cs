@@ -1,11 +1,11 @@
-﻿using Dargon.Game;
+﻿using System;
+using Dargon.Game;
 
 namespace Dargon.Modifications
 {
    public interface IModification
    {
+      Guid LocalGuid { get; }
       GameType GameType { get; } 
-      void Resolve();
-      void Compile();
    }
 }

@@ -40,7 +40,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
          this.consumerThreads = Util.Generate(
             Math.Max(1, Environment.ProcessorCount / 2),
-            i => new Thread(() => ConsumerThreadStart(i)).With(t => t.Start())
+            i => new Thread(() => ConsumerThreadStart(i)) { IsBackground =  true }.With(t => t.Start())
          );
       }
 

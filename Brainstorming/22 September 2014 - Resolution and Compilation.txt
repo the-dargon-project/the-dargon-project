@@ -9,8 +9,8 @@ InternalPath				ResolvedPath				FileRevision
 ArtPack/Client/Characters/Annie/AnnieLoadScreen.dds 	DATA/Characters/Annie/Skins/Base/AnnieLoadScreen.dds	12980a28	
 
 COMPILATION_TABLE - ModificationCompilationService
-FileRevision	Compiled
-12980a28	FileRevision: c6348a4e93f157
+FileRevision	LastModified   Compiled          
+12980a28	      18934762102    c6348a4e93f157
 
 ---
 

@@ -7,14 +7,14 @@ using ItzWarty;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
-   public class ResolutionMetadata : IDisposable
+   public class ModificationResolutionTable : IDisposable
    {
       private const uint MAGIC = 0x524d4446U;
 
       private readonly string path;
-      private Dictionary<string, ResolutionMetadataValue> valuesByInternalPath = new Dictionary<string, ResolutionMetadataValue>(); 
+      private readonly Dictionary<string, ResolutionMetadataValue> valuesByInternalPath = new Dictionary<string, ResolutionMetadataValue>(); 
 
-      public ResolutionMetadata(string path)
+      public ModificationResolutionTable(string path)
       {
          this.path = path;
 

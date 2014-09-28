@@ -41,10 +41,13 @@
     <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
+    <Compile Include="Modifications\CompilationMetadata.cs" />
+    <Compile Include="Modifications\LeagueModificationCompilationServiceImpl.cs" />
+    <Compile Include="Modifications\LeagueModificationOperationServiceBase.cs" />
     <Compile Include="Modifications\LeagueModificationResolutionServiceImpl.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryServiceImpl.cs" />
-    <Compile Include="Modifications\ResolutionMetadata.cs" />
+    <Compile Include="Modifications\ModificationResolutionTable.cs" />
     <Compile Include="Modifications\ResolutionTask.cs" />
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
     <Compile Include="RADS\ArchiveNotFoundException.cs" />

@@ -24,8 +24,9 @@ namespace Dargon.LeagueOfLegends
       private readonly ModificationRepositoryService modificationRepositoryService;
       private readonly ModificationImportService modificationImportService;
       private readonly RadsServiceImpl radsService;
-      private readonly LeagueModificationRepositoryServiceImpl leagueModificationRepositoryService;
+      private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
+      private readonly LeagueModificationCompilationService leagueModificationCompilationService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
       private readonly LeagueSessionWatcherServiceImpl leagueSessionWatcherService;
       private readonly RiotFileSystem gameFileSystem;
@@ -42,10 +43,11 @@ namespace Dargon.LeagueOfLegends
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
          this.leagueModificationRepositoryService = new LeagueModificationRepositoryServiceImpl(modificationRepositoryService);
          this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(daemonService, radsService);
+         this.leagueModificationCompilationService = new LeagueModificationCompilationServiceImpl(daemonService);
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
          this.leagueSessionWatcherService = new LeagueSessionWatcherServiceImpl(leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(leagueModificationRepositoryService, leagueModificationResolutionService, leagueSessionWatcherService, radsService);
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationCompilationService, leagueSessionWatcherService, radsService);
 
          RunDebugActions();
       }

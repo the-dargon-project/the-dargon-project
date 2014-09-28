@@ -36,11 +36,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
+    <Compile Include="Modifications\ICompilationTask.cs" />
+    <Compile Include="Modifications\IManagableTask.cs" />
     <Compile Include="Modifications\IResolutionTask.cs" />
+    <Compile Include="Modifications\ITask.cs" />
+    <Compile Include="Modifications\ITaskContext.cs" />
+    <Compile Include="Modifications\LeagueModificationCompilationService.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
     <Compile Include="Modifications\LeagueModificationResolutionService.cs" />
     <Compile Include="Modifications\ModificationTargetType.cs" />
-    <Compile Include="Modifications\ResolutionStatus.cs" />
+    <Compile Include="Modifications\Status.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
     <Compile Include="Processes\LeagueProcessType.cs" />
     <Compile Include="Processes\LeagueProcessWatcherService.cs" />

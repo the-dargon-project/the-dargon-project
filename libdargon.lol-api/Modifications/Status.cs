@@ -1,6 +1,6 @@
 ﻿namespace Dargon.LeagueOfLegends.Modifications
 {
-   public enum ResolutionStatus
+   public enum Status
    {
       Pending = 0,
       InProgress,

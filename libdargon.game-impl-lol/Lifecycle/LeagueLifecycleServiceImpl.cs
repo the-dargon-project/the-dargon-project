@@ -18,14 +18,16 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
+      private readonly LeagueModificationCompilationService leagueModificationCompilationService;
       private readonly LeagueSessionWatcherService leagueSessionWatcherService;
       private readonly RadsService radsService;
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
 
-      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
+      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationCompilationService leagueModificationCompilationService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
       {
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.leagueModificationResolutionService = leagueModificationResolutionService;
+         this.leagueModificationCompilationService = leagueModificationCompilationService;
          this.leagueSessionWatcherService = leagueSessionWatcherService;
          this.radsService = radsService;
          leagueSessionWatcherService.SessionCreated += HandleLeagueSessionCreated;
@@ -58,11 +60,13 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
          radsService.Suspend();
 
-         EnsureAllModificationResolutionTasksCompleted(resolutionTasks);
+         WaitForCancellableTaskCompletion(resolutionTasks);
+         var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
+         WaitForCancellableTaskCompletion(clientCompilationTasks);
 
          // TODO: Inject
       }
-      
+
       private void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Preclient to Client Phase Transition!");
@@ -70,9 +74,15 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
          var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client | ModificationTargetType.Game);
-         EnsureAllModificationResolutionTasksCompleted(resolutionTasks);
-
+         WaitForCancellableTaskCompletion(resolutionTasks);
+         var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
+         WaitForCancellableTaskCompletion(clientCompilationTasks);
+         BuildLeagueIndexFiles();
          // TODO: Inject
+
+         var gameCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Game);
+         WaitForCancellableTaskCompletion(gameCompilationTasks);
+         BuildLeagueIndexFiles();
       }
 
       private List<IResolutionTask> ResolveAllModifications(List<IModification> mods, ModificationTargetType targetType)
@@ -84,20 +94,32 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          return resolutionTasks;
       }
 
-      private static void EnsureAllModificationResolutionTasksCompleted(List<IResolutionTask> resolutionTasks)
+      private List<ICompilationTask> CompileAllModifications(List<IModification> mods, ModificationTargetType target)
+      {
+         var compilationTasks = new List<ICompilationTask>(mods.Count);
+         foreach (var mod in mods)
+         {
+            compilationTasks.Add(leagueModificationCompilationService.CompileModification(mod, target));
+         }
+         return compilationTasks;
+      }
+
+      private void BuildLeagueIndexFiles() { }
+
+      private static void WaitForCancellableTaskCompletion(IEnumerable<ITask> resolutionTasks)
       {
          foreach (var task in resolutionTasks) {
             var currentTask = task;
             bool done = false;
             while (!done) {
                currentTask.WaitForTermination();
-               if (currentTask.Status == ResolutionStatus.Cancelled) {
+               if (currentTask.Status == Status.Cancelled) {
                   currentTask = currentTask.NextTask;
                   if (currentTask == null) {
                      logger.Warn("Warning: resolution task " + currentTask + " cancelled and has no next resolution task");
                      done = true;
                   }
-               } else if (currentTask.Status == ResolutionStatus.Completed) {
+               } else if (currentTask.Status == Status.Completed) {
                   done = true;
                }
             }

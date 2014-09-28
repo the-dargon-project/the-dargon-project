@@ -62,7 +62,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
          // TODO: Inject
       }
-
+      
       private void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Preclient to Client Phase Transition!");

@@ -44,6 +44,7 @@
     <Compile Include="Modifications\LeagueModificationResolutionServiceImpl.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryServiceImpl.cs" />
+    <Compile Include="Modifications\ResolutionMetadata.cs" />
     <Compile Include="Modifications\ResolutionTask.cs" />
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
     <Compile Include="RADS\ArchiveNotFoundException.cs" />
@@ -103,6 +104,10 @@
     <ProjectReference Include="..\libdnode\libdnode.csproj">
       <Project>{D28AF7FA-367C-472C-954D-694319528208}</Project>
       <Name>libdnode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdpatch\libdpm.csproj">
+      <Project>{9699E719-25FA-41DF-B966-B43CF50F9B00}</Project>
+      <Name>libdpm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

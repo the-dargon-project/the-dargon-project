@@ -1,9 +1,11 @@
 ﻿using System.Threading;
+using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
    public class ResolutionTask : IResolutionTask
    {
+      private readonly IModification modification;
       private readonly CountdownEvent terminationEvent = new CountdownEvent(1);
       private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
       private readonly CancellationToken cancellationToken;
@@ -14,11 +16,14 @@ namespace Dargon.LeagueOfLegends.Modifications
       private int fileCount;
       private IResolutionTask nextTask;
 
-      public ResolutionTask()
+      public ResolutionTask(IModification modification)
       {
+         this.modification = modification;
          cancellationToken = cancellationTokenSource.Token;
          status = ResolutionStatus.Pending;
       }
+
+      public IModification Modification { get { return modification; } }
 
       public ResolutionStatus Status { get { return status; } }
       public int FilesResolved { get { return filesResolved; } }

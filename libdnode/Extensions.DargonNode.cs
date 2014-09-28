@@ -23,11 +23,13 @@ namespace Dargon.IO
          return node;
       }
 
-      public static IReadableDargonNode GetChild(this IReadableDargonNode node, string name) { return node.Children.First((child) => child.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); }
-      public static IWritableDargonNode GetChild(this IWritableDargonNode node, string name) { return node.Children.First((child) => child.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); }
+      public static IReadableDargonNode GetChild(this IReadableDargonNode node, string name) { return node.Children.First((child) => child.NameEquals(name)); }
+      public static IWritableDargonNode GetChild(this IWritableDargonNode node, string name) { return node.Children.First((child) => child.NameEquals(name)); }
 
-      public static IReadableDargonNode GetChildOrNull(this IReadableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); }
-      public static IWritableDargonNode GetChildOrNull(this IWritableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.Name.Equals(name, StringComparison.OrdinalIgnoreCase)); }
+      public static IReadableDargonNode GetChildOrNull(this IReadableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.NameEquals(name)); }
+      public static IWritableDargonNode GetChildOrNull(this IWritableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.NameEquals(name)); }
+
+      public static bool NameEquals(this IReadableDargonNode node, string name) { return node.Name.Equals(name, StringComparison.OrdinalIgnoreCase); }
 
       public static bool TryGetChild(this IReadableDargonNode node, string name, out IReadableDargonNode result)
       {

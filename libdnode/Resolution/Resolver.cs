@@ -1,4 +1,5 @@
-﻿using ItzWarty.Collections;
+﻿using System.Text;
+using ItzWarty.Collections;
 using ItzWarty.Specialized;
 using NLog;
 using System;
@@ -42,8 +43,34 @@ namespace Dargon.IO.Resolution
 //         }
       }
 
-      public List<IReadableDargonNode> Resolve(string inputPath)
+      public List<IReadableDargonNode> Resolve(string inputPath, string hintPath = null)
       {
+         if (hintPath != null) {
+            logger.Info("ATTEMPT RESOLVE HINT " + inputPath);
+            var breadcrumbs = hintPath.Split('/', '\\');
+            var current = this.root;
+            var breadcrumbIndex = 0; // We sometimes shortcut C:/Path/To/Root to "C:/Path/To/Root" rather than ["C:", "Path", "To", "Root"]
+            var rootNameMatcher = new StringBuilder();
+            while (breadcrumbIndex < breadcrumbs.Length && rootNameMatcher.Length < root.Name.Length) {
+               if (breadcrumbIndex != 0)
+                  rootNameMatcher.Append('/');
+               rootNameMatcher.Append(breadcrumbs[breadcrumbIndex++]);
+            }
+
+            var rootName = root.Name.Replace('\\', '/');
+            logger.Info("ROOT NAME IS " + rootName + " FIRST HINT IS " + rootNameMatcher);
+            if (rootName.Equals(rootNameMatcher.ToString(), StringComparison.OrdinalIgnoreCase)) {
+               while (breadcrumbIndex < breadcrumbs.Length && current != null) {
+                  current = current.GetChildOrNull(breadcrumbs[breadcrumbIndex++]);
+               }
+               if (current != null) {
+                  logger.Info("RESOLVE HINT SUCCESS " + hintPath);
+                  return new List<IReadableDargonNode> { current };
+               }
+               logger.Info("RESOLVE HINT FAILURE " + hintPath);
+            }
+         }
+
          Initialize();
 
          //----------------------------------------------------------------------------------------

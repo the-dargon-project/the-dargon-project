@@ -18,5 +18,6 @@ namespace Dargon.Modifications
 
       public GameType GameType { get { return gameType; } }
       public Guid LocalGuid { get { return localGuid; } }
+      public string RootPath { get { return rootPath; } }
    }
 }

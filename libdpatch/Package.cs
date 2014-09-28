@@ -33,6 +33,7 @@ namespace Dargon.Patcher
 
       private readonly string root;
       private readonly string dpmPath;
+      private readonly string metadataDirectoryPath;
       private readonly ObjectStore objectStore;
       private readonly FileLock repositoryLock;
       private readonly IndexProvider indexProvider;
@@ -45,13 +46,15 @@ namespace Dargon.Patcher
       {
          this.root = root;
          this.dpmPath = Path.Combine(root, ".dpm");
+         this.metadataDirectoryPath = Path.Combine(dpmPath, "metadata");
          Util.PrepareDirectory(dpmPath);
+         Util.PrepareDirectory(metadataDirectoryPath);
          this.objectStore = new ObjectStore(Path.Combine(dpmPath, "objects"));
          this.repositoryLock = new FileLock(Path.Combine(dpmPath, "LOCK"));
          this.referenceManager = new ReferenceManager(Path.Combine(dpmPath, "refs"));
          this.stateManager = new StateManager(dpmPath);
          this.configurationManager = new ConfigurationManager(dpmPath);
-         this.indexProvider = new IndexProvider(Path.Combine(dpmPath, "LAST_MODIFIED"));
+         this.indexProvider = new IndexProvider(Path.Combine(dpmPath, "INDEX"));
       }
 
       public string Root { get { return root; } }
@@ -64,6 +67,8 @@ namespace Dargon.Patcher
             return index.GetValueOrNull("") != null;
          }
       }
+
+      public IDisposable TakeLock() { return repositoryLock.Take(); }
 
       public void Initialize()
       {
@@ -262,7 +267,7 @@ namespace Dargon.Patcher
                var fileAbsolutePath = GetAbsolutePath(fileInternalPath);
                var fileInfo = new FileInfo(fileAbsolutePath);
                if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
-                  foreach (var fileInNewDirectoryInternalPath in EnumerateFilesInNewDirectory(fileInternalPath)) {
+                  foreach (var fileInNewDirectoryInternalPath in EnumerateFilesInWorkingDirectory(fileInternalPath)) {
                      if (index.Contains(fileInNewDirectoryInternalPath)) {
                         result.Add(new KeyValuePair<string, ChangeType>(fileInNewDirectoryInternalPath, ChangeType.Added | ChangeType.Staged));
                      } else {
@@ -316,13 +321,13 @@ namespace Dargon.Patcher
          }
       }
 
-      private IEnumerable<string> EnumerateFilesInNewDirectory(string newDirectoryInternalPath)
+      public IEnumerable<string> EnumerateFilesInWorkingDirectory(string newDirectoryInternalPath = "")
       {
          var newDirectoryAbsolutePath = GetAbsolutePath(newDirectoryInternalPath);
 
          foreach (var dir in Directory.EnumerateDirectories(newDirectoryAbsolutePath)) {
             var dirInfo = new DirectoryInfo(dir);
-            var results = EnumerateFilesInNewDirectory(BuildPath(newDirectoryInternalPath, dirInfo.Name));
+            var results = EnumerateFilesInWorkingDirectory(BuildPath(newDirectoryInternalPath, dirInfo.Name));
             foreach (var result in results)
                yield return result;
          }
@@ -528,6 +533,8 @@ namespace Dargon.Patcher
             commitHash = commit.ParentHash;
          }
       }
+
+      public string GetMetadataFilePath(string key) { return Path.Combine(metadataDirectoryPath, key); }
 
       //      public IRevision GetRevisionOrNull(Hash160 hash) {
 //         using (repositoryLock.Take()) {

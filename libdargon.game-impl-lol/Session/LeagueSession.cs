@@ -30,6 +30,7 @@ namespace Dargon.LeagueOfLegends.Session
 
       public void HandleProcessLaunched(Process process, LeagueProcessType type)
       {
+         logger.Info("Dispatching Process Launched " + type);
          OnProcessLaunched(this, new LeagueSessionProcessLaunchedArgs(type, process));
 
          if (type == LeagueProcessType.RadsUserKernel)
@@ -46,6 +47,7 @@ namespace Dargon.LeagueOfLegends.Session
 
       public void HandleProcessQuit(Process process, LeagueProcessType type)
       {
+         logger.Info("Dispatching Process Quit " + type);
          if (type == LeagueProcessType.RadsUserKernel)
             ; // hue
          else if (type == LeagueProcessType.Launcher)

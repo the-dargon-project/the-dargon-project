@@ -38,7 +38,9 @@ namespace Dargon.LeagueOfLegends.Session.Phases
       public override void HandleClientLaunched(Process process) { TransitionTo(new LeaguePhaseClient(context)); }
       public override void HandleGameLaunched(Process process) { throw new InvalidOperationException(); }
 
-      public override void HandleLauncherQuit(Process process)
+      public override void HandleLauncherQuit(Process process) { base.HandleLauncherQuit(process); }
+
+      public override void HandlePatcherQuit(Process process)
       {
          base.HandleLauncherQuit(process);
          TransitionTo(new LeaguePhaseQuit(context));

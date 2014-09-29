@@ -1,11 +1,15 @@
-﻿using Dargon.LeagueOfLegends.Processes;
+﻿using System;
+using Dargon.LeagueOfLegends.Processes;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NLog;
 
 namespace Dargon.LeagueOfLegends.Session
 {
    public class LeagueSessionWatcherServiceImpl : LeagueSessionWatcherService
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly LeagueProcessWatcherService leagueProcessWatcherService;
 
       private readonly ISet<Process> radsUserKernelProcesses = new HashSet<Process>();
@@ -42,7 +46,14 @@ namespace Dargon.LeagueOfLegends.Session
       private void HandleLeagueProcessLaunched(LeagueProcessDetectedArgs e)
       {
          lock (synchronization) {
-            var process = Process.GetProcessById(e.ProcessDescriptor.ProcessId);
+            var process = GetProcessOrNull(e.ProcessDescriptor.ProcessId);
+
+            if (process == null) {
+               logger.Error("League process " + e.ProcessDescriptor.ProcessId + " of type " + e.ProcessType + " quit too quickly!");
+               return;
+            }
+
+            logger.Info("Handling process " + process.Id + " launch");
 
             var processTypeList = processesByType[e.ProcessType];
             processTypeList.Add(process);
@@ -51,6 +62,7 @@ namespace Dargon.LeagueOfLegends.Session
             process.Exited += (a, b) => HandleLeagueProcessQuit(e.ProcessDescriptor.ProcessId, process, e.ProcessType, processTypeList);
 
             if (process.HasExited) {
+               logger.Info("Process " + process.Id + " exited too quickly!");
                processTypeList.Remove(process);
             }
 
@@ -58,22 +70,37 @@ namespace Dargon.LeagueOfLegends.Session
             if (!processKilled) {
                LeagueSession session;
                if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
+                  logger.Info("Creating new session for " + process.Id);
                   session = new LeagueSession();
                   OnSessionCreated(new LeagueSessionCreatedArgs(session));
                }
+               logger.Info("Adding process " + process.Id + " to session " + session);
                session.HandleProcessLaunched(process, e.ProcessType);
                sessionsByProcessId.Add(e.ProcessDescriptor.ProcessId, session);
             }
          }
       }
 
-      private void HandleLeagueProcessQuit(int processId, Process process, LeagueProcessType processType, ISet<Process> processTypeList) 
-      { 
+      private Process GetProcessOrNull(int processId)
+      {
+         try {
+            return Process.GetProcessById(processId);
+         } catch (ArgumentException e) {
+            return null; // process already exited
+         }
+      }
+
+      private void HandleLeagueProcessQuit(int processId, Process process, LeagueProcessType processType, ISet<Process> processTypeList)
+      {
+         logger.Info("Handling process " + process.Id + " quit");
          processTypeList.Remove(process);
          LeagueSession session;
          if (sessionsByProcessId.TryGetValue(processId, out session)) {
+            logger.Info("Session for " + process.Id + " found!");
             session.HandleProcessQuit(process, processType);
             sessionsByProcessId.Remove(processId);
+         } else {
+            logger.Error("Session for " + process.Id + " not found!");
          }
       }
 

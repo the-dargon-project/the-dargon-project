@@ -1,3 +1,4 @@
+using System;
 using Dargon.Processes.Watching;
 using ItzWarty.Collections;
 using NLog;
@@ -14,15 +15,11 @@ namespace Dargon.LeagueOfLegends.Processes
 
       public event LeagueProcessDetectedHandler LauncherLaunched;
       public const string kLauncherProcessNameLower = "lollauncher";
-      public const string kLauncherProcessNameLower1 = "lollauncher.exe";
 
       public event LeagueProcessDetectedHandler PatcherLaunched;
-      public const string kPatcherProcessNameLower = "lolpatcher";
-      public const string kPatcherProcessNameLower1 = "lolpatcher.exe";
-
+      public const string kPatcherProcessNameLower = "lolpatcher.exe";
       public event LeagueProcessDetectedHandler AirClientLaunched;
-      public const string kPvpNetProcessNameLower = "lolclient";
-      public const string kPvpNetProcessNameLower1 = "lolclient.exe";
+      public const string kPvpNetProcessNameLower = "lolclient.exe";
       public const string kPvpNetProcessWindowText = "PVP.net Patcher";
 
       public event LeagueProcessDetectedHandler GameClientLaunched;
@@ -35,9 +32,9 @@ namespace Dargon.LeagueOfLegends.Processes
 
       private readonly IReadOnlyCollection<string> processNames = ImmutableCollection.Of(
          kRadsUserKernelProcessNameLower,
-         kLauncherProcessNameLower, kLauncherProcessNameLower1, //kLauncherProcessNameLower2, kLauncherProcessNameLowerAdmin,
-         kPatcherProcessNameLower, kPatcherProcessNameLower1,
-         kPvpNetProcessNameLower, kPvpNetProcessNameLower1,
+         kLauncherProcessNameLower, //kLauncherProcessNameLower2, kLauncherProcessNameLowerAdmin,
+         kPatcherProcessNameLower,
+         kPvpNetProcessNameLower,
          kGameClientProcessNameLower,
          kBugSplatProcessNameLower
          );
@@ -86,10 +83,10 @@ namespace Dargon.LeagueOfLegends.Processes
          } else if (lowerProcessName.Contains(kLauncherProcessNameLower)) {
             @event = LauncherLaunched;
             processType = LeagueProcessType.Launcher;
-         } else if (lowerProcessName.Contains(kPatcherProcessNameLower) || lowerProcessName.Contains(kPatcherProcessNameLower1)) {
+         } else if (lowerProcessName.Contains(kPatcherProcessNameLower)) {
             @event = PatcherLaunched;
             processType = LeagueProcessType.Patcher;
-         } else if (lowerProcessName.Contains(kPvpNetProcessNameLower) || lowerProcessName.Contains(kPvpNetProcessNameLower1)) {
+         } else if (lowerProcessName.Contains(kPvpNetProcessNameLower)) {
             @event = AirClientLaunched;
             processType = LeagueProcessType.PvpNetClient;
          } else if (lowerProcessName.Contains(kGameClientProcessNameLower)) {
@@ -103,6 +100,7 @@ namespace Dargon.LeagueOfLegends.Processes
          logger.Info((@event == null) + " " + lowerProcessName + " " + processType);
 
          if (processType != LeagueProcessType.Invalid) {
+            logger.Info(lowerProcessName);
             var capture = @event;
             if (capture != null && processType != LeagueProcessType.Invalid)
                capture(new LeagueProcessDetectedArgs(processType, desc));

@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.Session.Phases;
+using ItzWarty;
 using NLog;
 using System.Diagnostics;
 
@@ -11,6 +13,8 @@ namespace Dargon.LeagueOfLegends.Session
 
       private readonly object synchronization = new object();
       private readonly LeaguePhaseContext phaseContext;
+      private readonly ConcurrentDictionary<LeagueProcessType, Process> processesByType = new ConcurrentDictionary<LeagueProcessType, Process>(); 
+      private Process mainPatcherProcess = null;
 
       public event LeagueSessionProcessLaunchedHandler ProcessLaunched;
       public event LeagueSessionPhaseChangedHandler PhaseChanged;
@@ -33,13 +37,21 @@ namespace Dargon.LeagueOfLegends.Session
          logger.Info("Dispatching Process Launched " + type);
          OnProcessLaunched(this, new LeagueSessionProcessLaunchedArgs(type, process));
 
+         // only handle the first patcher process
+         if (type != LeagueProcessType.Patcher || mainPatcherProcess == null) {
+            processesByType.AddOrUpdate(type, process, (a, b) => process);
+         } else {
+            return;
+         }
+
+
          if (type == LeagueProcessType.RadsUserKernel)
             phaseContext.HandleRadsUserKernelLaunched(process);
          else if (type == LeagueProcessType.Launcher)
             phaseContext.HandleLauncherLaunched(process);
-         else if (type == LeagueProcessType.Patcher)
-            phaseContext.HandlePatcherLaunched(process);
-         else if (type == LeagueProcessType.PvpNetClient)
+         else if (type == LeagueProcessType.Patcher) {
+            phaseContext.HandlePatcherLaunched(mainPatcherProcess = process);
+         } else if (type == LeagueProcessType.PvpNetClient)
             phaseContext.HandleClientLaunched(process);
          else if (type == LeagueProcessType.GameClient)
             phaseContext.HandleGameLaunched(process);
@@ -48,17 +60,26 @@ namespace Dargon.LeagueOfLegends.Session
       public void HandleProcessQuit(Process process, LeagueProcessType type)
       {
          logger.Info("Dispatching Process Quit " + type);
+         if (type != LeagueProcessType.Patcher || process == mainPatcherProcess) {
+            Process removedProcess;
+            processesByType.TryRemove(type, out removedProcess);
+         } else {
+            return;
+         }
+
          if (type == LeagueProcessType.RadsUserKernel)
             ; // hue
          else if (type == LeagueProcessType.Launcher)
             phaseContext.HandleLauncherQuit(process);
-         else if(type == LeagueProcessType.Patcher)
-            phaseContext.HandlePatcherQuit(process);
-         else if(type == LeagueProcessType.PvpNetClient)
+         else if (type == LeagueProcessType.Patcher) {
+               phaseContext.HandlePatcherQuit(process);
+         } else if (type == LeagueProcessType.PvpNetClient)
             phaseContext.HandleClientQuit(process);
          else if (type == LeagueProcessType.GameClient)
             phaseContext.HandleGameQuit(process);
       }
+
+      public Process GetProcessOrNull(LeagueProcessType processType) { return processesByType.GetValueOrDefault(processType); }
 
       protected virtual void OnProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
       {

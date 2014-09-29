@@ -106,7 +106,13 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          WaitForCancellableTaskCompletion(resolutionTasks);
          var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
-         // TODO: Inject
+
+         ISet<string> flags = new HashSet<string> { "--debug", "--enable-dim-tasklist", "--enable-filesystem-hooks", "--enable-filesystem-mods" };
+         IReadOnlyDictionary<string, string> properties = ImmutableDictionary.Of(
+            "role", "air",
+            "log_filter", "verbose"
+         );
+         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, new BootstrapConfiguration(flags, properties));
 
          // optimization: compile game data here, so that we don't have to compile when game starts
          var gameCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Game);

@@ -43,10 +43,12 @@ namespace Dargon.LeagueOfLegends.Modifications
             var count = reader.ReadUInt32();
             for (uint i = 0; i < count; i++) {
                var internalPath = reader.ReadNullTerminatedString();
-               var resolvedpath = reader.ReadNullTerminatedString();
+               var resolvedPath = reader.ReadNullTerminatedString();
+               if (string.IsNullOrEmpty(resolvedPath))
+                  resolvedPath = null;
                var fileRevision = reader.ReadHash160();
                var targetType = (ModificationTargetType)reader.ReadUInt32();
-               valuesByInternalPath.Add(internalPath, new ResolutionMetadataValue(resolvedpath, fileRevision, targetType));
+               valuesByInternalPath.Add(internalPath, new ResolutionMetadataValue(resolvedPath, fileRevision, targetType));
             }
          }
       }
@@ -60,7 +62,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
                foreach (var kvp in valuesByInternalPath) {
                   writer.WriteNullTerminatedString(kvp.Key);
-                  writer.WriteNullTerminatedString(kvp.Value.ResolvedPath);
+                  writer.WriteNullTerminatedString(kvp.Value.ResolvedPath ?? "");
                   writer.Write(kvp.Value.FileRevision);
                   writer.Write((uint)kvp.Value.Target);
                }

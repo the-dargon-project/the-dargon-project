@@ -60,7 +60,8 @@ namespace Dargon.LeagueOfLegends
             @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
             new[] {
                @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png"
+               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png",
+               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Characters\Annie\AnnieLoadScreen.dds"
             });
          modificationRepositoryService.AddModification(mod);
       }

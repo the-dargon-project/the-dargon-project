@@ -45,6 +45,14 @@ namespace Dargon.Patcher
       public static bool operator !=(Hash160 a, Hash160 b) { return !a.Equals(b); }
 
       /// <summary>
+      /// Returns the fully qualified type name of this instance.
+      /// </summary>
+      /// <returns>
+      /// A <see cref="T:System.String"/> containing a fully qualified type name.
+      /// </returns>
+      public override string ToString() { return ToString("x"); }
+
+      /// <summary>
       /// Formats the value of the current instance using the specified format.
       /// </summary>
       /// <returns>

@@ -13,7 +13,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 {
    public class LeagueModificationResolutionServiceImpl : LeagueModificationOperationServiceBase<IResolutionTask, ResolutionTask, LeagueModificationResolutionServiceImpl.ResolutionContext>, LeagueModificationResolutionService
    {
-      private const string RESOLUTION_METADATA_FILE_NAME = "RESOLUTION";
+      public const string RESOLUTION_METADATA_FILE_NAME = "RESOLUTION";
 
       private readonly RadsService radsService;
 

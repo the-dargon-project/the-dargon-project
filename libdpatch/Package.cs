@@ -85,16 +85,28 @@ namespace Dargon.Patcher
          }
       }
 
+      public Hash160 AddObject(byte[] contents)
+      {
+         using (repositoryLock.Take()) {
+            return objectStore.Put(contents);
+         }
+      }
+
+      public Hash160 AddFileObject(byte[] contents)
+      {
+         var fileRevision = new FileRevision(Hash160.Zero, contents);
+         Console.WriteLine("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
+         return objectStore.Put(serializer.SerializeFileRevision(fileRevision));
+      }
+
       public void AddFile(string internalPath)
       {
          using (repositoryLock.Take())
          using (var index = indexProvider.Take()) {
             var entry = index.GetValueOrNull(internalPath);
             if (entry == null) {
-               var fileRevision = new FileRevision(Hash160.Zero, File.ReadAllBytes(GetAbsolutePath(internalPath)));
-               Console.WriteLine("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
-               var hash = objectStore.Put(serializer.SerializeFileRevision(fileRevision));
-               index.Set(internalPath, new IndexEntry(GetTrueLastModifiedInternal(internalPath), hash, IndexEntryFlags.Added));
+               var fileHash = AddFileObject(File.ReadAllBytes(GetAbsolutePath(internalPath)));
+               index.Set(internalPath, new IndexEntry(GetTrueLastModifiedInternal(internalPath), fileHash, IndexEntryFlags.Added));
             }
          }
       }
@@ -512,10 +524,10 @@ namespace Dargon.Patcher
          }
       }
 
-      private string SanitizeInternalPath(string path) { return path.Trim(new[] { '/', '\\' }); }
-      private string GetAbsolutePath(string internalPath) { return Path.Combine(root, internalPath); }
-      private ulong GetTrueLastModified(string realPath) { return File.GetLastWriteTimeUtc(realPath).GetUnixTimeMilliseconds(); }
-      private ulong GetTrueLastModifiedInternal(string internalPath) { return GetTrueLastModified(GetAbsolutePath(internalPath)); }
+      public string SanitizeInternalPath(string path) { return path.Trim(new[] { '/', '\\' }); }
+      public string GetAbsolutePath(string internalPath) { return Path.Combine(root, internalPath); }
+      public ulong GetTrueLastModified(string realPath) { return File.GetLastWriteTimeUtc(realPath).GetUnixTimeMilliseconds(); }
+      public ulong GetTrueLastModifiedInternal(string internalPath) { return GetTrueLastModified(GetAbsolutePath(internalPath)); }
       private string BuildPath(params string[] strings) { return SanitizeInternalPath(string.Join(PATH_DELIMITER, strings)); }
 
       private class OtherBranch

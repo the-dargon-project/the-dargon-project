@@ -9,25 +9,25 @@ using ItzWarty;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
-   public class CompilationMetadata : IDisposable
+   public class ModificationCompilationTable : IDisposable
    {
       private const uint MAGIC = 0x524d4446U;
 
       private readonly string path;
-      private readonly Dictionary<Hash160, CompilationMetadataValue> valuesByFileRevisionHash = new Dictionary<Hash160, CompilationMetadataValue>();
+      private readonly Dictionary<string, ModificationCompilationValue> valuesByFileRevisionHash = new Dictionary<string, ModificationCompilationValue>();
 
-      public CompilationMetadata(string path)
+      public ModificationCompilationTable(string path)
       {
          this.path = path;
 
          Load();
       }
 
-      public CompilationMetadataValue this[Hash160 fileRevisionHash] { get { return valuesByFileRevisionHash[fileRevisionHash]; } set { valuesByFileRevisionHash[fileRevisionHash] = value; } }
+      public ModificationCompilationValue this[string internalPath] { get { return valuesByFileRevisionHash[internalPath]; } set { valuesByFileRevisionHash[internalPath] = value; } }
 
-      public bool Contains(Hash160 fileRevisionHash) { return valuesByFileRevisionHash.ContainsKey(fileRevisionHash); }
-      public bool Remove(Hash160 fileRevisionHash) { return valuesByFileRevisionHash.Remove(fileRevisionHash); }
-      public CompilationMetadataValue GetValueOrNull(Hash160 fileRevisionHash) { return valuesByFileRevisionHash.GetValueOrDefault(fileRevisionHash); }
+      public bool Contains(string internalPath) { return valuesByFileRevisionHash.ContainsKey(internalPath); }
+      public bool Remove(string internalPath) { return valuesByFileRevisionHash.Remove(internalPath); }
+      public ModificationCompilationValue GetValueOrNull(string internalPath) { return valuesByFileRevisionHash.GetValueOrDefault(internalPath); }
 
       private void Load()
       {
@@ -46,12 +46,12 @@ namespace Dargon.LeagueOfLegends.Modifications
             }
 
             var count = reader.ReadUInt32();
-            for (uint i = 0; i < count; i++)
-            {
+            for (uint i = 0; i < count; i++) {
+               var internalPath = reader.ReadNullTerminatedString();
                var fileRevisionHash = reader.ReadHash160();
                var lastModified = reader.ReadUInt64();
                var compiledFileHash = reader.ReadHash160();
-               valuesByFileRevisionHash.Add(internalPath, new CompilationMetadataValue(resolvedpath, fileRevision, targetType));
+               valuesByFileRevisionHash.Add(internalPath, new ModificationCompilationValue(fileRevisionHash, lastModified, compiledFileHash));
             }
          }
       }
@@ -68,9 +68,9 @@ namespace Dargon.LeagueOfLegends.Modifications
                foreach (var kvp in valuesByFileRevisionHash)
                {
                   writer.WriteNullTerminatedString(kvp.Key);
-                  writer.WriteNullTerminatedString(kvp.Value.ResolvedPath);
-                  writer.Write(kvp.Value.FileRevision);
-                  writer.Write((uint)kvp.Value.Target);
+                  writer.Write(kvp.Value.FileRevisionHash);
+                  writer.Write(kvp.Value.LastModified);
+                  writer.Write(kvp.Value.CompiledFileHash);
                }
             }
             File.WriteAllBytes(path, ms.ToArray());
@@ -82,17 +82,20 @@ namespace Dargon.LeagueOfLegends.Modifications
       /// </summary>
       public void Dispose() { Save(); }
 
-      public class CompilationMetadataValue
+      public class ModificationCompilationValue
       {
+         private readonly Hash160 fileRevisionHash;
          private readonly ulong lastModified;
          private readonly Hash160 compiledFileHash;
 
-         public CompilationMetadataValue(ulong lastModified, Hash160 compiledFileHash)
+         public ModificationCompilationValue(Hash160 fileRevisionHash, ulong lastModified, Hash160 compiledFileHash)
          {
+            this.fileRevisionHash = fileRevisionHash;
             this.lastModified = lastModified;
             this.compiledFileHash = compiledFileHash;
          }
 
+         public Hash160 FileRevisionHash { get { return fileRevisionHash; } }
          public ulong LastModified { get { return lastModified; } }
          public Hash160 CompiledFileHash { get { return compiledFileHash; } }
       }

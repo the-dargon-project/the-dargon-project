@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Specialized;
 using NLog;
@@ -80,7 +81,11 @@ namespace Dargon.IO.Resolution
          //----------------------------------------------------------------------------------------
          string[] inputPathBreadCrumbs = inputPath.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
 
-         var initialCandidateNodes = nodesByNameInsensitive[inputPathBreadCrumbs.Last()];
+         var initialCandidateNodes = nodesByNameInsensitive.GetValueOrDefault(inputPathBreadCrumbs.Last());
+
+         if (initialCandidateNodes == null) {
+            return new List<IReadableDargonNode>();
+         }
 
          //----------------------------------------------------------------------------------------
          // Step 1: we've just enumerated all resources (as seen above).
@@ -141,8 +146,10 @@ namespace Dargon.IO.Resolution
             if (nextCandidateNodes.Count == 0) {
                if (iteration == 0)
                   return new List<IReadableDargonNode>(); // We've resolved to nothing
-               else
+               else {
                   doFinalize = true;
+                  goto finalize; // yep.
+               }
             } else if (nextCandidateNodes.Count == 1) {
                //We've filtered down to one candidate, so it's probably what we want.
                return nextCandidateNodes;
@@ -156,7 +163,8 @@ namespace Dargon.IO.Resolution
 
             if (iteration == inputPathBreadCrumbs.Length - 1)
                doFinalize = true;
-         }
+            }
+      finalize:
          if (doFinalize) {
             //Console.WriteLine("Do Finalize!");
             //----------------------------------------------------------------------------------

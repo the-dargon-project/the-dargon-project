@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4728635F-5B34-4A40-A6C8-70AEE5074DC8}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DargonLibCpp</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>.;$(WindowsSDK_IncludePath);C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Include;C:\boost_1_55_0;C:\the-dargon-project\source\ThirdParty\detours\header;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;C:\the-dargon-project\source\ThirdParty\utf8cpp;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_55_0\stage\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Lib\x86;C:\the-dargon-project\source\ThirdParty\detours\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(WindowsSDK_IncludePath);C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Include;C:\boost_1_55_0;C:\the-dargon-project\source\ThirdParty\detours\header;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;C:\the-dargon-project\source\ThirdParty\utf8cpp;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_55_0\stage\lib;C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Lib\x86;C:\the-dargon-project\source\ThirdParty\detours\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/WL %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Init\Bootloader.cpp" />
+    <ClCompile Include="Init\BootloaderRemoteLogger.cpp" />
+    <ClCompile Include="IO.cpp" />
+    <ClCompile Include="IO\DIM\DIMTaskManager.cpp" />
+    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
+    <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
+    <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
+    <ClInclude Include="Init\BootstrapContext.hpp" />
+    <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
+    <ClInclude Include="IO\DIM\DIMTask.hpp" />
+    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp" />
+    <ClInclude Include="IO\DIM\IDIMTaskHandler.hpp" />
+    <ClInclude Include="IO\DIM\DIMTaskManager.hpp" />
+    <ClInclude Include="IO\DIM\DIMTaskTypes.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.hpp" />
+    <ClInclude Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClCompile Include="IO\DSP\DefaultDSPExInstructionSet.cpp" />
+    <ClCompile Include="IO\DSP\DSPExNodeSession.cpp" />
+    <ClCompile Include="IO\DSP\DSPExFrameProcessor.cpp" />
+    <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp" />
+    <ClCompile Include="IO\DSP\DSPExLITransactionHandler.cpp" />
+    <ClCompile Include="IO\DSP\DSPExNode.cpp" />
+    <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp" />
+    <ClCompile Include="IO\IPCObject.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="dlc_pch.cpp" />
+    <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="Util\BufferManager.cpp" />
+    <ClCompile Include="Util\CountdownEvent.cpp" />
+    <ClCompile Include="Util\Logger.cpp" />
+    <ClCompile Include="Util\UniqueIdentificationSet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base.hpp" />
+    <ClInclude Include="Dargon.hpp" />
+    <ClInclude Include="Init\Bootloader.hpp" />
+    <ClInclude Include="IO.hpp" />
+    <ClInclude Include="IO\DSP.h" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITDIMRunTasksHandler.hpp" />
+    <ClInclude Include="IO\DSP\DefaultDSPExInstructionSet.hpp" />
+    <ClInclude Include="IO\DSP\DSP.hpp" />
+    <ClInclude Include="IO\DSP\DSPConstants.hpp" />
+    <ClInclude Include="IO\DSP\DSPEx.hpp" />
+    <ClInclude Include="IO\DSP\DSPExNodeSession.hpp" />
+    <ClInclude Include="IO\DSP\DSPExFrameProcessor.hpp" />
+    <ClInclude Include="IO\DSP\DSPExInitialMessage.hpp" />
+    <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp" />
+    <ClInclude Include="IO\DSP\DSPExMessage.hpp" />
+    <ClInclude Include="IO\DSP\DSPExNode.hpp" />
+    <ClInclude Include="IO\DSP\DSPExRITransactionHandler.hpp" />
+    <ClInclude Include="IO\DSP\DSPExFrameTransmitter.hpp" />
+    <ClInclude Include="IO\DSP\DSPExTypeDefs.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExFrameTransmitter.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExInstructionSet.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExSession.hpp" />
+    <ClInclude Include="IO\IOTypedefs.hpp" />
+    <ClInclude Include="IO\IPCObject.hpp" />
+    <ClInclude Include="dlc_pch.hpp" />
+    <ClInclude Include="Util.hpp" />
+    <ClInclude Include="Util\BlockingQueue.hpp" />
+    <ClInclude Include="Util\BufferManager.hpp" />
+    <ClInclude Include="Util\CountdownEvent.hpp" />
+    <ClInclude Include="Util\ILogger.hpp" />
+    <ClInclude Include="Util\Logger.hpp" />
+    <ClInclude Include="Util\Logger.inl.hpp" />
+    <ClInclude Include="Util\LoggerLevels.hpp" />
+    <ClInclude Include="Util\UniqueIdentificationSet.hpp" />
+    <ClInclude Include="Util\UniqueIdentificationSet.inl.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

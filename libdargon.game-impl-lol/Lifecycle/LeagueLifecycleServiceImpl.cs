@@ -77,9 +77,9 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          WaitForCancellableTaskCompletion(resolutionTasks);
          var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
-         BuildLeagueIndexFiles();
          // TODO: Inject
 
+         // optimization: compile game data here, so that we don't have to compile when game starts
          var gameCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Game);
          WaitForCancellableTaskCompletion(gameCompilationTasks);
          BuildLeagueIndexFiles();

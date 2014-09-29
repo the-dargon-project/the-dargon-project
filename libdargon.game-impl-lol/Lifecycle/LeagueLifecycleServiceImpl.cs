@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using Dargon.InjectedModule;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.Modifications;
+using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.Modifications;
@@ -16,15 +18,18 @@ namespace Dargon.LeagueOfLegends.Lifecycle
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly InjectedModuleService injectedModuleService;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
       private readonly LeagueModificationCompilationService leagueModificationCompilationService;
       private readonly LeagueSessionWatcherService leagueSessionWatcherService;
       private readonly RadsService radsService;
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
+      private readonly IReadOnlyDictionary<LeagueProcessType, LeagueSessionProcessLaunchedHandler> processLaunchedHandlers;
 
-      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationCompilationService leagueModificationCompilationService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
+      public LeagueLifecycleServiceImpl(InjectedModuleService injectedModuleService, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationCompilationService leagueModificationCompilationService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
       {
+         this.injectedModuleService = injectedModuleService;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.leagueModificationResolutionService = leagueModificationResolutionService;
          this.leagueModificationCompilationService = leagueModificationCompilationService;
@@ -35,12 +40,32 @@ namespace Dargon.LeagueOfLegends.Lifecycle
             new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
             new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition
             );
+         processLaunchedHandlers = ImmutableDictionary.Of<LeagueProcessType, LeagueSessionProcessLaunchedHandler>(
+            LeagueProcessType.RadsUserKernel, HandlePreclientProcessLaunched,
+            LeagueProcessType.Launcher, HandlePreclientProcessLaunched,
+            LeagueProcessType.Patcher, HandlePreclientProcessLaunched
+         );
       }
 
       private void HandleLeagueSessionCreated(LeagueSessionWatcherService service, LeagueSessionCreatedArgs e)
       {
          var session = e.Session;
          session.PhaseChanged += HandleSessionPhaseChanged;
+         session.ProcessLaunched += HandleSessionProcessLaunched;
+      }
+
+      private void HandleSessionProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
+      { 
+         logger.Info("Process Launched " + e.Type + ": " + e.Process.Id);
+         LeagueSessionProcessLaunchedHandler handler;
+         if (processLaunchedHandlers.TryGetValue(e.Type, out handler)) {
+            handler(session, e);
+         }
+      }
+
+      private void HandlePreclientProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
+      { 
+//         injectedModuleService.InjectToProcess(e.Process.Id, new BootstrapConfiguration())
       }
 
       private void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
@@ -63,8 +88,6 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          WaitForCancellableTaskCompletion(resolutionTasks);
          var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
-
-         // TODO: Inject
       }
 
       private void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)

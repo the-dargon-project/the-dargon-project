@@ -16,7 +16,7 @@ namespace Dargon.InjectedModule
 
       public BootstrapConfiguration Build()
       {
-         return new BootstrapConfiguration(flags.Concat(properties.Select(p => p.Key + PROPERTY_KEY_VALUE_DELIMITER + "\"" + p.Value + "\"")).Join(" ")); 
+         return new BootstrapConfiguration(flags, properties);
       }
    }
 }

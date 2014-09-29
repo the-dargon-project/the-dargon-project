@@ -12,6 +12,7 @@ namespace Dargon.LeagueOfLegends.Session
       private readonly object synchronization = new object();
       private readonly LeaguePhaseContext phaseContext;
 
+      public event LeagueSessionProcessLaunchedHandler ProcessLaunched;
       public event LeagueSessionPhaseChangedHandler PhaseChanged;
 
       public LeagueSession() 
@@ -22,10 +23,15 @@ namespace Dargon.LeagueOfLegends.Session
          phaseContext.PhaseChanged += HandlePhaseContextPhaseChanged;
       }
 
-      private void HandlePhaseContextPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) { OnPhaseChanged(this, e); }
+      private void HandlePhaseContextPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
+      { 
+         OnPhaseChanged(this, e); 
+      }
 
       public void HandleProcessLaunched(Process process, LeagueProcessType type)
       {
+         OnProcessLaunched(this, new LeagueSessionProcessLaunchedArgs(type, process));
+
          if (type == LeagueProcessType.RadsUserKernel)
             phaseContext.HandleRadsUserKernelLaunched(process);
          else if (type == LeagueProcessType.Launcher)
@@ -50,6 +56,12 @@ namespace Dargon.LeagueOfLegends.Session
             phaseContext.HandleClientQuit(process);
          else if (type == LeagueProcessType.GameClient)
             phaseContext.HandleGameQuit(process);
+      }
+
+      protected virtual void OnProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
+      {
+         LeagueSessionProcessLaunchedHandler handler = ProcessLaunched;
+         if (handler != null) handler(session, e);
       }
 
       protected virtual void OnPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e)

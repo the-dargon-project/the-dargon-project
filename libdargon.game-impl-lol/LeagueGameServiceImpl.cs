@@ -1,5 +1,6 @@
 ﻿using Dargon.Daemon;
 using Dargon.Game;
+using Dargon.InjectedModule;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.FileSystem;
 using Dargon.LeagueOfLegends.Lifecycle;
@@ -20,6 +21,7 @@ namespace Dargon.LeagueOfLegends
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
       private readonly DaemonService daemonService;
+      private readonly InjectedModuleService injectedModuleService;
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
       private readonly ModificationImportService modificationImportService;
@@ -32,10 +34,11 @@ namespace Dargon.LeagueOfLegends
       private readonly RiotFileSystem gameFileSystem;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(DaemonService daemonService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
+      public LeagueGameServiceImpl(DaemonService daemonService, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
       {
          logger.Info("Initializing League Game Service");
          this.daemonService = daemonService;
+         this.injectedModuleService = injectedModuleService;
          this.processWatcherService = processWatcherService;
          this.modificationRepositoryService = modificationRepositoryService;
          this.modificationImportService = modificationImportService;
@@ -47,7 +50,7 @@ namespace Dargon.LeagueOfLegends
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
          this.leagueSessionWatcherService = new LeagueSessionWatcherServiceImpl(leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationCompilationService, leagueSessionWatcherService, radsService);
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationCompilationService, leagueSessionWatcherService, radsService);
 
          RunDebugActions();
       }

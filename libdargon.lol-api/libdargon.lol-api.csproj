@@ -56,6 +56,7 @@
     <Compile Include="Session\ILeagueSession.cs" />
     <Compile Include="Session\LeagueSessionPhase.cs" />
     <Compile Include="Session\LeagueSessionPhaseChangedArgs.cs" />
+    <Compile Include="Session\LeagueSessionProcessLaunchedArgs.cs" />
     <Compile Include="Session\LeagueSessionWatcherService.cs" />
   </ItemGroup>
   <ItemGroup>

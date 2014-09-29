@@ -46,7 +46,7 @@ namespace Dargon.Daemon
 
          injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
 
-         leagueGameServiceImpl = new LeagueGameServiceImpl(this, processWatcherService, modificationRepositoryService, modificationImportService);
+         leagueGameServiceImpl = new LeagueGameServiceImpl(this, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
       }
 
       private void InitializeLogging()

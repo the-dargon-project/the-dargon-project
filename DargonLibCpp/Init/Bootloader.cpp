@@ -14,11 +14,13 @@ void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE
    context->ApplicationModuleHandle = moduleHandle;
    
    // Connect to DSPEx server and get bootstrap arguments
-   DSPExNode* dspExNode = new DSPExNode(DSPExNodeRole::Client, "DargonInjectedModule");
-   std::cout << "DSPExNode constructed" << std::endl;
+   std::stringstream ss;
+   ss << "DargonInjectedModule_" << GetProcessId(GetCurrentProcess());
+   DSPExNode* dspExNode = new DSPExNode(DSPExNodeRole::Client, ss.str());
+   std::cout << "DSPExNode constructed for named pipe " << ss.str() << std::endl;
    context->DSPExNode = dspExNode;
    
-   DSPExNodeSession* session = dspExNode->Connect("Dargon");   
+   DSPExNodeSession* session = dspExNode->Connect(ss.str());   
    context->DIMSession = session;
    std::cout << "Bootloader::BootstrapInjectedModule DSPExClient::ConnectLocal passed" << std::endl;
    context->DIMSession->GetBootstrapArguments(context);

@@ -74,14 +74,21 @@ BOOL WINAPI KernelSubsystem::MyCreateProcessA(LPCSTR lpApplicationName, LPSTR lp
 
 bool KernelSubsystem::ShouldSuspendProcess(const char* path)
 {
-   auto fileName = GetFileName(std::string(path));
+   auto processName = GetFileName(std::string(path));
    for(auto property : s_bootstrapContext->ArgumentProperties)
    {
       if(boost::iequals(property.first, "launchsuspended"))
       {
-         std::cout << "KernelSubsystem::ShouldSuspendProcess Compare Process Name " << fileName << " to " << property.second << std::endl;
-         if(boost::iequals(property.second, fileName))
-            return true;
+         std::cout << "KernelSubsystem::ShouldSuspendProcess have launchsuspended property with value " << property.second << std::endl;
+
+         auto fileNames = split(property.second, ',');
+
+         for (auto fileName : fileNames) {
+            std::cout << "KernelSubsystem::ShouldSuspendProcess Compare Process Name " << fileName << " to " << property.second << std::endl;
+
+            if (boost::iequals(processName, fileName))
+               return true;
+         }
       }
    }
    return false;

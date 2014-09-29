@@ -19,34 +19,22 @@ typedef BYTE DSPEx;
 //-------------------------------------------------------------------------------------------------
 // C2S Event Opcodes
 //-------------------------------------------------------------------------------------------------
-#define DSP_EX_C2S_META_GET_DARGON_VERSION      ((BYTE)0x10)
+#define DSP_EX_C2S_USER_OP_LOW                  ((BYTE)0x00)
 
-#define DSP_EX_C2S_IO_GET_ROOT_INFO             ((BYTE)0x20)
-#define DSP_EX_C2S_IO_GET_NODE_ROOT_INFO        ((BYTE)0x21)
-#define DSP_EX_C2S_IO_GET_BREADCRUMBS_INFO      ((BYTE)0x22)
-#define DSP_EX_C2S_IO_GET_NODE_CHILDREN         ((BYTE)0x23)
-#define DSP_EX_C2S_IO_GET_NODE_INFO             ((BYTE)0x25)
-#define DSP_EX_C2S_IO_GET_NODE_INFOS            ((BYTE)0x26)
+#define DSP_EX_C2S_DIM_BOOTSTRAP_GET_ARGS       ((BYTE)0x01)
+#define DSP_EX_C2S_DIM_READY_FOR_TASKS          ((BYTE)0x02)
+#define DSP_EX_C2S_DIM_REMOTE_LOG               ((BYTE)0x03)
 
-#define DSP_EX_C2S_IO_RESOLVE                   ((BYTE)0x28)
-#define DSP_EX_C2S_IO_BULK_RESOLVE              ((BYTE)0x29)
-#define DSP_EX_C2S_IO_FREE_HANDLE               ((BYTE)0x30)
+#define DSP_EX_C2S_USER_OP_HIGH                 ((BYTE)0x7F)
 
-#define DSP_EX_C2S_MOD_LS_ROOT                  ((BYTE)0x50)
+#define DSP_EX_C2S_SYSTEM_OP_LOW                ((BYTE)0x80)
+#define DSP_EX_C2S_META_GET_DARGON_VERSION      ((BYTE)0x80)
 
-#define DSP_EX_C2S_CONSOLE_OPEN                 ((BYTE)0x70)
-#define DSP_EX_C2S_CONSOLE_WRITELINE            ((BYTE)0x71)
-#define DSP_EX_C2S_CONSOLE_CLOSE                ((BYTE)0x79)
+#define DSP_EX_C2S_CONSOLE_OPEN                 ((BYTE)0x90)
+#define DSP_EX_C2S_CONSOLE_WRITELINE            ((BYTE)0x91)
+#define DSP_EX_C2S_CONSOLE_CLOSE                ((BYTE)0x9F)
 
-#define DSP_EX_C2S_REMOTE_LOG                   ((BYTE)0x80)
-
-#define DSP_EX_C2S_GAME_OP_LOW                  ((BYTE)0xA0)
-#define DSP_EX_C2S_DIM_OP_LOW                   ((BYTE)0xA0)
-#define DSP_EX_C2S_DIM_BOOTSTRAP_GET_ARGS       ((BYTE)0xA0)
-#define DSP_EX_C2S_DIM_READY_FOR_TASKS          ((BYTE)0xA1)
-
-#define DSP_EX_C2S_DIM_OP_HIGH                  ((BYTE)0xB9)
-#define DSP_EX_C2S_GAME_OP_HIGH                 ((BYTE)0xEF)
+#define DSP_EX_C2S_SYSTEM_OP_HIGH               ((BYTE)0xFF)
 
 //-------------------------------------------------------------------------------------------------
 // S2C or C2S Opcodes

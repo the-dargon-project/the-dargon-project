@@ -28,7 +28,7 @@ void DSPExLITRemoteLogHandler::InitializeInteraction(IDSPExSession& session)
    session.SendMessage(
       DSPExInitialMessage(
          TransactionId,
-         DSP_EX_C2S_REMOTE_LOG,
+         DSP_EX_C2S_DIM_REMOTE_LOG,
          buffer,
          bufferSize
       )

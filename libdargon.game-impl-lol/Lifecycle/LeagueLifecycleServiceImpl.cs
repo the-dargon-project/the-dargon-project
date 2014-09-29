@@ -63,9 +63,15 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          }
       }
 
-      private void HandlePreclientProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
-      { 
-//         injectedModuleService.InjectToProcess(e.Process.Id, new BootstrapConfiguration())
+      private void HandlePreclientProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
+      {
+         ISet<string> flags = new HashSet<string> { "--debug" };
+         IReadOnlyDictionary<string, string> properties = ImmutableDictionary.Of(
+            "role", "launcher",
+            "log_filter", "verbose",
+            "launchsuspended", "LolClient.exe, League of Legends.exe"
+         );
+         injectedModuleService.InjectToProcess(e.Process.Id, new BootstrapConfiguration(flags, properties));
       }
 
       private void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 

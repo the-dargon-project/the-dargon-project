@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Dargon.Transport;
 using ItzWarty;
@@ -20,7 +21,7 @@ namespace Dargon.InjectedModule
          
          var pipeName = DIM_PIPE_NAME_PREFIX + processId;
 
-         this.node = nodeFactory.CreateNode(true, pipeName);
+         this.node = nodeFactory.CreateNode(true, pipeName, new List<IInstructionSet> { new SessionInstructionSet(this) });
       }
 
       public int ProcessId { get { return processId; } }
@@ -41,17 +42,18 @@ namespace Dargon.InjectedModule
 
          public bool UseConstructionContext { get { return true; } }
          public object ConstructionContext { get { return session; } }
-         public Type GetRemotelyInitializedTransactionHandlerType(byte opcode) 
+         public bool TryCreateRemotelyInitializedTransactionHandler(byte opcode, uint transactionId, out RemotelyInitializedTransactionHandler handler)
          {
-            if (opcode >= (byte)DTP.SYSTEM_RESERVED_BEGIN &&
-                opcode <= (byte)DTP.SYSTEM_RESERVED_END) {
-               switch ((DTP_DIM)opcode) {
-                  case DTP_DIM.C2S_GET_BOOTSTRAP_ARGS:
-                     return typeof(RITGetBootstrapArgsHandler);
-                     break;
-               }
+            handler = null;
+            switch ((DTP_DIM)opcode) {
+               case DTP_DIM.C2S_GET_BOOTSTRAP_ARGS:
+                  handler = new RITGetBootstrapArgsHandler(transactionId, session);
+                  break;
+               case DTP_DIM.C2S_REMOTE_LOG:
+                  handler = new RITRemoteLogHandler(transactionId);
+                  break;
             }
-            return null;
+            return handler != null;
          }
       }
 
@@ -61,10 +63,8 @@ namespace Dargon.InjectedModule
 
          private readonly Session dimSession;
 
-         public RITGetBootstrapArgsHandler(uint transactionId, Session dimSession) 
-            : base(transactionId) {
-            this.dimSession = dimSession;
-            }
+         public RITGetBootstrapArgsHandler(uint transactionId, Session dimSession)
+            : base(transactionId) { this.dimSession = dimSession; }
 
          public override void ProcessInitialMessage(IDSPExSession session, TransactionInitialMessage message) 
          {
@@ -112,6 +112,27 @@ namespace Dargon.InjectedModule
          { 
             logger.Warn("Unexpected ProcessMessage invocation.");
          }
+      }
+
+      private class RITRemoteLogHandler : RemotelyInitializedTransactionHandler
+      {
+         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+         public RITRemoteLogHandler(uint transactionId) : base(transactionId) {
+         }
+
+         public override void ProcessInitialMessage(IDSPExSession session, TransactionInitialMessage message) {
+            using (var ms = new MemoryStream(message.DataBuffer, message.DataOffset, message.DataLength))
+            using (var reader = new BinaryReader(ms)) {
+               var loggerLevel = reader.ReadUInt32(); // TODO
+               var messageLength = reader.ReadUInt32();
+               var messageContent = reader.ReadStringOfLength((int)messageLength);
+               logger.Info("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent);
+            }
+
+            session.DeregisterRITransactionHandler(this); }
+
+         public override void ProcessMessage(IDSPExSession session, TransactionMessage message) { throw new NotImplementedException(); }
       }
    }
 }

@@ -1,6 +1,17 @@
 ﻿namespace Dargon.Daemon
 {
-   public class DaemonConfiguration
+   public class DaemonConfiguration : IDaemonConfiguration
    {
+      public bool IsDebugCompilation
+      {
+         get
+         {
+#if DEBUG
+            return true;
+#else
+         return false;
+#endif
+         }
+      }
    }
 }

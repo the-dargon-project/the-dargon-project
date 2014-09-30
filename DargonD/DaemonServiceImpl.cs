@@ -29,11 +29,17 @@ namespace Dargon.Daemon
       private readonly LeagueGameServiceImpl leagueGameServiceImpl;
       private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
       private bool isShutdownSignalled = false;
+
       public event EventHandler BeginShutdown;
 
       public DaemonServiceImpl()
       {
          InitializeLogging();
+
+         if (configuration.IsDebugCompilation) {
+            logger.Error("COMPILED IN DEBUG MODE");
+         }
+
          logger.Info("Initializing Daemon");
 
          serviceLocator.RegisterService(typeof(DaemonService), this);
@@ -48,6 +54,8 @@ namespace Dargon.Daemon
 
          leagueGameServiceImpl = new LeagueGameServiceImpl(this, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
       }
+
+      public IDaemonConfiguration Configuration { get { return configuration; } }
 
       private void InitializeLogging()
       {

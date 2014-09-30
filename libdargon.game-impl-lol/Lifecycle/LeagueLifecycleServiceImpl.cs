@@ -120,7 +120,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, configurationBuilder.Build());
 
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
-         var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client | ModificationTargetType.Game);
+         var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(resolutionTasks);
          var clientCompilationTasks = CompileModificationsObjects(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
@@ -128,6 +128,8 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          BuildTasklist(mods, ModificationTargetType.Client, tasklist);
 
          // optimization: compile game data here, so that we don't have to compile when game starts
+         var gameResolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Game);
+         WaitForCancellableTaskCompletion(gameResolutionTasks);
          var gameCompilationTasks = CompileModificationsObjects(mods, ModificationTargetType.Game);
          WaitForCancellableTaskCompletion(gameCompilationTasks);
          BuildLeagueIndexFiles();

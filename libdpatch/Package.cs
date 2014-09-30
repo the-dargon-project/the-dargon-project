@@ -9,6 +9,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using NLog;
+
+using Console = ItzWarty.NullConsole;
 
 namespace Dargon.Patcher
 {
@@ -30,6 +33,8 @@ namespace Dargon.Patcher
 
    public class LocalRepository
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private const string PATH_DELIMITER = "/";
       private const string DEFAULT_BRANCH = "master";
 
@@ -110,7 +115,7 @@ namespace Dargon.Patcher
       public Hash160 AddFileObject(byte[] contents)
       {
          var fileRevision = new FileRevision(Hash160.Zero, contents);
-         Console.WriteLine("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
+         logger.Info("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
          return objectStore.Put(serializer.SerializeFileRevision(fileRevision));
       }
 
@@ -189,7 +194,7 @@ namespace Dargon.Patcher
                   var changeType = childNameAndEntry.Item2;
                   var entry = childNameAndEntry.Item3;
                   var entryInternalPath = BuildPath(directoryPath, name);
-                  Console.WriteLine("ENTRY INTERNAL PATH " + entryInternalPath + " directory is " + directory + " and entry is named " + name);
+                  logger.Info("ENTRY INTERNAL PATH " + entryInternalPath + " directory is " + directory + " and entry is named " + name);
                   var keepInIndex = true;
                   if (entry.Flags.HasFlag(IndexEntryFlags.Added)) {
                      entry.Flags &= ~IndexEntryFlags.Added;
@@ -222,15 +227,15 @@ namespace Dargon.Patcher
             var headCommit = GetHeadCommitHash(Head);
 
             // create new commit object which points to new root object and has parent reference to old commit
-            Console.WriteLine("Adding commit object...");
+            logger.Info("Adding commit object...");
             var commitObject = new CommitObject(headCommit, new Hash160[0], GetRootHash(), configurationManager.Identity, message, DateTime.UtcNow.GetUnixTimeMilliseconds());
             var commitObjectHash = objectStore.Put(serializer.SerializeCommitObject(commitObject));
-            Console.WriteLine("Commit object has hash " + commitObjectHash.ToString("x"));
+            logger.Info("Commit object has hash " + commitObjectHash.ToString("x"));
 
             // move head forward
             var head = Head;
             if (head.Type == HeadType.Branch) {
-               Console.WriteLine("Advancing branch " + head.Value + " to " + commitObjectHash.ToString("x"));
+               logger.Info("Advancing branch " + head.Value + " to " + commitObjectHash.ToString("x"));
                referenceManager.SetHeadCommitHash(head.Value, commitObjectHash);
             } else {
                stateManager.SetHead(commitObjectHash);
@@ -556,7 +561,7 @@ namespace Dargon.Patcher
          var commitHash = GetHeadCommitHash(head);
          while (commitHash != Hash160.Zero) {
             var commit = serializer.DeserializeCommitObject(commitHash, objectStore.Get(commitHash));
-            Console.WriteLine("* " + commitHash.ToString("x").Substring(0, 8) + " - " + commit.Message + " - " + commit.Author);
+            logger.Info("* " + commitHash.ToString("x").Substring(0, 8) + " - " + commit.Message + " - " + commit.Author);
             commitHash = commit.ParentHash;
          }
       }
@@ -675,7 +680,7 @@ namespace Dargon.Patcher
 
          public byte[] Get(Hash160 hash)
          {
-            if (kDebugEnabled) Console.WriteLine("Getting data of hash " + hash.ToString("X") + " from path " + GetObjectPath(hash));
+            if (kDebugEnabled) logger.Info("Getting data of hash " + hash.ToString("X") + " from path " + GetObjectPath(hash));
             return File.ReadAllBytes(GetObjectPath(hash));
          }
 
@@ -684,7 +689,7 @@ namespace Dargon.Patcher
             using (var sha1 = new SHA1Managed()) {
                var hash = new Hash160(sha1.ComputeHash(data));
                var path = GetObjectPath(hash);
-               if (kDebugEnabled) Console.WriteLine("Putting " + data.Length + " bytes of hash " + hash.ToString("X") + " to path " + path);
+               if (kDebugEnabled) logger.Info("Putting " + data.Length + " bytes of hash " + hash.ToString("X") + " to path " + path);
                Util.PrepareParentDirectory(path);
                File.WriteAllBytes(path, data);
                return hash;

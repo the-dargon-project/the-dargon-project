@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,11 +22,12 @@ namespace Dargon.LeagueOfLegends.Modifications
       protected readonly Logger logger;
 
       private readonly Dictionary<Guid, TCancellableTaskImpl> tasksByModificationLocalGuid = new Dictionary<Guid, TCancellableTaskImpl>();
-      private readonly BlockingCollection<TContext> taskContextQueue = new BlockingCollection<TContext>(new ConcurrentQueue<TContext>());
       private readonly CancellationTokenSource shutdownCancellationTokenSource = new CancellationTokenSource();
       private readonly DaemonService daemonService;
       private readonly CancellationToken shutdownCancellationToken;
-      private readonly Thread[] consumerThreads;
+      private readonly TaskProcessor[] consumers;
+      private readonly object previousTasksLock = new object();
+      private int roundRobinCounter = 0;
 
       public LeagueModificationOperationServiceBase(DaemonService daemonService)
       {
@@ -34,9 +36,9 @@ namespace Dargon.LeagueOfLegends.Modifications
          this.daemonService = daemonService;
          this.shutdownCancellationToken = shutdownCancellationTokenSource.Token;
 
-         this.consumerThreads = Util.Generate(
+         this.consumers = Util.Generate(
             Math.Max(1, Environment.ProcessorCount / 2),
-            i => new Thread(() => ConsumerThreadStart(i)) { IsBackground =  true }.With(t => t.Start())
+            i => new TaskProcessor(i, shutdownCancellationToken, ProcessTaskContext)
          );
       }
 
@@ -46,34 +48,77 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       protected void AddTask(Guid modificationGuid, TCancellableTaskImpl task, ModificationTargetType target)
       {
-         TCancellableTaskImpl previousTask;
-         if (tasksByModificationLocalGuid.TryGetValue(modificationGuid, out previousTask)) {
-            previousTask.SetNext(task);
-            previousTask.Cancel();
-         }
-
-         taskContextQueue.Add(CreateContext(task, target));
-      }
-
-      private void ConsumerThreadStart(int id)
-      {
-         var prefix = "t" + id + ": ";
-         logger.Info(prefix + "at entry point");
-         while (!shutdownCancellationToken.IsCancellationRequested) {
-            try {
-               logger.Info(prefix + "taking task context...");
-               var context = taskContextQueue.Take(shutdownCancellationToken);
-
-               logger.Info(prefix + "processing task context" + context);
-               ProcessTaskContext(context);
-
-               logger.Info(prefix + "processed task context" + context);
-               context.Task.UpdateCompleted();
-            } catch (OperationCanceledException) {
-               logger.Info(prefix + "reached operation cancelled exception");
+         lock (previousTasksLock) {
+            TCancellableTaskImpl previousTask;
+            if (tasksByModificationLocalGuid.TryGetValue(modificationGuid, out previousTask)) {
+               previousTask.SetNext(task);
+               previousTask.Cancel();
             }
          }
-         logger.Info(prefix + "exiting");
+
+         logger.Info("Enqueuing task " + task);
+         int consumerId = Interlocked.Increment(ref roundRobinCounter);
+         var consumer = consumers[consumerId % consumers.Length];
+         consumer.EnqueueTaskContext(CreateContext(task, target));
+         logger.Info("Done enqueuing task " + task);
+      }
+
+      private class TaskProcessor
+      {
+         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+         private readonly int id;
+         private readonly CancellationToken shutdownCancellationToken;
+         private readonly Action<TContext> processTaskContext;
+         private readonly Thread thread;
+         private readonly Semaphore semaphore = new Semaphore(0, Int32.MaxValue);
+         private readonly ConcurrentQueue<TContext> taskContextQueue = new ConcurrentQueue<TContext>();
+
+         public TaskProcessor(int id, CancellationToken shutdownCancellationToken, Action<TContext> processTaskContext)
+         {
+            this.id = id;
+            this.shutdownCancellationToken = shutdownCancellationToken;
+            this.processTaskContext = processTaskContext;
+
+            this.thread = new Thread(ThreadStart) { IsBackground = true };
+            this.thread.Start();
+         }
+
+         private void ThreadStart()
+         {
+            var prefix = "t" + id + ": ";
+            logger.Info(prefix + "at entry point");
+            while (!shutdownCancellationToken.IsCancellationRequested) {
+               if (!semaphore.WaitOne(10000))
+                  continue;
+
+               TContext context;
+               while (!taskContextQueue.TryDequeue(out context)) ;
+
+               logger.Info(prefix + "taking task context...");
+
+               if (!shutdownCancellationToken.IsCancellationRequested) {
+                  if (context.Task.Status != Status.Cancelled) {
+                     logger.Info(prefix + "processing task context" + context);
+                     processTaskContext(context);
+
+                     logger.Info(prefix + "processed task context" + context);
+                     context.Task.UpdateCompleted();
+                  }
+               }
+            }
+            logger.Info(prefix + "exiting");
+         }
+
+         internal void EnqueueTaskContext(TContext context)
+         {
+            if (context == null)
+               throw new ArgumentNullException("context");
+
+            taskContextQueue.Enqueue(context);
+            Thread.MemoryBarrier();
+            semaphore.Release();
+         }
       }
    }
 }

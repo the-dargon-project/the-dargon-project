@@ -37,7 +37,16 @@ namespace Dargon.InjectedModule
          var session = new Session(processId, configuration, dtpNodeFactory);
          processInjectionService.InjectToProcess(processId, GetInjectedDllPath());
          sessionsByProcessId.AddOrUpdate(processId, session, (a, b) => session);
+         session.Ended += HandleSessionEnded;
          return session;
+      }
+
+      private void HandleSessionEnded(ISession session, SessionEndedEventArgs sessionEndedEventArgs)
+      {
+         session.Ended -= HandleSessionEnded;
+
+         Session removedSession;
+         sessionsByProcessId.TryRemove(session.ProcessId, out removedSession);
       }
 
       private string GetInjectedDllPath()

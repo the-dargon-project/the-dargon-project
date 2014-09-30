@@ -16,6 +16,8 @@ namespace Dargon.InjectedModule
       private readonly InjectedModuleConfiguration configuration;
       private readonly DtpNode node;
 
+      public event SessionEndedEventHandler Ended;
+
       public Session(int processId, InjectedModuleConfiguration configuration, IDtpNodeFactory nodeFactory)
       {
          this.processId = processId;
@@ -24,7 +26,9 @@ namespace Dargon.InjectedModule
          var pipeName = DIM_PIPE_NAME_PREFIX + processId;
 
          this.node = nodeFactory.CreateNode(true, pipeName, new List<IInstructionSet> { new SessionInstructionSet(this) });
+         this.node.ClientConnected += HandleClientConnected;
       }
+
 
       public int ProcessId { get { return processId; } }
       public InjectedModuleConfiguration Configuration { get { return configuration; } }
@@ -32,6 +36,24 @@ namespace Dargon.InjectedModule
       public void HandleBootstrapComplete(IDSPExSession session)
       {
 
+      }
+
+      private void HandleClientConnected(DtpNode sender, ClientConnectedEventArgs e) { e.Session.Disconnected += HandleClientDisconnected; }
+
+      private void HandleClientDisconnected(DtpNodeSession sender, ClientDisconnectedEventArgs clientDisconnectedEventArgs)
+      {
+         node.Shutdown();
+         node.ClientConnected -= HandleClientConnected;
+         
+         sender.Disconnected -= HandleClientDisconnected;
+
+         OnEnded(this, new SessionEndedEventArgs());
+      }
+
+      protected virtual void OnEnded(ISession session, SessionEndedEventArgs e)
+      {
+         SessionEndedEventHandler handler = Ended;
+         if (handler != null) handler(session, e);
       }
 
       private class SessionInstructionSet : IInstructionSet
@@ -81,7 +103,7 @@ namespace Dargon.InjectedModule
             } else {
                var pid = BitConverter.ToUInt32(message.DataBuffer, message.DataOffset);
                if (pid != dimSession.ProcessId) {
-                  logger.Warn("Expected " + dimSession.processId + " but got " + pid);
+                  logger.Warn("Expected " + dimSession.ProcessId + " but got " + pid);
                }
             }
 

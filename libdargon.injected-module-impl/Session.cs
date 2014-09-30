@@ -146,6 +146,7 @@ namespace Dargon.InjectedModule
                var data = ms.ToArray();
                session.SendMessage(new TransactionMessage(message.TransactionId, data, 0, data.Length));
                session.DeregisterRITransactionHandler(this);
+               logger.Info("Sent Initial Tasklist");
             }
          }
 

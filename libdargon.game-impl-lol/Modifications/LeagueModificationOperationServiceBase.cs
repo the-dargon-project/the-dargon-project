@@ -116,7 +116,6 @@ namespace Dargon.LeagueOfLegends.Modifications
                throw new ArgumentNullException("context");
 
             taskContextQueue.Enqueue(context);
-            Thread.MemoryBarrier();
             semaphore.Release();
          }
       }

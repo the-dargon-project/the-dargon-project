@@ -12,11 +12,10 @@ namespace Dargon.LeagueOfLegends.RADS
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly object synchronization = new object();
-      private readonly RiotSolutionLoader solutionLoader = new RiotSolutionLoader();
       private readonly Dictionary<uint, RiotArchive> archivesById = new Dictionary<uint, RiotArchive>();
+      private readonly Dictionary<RiotProjectType, RiotProject> projectsByType = new Dictionary<RiotProjectType, RiotProject>();
       private readonly string solutionPath;
-      private RiotSolution solution = null;
-      private RiotArchiveLoader archiveLoader = null;
+      private RiotArchiveLoader archiveLoader;
       public event EventHandler Suspending;
       public event EventHandler Resumed;
 
@@ -51,11 +50,11 @@ namespace Dargon.LeagueOfLegends.RADS
       public RiotProject GetProjectUnsafe(RiotProjectType projectType) 
       {
          lock (synchronization) {
-            if (solution == null) {
-               var loader = new RiotSolutionLoader();
-               solution = loader.Load(solutionPath, RiotProjectType.AirClient | RiotProjectType.GameClient);
+            RiotProject result;
+            if (!projectsByType.TryGetValue(projectType, out result)) {
+               result = new RiotProjectLoader(solutionPath).LoadProject(projectType);
             }
-            return solution.ProjectsByType[projectType];
+            return result;
          }
       }
 
@@ -65,7 +64,6 @@ namespace Dargon.LeagueOfLegends.RADS
             OnSuspending();
 
             archivesById.Clear();
-            solution = null;
             archiveLoader = null;
             // TODO: Invalidate all RADS Project/Archive References
          }

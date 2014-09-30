@@ -11,21 +11,21 @@ namespace Dargon.InjectedModule
    {
       private const string DIM_PIPE_NAME_PREFIX = "DargonInjectedModule_";
       private readonly int processId;
-      private readonly BootstrapConfiguration bootstrapConfiguration;
+      private readonly InjectedModuleConfiguration configuration;
       private readonly DtpNode node;
 
-      public Session(int processId, BootstrapConfiguration bootstrapConfiguration, IDtpNodeFactory nodeFactory)
+      public Session(int processId, InjectedModuleConfiguration configuration, IDtpNodeFactory nodeFactory)
       {
          this.processId = processId;
-         this.bootstrapConfiguration = bootstrapConfiguration;
-         
+         this.configuration = configuration;
+
          var pipeName = DIM_PIPE_NAME_PREFIX + processId;
 
          this.node = nodeFactory.CreateNode(true, pipeName, new List<IInstructionSet> { new SessionInstructionSet(this) });
       }
 
       public int ProcessId { get { return processId; } }
-      public BootstrapConfiguration BootstrapConfiguration { get { return bootstrapConfiguration; } }
+      public InjectedModuleConfiguration Configuration { get { return configuration; } }
 
       public void HandleBootstrapComplete(IDSPExSession session)
       {
@@ -83,7 +83,7 @@ namespace Dargon.InjectedModule
             // Send response data - properties and flags
             using (var ms = new MemoryStream()) {
                using (var writer = new BinaryWriter(ms)) {
-                  var configuration = dimSession.BootstrapConfiguration;
+                  var configuration = dimSession.Configuration.GetBootstrapConfiguration();
                   var properties = configuration.Properties;
                   writer.Write((uint)properties.Count);
                   foreach (var property in properties) {

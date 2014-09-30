@@ -6,7 +6,7 @@ namespace Dargon.InjectedModule
    {
       private readonly ISet<string> flags;
       private readonly IReadOnlyDictionary<string, string> properties;
-      
+
       public BootstrapConfiguration(ISet<string> flags, IReadOnlyDictionary<string, string> properties)
       {
          this.flags = flags;

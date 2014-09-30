@@ -6,17 +6,12 @@ namespace Dargon.InjectedModule
 {
    public class BootstrapConfigurationBuilder
    {
-      private const string PROPERTY_KEY_VALUE_DELIMITER = "=";
+      private readonly ISet<string> flags = new HashSet<string>();
+      private readonly Dictionary<string, string> properties = new Dictionary<string, string>(); 
 
-      private ISet<string> flags = new HashSet<string>();
-      private Dictionary<string, string> properties = new Dictionary<string, string>(); 
+      public void SetFlag(string flag) { flags.Add(flag); }
+      public void SetProperty(string key, string value) { properties.Add(key, value); }
 
-      public void SetArgumentFlag(string flag) { flags.Add(flag); }
-      public void SetArgumentProperty(string key, string value) { properties.Add(key, value); }
-
-      public BootstrapConfiguration Build()
-      {
-         return new BootstrapConfiguration(flags, properties);
-      }
+      public BootstrapConfiguration Build() { return new BootstrapConfiguration(flags, properties); }
    }
 }

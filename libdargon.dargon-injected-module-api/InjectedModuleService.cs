@@ -2,7 +2,7 @@
 {
    public interface InjectedModuleService
    {
-      ISession InjectToProcess(int processId, BootstrapConfiguration bootstrapConfiguration);
+      ISession InjectToProcess(int processId, InjectedModuleConfiguration configuration);
    }
 
    public interface ISession

@@ -24,13 +24,17 @@ namespace Dargon.InjectedModule
          serviceLocator.RegisterService(typeof(InjectedModuleService), this);
 
          this.processInjectionService = processInjectionService;
+
+         if (!File.Exists(GetInjectedDllPath())) {
+            logger.Warn("Injected DLL does not exist at " + GetInjectedDllPath() + "!");
+         }
       }
 
-      public ISession InjectToProcess(int processId, BootstrapConfiguration bootstrapConfiguration) 
+      public ISession InjectToProcess(int processId, InjectedModuleConfiguration configuration) 
       {
          logger.Info("Injecting to process " + processId);
 
-         var session = new Session(processId, bootstrapConfiguration, dtpNodeFactory);
+         var session = new Session(processId, configuration, dtpNodeFactory);
          processInjectionService.InjectToProcess(processId, GetInjectedDllPath());
          sessionsByProcessId.AddOrUpdate(processId, session, (a, b) => session);
          return session;
@@ -38,8 +42,12 @@ namespace Dargon.InjectedModule
 
       private string GetInjectedDllPath()
       {
-         var path = new FileInfo(Process.GetCurrentProcess().Modules[0].FileName).Directory.FullName;
-         return Path.Combine(path, "Dargon - Injected Module.dll");
+#if DEBUG
+         var driveName = new DriveInfo(Process.GetCurrentProcess().Modules[0].FileName).Name;
+         return Path.Combine(driveName, @"my-repositories\the-dargon-project\Debug", "Dargon - Injected Module.dll");
+#else
+         // TODO: Manifest for DIM.dll
+#endif
       }
    }
 }

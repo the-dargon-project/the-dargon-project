@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Dargon.InjectedModule;
+using Dargon.InjectedModule.Components;
+using Dargon.InjectedModule.Tasklist;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
@@ -9,6 +11,7 @@ using Dargon.Modifications;
 using ItzWarty.Collections;
 using NLog;
 using System.Collections.Generic;
+using ITask = Dargon.LeagueOfLegends.Modifications.ITask;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
 using PhaseChangeHandler = System.Action<Dargon.LeagueOfLegends.Session.ILeagueSession, Dargon.LeagueOfLegends.Session.LeagueSessionPhaseChangedArgs>;
 
@@ -35,11 +38,13 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          this.leagueModificationCompilationService = leagueModificationCompilationService;
          this.leagueSessionWatcherService = leagueSessionWatcherService;
          this.radsService = radsService;
+
          leagueSessionWatcherService.SessionCreated += HandleLeagueSessionCreated;
+
          phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
             new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
             new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition
-            );
+         );
          processLaunchedHandlers = ImmutableDictionary.Of<LeagueProcessType, LeagueSessionProcessLaunchedHandler>(
             LeagueProcessType.RadsUserKernel, HandlePreclientProcessLaunched,
             LeagueProcessType.Launcher, HandlePreclientProcessLaunched,
@@ -65,13 +70,14 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
       private void HandlePreclientProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
       {
-         ISet<string> flags = new HashSet<string> { "--debug" };
-         IReadOnlyDictionary<string, string> properties = ImmutableDictionary.Of(
-            "role", "launcher",
-            "log_filter", "verbose",
-            "launchsuspended", "LolClient.exe, League of Legends.exe"
-         );
-         injectedModuleService.InjectToProcess(e.Process.Id, new BootstrapConfiguration(flags, properties));
+         var suspendedProcessNames = new HashSet<string> { "LolClient.exe", "League of Legends.exe" };
+         var configurationBuilder = new InjectedModuleConfigurationBuilder();
+         configurationBuilder.AddComponent(new DebugConfigurationComponent());
+         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Launcher));
+         configurationBuilder.AddComponent(new ProcessSuspensionConfigurationComponent(suspendedProcessNames));
+         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
+         
+         injectedModuleService.InjectToProcess(e.Process.Id, configurationBuilder.Build());
       }
 
       private void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
@@ -101,18 +107,21 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          logger.Info("Handling Preclient to Client Phase Transition!");
          radsService.Resume();
 
+         var lateInitializedTasklist = new LateInitializationTasklist();
+         var configurationBuilder = new InjectedModuleConfigurationBuilder();
+         configurationBuilder.AddComponent(new DebugConfigurationComponent());
+         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Client));
+         configurationBuilder.AddComponent(new TasklistConfigurationComponent(lateInitializedTasklist));
+         configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
+         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
+         
+         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, configurationBuilder.Build());
+
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
          var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client | ModificationTargetType.Game);
          WaitForCancellableTaskCompletion(resolutionTasks);
          var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
-
-         ISet<string> flags = new HashSet<string> { "--debug", "--enable-dim-tasklist", "--enable-filesystem-hooks", "--enable-filesystem-mods" };
-         IReadOnlyDictionary<string, string> properties = ImmutableDictionary.Of(
-            "role", "air",
-            "log_filter", "verbose"
-         );
-         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, new BootstrapConfiguration(flags, properties));
 
          // optimization: compile game data here, so that we don't have to compile when game starts
          var gameCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Game);

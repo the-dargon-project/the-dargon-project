@@ -8,7 +8,6 @@ namespace Dargon.LeagueOfLegends.Session
       event LeagueSessionProcessLaunchedHandler ProcessLaunched;
       event LeagueSessionPhaseChangedHandler PhaseChanged;
 
-
       Process GetProcessOrNull(LeagueProcessType processType);
    }
 }

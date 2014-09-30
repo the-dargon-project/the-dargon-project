@@ -1,4 +1,5 @@
-﻿using Dargon.Daemon;
+﻿using System;
+using Dargon.Daemon;
 using ItzWarty.Services;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,6 +26,10 @@ namespace Dargon.Tray
          notifyIcon.Visible = true;
 
          var menu = new ContextMenu();
+
+         menu.MenuItems.Add(
+            "Force GC",
+            (s, e) => GC.Collect(3, GCCollectionMode.Forced));
 
          menu.MenuItems.Add(
             "Quit",

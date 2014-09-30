@@ -28,13 +28,13 @@ DSPExLITDIMQueryInitialTaskListHandler* DIMTaskManager::ConstructInitialTaskList
    return handler;
 }
 
-void DIMTaskManager::ProcessTasks()
+void DIMTaskManager::ProcessTasks(std::vector<DIMTask*>& tasks)
 {
    LockType lock(m_mutex);
 
    // enumerate all task types
    std::unordered_set<TaskType> taskTypes;
-   for (auto task : m_tasks)
+   for (auto task : tasks)
       taskTypes.insert(task->type);
 
    // determine what handlers handle the task types
@@ -54,7 +54,7 @@ void DIMTaskManager::ProcessTasks()
    // determine what tasks are handled by a handler
    DIMHandlerToTasksMap handlerToTasks;
    std::unordered_set<DIMTask*> uncategorizedTasks;
-   for (auto task : m_tasks)
+   for (auto task : tasks)
    {
       auto handler = typeToHandler.find(task->type);
       if (handler == typeToHandler.end())
@@ -64,9 +64,6 @@ void DIMTaskManager::ProcessTasks()
          handlerToTasks.insert(std::pair<IDIMTaskHandler*, DIMTask*>(handler->second, task));
       }
    }
-
-   // clear our task list
-   m_tasks.clear();
 
    // pass tasks to handler
    for (auto handler : m_handlers)

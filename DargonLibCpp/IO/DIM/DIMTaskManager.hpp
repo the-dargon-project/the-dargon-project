@@ -20,7 +20,6 @@ namespace Dargon { namespace IO { namespace DIM {
 
    private:
       std::unordered_set<IDIMTaskHandler*> m_handlers;
-      std::vector<DIMTask*> m_tasks;
       DIMInstructionSet* m_instructionSet;
       MutexType m_mutex;
       
@@ -29,6 +28,6 @@ namespace Dargon { namespace IO { namespace DIM {
       Dargon::IO::DSP::IDSPExInstructionSet* ReleaseInstructionSet();
       void RegisterTaskHandler(IDIMTaskHandler* handler);
       DSPExLITDIMQueryInitialTaskListHandler* ConstructInitialTaskListQueryHandler(UINT32 transactionId);
-      void ProcessTasks();
+      void ProcessTasks(std::vector<DIMTask*>& tasks);
    };
 } } }

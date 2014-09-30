@@ -4,12 +4,13 @@
 
 using namespace Dargon::Subsystems;
 
-bool FileOverrideTaskHandler::IsTaskTypeSupported(TaskType type)
+bool FileOverrideTaskHandler::IsTaskTypeSupported(std::string& type)
 {
-   return type == TT_FILESWAP;
+   return false;
+   // return type == TT_FILESWAP;
 }
 
-void FileOverrideTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator begin, DIMHandlerToTasksMap::iterator end)
+void FileOverrideTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end)
 {
    for (auto it = begin; it != end; it++)
    {

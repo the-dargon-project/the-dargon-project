@@ -40,7 +40,9 @@
     <Compile Include="Components\DebugConfigurationComponent.cs" />
     <Compile Include="Components\FilesystemConfigurationComponent.cs" />
     <Compile Include="Components\IConfigurationComponent.cs" />
-    <Compile Include="Tasklist\ITasklist.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\ITaskFactory.cs" />
+    <Compile Include="Tasks\ITasklist.cs" />
     <Compile Include="InjectedModuleConfiguration.cs" />
     <Compile Include="InjectedModuleRole.cs" />
     <Compile Include="InjectedModuleService.cs" />
@@ -49,16 +51,14 @@
     <Compile Include="Components\RoleConfigurationComponent.cs" />
     <Compile Include="Components\TasklistConfigurationComponent.cs" />
     <Compile Include="Components\VerboseLoggerConfigurationComponent.cs" />
-    <Compile Include="Tasklist\LateInitializationTasklist.cs" />
+    <Compile Include="Tasks\LateInitializationTasklistProxy.cs" />
+    <Compile Include="Tasks\TaskFactory.cs" />
+    <Compile Include="Tasks\Tasklist.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.lol-api\libdargon.lol-api.csproj">
-      <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
-      <Name>libdargon.lol-api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

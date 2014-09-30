@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Dargon.InjectedModule;
 using Dargon.InjectedModule.Components;
-using Dargon.InjectedModule.Tasklist;
+using Dargon.InjectedModule.Tasks;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
@@ -24,18 +24,20 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       private readonly InjectedModuleService injectedModuleService;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
-      private readonly LeagueModificationCompilationService leagueModificationCompilationService;
+      private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
+      private readonly LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService;
       private readonly LeagueSessionWatcherService leagueSessionWatcherService;
       private readonly RadsService radsService;
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
       private readonly IReadOnlyDictionary<LeagueProcessType, LeagueSessionProcessLaunchedHandler> processLaunchedHandlers;
 
-      public LeagueLifecycleServiceImpl(InjectedModuleService injectedModuleService, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationCompilationService leagueModificationCompilationService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
+      public LeagueLifecycleServiceImpl(InjectedModuleService injectedModuleService, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationObjectCompilerService leagueModificationObjectCompilerService, LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService, LeagueSessionWatcherService leagueSessionWatcherService, RadsServiceImpl radsService)
       {
          this.injectedModuleService = injectedModuleService;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.leagueModificationResolutionService = leagueModificationResolutionService;
-         this.leagueModificationCompilationService = leagueModificationCompilationService;
+         this.leagueModificationObjectCompilerService = leagueModificationObjectCompilerService;
+         this.leagueModificationTasklistCompilerService = leagueModificationTasklistCompilerService;
          this.leagueSessionWatcherService = leagueSessionWatcherService;
          this.radsService = radsService;
 
@@ -98,7 +100,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          radsService.Suspend();
 
          WaitForCancellableTaskCompletion(resolutionTasks);
-         var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
+         var clientCompilationTasks = CompileModificationsObjects(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
       }
 
@@ -107,11 +109,11 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          logger.Info("Handling Preclient to Client Phase Transition!");
          radsService.Resume();
 
-         var lateInitializedTasklist = new LateInitializationTasklist();
+         var tasklist = new LateInitializationTasklistProxy();
          var configurationBuilder = new InjectedModuleConfigurationBuilder();
          configurationBuilder.AddComponent(new DebugConfigurationComponent());
          configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Client));
-         configurationBuilder.AddComponent(new TasklistConfigurationComponent(lateInitializedTasklist));
+         configurationBuilder.AddComponent(new TasklistConfigurationComponent(tasklist));
          configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
          configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
          
@@ -120,11 +122,13 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
          var resolutionTasks = ResolveAllModifications(mods, ModificationTargetType.Client | ModificationTargetType.Game);
          WaitForCancellableTaskCompletion(resolutionTasks);
-         var clientCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Client);
+         var clientCompilationTasks = CompileModificationsObjects(mods, ModificationTargetType.Client);
          WaitForCancellableTaskCompletion(clientCompilationTasks);
 
+         BuildTasklist(mods, ModificationTargetType.Client, tasklist);
+
          // optimization: compile game data here, so that we don't have to compile when game starts
-         var gameCompilationTasks = CompileAllModifications(mods, ModificationTargetType.Game);
+         var gameCompilationTasks = CompileModificationsObjects(mods, ModificationTargetType.Game);
          WaitForCancellableTaskCompletion(gameCompilationTasks);
          BuildLeagueIndexFiles();
       }
@@ -138,14 +142,24 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          return resolutionTasks;
       }
 
-      private List<ICompilationTask> CompileAllModifications(List<IModification> mods, ModificationTargetType target)
+      private List<ICompilationTask> CompileModificationsObjects(List<IModification> mods, ModificationTargetType target)
       {
          var compilationTasks = new List<ICompilationTask>(mods.Count);
          foreach (var mod in mods)
          {
-            compilationTasks.Add(leagueModificationCompilationService.CompileModification(mod, target));
+            compilationTasks.Add(leagueModificationObjectCompilerService.CompileObjects(mod, target));
          }
          return compilationTasks;
+      }
+
+      private void BuildTasklist(List<IModification> mods, ModificationTargetType target, LateInitializationTasklistProxy tasklistProxy) 
+      {
+         var result = new Tasklist();
+         foreach (var mod in mods) {
+            var tasklist = leagueModificationTasklistCompilerService.BuildTasklist(mod, target);
+            result.AddRange(tasklist);
+         }
+         tasklistProxy.SetTasklist(result);
       }
 
       private void BuildLeagueIndexFiles() { }

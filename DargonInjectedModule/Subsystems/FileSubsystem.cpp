@@ -7,6 +7,7 @@
 #include "FileSubsystem.hpp"
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverrideTaskHandler.hpp"
+#include "FileSwapTaskHandler.hpp"
 
 using namespace Dargon::Subsystems;
 
@@ -28,7 +29,7 @@ FileSubsystem::FileSubsystem()
    auto dimTaskManager = s_core->GetDIMTaskManager();
    if (dimTaskManager)
    {
-      dimTaskManager->RegisterTaskHandler(new FileOverrideTaskHandler());
+      dimTaskManager->RegisterTaskHandler(new FileSwapTaskHandler(this));
    }
 }
 

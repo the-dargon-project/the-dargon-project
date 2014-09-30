@@ -106,7 +106,8 @@ void Core::Initialize(const BootstrapContext* context)
       handler->CompletionLatch.Wait();
       
       std::cout << "Processing Initial DIM Task List... " << std::endl;
-      m_pDIMTaskManager->ProcessTasks();
+      auto tasks = handler->ReleaseTasks();
+      m_pDIMTaskManager->ProcessTasks(tasks);
 
       std::cout << "Initial DIM Task List processed." << std::endl;
    }

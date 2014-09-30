@@ -41,8 +41,9 @@
     <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
+    <Compile Include="Modifications\LeagueModificationTasklistCompilerServiceImpl.cs" />
     <Compile Include="Modifications\ModificationCompilationTable.cs" />
-    <Compile Include="Modifications\LeagueModificationCompilationServiceImpl.cs" />
+    <Compile Include="Modifications\LeagueModificationObjectCompilerServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationOperationServiceBase.cs" />
     <Compile Include="Modifications\LeagueModificationResolutionServiceImpl.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />

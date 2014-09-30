@@ -1,4 +1,6 @@
-﻿using ItzWarty;
+﻿using System.Linq.Expressions;
+using System.Threading;
+using ItzWarty;
 using ItzWarty.Collections;
 using System;
 using System.Collections.Generic;
@@ -82,6 +84,13 @@ namespace Dargon.Patcher
             referenceManager.CreateHead(DEFAULT_BRANCH);
             referenceManager.SetHeadCommitHash(DEFAULT_BRANCH, Hash160.Zero);
             stateManager.SetHead(DEFAULT_BRANCH);
+         }
+      }
+
+      public string GetObjectPath(Hash160 hash)
+      {
+         using (repositoryLock.Take()) {
+            return objectStore.GetObjectPath(hash);
          }
       }
 
@@ -623,7 +632,19 @@ namespace Dargon.Patcher
             this.path = path;
          }
 
-         protected override void Initialize() { fileStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None); }
+         protected override void Initialize() {
+            while (true) {
+               try {
+
+                  fileStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+                  break;
+               }
+               catch (IOException) { // file already open
+                  Thread.Sleep(100);
+                  continue; 
+               }
+            }
+         }
 
          protected override void Destroy() { if (fileStream != null) fileStream.Dispose(); }
 
@@ -642,15 +663,15 @@ namespace Dargon.Patcher
 
          public byte[] Get(Hash160 hash)
          {
-            if (kDebugEnabled) Console.WriteLine("Getting data of hash " + hash.ToString("X") + " from path " + GetHashPath(hash));
-            return File.ReadAllBytes(GetHashPath(hash));
+            if (kDebugEnabled) Console.WriteLine("Getting data of hash " + hash.ToString("X") + " from path " + GetObjectPath(hash));
+            return File.ReadAllBytes(GetObjectPath(hash));
          }
 
          public Hash160 Put(byte[] data)
          {
             using (var sha1 = new SHA1Managed()) {
                var hash = new Hash160(sha1.ComputeHash(data));
-               var path = GetHashPath(hash);
+               var path = GetObjectPath(hash);
                if (kDebugEnabled) Console.WriteLine("Putting " + data.Length + " bytes of hash " + hash.ToString("X") + " to path " + path);
                Util.PrepareParentDirectory(path);
                File.WriteAllBytes(path, data);
@@ -664,7 +685,7 @@ namespace Dargon.Patcher
             return files.Select(file => new FileInfo(file).Name).Where(name => name.Length == Hash160.Size * 2).Select(Hash160.Parse);
          } 
 
-         private string GetHashPath(Hash160 hash)
+         public string GetObjectPath(Hash160 hash)
          {
             var bucket = (unchecked((uint)hash.GetHashCode()) * 13) % 256;
             var objectPath = Path.Combine(path, bucket.ToString("x"), hash.ToString("x"));

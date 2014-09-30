@@ -41,9 +41,10 @@
     <Compile Include="Modifications\IResolutionTask.cs" />
     <Compile Include="Modifications\ITask.cs" />
     <Compile Include="Modifications\ITaskContext.cs" />
-    <Compile Include="Modifications\LeagueModificationCompilationService.cs" />
+    <Compile Include="Modifications\LeagueModificationObjectCompilerService.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
     <Compile Include="Modifications\LeagueModificationResolutionService.cs" />
+    <Compile Include="Modifications\LeagueModificationTasklistCompilerService.cs" />
     <Compile Include="Modifications\ModificationTargetType.cs" />
     <Compile Include="Modifications\Status.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\..\librads\librads.csproj">
       <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
       <Name>librads</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.dargon-injected-module-api\libdargon.injected-module-api.csproj">
+      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
+      <Name>libdargon.injected-module-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>

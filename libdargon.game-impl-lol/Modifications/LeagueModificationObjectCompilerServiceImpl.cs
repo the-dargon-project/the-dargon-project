@@ -1,27 +1,27 @@
-﻿using System;
-using System.IO;
-using System.Linq.Expressions;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.Modifications;
 using Dargon.Patcher;
+using System;
+using System.IO;
+using ItzWarty;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
-   public class LeagueModificationCompilationServiceImpl : LeagueModificationOperationServiceBase<ICompilationTask, LeagueModificationCompilationServiceImpl.CompilationTask, LeagueModificationCompilationServiceImpl.CompilationContext>, LeagueModificationCompilationService
+   public class LeagueModificationObjectCompilerServiceImpl : LeagueModificationOperationServiceBase<ICompilationTask, LeagueModificationObjectCompilerServiceImpl.CompilationTask, LeagueModificationObjectCompilerServiceImpl.CompilationContext>, LeagueModificationObjectCompilerService
    {
-      private const string COMPILATION_METADATA_FILE_NAME = "COMPILATION";
+      public const string COMPILATION_METADATA_FILE_NAME = "COMPILATION";
 
-      public LeagueModificationCompilationServiceImpl(DaemonService daemonService) 
+      public LeagueModificationObjectCompilerServiceImpl(DaemonService daemonService) 
          : base(daemonService) { }
 
-      public ICompilationTask CompileModification(IModification modification, ModificationTargetType target)
+      public ICompilationTask CompileObjects(IModification modification, ModificationTargetType target)
       {
          if (modification.GameType != GameType.LeagueOfLegends) {
             throw new InvalidOperationException("League Modification Compilation Service can only compile League of Legends modifications!");
          }
 
-         logger.Info("Compiling Modification " + modification + " for Target Type " + target);
+         logger.Info("Compiling Objects for Modification " + modification + " for Target Type " + target);
 
          var newTask = new CompilationTask(modification);
          AddTask(modification.LocalGuid, newTask, target);
@@ -68,7 +68,8 @@ namespace Dargon.LeagueOfLegends.Modifications
                         compilationMetadata[internalPath] = new ModificationCompilationTable.ModificationCompilationValue(indexEntry.Value.RevisionHash, trueLastModified, compiledFileHash);
                         logger.Info("   => COMPILED TO " + compiledFileHash);
                      } else {
-                        logger.Info("NOT COMPILING AIR FILE " + internalPath);
+                        logger.Info("COMPILING AIR FILE " + internalPath + " TO NULL HASH");
+                        compilationMetadata[internalPath] = new ModificationCompilationTable.ModificationCompilationValue(indexEntry.Value.RevisionHash, trueLastModified, Hash160.Zero);
                      }
                   }
                }

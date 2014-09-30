@@ -21,8 +21,8 @@ namespace Dargon.InjectedModule
 
       public BootstrapConfiguration GetBootstrapConfiguration() { return this.bootstrapConfiguration; }
 
-      public TConfigurationComponent GetComponentOrNull<TConfigurationComponent>(Type t)
-         where TConfigurationComponent : IConfigurationComponent { return (TConfigurationComponent)componentsByType.GetValueOrDefault(t); }
+      public TConfigurationComponent GetComponentOrNull<TConfigurationComponent>()
+         where TConfigurationComponent : IConfigurationComponent { return (TConfigurationComponent)componentsByType.GetValueOrDefault(typeof(TConfigurationComponent)); }
    }
 
    public class InjectedModuleConfigurationBuilder

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using Dargon.InjectedModule.Components;
 using Dargon.Transport;
 using ItzWarty;
 using NLog;
@@ -48,6 +50,9 @@ namespace Dargon.InjectedModule
             switch ((DTP_DIM)opcode) {
                case DTP_DIM.C2S_GET_BOOTSTRAP_ARGS:
                   handler = new RITGetBootstrapArgsHandler(transactionId, session);
+                  break;
+               case DTP_DIM.C2S_GET_INITIAL_TASKLIST:
+                  handler = new RITGetInitialTasklistHandler(transactionId, session);
                   break;
                case DTP_DIM.C2S_REMOTE_LOG:
                   handler = new RITRemoteLogHandler(transactionId);
@@ -112,6 +117,39 @@ namespace Dargon.InjectedModule
          { 
             logger.Warn("Unexpected ProcessMessage invocation.");
          }
+      }
+
+      private class RITGetInitialTasklistHandler : RemotelyInitializedTransactionHandler
+      {
+         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+         private readonly Session dimSession;
+
+         public RITGetInitialTasklistHandler(uint transactionId, Session dimSession) : base(transactionId) { this.dimSession = dimSession; }
+
+         public override void ProcessInitialMessage(IDSPExSession session, TransactionInitialMessage message)
+         {
+            logger.Info("Processing Initial Message");
+
+            var tasklistConfigurationComponent = dimSession.Configuration.GetComponentOrNull<TasklistConfigurationComponent>();
+            var tasklist = tasklistConfigurationComponent.Tasklist;
+            using (var ms = new MemoryStream()) {
+               using (var writer = new BinaryWriter(ms)) {
+                  writer.Write((uint)tasklist.Count);
+                  foreach (var task in tasklist) {
+                     writer.WriteLongText(task.Type);
+                     writer.Write(task.Data.Length);
+                     writer.Write(task.Data, 0, task.Data.Length);
+                  }
+               }
+
+               var data = ms.ToArray();
+               session.SendMessage(new TransactionMessage(message.TransactionId, data, 0, data.Length));
+               session.DeregisterRITransactionHandler(this);
+            }
+         }
+
+         public override void ProcessMessage(IDSPExSession session, TransactionMessage message) { logger.Info("Unexpected ProcessMessage invocation."); }
       }
 
       private class RITRemoteLogHandler : RemotelyInitializedTransactionHandler

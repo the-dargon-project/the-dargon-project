@@ -1,4 +1,4 @@
-﻿using Dargon.InjectedModule.Tasklist;
+﻿using Dargon.InjectedModule.Tasks;
 
 namespace Dargon.InjectedModule.Components
 {

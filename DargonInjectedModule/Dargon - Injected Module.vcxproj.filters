@@ -57,6 +57,9 @@
     <ClInclude Include="Subsystems\D3D9SubsystemTypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Subsystems\FileSwapTaskHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subsystems\FileOverrideTaskHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\FileSwapTaskHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

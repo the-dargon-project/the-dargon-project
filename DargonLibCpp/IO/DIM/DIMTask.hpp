@@ -10,6 +10,6 @@ namespace Dargon { namespace IO { namespace DIM {
    struct DIMTask : boost::noncopyable {
       TaskType type;
       UINT32 length;
-      BYTE data[0];
+      BYTE* data;
    };
 } } }

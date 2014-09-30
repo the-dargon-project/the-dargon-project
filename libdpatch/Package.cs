@@ -78,6 +78,12 @@ namespace Dargon.Patcher
          using (var index = indexProvider.Take()) {
             configurationManager.Identity = Environment.UserName;
 
+            objectStore.Clear();
+            if (Directory.Exists(metadataDirectoryPath)) {
+               Directory.Delete(metadataDirectoryPath, true);
+               Util.PrepareDirectory(metadataDirectoryPath);
+            }
+
             var dir = new DirectoryRevision(Hash160.Zero, new Dictionary<string, Hash160>());
             var hash = objectStore.Put(serializer.SerializeDirectoryRevision(dir));
             index.Set("", new IndexEntry(GetTrueLastModifiedInternal(""), hash, IndexEntryFlags.Directory));
@@ -658,6 +664,12 @@ namespace Dargon.Patcher
 
          public ObjectStore(string path) {
             this.path = path;
+            Util.PrepareDirectory(path);
+         }
+
+         public void Clear() 
+         { 
+            Directory.Delete(path, true);
             Util.PrepareDirectory(path);
          }
 

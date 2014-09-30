@@ -61,7 +61,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                      }
 
                      if (resolutionEntry.Target.HasFlag(ModificationTargetType.Game)) {
-                        logger.Info("COMPILING FOR GAME " + internalPath);
+                        logger.Info("COMPILING FOR GAME " + internalPath + " (index " + indexEntry.Value.RevisionHash + ")");
                         var absolutePath = repository.GetAbsolutePath(internalPath);
                         var contents = File.ReadAllBytes(absolutePath);
                         var compiledFileHash = repository.AddFileObject(contents);

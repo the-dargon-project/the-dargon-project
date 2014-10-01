@@ -71,6 +71,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4B886033-0F8E-4470-B0EE-A853074EA697}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dargon - Injected Module", "DargonInjectedModule\Dargon - Injected Module.vcxproj", "{D1C97EAF-0503-4031-A690-CD6CCAD48C5A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4728635F-5B34-4A40-A6C8-70AEE5074DC8} = {4728635F-5B34-4A40-A6C8-70AEE5074DC8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdtp", "..\libdtp\libdtp.csproj", "{C9F92566-1F94-4235-944C-19364459F9A6}"
 EndProject

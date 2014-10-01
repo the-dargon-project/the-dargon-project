@@ -77,6 +77,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dargon - Injected Module", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdtp", "..\libdtp\libdtp.csproj", "{C9F92566-1F94-4235-944C-19364459F9A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common-proxies", "common-proxies\common-proxies.csproj", "{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Console|Any CPU = Console|Any CPU
@@ -559,6 +561,24 @@ Global
 		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|x86.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|Any CPU.Build.0 = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|Win32.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Console|x86.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -566,8 +586,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4728635F-5B34-4A40-A6C8-70AEE5074DC8} = {1FA9A3C3-F366-4FD2-B5AA-ADC7107230CF}
 		{D1C97EAF-0503-4031-A690-CD6CCAD48C5A} = {1FA9A3C3-F366-4FD2-B5AA-ADC7107230CF}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

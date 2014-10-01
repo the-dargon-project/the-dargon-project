@@ -1,4 +1,5 @@
-﻿using Dargon.Daemon;
+﻿using System.Collections.Generic;
+using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.Modifications;
 using Dargon.Patcher;
@@ -31,6 +32,7 @@ namespace Dargon.LeagueOfLegends.Modifications
       protected override CompilationContext CreateContext(CompilationTask task, ModificationTargetType target) { 
          return new CompilationContext(task, target);
       }
+
       protected override void ProcessTaskContext(CompilationContext context)
       {
          var task = context.Task;

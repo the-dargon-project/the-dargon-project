@@ -20,7 +20,7 @@ namespace Dargon.LeagueOfLegends.Modifications
       public LeagueModificationResolutionServiceImpl(DaemonService daemonService, RadsService radsService) 
          : base(daemonService) { this.radsService = radsService; }
 
-      public IResolutionTask ResolveModification(IModification modification, ModificationTargetType target)
+      public IResolutionTask StartModificationResolution(IModification modification, ModificationTargetType target)
       {
          if (modification.GameType != GameType.LeagueOfLegends) {
             throw new InvalidOperationException("League Modification Resolution Service can only resolve League of Legends modifications!");

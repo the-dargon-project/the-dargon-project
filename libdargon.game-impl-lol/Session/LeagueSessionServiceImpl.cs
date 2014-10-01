@@ -2,39 +2,27 @@
 using Dargon.LeagueOfLegends.Processes;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ItzWarty;
 using NLog;
 
 namespace Dargon.LeagueOfLegends.Session
 {
-   public class LeagueSessionWatcherServiceImpl : LeagueSessionWatcherService
+   public class LeagueSessionServiceImpl : LeagueSessionService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly IProcessProxy processProxy;
       private readonly LeagueProcessWatcherService leagueProcessWatcherService;
 
-      private readonly ISet<Process> radsUserKernelProcesses = new HashSet<Process>();
-      private readonly ISet<Process> launcherProcesses = new HashSet<Process>();
-      private readonly ISet<Process> patcherProcesses = new HashSet<Process>();
-      private readonly ISet<Process> pvpNetClientProcesses = new HashSet<Process>();
-      private readonly ISet<Process> gameClientProcesses = new HashSet<Process>();
-      private readonly ISet<Process> bugsplatProcesses = new HashSet<Process>();
       private readonly ISet<LeagueSession> sessions = new HashSet<LeagueSession>();
       private readonly Dictionary<int, LeagueSession> sessionsByProcessId = new Dictionary<int, LeagueSession>();
       private readonly object synchronization = new object();
-      private readonly IReadOnlyDictionary<LeagueProcessType, ISet<Process>> processesByType;
+
       public event LeagueSessionCreatedHandler SessionCreated;
 
-      public LeagueSessionWatcherServiceImpl(LeagueProcessWatcherService leagueProcessWatcherService) {
+      public LeagueSessionServiceImpl(IProcessProxy processProxy,  LeagueProcessWatcherService leagueProcessWatcherService) {
+         this.processProxy = processProxy;
          this.leagueProcessWatcherService = leagueProcessWatcherService;
-
-         processesByType = new Dictionary<LeagueProcessType, ISet<Process>> {
-            { LeagueProcessType.RadsUserKernel, radsUserKernelProcesses },
-            { LeagueProcessType.Launcher, launcherProcesses },
-            { LeagueProcessType.Patcher, patcherProcesses },
-            { LeagueProcessType.PvpNetClient, pvpNetClientProcesses },
-            { LeagueProcessType.GameClient, gameClientProcesses },
-            { LeagueProcessType.BugSplat, bugsplatProcesses }
-         };
 
          leagueProcessWatcherService.RadsUserKernelLaunched += HandleLeagueProcessLaunched;
          leagueProcessWatcherService.LauncherLaunched += HandleLeagueProcessLaunched;
@@ -43,10 +31,12 @@ namespace Dargon.LeagueOfLegends.Session
          leagueProcessWatcherService.GameClientLaunched += HandleLeagueProcessLaunched;
       }
 
+      public ILeagueSession GetProcessSessionOrNull(int processId) { return sessionsByProcessId.GetValueOrDefault(processId); }
+
       private void HandleLeagueProcessLaunched(LeagueProcessDetectedArgs e)
       {
          lock (synchronization) {
-            var process = GetProcessOrNull(e.ProcessDescriptor.ProcessId);
+            var process = processProxy.GetProcessOrNull(e.ProcessDescriptor.ProcessId);
 
             if (process == null) {
                logger.Error("League process " + e.ProcessDescriptor.ProcessId + " of type " + e.ProcessType + " quit too quickly!");
@@ -55,15 +45,11 @@ namespace Dargon.LeagueOfLegends.Session
 
             logger.Info("Handling process " + process.Id + " launch");
 
-            var processTypeList = processesByType[e.ProcessType];
-            processTypeList.Add(process);
-
             process.EnableRaisingEvents = true;
-            process.Exited += (a, b) => HandleLeagueProcessQuit(e.ProcessDescriptor.ProcessId, process, e.ProcessType, processTypeList);
+            process.Exited += (a, b) => HandleLeagueProcessQuit(process, e.ProcessType);
 
             if (process.HasExited) {
                logger.Info("Process " + process.Id + " exited too quickly!");
-               processTypeList.Remove(process);
             }
 
             bool processKilled = false; // todo: event for process detected allowing for duplicate RUK kill
@@ -81,24 +67,14 @@ namespace Dargon.LeagueOfLegends.Session
          }
       }
 
-      private Process GetProcessOrNull(int processId)
-      {
-         try {
-            return Process.GetProcessById(processId);
-         } catch (ArgumentException e) {
-            return null; // process already exited
-         }
-      }
-
-      private void HandleLeagueProcessQuit(int processId, Process process, LeagueProcessType processType, ISet<Process> processTypeList)
+      private void HandleLeagueProcessQuit(Process process, LeagueProcessType processType)
       {
          logger.Info("Handling process " + process.Id + " quit");
-         processTypeList.Remove(process);
          LeagueSession session;
-         if (sessionsByProcessId.TryGetValue(processId, out session)) {
+         if (sessionsByProcessId.TryGetValue(process.Id, out session)) {
             logger.Info("Session for " + process.Id + " found!");
             session.HandleProcessQuit(process, processType);
-            sessionsByProcessId.Remove(processId);
+            sessionsByProcessId.Remove(process.Id);
          } else {
             logger.Error("Session for " + process.Id + " not found!");
          }

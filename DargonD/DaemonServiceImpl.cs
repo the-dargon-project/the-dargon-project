@@ -20,6 +20,7 @@ namespace Dargon.Daemon
 
       private readonly DaemonConfiguration configuration = new DaemonConfiguration();
       private readonly ServiceLocator serviceLocator = new ServiceLocator();
+      private readonly IProcessProxy processProxy;
       private readonly TrayService trayService;
       private readonly ProcessInjectionService processInjectionService;
       private readonly ProcessWatcherService processWatcherService;
@@ -44,6 +45,7 @@ namespace Dargon.Daemon
 
          serviceLocator.RegisterService(typeof(DaemonService), this);
 
+         processProxy = new ProcessProxy();
          trayService = new TrayServiceImpl(serviceLocator, this);
          processInjectionService = new ProcessInjectionServiceImpl(serviceLocator);
          processWatcherService = new ProcessWatcherServiceImpl(serviceLocator);
@@ -51,7 +53,7 @@ namespace Dargon.Daemon
          modificationImportService = new ModificationImportServiceImpl(serviceLocator);
          injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
 
-         leagueGameServiceImpl = new LeagueGameServiceImpl(this, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
+         leagueGameServiceImpl = new LeagueGameServiceImpl(this, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
       }
 
       public IDaemonConfiguration Configuration { get { return configuration; } }

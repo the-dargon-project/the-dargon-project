@@ -38,9 +38,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\FileSystemManagerServiceImpl.cs" />
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
+    <Compile Include="Lifecycle\ILeagueInjectedModuleConfigurationFactory.cs" />
     <Compile Include="Modifications\LeagueModificationTasklistCompilerServiceImpl.cs" />
     <Compile Include="Modifications\ModificationCompilationTable.cs" />
     <Compile Include="Modifications\LeagueModificationObjectCompilerServiceImpl.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Session\Phases\LeaguePhaseQuit.cs" />
     <Compile Include="Session\Phases\LeaguePhaseUninitialized.cs" />
     <Compile Include="Session\StateType.cs" />
-    <Compile Include="Session\LeagueSessionWatcherServiceImpl.cs" />
+    <Compile Include="Session\LeagueSessionServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +76,10 @@
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
       <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\common-proxies\common-proxies.csproj">
+      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
+      <Name>common-proxies</Name>
     </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>

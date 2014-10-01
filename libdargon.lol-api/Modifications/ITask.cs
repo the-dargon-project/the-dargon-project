@@ -8,5 +8,6 @@
       ITask NextTask { get; } // HACK
 
       void WaitForTermination();
+      Status WaitForChainCompletion();
    }
 }

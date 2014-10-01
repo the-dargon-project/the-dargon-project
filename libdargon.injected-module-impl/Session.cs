@@ -13,12 +13,12 @@ namespace Dargon.InjectedModule
    {
       private const string DIM_PIPE_NAME_PREFIX = "DargonInjectedModule_";
       private readonly int processId;
-      private readonly InjectedModuleConfiguration configuration;
+      private readonly IInjectedModuleConfiguration configuration;
       private readonly DtpNode node;
 
       public event SessionEndedEventHandler Ended;
 
-      public Session(int processId, InjectedModuleConfiguration configuration, IDtpNodeFactory nodeFactory)
+      public Session(int processId, IInjectedModuleConfiguration configuration, IDtpNodeFactory nodeFactory)
       {
          this.processId = processId;
          this.configuration = configuration;
@@ -31,7 +31,7 @@ namespace Dargon.InjectedModule
 
 
       public int ProcessId { get { return processId; } }
-      public InjectedModuleConfiguration Configuration { get { return configuration; } }
+      public IInjectedModuleConfiguration Configuration { get { return configuration; } }
 
       public void HandleBootstrapComplete(IDSPExSession session)
       {

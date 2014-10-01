@@ -55,10 +55,11 @@
     <Compile Include="RADS\IRadsProjectReference.cs" />
     <Compile Include="RADS\RadsService.cs" />
     <Compile Include="Session\ILeagueSession.cs" />
+    <Compile Include="Session\LeagueSessionCreatedArgs.cs" />
     <Compile Include="Session\LeagueSessionPhase.cs" />
     <Compile Include="Session\LeagueSessionPhaseChangedArgs.cs" />
     <Compile Include="Session\LeagueSessionProcessLaunchedArgs.cs" />
-    <Compile Include="Session\LeagueSessionWatcherService.cs" />
+    <Compile Include="Session\LeagueSessionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\librads\librads.csproj">

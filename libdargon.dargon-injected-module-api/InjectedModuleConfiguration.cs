@@ -6,7 +6,15 @@ using System.Collections.Generic;
 
 namespace Dargon.InjectedModule
 {
-   public class InjectedModuleConfiguration
+   public interface IInjectedModuleConfiguration
+   {
+      BootstrapConfiguration GetBootstrapConfiguration();
+
+      TConfigurationComponent GetComponentOrNull<TConfigurationComponent>()
+         where TConfigurationComponent : IConfigurationComponent;
+   }
+
+   public class InjectedModuleConfiguration : IInjectedModuleConfiguration
    {
       private readonly IReadOnlyList<IConfigurationComponent> components;
       private readonly BootstrapConfiguration bootstrapConfiguration;

@@ -30,7 +30,7 @@ namespace Dargon.InjectedModule
          }
       }
 
-      public ISession InjectToProcess(int processId, InjectedModuleConfiguration configuration) 
+      public ISession InjectToProcess(int processId, IInjectedModuleConfiguration configuration) 
       {
          logger.Info("Injecting to process " + processId);
 

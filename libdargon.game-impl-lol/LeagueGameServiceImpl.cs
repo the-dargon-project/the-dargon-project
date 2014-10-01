@@ -1,4 +1,5 @@
-﻿using Dargon.Daemon;
+﻿using System.IO;
+using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.InjectedModule.Tasks;
@@ -22,6 +23,7 @@ namespace Dargon.LeagueOfLegends
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
       private readonly DaemonService daemonService;
+      private readonly IProcessProxy processProxy;
       private readonly InjectedModuleService injectedModuleService;
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
@@ -33,14 +35,16 @@ namespace Dargon.LeagueOfLegends
       private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
       private readonly LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
-      private readonly LeagueSessionWatcherServiceImpl leagueSessionWatcherService;
+      private readonly LeagueSessionServiceImpl leagueSessionService;
       private readonly RiotFileSystem gameFileSystem;
+      private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(DaemonService daemonService, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
+      public LeagueGameServiceImpl(DaemonService daemonService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
       {
          logger.Info("Initializing League Game Service");
          this.daemonService = daemonService;
+         this.processProxy = processProxy;
          this.injectedModuleService = injectedModuleService;
          this.processWatcherService = processWatcherService;
          this.modificationRepositoryService = modificationRepositoryService;
@@ -53,9 +57,10 @@ namespace Dargon.LeagueOfLegends
          this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(daemonService);
          this.leagueModificationTasklistCompilerService = new LeagueModificationTasklistCompilerServiceImpl(taskFactory);
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
-         this.leagueSessionWatcherService = new LeagueSessionWatcherServiceImpl(leagueProcessWatcherService);
+         this.leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueSessionWatcherService, radsService);
+         this.leagueInjectedModuleConfigurationFactory = new LeagueInjectedModuleConfigurationFactory();
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
 
          RunDebugActions();
       }
@@ -77,6 +82,15 @@ namespace Dargon.LeagueOfLegends
 
    public class LeagueConfiguration
    {
-      public string RadsPath { get { return @"V:\Riot Games\League of Legends\RADS"; } }
+      public string RadsPath
+      {
+         get
+         {
+            if (Directory.Exists(@"V:\Riot Games\League of Legends\RADS"))
+               return @"V:\Riot Games\League of Legends\RADS";
+            else
+               return @"C:\Riot Games\League of Legends\RADS";
+         }
+      }
    }
 }

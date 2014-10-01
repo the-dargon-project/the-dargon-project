@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Dargon.Modifications;
+using NLog;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
@@ -14,6 +15,8 @@ namespace Dargon.LeagueOfLegends.Modifications
 
    public class ManagableTask : IManagableTask
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly CountdownEvent terminationEvent = new CountdownEvent(1);
       private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
       private readonly CancellationToken cancellationToken;
@@ -66,6 +69,26 @@ namespace Dargon.LeagueOfLegends.Modifications
                SignalTermination();
             }
          }
+      }
+
+      public Status WaitForChainCompletion()
+      {
+         ITask currentTask = this;
+         bool done = false;
+         while (!done) {
+            currentTask.WaitForTermination();
+            if (currentTask.Status == Status.Cancelled) {
+               if (currentTask.NextTask == null) {
+                  logger.Warn("Warning: resolution task " + currentTask + " cancelled and has no next resolution task");
+                  done = true;
+               } else {
+                  currentTask = currentTask.NextTask;
+               }
+            } else if (currentTask.Status == Status.Completed) {
+               done = true;
+            }
+         }
+         return currentTask.Status;
       }
 
       private void SignalTermination() { terminationEvent.Signal(); }

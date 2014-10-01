@@ -1,6 +1,6 @@
 ﻿namespace Dargon.LeagueOfLegends.Modifications
 {
-   public interface IManagableTask
+   public interface IManagableTask : ITask
    {
       void SetNext(ITask next);
 

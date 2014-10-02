@@ -5,6 +5,7 @@ using Dargon.Modifications;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
 using Dargon.Tray;
+using ItzWarty;
 using ItzWarty.Services;
 using NLog;
 using NLog.Config;
@@ -21,6 +22,10 @@ namespace Dargon.Daemon
       private readonly DaemonConfiguration configuration = new DaemonConfiguration();
       private readonly ServiceLocator serviceLocator = new ServiceLocator();
       private readonly IProcessProxy processProxy;
+      private readonly ProcessInjector processInjector;
+      private readonly ProcessDiscoveryMethodFactory processDiscoveryMethodFactory;
+      private readonly IProcessDiscoveryMethod processDiscoveryMethod;
+      private readonly ProcessWatcher processWatcher;
       private readonly TrayService trayService;
       private readonly ProcessInjectionService processInjectionService;
       private readonly ProcessWatcherService processWatcherService;
@@ -46,9 +51,13 @@ namespace Dargon.Daemon
          serviceLocator.RegisterService(typeof(DaemonService), this);
 
          processProxy = new ProcessProxy();
+         processInjector = new ProcessInjector();
+         processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();
+         processDiscoveryMethod = processDiscoveryMethodFactory.CreateOptimalProcessDiscoveryMethod();
+         processWatcher = new ProcessWatcher(processProxy, processDiscoveryMethod);
          trayService = new TrayServiceImpl(serviceLocator, this);
-         processInjectionService = new ProcessInjectionServiceImpl(serviceLocator);
-         processWatcherService = new ProcessWatcherServiceImpl(serviceLocator);
+         processInjectionService = new ProcessInjectionServiceImpl(serviceLocator, processInjector);
+         processWatcherService = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher).With(s => s.Initialize());
          modificationRepositoryService = new ModificationRepositoryServiceImpl(serviceLocator);
          modificationImportService = new ModificationImportServiceImpl(serviceLocator);
          injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);

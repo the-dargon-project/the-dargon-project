@@ -4,7 +4,9 @@ namespace Dargon
 {
    public interface IProcessProxy
    {
-      Process GetProcessById(int id);
-      Process GetProcessOrNull(int id);
+      IProcess GetProcessById(int id);
+      IProcess GetProcessOrNull(int id);
+      IProcess[] GetProcesses();
+      IProcess GetParentProcess(IProcess process);
    }
 }

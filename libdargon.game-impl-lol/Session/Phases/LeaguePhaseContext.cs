@@ -38,16 +38,16 @@ namespace Dargon.LeagueOfLegends.Session.Phases
          OnPhaseChanged(new LeagueSessionPhaseChangedArgs(previousPhase == null ? LeagueSessionPhase.Uninitialized : previousPhase.Phase, currentPhase.Phase));
       }
 
-      public override void HandleRadsUserKernelLaunched(Process process) { currentPhase.HandleRadsUserKernelLaunched(process); }
-      public override void HandleLauncherLaunched(Process process) { currentPhase.HandleLauncherLaunched(process); }
-      public override void HandleClientLaunched(Process process) { currentPhase.HandleClientLaunched(process); }
-      public override void HandleGameLaunched(Process process) { currentPhase.HandleGameLaunched(process); }
-      public override void HandlePatcherLaunched(Process process) { currentPhase.HandlePatcherLaunched(process); }
+      public override void HandleRadsUserKernelLaunched(IProcess process) { currentPhase.HandleRadsUserKernelLaunched(process); }
+      public override void HandleLauncherLaunched(IProcess process) { currentPhase.HandleLauncherLaunched(process); }
+      public override void HandleClientLaunched(IProcess process) { currentPhase.HandleClientLaunched(process); }
+      public override void HandleGameLaunched(IProcess process) { currentPhase.HandleGameLaunched(process); }
+      public override void HandlePatcherLaunched(IProcess process) { currentPhase.HandlePatcherLaunched(process); }
 
-      public override void HandlePatcherQuit(Process process) { currentPhase.HandlePatcherQuit(process); }
-      public override void HandleLauncherQuit(Process process) { currentPhase.HandleLauncherQuit(process); }
-      public override void HandleClientQuit(Process process) { currentPhase.HandleClientQuit(process); }
-      public override void HandleGameQuit(Process process) { currentPhase.HandleGameQuit(process); }
+      public override void HandlePatcherQuit(IProcess process) { currentPhase.HandlePatcherQuit(process); }
+      public override void HandleLauncherQuit(IProcess process) { currentPhase.HandleLauncherQuit(process); }
+      public override void HandleClientQuit(IProcess process) { currentPhase.HandleClientQuit(process); }
+      public override void HandleGameQuit(IProcess process) { currentPhase.HandleGameQuit(process); }
 
       private void OnPhaseChanged(LeagueSessionPhaseChangedArgs e)
       {

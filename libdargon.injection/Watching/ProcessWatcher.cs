@@ -21,26 +21,22 @@ namespace Dargon.Processes.Watching
    ///    ParentProcessID, ProcessID, ProcessName
    /// 3. Event handlers can then call ProcessWatcher.Inject(processId, dllPath).
    /// </summary>
-   public class ProcessWatcher
+   public class ProcessWatcher : IProcessWatcher
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly IProcessProxy processProxy;
+      private readonly IProcessDiscoveryMethod discoveryMethod;
+      
       public event OnProcessDiscovered NewProcessFound;
 
-      private IProcessDiscoveryMethod discoveryMethod = null;
-
-      public ProcessWatcher()
+      public ProcessWatcher(IProcessProxy processProxy, IProcessDiscoveryMethod discoveryMethod)
       {
          if (IntPtr.Size != 4)
             logger.Warn("Process Stalker: IntPtr Size != 4"); //Ensure we're running in 32-bit or WoW64
 
-         try {
-            discoveryMethod = new WmiProcessDiscoveryMethod();
-         } catch (Exception e) {
-            logger.Warn("Unable to init WMIStalkerMethod: " + e.ToString());
-            logger.Warn("Fall back to poll method - dargon will be less memory/cpu efficient");
-            discoveryMethod = new PollingProcessDiscoveryMethod();
-         }
+         this.processProxy = processProxy;
+         this.discoveryMethod = discoveryMethod;
 
          //Bubble events from our stalker method to the event handlers of the process stalker
          discoveryMethod.ProcessDiscovered += (a, b) => {
@@ -68,10 +64,10 @@ namespace Dargon.Processes.Watching
       /// Takes in a process and returns true if the process should be returned in the filtered
       /// list of processes.
       /// </param>
-      public List<Process> FindProcess(Func<Process, bool> callback)
+      public List<IProcess> FindProcess(Func<IProcess, bool> callback)
       {
-         List<Process> result = new List<Process>();
-         foreach (var process in Process.GetProcesses()) {
+         var result = new List<IProcess>();
+         foreach (var process in processProxy.GetProcesses()) {
             try {
                if (callback(process))
                   result.Add(process);

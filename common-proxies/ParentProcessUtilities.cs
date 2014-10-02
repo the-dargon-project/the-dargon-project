@@ -1,32 +1,20 @@
-﻿using System;
+﻿// http://stackoverflow.com/questions/394816/how-to-get-parent-process-in-net-in-managed-way
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Dargon.Processes.Kernel
+namespace Dargon
 {
    /// <summary>
    /// A utility class to determine a process parent.
    /// </summary>
-   [StructLayout(LayoutKind.Sequential)]
-   public struct ParentProcessUtilities
+   internal static class ParentProcessUtilities
    {
-      // These members must match PROCESS_BASIC_INFORMATION
-      internal IntPtr Reserved1;
-      internal IntPtr PebBaseAddress;
-      internal IntPtr Reserved2_0;
-      internal IntPtr Reserved2_1;
-      internal IntPtr UniqueProcessId;
-      internal IntPtr InheritedFromUniqueProcessId;
 
       [DllImport("ntdll.dll")]
-      private static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref ParentProcessUtilities processInformation, int processInformationLength, out int returnLength);
-
-      /// <summary>
-      /// Gets the parent process of the current process.
-      /// </summary>
-      /// <returns>An instance of the Process class.</returns>
-      public static Process GetParentProcess() { return GetParentProcess(Process.GetCurrentProcess().Handle); }
+      private static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref _PROCESS_BASIC_INFORMATION processInformation, int processInformationLength, out int returnLength);
 
       /// <summary>
       /// Gets the parent process of specified process.
@@ -46,7 +34,7 @@ namespace Dargon.Processes.Kernel
       /// <returns>An instance of the Process class.</returns>
       public static Process GetParentProcess(IntPtr handle)
       {
-         ParentProcessUtilities pbi = new ParentProcessUtilities();
+         _PROCESS_BASIC_INFORMATION pbi = new _PROCESS_BASIC_INFORMATION();
          int returnLength;
          int status = NtQueryInformationProcess(handle, 0, ref pbi, Marshal.SizeOf(pbi), out returnLength);
          if (status != 0)
@@ -58,6 +46,18 @@ namespace Dargon.Processes.Kernel
             // not found
             return null;
          }
+      }
+
+      [StructLayout(LayoutKind.Sequential)]
+      public struct _PROCESS_BASIC_INFORMATION
+      {
+         // These members must match PROCESS_BASIC_INFORMATION
+         internal IntPtr Reserved1;
+         internal IntPtr PebBaseAddress;
+         internal IntPtr Reserved2_0;
+         internal IntPtr Reserved2_1;
+         internal IntPtr UniqueProcessId;
+         internal IntPtr InheritedFromUniqueProcessId;
       }
    }
 }

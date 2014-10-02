@@ -26,14 +26,14 @@ namespace Dargon.LeagueOfLegends.Session.Phases
          logger.Info("End Game League Phase");
       }
 
-      public override void HandleRadsUserKernelLaunched(Process process) { throw new InvalidOperationException(); }
-      public override void HandleLauncherLaunched(Process process) { throw new InvalidOperationException(); }
-      public override void HandlePatcherLaunched(Process process) { throw new InvalidOperationException(); }
-      public override void HandleClientLaunched(Process process) { throw new InvalidOperationException(); }
-      public override void HandleGameLaunched(Process process) { throw new InvalidOperationException(); }
+      public override void HandleRadsUserKernelLaunched(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandleLauncherLaunched(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandlePatcherLaunched(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandleClientLaunched(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandleGameLaunched(IProcess process) { throw new InvalidOperationException(); }
 
-      public override void HandleLauncherQuit(Process process) { base.HandleLauncherQuit(process); }
-      public override void HandleClientQuit(Process process) { base.HandleClientQuit(process); }
-      public override void HandleGameQuit(Process process) { base.HandleGameQuit(process); TransitionTo(new LeaguePhaseClient(context)); }
+      public override void HandleLauncherQuit(IProcess process) { base.HandleLauncherQuit(process); }
+      public override void HandleClientQuit(IProcess process) { base.HandleClientQuit(process); }
+      public override void HandleGameQuit(IProcess process) { base.HandleGameQuit(process); TransitionTo(new LeaguePhaseClient(context)); }
    }
 }

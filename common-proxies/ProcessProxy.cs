@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using ImpromptuInterface;
+using ItzWarty;
 
 namespace Dargon
 {
    public class ProcessProxy : IProcessProxy
    {
-      public Process GetProcessById(int id) { return Process.GetProcessById(id); }
+      public IProcess GetProcessById(int id) { return WrapProcess(Process.GetProcessById(id)); }
 
-      public Process GetProcessOrNull(int id)
+      public IProcess GetProcessOrNull(int id)
       {
          try {
             return GetProcessById(id);
@@ -15,5 +17,14 @@ namespace Dargon
             return null; // process already exited
          }
       }
+
+      public IProcess[] GetProcesses() { 
+         var processes = Process.GetProcesses();
+         return Util.Generate(processes.Length, i => WrapProcess(processes[i]));
+      }
+
+      public IProcess GetParentProcess(IProcess process) { return WrapProcess(ParentProcessUtilities.GetParentProcess(process.Id)); }
+
+      private IProcess WrapProcess(Process process) { return process.ActLike<IProcess>(); }
    }
 }

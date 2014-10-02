@@ -6,16 +6,16 @@ namespace Dargon.LeagueOfLegends.Session
    public class LeagueSessionProcessLaunchedArgs
    {
       private readonly LeagueProcessType type;
-      private readonly Process process;
+      private readonly IProcess process;
 
-      public LeagueSessionProcessLaunchedArgs(LeagueProcessType type, Process process)
+      public LeagueSessionProcessLaunchedArgs(LeagueProcessType type, IProcess process)
       {
          this.type = type;
          this.process = process;
       }
 
       public LeagueProcessType Type { get { return type; } }
-      public Process Process { get { return process; } }
+      public IProcess Process { get { return process; } }
    }
 
    public delegate void LeagueSessionProcessLaunchedHandler(ILeagueSession session, LeagueSessionProcessLaunchedArgs e);

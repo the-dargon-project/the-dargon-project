@@ -13,8 +13,8 @@ namespace Dargon.LeagueOfLegends.Session
 
       private readonly object synchronization = new object();
       private readonly LeaguePhaseContext phaseContext;
-      private readonly ConcurrentDictionary<LeagueProcessType, Process> processesByType = new ConcurrentDictionary<LeagueProcessType, Process>(); 
-      private Process mainPatcherProcess = null;
+      private readonly ConcurrentDictionary<LeagueProcessType, IProcess> processesByType = new ConcurrentDictionary<LeagueProcessType, IProcess>(); 
+      private IProcess mainPatcherProcess = null;
 
       public event LeagueSessionProcessLaunchedHandler ProcessLaunched;
       public event LeagueSessionPhaseChangedHandler PhaseChanged;
@@ -32,7 +32,7 @@ namespace Dargon.LeagueOfLegends.Session
          OnPhaseChanged(this, e); 
       }
 
-      public void HandleProcessLaunched(Process process, LeagueProcessType type)
+      public void HandleProcessLaunched(IProcess process, LeagueProcessType type)
       {
          logger.Info("Dispatching Process Launched " + type);
          OnProcessLaunched(this, new LeagueSessionProcessLaunchedArgs(type, process));
@@ -57,11 +57,11 @@ namespace Dargon.LeagueOfLegends.Session
             phaseContext.HandleGameLaunched(process);
       }
 
-      public void HandleProcessQuit(Process process, LeagueProcessType type)
+      public void HandleProcessQuit(IProcess process, LeagueProcessType type)
       {
          logger.Info("Dispatching Process Quit " + type);
          if (type != LeagueProcessType.Patcher || process == mainPatcherProcess) {
-            Process removedProcess;
+            IProcess removedProcess;
             processesByType.TryRemove(type, out removedProcess);
          } else {
             return;
@@ -79,7 +79,7 @@ namespace Dargon.LeagueOfLegends.Session
             phaseContext.HandleGameQuit(process);
       }
 
-      public Process GetProcessOrNull(LeagueProcessType processType) { return processesByType.GetValueOrDefault(processType); }
+      public IProcess GetProcessOrNull(LeagueProcessType processType) { return processesByType.GetValueOrDefault(processType); }
 
       protected virtual void OnProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
       {

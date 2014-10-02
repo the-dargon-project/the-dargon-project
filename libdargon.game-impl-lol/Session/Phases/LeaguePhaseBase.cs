@@ -20,16 +20,16 @@ namespace Dargon.LeagueOfLegends.Session.Phases
       public virtual void BeginPhase(BeginPhaseArgs args) { }
       public virtual void EndPhase() { }
 
-      public abstract void HandleRadsUserKernelLaunched(Process process);
-      public abstract void HandleLauncherLaunched(Process process);
-      public abstract void HandlePatcherLaunched(Process process);
-      public abstract void HandleClientLaunched(Process process);
-      public abstract void HandleGameLaunched(Process process);
+      public abstract void HandleRadsUserKernelLaunched(IProcess process);
+      public abstract void HandleLauncherLaunched(IProcess process);
+      public abstract void HandlePatcherLaunched(IProcess process);
+      public abstract void HandleClientLaunched(IProcess process);
+      public abstract void HandleGameLaunched(IProcess process);
 
-      public virtual void HandlePatcherQuit(Process process) { }
-      public virtual void HandleLauncherQuit(Process process) { }
-      public virtual void HandleClientQuit(Process process) { }
-      public virtual void HandleGameQuit(Process process) { }
+      public virtual void HandlePatcherQuit(IProcess process) { }
+      public virtual void HandleLauncherQuit(IProcess process) { }
+      public virtual void HandleClientQuit(IProcess process) { }
+      public virtual void HandleGameQuit(IProcess process) { }
 
       public class BeginPhaseArgs
       {

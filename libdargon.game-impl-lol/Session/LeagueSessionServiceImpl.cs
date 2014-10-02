@@ -67,7 +67,7 @@ namespace Dargon.LeagueOfLegends.Session
          }
       }
 
-      private void HandleLeagueProcessQuit(Process process, LeagueProcessType processType)
+      private void HandleLeagueProcessQuit(IProcess process, LeagueProcessType processType)
       {
          logger.Info("Handling process " + process.Id + " quit");
          LeagueSession session;

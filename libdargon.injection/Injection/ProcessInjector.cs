@@ -12,7 +12,7 @@ namespace Dargon.Processes.Injection
    /// <summary>
    /// Handles injection of dynamically linked libraries to remote processes
    /// </summary>
-   public class ProcessInjector
+   public class ProcessInjector : IProcessInjector
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 

@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-impl.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libtestutil", "..\libtestutil\libtestutil.csproj", "{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.common.Test", "libdargon.common.Test\libdargon.common.Test.csproj", "{9B1858F9-D321-41A1-8793-A43B1A5C6958}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Console|Any CPU = Console|Any CPU
@@ -619,6 +621,24 @@ Global
 		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Any CPU.Build.0 = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Win32.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|x86.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

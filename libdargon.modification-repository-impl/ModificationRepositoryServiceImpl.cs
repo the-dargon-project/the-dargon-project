@@ -25,6 +25,7 @@ namespace Dargon.ModificationRepositories
          logger.Info("Clearing All Modifications");
          modifications.Clear(); 
       }
+
       public void AddModification(IModification modification)
       {
          logger.Info("Adding Modification " + modification); 

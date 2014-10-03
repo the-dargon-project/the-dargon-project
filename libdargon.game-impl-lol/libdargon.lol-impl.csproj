@@ -41,6 +41,7 @@
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
     <Compile Include="Lifecycle\ILeagueInjectedModuleConfigurationFactory.cs" />
+    <Compile Include="Lifecycle\LeagueInjectedModuleConfigurationFactory.cs" />
     <Compile Include="Modifications\LeagueModificationTasklistCompilerServiceImpl.cs" />
     <Compile Include="Modifications\ModificationCompilationTable.cs" />
     <Compile Include="Modifications\LeagueModificationObjectCompilerServiceImpl.cs" />

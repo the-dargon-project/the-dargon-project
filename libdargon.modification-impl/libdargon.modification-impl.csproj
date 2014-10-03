@@ -46,7 +46,7 @@
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
+    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
     </ProjectReference>

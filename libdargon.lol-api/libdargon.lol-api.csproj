@@ -66,11 +66,11 @@
       <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
       <Name>librads</Name>
     </ProjectReference>
-    <ProjectReference Include="..\common-proxies\common-proxies.csproj">
+    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
       <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
-      <Name>common-proxies</Name>
+      <Name>common-proxies-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.dargon-injected-module-api\libdargon.injected-module-api.csproj">
+    <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>libdargon.injected-module-api</Name>
     </ProjectReference>

@@ -61,15 +61,19 @@
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
     </ProjectReference>
-    <ProjectReference Include="..\common-proxies\common-proxies.csproj">
+    <ProjectReference Include="..\common-proxies-impl\common-proxies-impl.csproj">
+      <Project>{16A9F397-500C-4863-BB0E-AC2FA63214A1}</Project>
+      <Name>common-proxies-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
       <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
-      <Name>common-proxies</Name>
+      <Name>common-proxies-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.dargon-injected-module-api\libdargon.injected-module-api.csproj">
+    <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>libdargon.injected-module-api</Name>
     </ProjectReference>
@@ -77,7 +81,7 @@
       <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>
       <Name>libdargon.lol-impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
+    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
     </ProjectReference>
@@ -89,7 +93,7 @@
       <Project>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</Project>
       <Name>libdargon.injected-module-impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.injection\libdargon.process-impl.csproj">
+    <ProjectReference Include="..\libdargon.process-impl\libdargon.process-impl.csproj">
       <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>
       <Name>libdargon.process-impl</Name>
     </ProjectReference>

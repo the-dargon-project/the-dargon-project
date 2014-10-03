@@ -1,4 +1,5 @@
-﻿using Dargon.InjectedModule;
+﻿using System;
+using Dargon.InjectedModule;
 using Dargon.InjectedModule.Tasks;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
@@ -29,7 +30,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
       private readonly IReadOnlyDictionary<LeagueProcessType, LeagueSessionProcessLaunchedHandler> processLaunchedHandlers;
 
-      public LeagueLifecycleServiceImpl(InjectedModuleService injectedModuleService, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationObjectCompilerService leagueModificationObjectCompilerService, LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService, LeagueSessionService leagueSessionService, RadsServiceImpl radsService, ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory)
+      public LeagueLifecycleServiceImpl(InjectedModuleService injectedModuleService, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationObjectCompilerService leagueModificationObjectCompilerService, LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService, LeagueSessionService leagueSessionService, RadsService radsService, ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory)
       {
          this.injectedModuleService = injectedModuleService;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
@@ -40,8 +41,6 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          this.radsService = radsService;
          this.leagueInjectedModuleConfigurationFactory = leagueInjectedModuleConfigurationFactory;
 
-         leagueSessionService.SessionCreated += HandleLeagueSessionCreated;
-
          phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
             new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
             new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition
@@ -51,6 +50,11 @@ namespace Dargon.LeagueOfLegends.Lifecycle
             LeagueProcessType.Launcher, (s, e) => HandlePreclientProcessLaunched(e.Process.Id),
             LeagueProcessType.Patcher, (s, e) => HandlePreclientProcessLaunched(e.Process.Id)
          );
+      }
+
+      public void Initialize()
+      {
+         leagueSessionService.SessionCreated += HandleLeagueSessionCreated;
       }
 
       private void HandleLeagueSessionCreated(LeagueSessionService service, LeagueSessionCreatedArgs e)
@@ -69,12 +73,12 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          }
       }
 
-      public void HandlePreclientProcessLaunched(int processId)
+      internal void HandlePreclientProcessLaunched(int processId)
       {
          injectedModuleService.InjectToProcess(processId, leagueInjectedModuleConfigurationFactory.GetPreclientConfiguration());
       }
 
-      private void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
+      internal void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
       { 
          logger.Info("Phase Change from " + e.Previous + " to " + e.Current);
          PhaseChangeHandler handler;
@@ -83,20 +87,20 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          }
       }
 
-      public void HandleUninitializedToPreclientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
+      internal void HandleUninitializedToPreclientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Uninitialized to Preclient Phase Transition!");
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
 
-         var resolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client));
+         var resolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
          radsService.Suspend();
          resolutionTasks.ForEach(task => task.WaitForChainCompletion());
          
-         var compilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client));
+         var compilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
          compilationTasks.ForEach(task => task.WaitForChainCompletion());
       }
 
-      private void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
+      internal void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Preclient to Client Phase Transition!");
          radsService.Resume();
@@ -105,19 +109,19 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, leagueInjectedModuleConfigurationFactory.GetClientConfiguration(tasklist));
 
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
-         var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client));
+         var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
          clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 
-         var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client));
+         var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
          clientCompilationTasks.ForEach(task => task.WaitForChainCompletion());
 
          tasklist.SetTasklist(mods.Aggregate(new Tasklist(), (tl, mod) => tl.AddRange(leagueModificationTasklistCompilerService.BuildTasklist(mod, ModificationTargetType.Client))));
 
          // optimization: compile game data here, so that we don't have to compile when game starts
-         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game));
+         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
          gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 
-         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game));
+         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
          gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
          BuildLeagueIndexFiles();
       }

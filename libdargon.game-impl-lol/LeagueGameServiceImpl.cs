@@ -13,6 +13,7 @@ using Dargon.LeagueOfLegends.Session;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using Dargon.Processes.Watching;
+using ItzWarty;
 using NLog;
 
 namespace Dargon.LeagueOfLegends
@@ -60,7 +61,7 @@ namespace Dargon.LeagueOfLegends
          this.leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          this.leagueInjectedModuleConfigurationFactory = new LeagueInjectedModuleConfigurationFactory();
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
 
          RunDebugActions();
       }

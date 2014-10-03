@@ -44,7 +44,7 @@ namespace Dargon.Daemon
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
-         InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration);
+         InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
          IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
          core.Run();
       }

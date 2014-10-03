@@ -40,7 +40,9 @@
     <Compile Include="Components\DebugConfigurationComponent.cs" />
     <Compile Include="Components\FilesystemConfigurationComponent.cs" />
     <Compile Include="Components\IConfigurationComponent.cs" />
+    <Compile Include="IInjectedModuleServiceConfiguration.cs" />
     <Compile Include="ISession.cs" />
+    <Compile Include="ISessionFactory.cs" />
     <Compile Include="SessionEndedEventArgs.cs" />
     <Compile Include="Tasks\ITask.cs" />
     <Compile Include="Tasks\ITaskFactory.cs" />

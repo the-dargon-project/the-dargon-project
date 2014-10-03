@@ -53,6 +53,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libdtp\libdtp.csproj">
+      <Project>{C9F92566-1F94-4235-944C-19364459F9A6}</Project>
+      <Name>libdtp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
@@ -76,6 +80,10 @@
     <ProjectReference Include="..\libdargon.game\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.injected-module-impl.Test\libdargon.injected-module-impl.Test.csproj">
+      <Project>{CE788C59-661C-41CE-8D50-4C9B57181EF9}</Project>
+      <Name>libdargon.injected-module-impl.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-impl\libdargon.injected-module-impl.csproj">
       <Project>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</Project>

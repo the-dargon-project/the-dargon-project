@@ -39,7 +39,9 @@
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Injection\IProcessInjectionConfiguration.cs" />
     <Compile Include="Injection\IProcessInjector.cs" />
+    <Compile Include="Injection\ProcessInjectionConfiguration.cs" />
     <Compile Include="Injection\ProcessInjectionServiceImpl.cs" />
     <Compile Include="Kernel\AllocationType.cs" />
     <Compile Include="Kernel\FreeType.cs" />

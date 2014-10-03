@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}</ProjectGuid>
+    <ProjectGuid>{C84A78B6-859D-45C8-9F50-90E6CEF690C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Processes</RootNamespace>
-    <AssemblyName>libdargon.process-impl.Test</AssemblyName>
+    <AssemblyName>libdargon.process-api.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,35 +50,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Injection\ProcessInjectionConfigurationTest.cs" />
-    <Compile Include="Injection\ProcessInjectionServiceImplTest.cs" />
+    <Compile Include="CreatedProcessDescriptorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Watching\ProcessWatcherServiceImplTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libtestutil\libtestutil.csproj">
       <Project>{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}</Project>
       <Name>libtestutil</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\common-proxies\common-proxies.csproj">
-      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
-      <Name>common-proxies</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injection\libdargon.process-impl.csproj">
-      <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>
-      <Name>libdargon.process-impl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

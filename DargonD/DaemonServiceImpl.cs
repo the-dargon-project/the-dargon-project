@@ -4,6 +4,7 @@ using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
+using Dargon.Transport;
 using Dargon.Tray;
 using ItzWarty;
 using ItzWarty.Services;
@@ -27,10 +28,14 @@ namespace Dargon.Daemon
       private readonly IProcessDiscoveryMethod processDiscoveryMethod;
       private readonly ProcessWatcher processWatcher;
       private readonly TrayService trayService;
+      private readonly ProcessInjectionConfiguration processInjectionConfiguration;
       private readonly ProcessInjectionService processInjectionService;
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
       private readonly ModificationImportService modificationImportService;
+      private readonly IDtpNodeFactory dtpNodeFactory;
+      private readonly ISessionFactory sessionFactory;
+      private readonly InjectedModuleServiceConfiguration injectedModuleServiceConfiguration;
       private readonly InjectedModuleService injectedModuleService;
       private readonly LeagueGameServiceImpl leagueGameServiceImpl;
       private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
@@ -56,11 +61,15 @@ namespace Dargon.Daemon
          processDiscoveryMethod = processDiscoveryMethodFactory.CreateOptimalProcessDiscoveryMethod();
          processWatcher = new ProcessWatcher(processProxy, processDiscoveryMethod);
          trayService = new TrayServiceImpl(serviceLocator, this);
-         processInjectionService = new ProcessInjectionServiceImpl(serviceLocator, processInjector);
+         processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
+         processInjectionService = new ProcessInjectionServiceImpl(serviceLocator, processInjector, processInjectionConfiguration);
          processWatcherService = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher).With(s => s.Initialize());
          modificationRepositoryService = new ModificationRepositoryServiceImpl(serviceLocator);
          modificationImportService = new ModificationImportServiceImpl(serviceLocator);
-         injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService);
+         dtpNodeFactory = new DefaultDtpNodeFactory();
+         sessionFactory = new SessionFactory(dtpNodeFactory);
+         injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
+         injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration);
 
          leagueGameServiceImpl = new LeagueGameServiceImpl(this, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
       }

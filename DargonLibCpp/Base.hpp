@@ -37,7 +37,7 @@ namespace Dargon {
    {
    public:
       // The size of our blob's data block
-      UINT32 const& size;
+      UINT32 const size;
 
       // Pointer to the data block of our blob.  Owned and disposed by the blob.
       UINT8* const data;

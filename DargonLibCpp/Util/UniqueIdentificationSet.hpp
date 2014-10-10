@@ -2,7 +2,7 @@
 
 #include <list>
 #include <boost/utility.hpp>
-#include <boost/thread.hpp>
+#include <mutex>
 #include "../Dargon.hpp"
 
 namespace Dargon { namespace Util {
@@ -39,7 +39,7 @@ namespace Dargon { namespace Util {
       /// <summary>
       /// We use this lock object to ensure that only one thread modifies the m_segments list at a time.
       /// </summary>
-      boost::mutex m_mutex;
+      std::mutex m_mutex;
 
    public:
       /// <summary>

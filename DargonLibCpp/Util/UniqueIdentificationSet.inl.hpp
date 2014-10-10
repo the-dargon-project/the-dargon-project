@@ -7,8 +7,8 @@ inline std::ostream& Dargon::Util::operator<<(std::ostream& os, const Dargon::Ut
 {
    os << "[UniqueIdentificationSet {";
    {
-      boost::mutex& mutex = const_cast<boost::mutex&>(uidSet.m_mutex);
-      boost::lock_guard<boost::mutex> lock(mutex );
+      std::mutex& mutex = const_cast<std::mutex&>(uidSet.m_mutex);
+      std::lock_guard<std::mutex> lock(mutex);
       auto it = uidSet.m_segments.begin(); 
       while(it != uidSet.m_segments.end())
       {

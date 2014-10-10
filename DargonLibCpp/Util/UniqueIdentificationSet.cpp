@@ -2,7 +2,6 @@
 
 #include "../dlc_pch.hpp"
 #include <list>
-#include <boost/thread.hpp>
 #include "../Dargon.hpp"
 #include "UniqueIdentificationSet.hpp"
 using namespace Dargon::Util;
@@ -19,15 +18,14 @@ UniqueIdentificationSet::UniqueIdentificationSet(UINT32 low, UINT32 high)
 UINT32 UniqueIdentificationSet::TakeUniqueID()
 {
    // TODO: This method assumes that we haven't maxed out the set values
-   boost::lock_guard<boost::mutex> lock(m_mutex);
+   std::lock_guard<std::mutex> lock(m_mutex);
    auto it = m_segments.begin();
    assert(it != m_segments.end()); // end is after last element
    //std::cout << " !! " << m_segments.size() << " // " << m_segments.begin()._Ptr << " : " << m_segments.end()._Ptr << std::endl;
    //std::cout << "!/! " << (m_segments.begin() != m_segments.end()) << std::endl;
-   if(it->low != it->high)
+   if (it->low != it->high) {
       return it->low++;
-   else
-   {
+   } else {
       UINT32 returnedValue = it->low;
       m_segments.erase(it);
       return it->low;
@@ -36,7 +34,7 @@ UINT32 UniqueIdentificationSet::TakeUniqueID()
 bool UniqueIdentificationSet::TakeUniqueID(UINT32 uid)
 {
    {
-      boost::lock_guard<boost::mutex> lock(m_mutex);
+      std::lock_guard<std::mutex> lock(m_mutex);
       auto it = m_segments.begin();
       bool done = false;
       while (it != m_segments.end() && !done)
@@ -84,7 +82,7 @@ bool UniqueIdentificationSet::TakeUniqueID(UINT32 uid)
 bool UniqueIdentificationSet::GiveUniqueID(UINT32 value)
 {
    {
-      boost::lock_guard<boost::mutex> lock(m_mutex);
+      std::lock_guard<std::mutex> lock(m_mutex);
       //Segment segment;
       //LinkedListNode<Segment> neighborNode;
       SegmentList::iterator* lastSegment = nullptr;

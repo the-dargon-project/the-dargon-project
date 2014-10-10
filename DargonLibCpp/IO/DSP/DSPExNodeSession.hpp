@@ -42,6 +42,8 @@ namespace Dargon { namespace IO { namespace DSP {
       typedef std::recursive_mutex MutexType;
       typedef std::unique_lock<MutexType> LockType;
 
+      typedef std::uint32_t TransactionIdType;
+
       /// <summary>
       /// Whether or not debug logging is enabled.
       /// </summary>
@@ -74,7 +76,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// Attempts to connect locally with the given pipename.  If the named pipe connection fails,
       /// Dargon falls back to a TCP Socket connection.
       /// </summary>
-      bool ConnectLocal(std::string pipeName = "Dargon");
+      bool ConnectLocal(const std::string& pipeName = "Dargon");
       
    private:
       static unsigned int WINAPI StaticFrameReceivingThreadStart(void* pThis);
@@ -178,7 +180,7 @@ namespace Dargon { namespace IO { namespace DSP {
       bool Echo(BYTE* buffer, UINT32 length);
 
       // @seealso: ILogger
-      void Log(UINT32 loggerLevel, DoLog logger);
+      void Log(UINT32 loggerLevel, LoggingFunction& logger);
 
       /// <summary>
       /// Fills the given BootstrapContext structure's Flags and Properties fields with data
@@ -247,14 +249,14 @@ namespace Dargon { namespace IO { namespace DSP {
       /// set their HIGH bit; The set is initially filled to the range [0x00000000, 0x7FFFFFFF]
       /// low: 0b00000000 00000000 00000000 00000000 high: 0b01111111 11111111 11111111 11111111
       /// </summary>
-      Dargon::Util::UniqueIdentificationSet m_locallyInitializedUIDSet;
+      Dargon::Util::UniqueIdentificationSet<TransactionIdType> m_locallyInitializedUIDSet;
       
       /// <summary>
       /// This provides an initially filled Unique Identification Set for interactions IDing.
       /// We give UIDs from this set to label remotely initiated interactions.  Initially,
       /// the set is empty.  Technically, the valid range of the set is [0x80000000, 0xFFFFFFFF]
       /// </summary>
-      Dargon::Util::UniqueIdentificationSet m_remotelyInitializedUIDSet;
+      Dargon::Util::UniqueIdentificationSet<TransactionIdType> m_remotelyInitializedUIDSet;
       
       /// <summary>
       /// Pairs locally initialized transactions with their associated transaction handlers.  

@@ -125,7 +125,6 @@
     <ClCompile Include="Util\BufferManager.cpp" />
     <ClCompile Include="Util\CountdownEvent.cpp" />
     <ClCompile Include="Util\Logger.cpp" />
-    <ClCompile Include="Util\UniqueIdentificationSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.hpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="Util\Logger.inl.hpp" />
     <ClInclude Include="Util\LoggerLevels.hpp" />
     <ClInclude Include="Util\UniqueIdentificationSet.hpp" />
-    <ClInclude Include="Util\UniqueIdentificationSet.inl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,105 +1,192 @@
 #pragma once
 
+#include <limits>
 #include <list>
+#include <type_traits>
 #include <boost/utility.hpp>
 #include <mutex>
+#include <stdexcept>
 #include "../Dargon.hpp"
 
 namespace Dargon { namespace Util {
-   // See ItzWartyLib c# implementation for comments.
+   // #define TValue UINT32
+
+   template<typename TValue, typename = typename std::enable_if<std::is_arithmetic<TValue>::value, TValue>::type>
    class UniqueIdentificationSet : boost::noncopyable
    {
-   private:
-      /// <summary>
-      /// A segment in our UID Set
-      /// <seealso cref="UniqueIdentificationSet"/>
-      /// </summary>
-      typedef struct _Segment {
+      class _Node {
       public:
-         /// <summary>
-         /// The low end of our segment's range
-         /// </summary>
-         UINT32 low;
+         TValue low;
+         TValue high;
 
-         /// <summary>
-         /// The high end of our segment's range
-         /// </summary>
-         UINT32 high;
+         _Node* next;
+         _Node* prev;
 
-         _Segment(UINT32 low, UINT32 high) { this->low = low; this->high = high; }
-      } Segment;
-      
-      typedef std::list<Segment> SegmentList;
-      
-      /// <summary>
-      /// Our linkedlist of segments
-      /// </summary>
-      SegmentList m_segments;
-      
-      /// <summary>
-      /// We use this lock object to ensure that only one thread modifies the m_segments list at a time.
-      /// </summary>
-      std::mutex m_mutex;
+         _Node(TValue low, TValue high) : _Node(low, high, nullptr, nullptr) { }
+         _Node(TValue low, TValue high, _Node* next, _Node* prev) : low(low), high(high), next(next), prev(prev) { }
+
+         inline bool Contains(TValue value) { return low <= value && value <= high; }
+      };
+
+      typedef std::numeric_limits<TValue> limits;
+      typedef std::mutex TMutex;
+      typedef std::lock_guard<TMutex> TLock;
+
+      _Node* front;
+      std::mutex mutex;
 
    public:
-      /// <summary>
-      /// Initializes a new instance of a Unique Identification Set as either filled or empty
-      /// </summary>
-      /// <param name="filled">
-      /// If set to true, the set is initially full.  Otherwise, the set is initially empty.
-      /// </param>
-      UniqueIdentificationSet(bool filled);
-            
-      /// <summary>
-      /// Initializes a new instance of a Unique Identification Set with the given initial range of
-      /// available values
-      /// </summary>
-      /// <param name="low">The low bound of the set</param>
-      /// <param name="high">The high bound of the set</param>
-      UniqueIdentificationSet(UINT32 low, UINT32 high);
+      UniqueIdentificationSet(bool filled) : UniqueIdentificationSet(filled ? limits::min() : 0, filled ? limits::min() : 0) {}
+      UniqueIdentificationSet(TValue low, TValue high) : front(new _Node(low, high)) { }
 
-      /// <summary>
-      /// Takes a unique identifier from the Unique Identification set.
-      ///     foreach segment
-      ///        if(segment.low != segment.high)
-      ///          return segment.low--;
-      /// </summary>
-      /// <returns>A unique identifier</returns>
-      UINT32 TakeUniqueID();
+      TValue TakeUniqueID() {
+         TLock lock(mutex);
+         if (front == nullptr) {
+            throw std::runtime_error("Attempted to take Unique ID from empty Unique ID set.");
+         } else {
+            auto result = front->low++;
+            if (front->low > front->high) {
+               auto oldFront = front;
+               auto newFront = front->next;
+               _Unlink(oldFront, newFront);
+               delete oldFront;
+               front = newFront;
+            }
+            return result;
+         }
+      }
 
-      /// <summary>
-      /// Takes a unique identifier from the Unique Identification set.
-      /// If the UID does not exist in the set, an exception will be thrown.
-      /// </summary>
-      /// <param name="uid">The UID which we are taking from the set</param>
-      /// <returns>A unique identifier</returns>
-      bool TakeUniqueID(UINT32 uid);
-      
-      /// <summary>
-      /// Returns a unique identifier to the Unique Identification Set.
-      ///     foreach segment
-      ///        if(segment.low == value + 1) //This ensures we don't face overflow issues
-      ///          segment.low = value;
-      ///        else if(segment.high = value - 1)
-      ///        {
-      ///          segment.high = value;
-      ///          if(nextSegment.low = segment.high)
-      ///          {
-      ///            segment.high = nextSegment.high;
-      ///            RemoveSegment(nextSegment).
-      ///          }
-      ///        }
-      ///        else if(segment.low > value) // Ie: Inserting 3 before [5, INT32_MAX]
-      ///        {
-      ///          segment.prepend([value, value]);
-      ///        }
-      /// </summary>
-      /// <param name="value">The UID which we are returning to the set.</param>
-      bool GiveUniqueID(UINT32 value);
+      bool TakeUniqueID(TValue value) {
+         if (front == nullptr) {
+            return false;
+         } else {
+            if (front->low == value) {
+               TakeUniqueID(); // Takes frontmost value
+               return true;
+            } else {
+               for (auto current = front; current != nullptr; current = current->next) {
+                  if (current->Contains(value)) {
+                     if (current->low == current->high) {
+                        auto oldPrev = current->prev;
+                        auto oldNext = current->next;
+                        _Link(oldPrev, oldNext);
+                        delete current;
+                        return true;
+                     } else if (current->low == value) {
+                        current->low++;
+                        return true;
+                     } else if (current->high == value) {
+                        current->high--;
+                        return true;
+                     } else {
+                        auto oldPrev = current->prev;
+                        auto oldNext = current->next;
+                        auto newNode = new _Node(current->low, value - 1);
+                        current->low = value + 1;
+                        _Link(oldPrev, newNode);
+                        _Link(newNode, current);
+                        _Link(current, oldNext);
+                        return true;
+                     }
+                  }
+               }
+               return false;
+            }
+         }
+      }
+
+      bool GiveUniqueID(TValue value) {
+         TLock lock(mutex);
+         if (front == nullptr) {
+            front = new _Node(value, value);
+            return true;
+         } else if (front->low != limits::min() && value < front->low - 1) {
+            auto newNode = new _Node(value, value);
+            _Link(newNode, front);
+            front = newNode;
+            return true;
+         } else if (value == limits::max()) {
+            auto current = front;
+            while (current->next != nullptr) {
+               current = current->next;
+            }
+            if (current->high + 1 == value) {
+               current->high = value;
+               return true;
+            } else {
+               auto newNode = new _Node(value, value);
+               _Link(current, newNode);
+               return true;
+            }
+         } else {
+            for (auto current = front; current != nullptr; current = current->next) {
+               if (current->low == value + 1) {
+                  current->low = value;
+                  return true;
+               } else if (current->high != limits::max() && current->high + 1 == value) {
+                  current->high = value;
+
+                  if (current->next != nullptr) {
+                     if (current->high + 1 == current->next->low) {
+                        auto oldNext = current->next;
+                        auto nextNext = oldNext->next;
+                        current->high = current->next->high;
+                        _Link(current, nextNext);
+                        delete oldNext;
+                        return true;
+                     }
+                  }
+                  return true;
+               } else if (current->next == nullptr) {
+                  auto newNode = new _Node(value, value);
+                  _Link(current, newNode);
+                  return true;
+               }
+            }
+         }
+      }
    
    private:
-      friend inline std::ostream& operator<<(std::ostream& os, const Dargon::Util::UniqueIdentificationSet & self);
+      template<typename TValue_, typename = typename std::enable_if<std::is_arithmetic<TValue_>::value, TValue_>::type>
+      friend inline std::ostream& operator<<(std::ostream& os, const Dargon::Util::UniqueIdentificationSet<TValue_>& self) {
+         return os;
+      }
+      /*
+      
+
+inline std::ostream& Dargon::Util::operator<<(std::ostream& os, const Dargon::Util::UniqueIdentificationSet& uidSet) 
+{
+   os << "[UniqueIdentificationSet {";
+   {
+      std::mutex& mutex = const_cast<std::mutex&>(uidSet.mutex);
+      std::lock_guard<std::mutex> lock(mutex);
+
+      for (auto current = uidSet.front; current != nullptr; current = current->next) {
+         os << "[" << current->low << ", " << current->high << "]";
+         if (current->next != nullptr) {
+            os << ", ";
+         }
+      }
+   }
+   return os << "}]";
+}
+*/
+
+      void inline _Unlink(_Node* left, _Node* right) {
+         if (left) {
+            left->next = nullptr;
+         }
+         if (right) {
+            right->prev = nullptr;
+         }
+      }
+      void inline _Link(_Node* left, _Node* right) {
+         if (left) {
+            left->next = right;
+         }
+         if (right) {
+            right->prev = left;
+         }
+      }
    };
 } }
-
-#include "UniqueIdentificationSet.inl.hpp"

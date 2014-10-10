@@ -50,7 +50,7 @@ int main()
 
 bool UIDSetTest()
 {
-   Dargon::Util::UniqueIdentificationSet uidSet(true);
+   Dargon::Util::UniqueIdentificationSet<UINT32> uidSet(true);
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID(10) << " // " << uidSet << std::endl;
@@ -61,7 +61,7 @@ bool UIDSetTest()
    std::cout << uidSet.GiveUniqueID(11) << " // " << uidSet << std::endl;
    std::cout << uidSet.GiveUniqueID(10) << " // " << uidSet << std::endl;
 
-   auto uidSet2 = UniqueIdentificationSet(false);
+   auto uidSet2 = UniqueIdentificationSet<UINT32>(false);
    std::cout << uidSet2.TakeUniqueID() << " // " << uidSet2 << std::endl;
    return true;
 }

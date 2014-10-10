@@ -39,7 +39,7 @@ namespace Dargon { namespace Util {
          lock_type lock(m_mutex);
          m_condition.wait(lock, [this]{ return !m_queue.empty(); });
          T returnedValue = std::move(m_queue.front()); //via http://stackoverflow.com/questions/2142965/c0x-move-from-container#comment2084416_2143009
-         m_queue.pop_back();
+         m_queue.pop_front();
          return returnedValue;
       }
 

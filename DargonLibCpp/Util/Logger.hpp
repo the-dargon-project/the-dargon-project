@@ -15,11 +15,11 @@ namespace Dargon { namespace Util {
    {
    public:
       static void Initialize(std::string fileName);
-      static inline void L(UINT32 loggerLevel, DoLog logger);
+      static inline void L(UINT32 loggerLevel, LoggingFunction logger);
       // System-level logging.  Stuff that only Core Implementors care about.
-      static inline void SL(UINT32 loggerLevel, DoLog logger);
+      static inline void SL(UINT32 loggerLevel, LoggingFunction logger);
       // System's Network-Level Logging.  For debugging netcode.
-      static inline void SNL(UINT32 loggerLevel, DoLog logger);
+      static inline void SNL(UINT32 loggerLevel, LoggingFunction logger);
 
    private:
       static Logger* s_instance;
@@ -31,7 +31,7 @@ namespace Dargon { namespace Util {
       /// </summary>
       /// <param name="fileName">The path to the file which we are outputting to.</param>
       Logger(std::string fileName);
-      inline void Log(UINT32 loggerLevel, DoLog logger);
+      inline void Log(UINT32 loggerLevel, LoggingFunction logger);
 
    private:
       unsigned int m_loggerFilter;

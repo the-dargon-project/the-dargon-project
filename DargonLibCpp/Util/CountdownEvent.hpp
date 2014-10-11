@@ -37,17 +37,17 @@ namespace Dargon { namespace Util {
       /// <summary>
       /// Waits indefinitely for the the internal counter of the object to reach zero.  
       /// </summary>
-      void Wait();
+      void Wait() const;
 
       /// <summary>
       /// Waits the given number of milliseconds for the internal counter of the object to reach 
       /// zero.  Returns true if the counter reaches zero during/before the call of this method.
       /// </summary>
-      bool Wait(UINT32 milliseconds);
+      bool Wait(UINT32 milliseconds) const;
 
    private:
       std::atomic<UINT32> m_counter;
-      std::mutex m_mutex;
-      std::condition_variable m_conditionVariable;
+      mutable std::mutex m_mutex;
+      mutable std::condition_variable m_conditionVariable;
    };
 } }

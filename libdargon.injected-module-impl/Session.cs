@@ -183,7 +183,7 @@ namespace Dargon.InjectedModule
                var loggerLevel = reader.ReadUInt32(); // TODO
                var messageLength = reader.ReadUInt32();
                var messageContent = reader.ReadStringOfLength((int)messageLength);
-               logger.Info("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent);
+               logger.Info("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent.Trim());
             }
 
             session.DeregisterRITransactionHandler(this); }

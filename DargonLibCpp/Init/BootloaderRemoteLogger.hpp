@@ -13,6 +13,6 @@ namespace Dargon { namespace Init {
 
    public:
       BootloaderRemoteLogger(const BootstrapContext* context);
-      void Log(UINT32 loggerLevel, DoLog logger);
+      void Log(UINT32 loggerLevel, LoggingFunction logger);
    };
 } }

@@ -13,7 +13,7 @@ BootloaderRemoteLogger::BootloaderRemoteLogger(const BootstrapContext* context)
 {
 }
 
-void BootloaderRemoteLogger::Log(UINT32 loggerLevel, DoLog logger)
+void BootloaderRemoteLogger::Log(UINT32 loggerLevel, LoggingFunction logger)
 {
    m_context->DIMSession->Log(loggerLevel, logger);
 }

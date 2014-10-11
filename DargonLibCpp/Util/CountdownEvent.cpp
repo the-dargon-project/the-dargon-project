@@ -10,9 +10,9 @@ CountdownEvent::CountdownEvent(UINT32 initialValue)
 }
 void CountdownEvent::Signal()
 {
+   std::unique_lock<std::mutex> lock(m_mutex);
    if(m_counter > 0)
    {
-      std::unique_lock<std::mutex> lock(m_mutex);
       m_counter--;
       if(m_counter == 0)
       {
@@ -20,30 +20,24 @@ void CountdownEvent::Signal()
       }
    }
 }
-void CountdownEvent::Wait()
+void CountdownEvent::Wait() const
 {
+   std::unique_lock<std::mutex> lock(m_mutex);
    if(m_counter > 0)
    {
-      std::unique_lock<std::mutex> lock(m_mutex);
-      if (m_counter > 0)
-      {
-         m_conditionVariable.wait(lock);
-      }
+      m_conditionVariable.wait(lock);
    }
 }
-bool CountdownEvent::Wait(UINT32 milliseconds)
+bool CountdownEvent::Wait(UINT32 milliseconds) const
 {
-   if(m_counter > 0)
+   std::unique_lock<std::mutex> lock(m_mutex);
+   if (m_counter > 0)
    {
-      std::unique_lock<std::mutex> lock(m_mutex);
-      if (m_counter > 0)
-      {
-         auto waitResult = m_conditionVariable.wait_for(lock, std::chrono::milliseconds(milliseconds));
-         if(waitResult == std::cv_status::timeout)
-            return false;
-         else
-            return true;
-      }
+      auto waitResult = m_conditionVariable.wait_for(lock, std::chrono::milliseconds(milliseconds));
+      if(waitResult == std::cv_status::timeout)
+         return false;
+      else
+         return true;
    }
    return true;
 }

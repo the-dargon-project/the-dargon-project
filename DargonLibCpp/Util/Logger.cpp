@@ -26,7 +26,7 @@ Logger::Logger(std::string fileName)
    Log(LL_INFO, [](std::ostream& os){ os << "Logger Initialized." << std::endl; });
 }
 
-void Logger::Log(UINT32 loggerLevel, DoLog logger)
+void Logger::Log(UINT32 loggerLevel, LoggingFunction loggingFunction)
 {
    if(loggerLevel < m_loggerFilter)
       return;
@@ -68,10 +68,10 @@ void Logger::Log(UINT32 loggerLevel, DoLog logger)
    else 
        stringStream << "-------| ";
    
-   logger(stringStream);
+   loggingFunction(stringStream);
    auto str = stringStream.str();
 
-   m_outputStream << str;
    std::cout << str;
+   m_outputStream << str;
    m_outputStream.flush();
 }

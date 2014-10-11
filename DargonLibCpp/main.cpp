@@ -1,5 +1,6 @@
 #include "dlc_pch.hpp"
 #include <iostream>
+#include <memory>
 #include "Dargon.hpp"
 #include "Util.hpp"
 #include "IO.hpp"
@@ -32,7 +33,10 @@ int main()
       //HardCodedEchoTest3();
       //return 0;
 
-      DSPExNode node(DSPExNodeRole::Client, "DargonTest");
+      auto ioProxy = std::make_shared<IoProxy>();
+      ioProxy->Initialize();
+
+      DSPExNode node(DSPExNodeRole::Client, "DargonTest", ioProxy);
       DSPExNodeSession* session = node.Connect("Dargon");
       std::srand((UINT32)time(NULL));
       BYTE buffer[256];
@@ -117,7 +121,9 @@ void HardCodedEchoTest()
 }
 void HardCodedEchoTest2()
 {
-   IPCObject ipc;
+   auto ioProxy = std::make_shared<Dargon::IO::IoProxy>();
+   ioProxy->Initialize();
+   IPCObject ipc(ioProxy);
    ipc.Open("dargon", FileAccess::ReadWrite, FileShare::None, false);
    BYTE opcode = DSP_EX_INIT;
    ipc.Write(&opcode, 1);

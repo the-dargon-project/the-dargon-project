@@ -35,8 +35,8 @@ void DSPExLITRemoteLogHandler::InitializeInteraction(IDSPExSession& session)
    );
 
    delete[] buffer;
-   OnCompletion();
    session.DeregisterLITransactionHandler(*this);
+   OnCompletion();
 }
 
 void DSPExLITRemoteLogHandler::ProcessMessage(IDSPExSession& session, DSPExMessage& message)

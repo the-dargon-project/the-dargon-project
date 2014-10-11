@@ -1,9 +1,11 @@
 #include "../dlc_pch.hpp"
 #include "../IO.hpp"
+#include "../IO/IoProxy.hpp"
 #include "Bootloader.hpp"
 #include "BootstrapContext.hpp"
 #include "BootloaderRemoteLogger.hpp"
 using namespace Dargon::Init;
+using namespace Dargon::IO;
 using namespace Dargon::IO::DSP;
 
 void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE moduleHandle)
@@ -13,10 +15,16 @@ void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE
    std::cout << "Bootloader::BootstrapInjectedModule passed BootstrapContext ctor" << std::endl;
    context->ApplicationModuleHandle = moduleHandle;
    
+   // Create IoProxy so that hooks don't pick up DIM invocations.
+   std::cout << "Initializing I/O Proxy" << std::endl;
+   auto ioProxy = std::make_shared<IoProxy>();
+   ioProxy->Initialize();
+   context->IoProxy = ioProxy;
+
    // Connect to DSPEx server and get bootstrap arguments
    std::stringstream ss;
    ss << "DargonInjectedModule_" << GetProcessId(GetCurrentProcess());
-   DSPExNode* dspExNode = new DSPExNode(DSPExNodeRole::Client, ss.str());
+   DSPExNode* dspExNode = new DSPExNode(DSPExNodeRole::Client, ss.str(), ioProxy);
    std::cout << "DSPExNode constructed for named pipe " << ss.str() << std::endl;
    context->DSPExNode = dspExNode;
    

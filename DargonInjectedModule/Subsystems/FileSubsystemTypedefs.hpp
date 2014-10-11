@@ -39,19 +39,4 @@ typedef std::pair<DIMOverriddenFileDescriptor, std::string> DIMFileOverride;
 typedef std::unordered_map<DIMOverriddenFileDescriptor, std::string, DIMOverriddenFileDescriptorHash> DIMFileOverrideMap;
 #endif
 
-
-//-------------------------------------------------------------------------------------------------
-// ::CreateFileA
-//-------------------------------------------------------------------------------------------------
-typedef HANDLE (WINAPI FunctionCreateFileA)(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
-typedef FunctionCreateFileA* PFunctionCreateFileA;
-typedef void (FunctionCreateFileANoCC)(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
-typedef FunctionCreateFileANoCC* PFunctionCreateFileANoCC;
-
-//-------------------------------------------------------------------------------------------------
-// ::CreateFileW
-//-------------------------------------------------------------------------------------------------
-typedef HANDLE (WINAPI FunctionCreateFileW)(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
-typedef FunctionCreateFileW* PFunctionCreateFileW;
-typedef void (FunctionCreateFileWNoCC)(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
-typedef FunctionCreateFileWNoCC* PFunctionCreateFileWNoCC;
+#include <IO/IoProxy.hpp>

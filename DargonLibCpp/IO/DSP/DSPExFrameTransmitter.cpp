@@ -9,7 +9,8 @@
 using namespace Dargon::IO::DSP;
 using Dargon::Util::Logger;
 
-DSPExFrameTransmitter::DSPExFrameTransmitter()
+DSPExFrameTransmitter::DSPExFrameTransmitter(std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
+   : m_ipc(ioProxy)
 {
 }
 

@@ -4,6 +4,7 @@
 #include <memory>
 #include <boost/noncopyable.hpp>
 #include "../Util/Logger.hpp"
+#include "../IO/IoProxy.hpp"
 
 namespace Dargon { namespace IO { namespace DSP {
    class DSPExNode;
@@ -21,5 +22,6 @@ namespace Dargon { namespace Init {
 
       std::vector<std::string> ArgumentFlags;
       std::vector<std::pair<std::string, std::string>> ArgumentProperties;
+      std::shared_ptr<Dargon::IO::IoProxy> IoProxy;
    };
 } }

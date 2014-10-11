@@ -4,7 +4,7 @@
 #include "DSPExNodeSession.hpp"
 using namespace Dargon::IO::DSP;
 
-DSPExNode::DSPExNode(DSPExNodeRole role, std::string defaultPipeName) : m_role(role), m_pipeName(defaultPipeName)
+DSPExNode::DSPExNode(DSPExNodeRole role, std::string defaultPipeName, std::shared_ptr<Dargon::IO::IoProxy> ioProxy) : m_role(role), m_pipeName(defaultPipeName), ioProxy(std::move(ioProxy))
 {
    if (m_role == DSPExNodeRole::Server)
    {
@@ -12,9 +12,9 @@ DSPExNode::DSPExNode(DSPExNodeRole role, std::string defaultPipeName) : m_role(r
    }
 }
 
-DSPExNodeSession* DSPExNode::Connect(std::string pipeName)
+DSPExNodeSession* DSPExNode::Connect(const std::string& pipeName)
 {
-   auto session = new DSPExNodeSession(this);
+   auto session = new DSPExNodeSession(this, ioProxy);
    while(!session->ConnectLocal(pipeName))
       std::cout << "Failed to connect to local DSPEx Node " << pipeName << std::endl;
    return session;

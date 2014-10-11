@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <iostream>
 #include <boost/nowide/convert.hpp>
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "Init/BootstrapContext.hpp"
@@ -11,7 +12,7 @@
 
 using namespace Dargon::Subsystems;
 
-const bool kDebugEnabled = false;
+const bool kDebugEnabled = true;
 
 // - singleton ------------------------------------------------------------------------------------
 FileSubsystem* FileSubsystem::s_instance = nullptr;
@@ -51,8 +52,15 @@ bool FileSubsystem::Initialize()
       }
 
       HMODULE hModuleKernel32 = WaitForModuleHandle("Kernel32.dll");
+      InstallCreateEventADetour(hModuleKernel32);
+      InstallCreateEventWDetour(hModuleKernel32);
       InstallCreateFileADetour(hModuleKernel32);
       InstallCreateFileWDetour(hModuleKernel32);
+      InstallReadFileDetour(hModuleKernel32);
+      InstallWriteFileDetour(hModuleKernel32);
+      InstallCloseHandleDetour(hModuleKernel32);
+      InstallSetFilePointerDetour(hModuleKernel32);
+      s_bootstrapContext->IoProxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer);
       return true;
    }
 }
@@ -63,6 +71,14 @@ bool FileSubsystem::Uninitialize()
    else
    {
       Subsystem::Uninitialize();
+      UninstallCreateEventADetour();
+      UninstallCreateEventWDetour();
+      UninstallCreateFileADetour();
+      UninstallCreateFileWDetour();
+      UninstallReadFileDetour();
+      UninstallWriteFileDetour();
+      UninstallCloseHandleDetour();
+      UninstallSetFilePointerDetour();
       return true;
    }
 }
@@ -80,23 +96,43 @@ void FileSubsystem::AddFileOverride(FileOverrideTargetDescriptor descriptor, Fil
 // - static ---------------------------------------------------------------------------------------
 FileOverrideMap FileSubsystem::s_fileOverridesMap;
 AdvancedOverrideMap FileSubsystem::s_advancedOverridesMap;
+Dargon::Collections::concurrent_set<HANDLE> FileSubsystem::mitmHandles;
 
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateFileA, FunctionCreateFileA, "CreateFileA", MyCreateFileA);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateFileW, FunctionCreateFileW, "CreateFileW", MyCreateFileW);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, ReadFile, FunctionReadFile, "ReadFile", MyReadFile);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, WriteFile, FunctionWriteFile, "WriteFile", MyWriteFile);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, CloseHandle, FunctionCloseHandle, "CloseHandle", MyCloseHandle);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, SetFilePointer, FunctionSetFilePointer, "SetFilePointer", MySetFilePointer);
+
+HANDLE WINAPI FileSubsystem::MyCreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR lpName) {
+   return m_trampCreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
+}
+HANDLE WINAPI FileSubsystem::MyCreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCWSTR lpName) {
+   return m_trampCreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName);
+}
 
 HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-   if (kDebugEnabled)
-      std::cout << "Detour MyCreateFileA:" 
-                << " lpFilePath: " << lpFilePath
-                << " dwDesiredAccess: " << dwDesiredAccess
-                << " dwShareMode: " << dwShareMode
-                << " lpSecurityAttributes: " << lpSecurityAttributes
-                << " dwCreationDisposition: " << dwCreationDisposition
-                << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
-                << " hTemplateFile: " << hTemplateFile
-                << std::endl;
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE, 
+         [&](std::ostream& os){ 
+         os << "Detour MyCreateFileA:"
+            << " lpFilePath: " << lpFilePath
+            << " dwDesiredAccess: " << dwDesiredAccess
+            << " dwShareMode: " << dwShareMode
+            << " lpSecurityAttributes: " << lpSecurityAttributes
+            << " dwCreationDisposition: " << dwCreationDisposition
+            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
+            << " hTemplateFile: " << hTemplateFile
+            << std::endl;
+      });
+   }
    auto fileHandle = m_trampCreateFileA(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   mitmHandles.insert(fileHandle);
 
    BY_HANDLE_FILE_INFORMATION fileInfo;
    GetFileInformationByHandle(fileHandle, &fileInfo);
@@ -111,8 +147,10 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
    {
       if (override->second.isFullSwap)
       {
-         CloseHandle(fileHandle);
+         m_realCloseHandle(fileHandle);
+         mitmHandles.remove(fileHandle);
          fileHandle = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+         mitmHandles.insert(fileHandle);
       }
       else // advanced override
       {
@@ -137,17 +175,23 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
 
 HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-   if (kDebugEnabled)
-      std::cout << "Detour CreateFileW:" 
-                << " lpFilePath: " << boost::nowide::narrow(lpFilePath)
-                << " dwDesiredAccess: " << dwDesiredAccess
-                << " dwShareMode: " << dwShareMode
-                << " lpSecurityAttributes: " << lpSecurityAttributes
-                << " dwCreationDisposition: " << dwCreationDisposition
-                << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
-                << " hTemplateFile: " << hTemplateFile
-                << std::endl;
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os){
+         os << "CreateFileW:"
+            << " lpFilePath: " << boost::nowide::narrow(lpFilePath)
+            << " dwDesiredAccess: " << dwDesiredAccess
+            << " dwShareMode: " << dwShareMode
+            << " lpSecurityAttributes: " << lpSecurityAttributes
+            << " dwCreationDisposition: " << dwCreationDisposition
+            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
+            << " hTemplateFile: " << hTemplateFile
+            << std::endl;
+      });
+   }
    auto fileHandle = m_trampCreateFileW(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   mitmHandles.insert(fileHandle);
 
    BY_HANDLE_FILE_INFORMATION fileInfo;
    GetFileInformationByHandle(fileHandle, &fileInfo);
@@ -162,8 +206,10 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
    {
       if (override->second.isFullSwap)
       {
+         mitmHandles.remove(fileHandle);
          CloseHandle(fileHandle);
          fileHandle = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+         mitmHandles.insert(fileHandle);
       }
       else // advanced override
       {
@@ -184,4 +230,76 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
       }
    }
    return fileHandle;
+}
+
+BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
+{
+   auto mitm = mitmHandles.contains(hFile);
+   if (mitm) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << "ReadFile: hFile: " << hFile
+               << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
+               << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
+               << " lpOverlapped: " << lpOverlapped << std::endl;
+         });
+      }
+
+      OnPreReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+   }
+   BOOL result = m_trampReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+   if (mitm) {
+      OnPostReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+      //   Logger::GetOutputStream(LL_VERBOSE) << "  trampReadFile result: " << result << endl;
+   }
+   return result;
+}
+
+BOOL WINAPI FileSubsystem::MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped) {
+   return m_trampWriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+}
+
+BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
+{
+   auto mitm = mitmHandles.remove(hObject);
+   if (mitm) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << "CloseHandle: hObject: " << hObject << std::endl;
+         });
+      }
+      OnPreCloseHandle(hObject);
+   }
+   BOOL result = m_trampCloseHandle(hObject);
+   if (mitm) {
+      OnPostCloseHandle(hObject);
+   }
+   return result;
+}
+DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
+{
+   auto mitm = mitmHandles.contains(hFile);
+   if (mitm) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << "SetFilePointer: hFile: " << hFile
+               << " lDistanceToMove: " << lDistanceToMove
+               << " lpDistanceToMoveHigh: " << lpDistanceToMoveHigh
+               << " dwMoveMethod: " << dwMoveMethod << std::endl;
+         });
+      }
+
+      OnPreSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+   }
+   DWORD result = m_trampSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+   if (mitm) {
+      OnPostSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+   }
+   return result;
 }

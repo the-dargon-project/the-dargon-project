@@ -15,7 +15,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// <summary>
       /// Initializes a new instance of a Frame Transmitter for DSPEx
       /// </summary>
-      DSPExFrameTransmitter();
+      DSPExFrameTransmitter(std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
 
       /// <summary>
       /// Connects to a remote endpoint

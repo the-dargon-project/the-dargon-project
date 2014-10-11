@@ -13,19 +13,19 @@
 using namespace Dargon::IO;
 using Dargon::Util::Logger;
 
-IPCObject::IPCObject()
-   : m_lastError(0), m_pipeHandle(0)
+IPCObject::IPCObject(std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
+   : m_lastError(0), m_pipeHandle(0), ioProxy(ioProxy)
 {
 }
 
-bool IPCObject::Open(IN std::string pipeName, 
+bool IPCObject::Open(IN const std::string& pipeName, 
                      IN Dargon::IO::FileAccess accessMode,
                      IN Dargon::IO::FileShare shareMode,
                      IN bool writesBuffered) 
 {
 #ifdef WIN32
    std::string pipePath = "\\\\.\\pipe\\" + pipeName;
-   m_pipeHandle = CreateFileA(
+   m_pipeHandle = ioProxy->CreateFileA(
       pipePath.c_str(),
       GENERIC_READ | GENERIC_WRITE, 
       0,
@@ -97,17 +97,17 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
       UINT32 totalBytesToTransfer = totalBytesToRead - totalBytesRead;
 
       ZeroMemory(&overlapped, sizeof(overlapped));
-      overlapped.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+      overlapped.hEvent = ioProxy->CreateEventA(NULL, TRUE, FALSE, NULL);
 
       BOOL readFileResult;
       DWORD readFileBytesRead = 0;
-      if(!(readFileResult = ReadFile(m_pipeHandle, (BYTE*)buffer + totalBytesRead, totalBytesToTransfer, &readFileBytesRead, &overlapped)))
+      if (!(readFileResult = ioProxy->ReadFile(m_pipeHandle, (BYTE*)buffer + totalBytesRead, totalBytesToTransfer, &readFileBytesRead, &overlapped)))
       {
          m_lastError = ::GetLastError();
          if(m_lastError != ERROR_IO_PENDING)
          {
             Logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "Read byte failed with error " << m_lastError << std::endl; });//; read " << bytesRead << " of " << numBytes << " remaining bytes." << std::endl; });
-            CloseHandle(overlapped.hEvent);
+            ioProxy->CloseHandle(overlapped.hEvent);
             return false;
          }
          else 
@@ -131,11 +131,11 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
          {
             m_lastError = ::GetLastError();
             Logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "Get Overlapped IO Result failed with error " << m_lastError << std::endl; });
-            CloseHandle(overlapped.hEvent);
+            ioProxy->CloseHandle(overlapped.hEvent);
             return false;
          }
       }
-      CloseHandle(overlapped.hEvent);
+      ioProxy->CloseHandle(overlapped.hEvent);
       //std::cout << "Bytes Transferred " << bytesTransferred << " Is Complete? " << HasOverlappedIoCompleted(&overlapped) 
       //          << " buffer[0]: " << std::hex << (int)*(BYTE*)buffer << "(" << std::dec << (int)*(BYTE*)buffer << ")" << std::endl;
 
@@ -182,62 +182,42 @@ bool IPCObject::Write(IN           const void* buffer,
                       IN           boost::uint32_t numBytes,
                       OUT OPTIONAL boost::uint32_t* bytesWritten)
 {
-   if(numBytes == 0)
-   {
+   if(numBytes == 0) {
       if(bytesWritten)
          *bytesWritten = 0;
       return true;
    }
-   //for(int i = 0; i < numBytes; i++)
-   //   Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "W " << i << ": " << (int)*((BYTE*)buffer + i) << " (" << (char)*((BYTE*)buffer + i) << ")" << std::endl; });
 
 #ifdef WIN32
    static_assert(sizeof(DWORD) == sizeof(boost::uint32_t), "DWORD size isn't same as UINT32 size!");
-   //Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Write offset " << offset << " numBytes " << numBytes << std::endl; });
 
    OVERLAPPED overlapped;
    ZeroMemory(&overlapped, sizeof(OVERLAPPED));
-   overlapped.hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-
-   BOOL writeFileResult;
-   if(!(writeFileResult = WriteFile(m_pipeHandle, (BYTE*)buffer + offset, numBytes, nullptr, &overlapped)))
-   {
-      m_lastError = ::GetLastError();
-      if(m_lastError != ERROR_IO_PENDING)
-      {
-         Logger::SNL(LL_ERROR, [this](std::ostream& os){ os << "IPC Write File error " << m_lastError << std::endl; });
-         CloseHandle(overlapped.hEvent);
-         return false;
-      }
-      else
-      {
-         std::cout << "WriteBytes: Error code ERROR_IO_PENDING is okay " << std::endl;
-      }
-   }
+   overlapped.hEvent = ioProxy->CreateEventW(NULL, FALSE, FALSE, NULL);
    
-   if(!writeFileResult) // If it returns true, the op was synchronous and we shouldn't GetOverlappedResult
-   {
-      //std::cout << "WriteBytes: Waiting for overlapped event" << std::endl;
-      DWORD waitResult = WaitForSingleObject(overlapped.hEvent, INFINITE);
-      if(waitResult != WAIT_OBJECT_0)
-         Logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl; });
-
-      DWORD bytesTransferred = 0;
-      //std::cout << "WriteBytes: Getting overlapped event results" << std::endl;
-      if(!GetOverlappedResult(m_pipeHandle, &overlapped, &bytesTransferred, TRUE))
-      {
-         m_lastError = ::GetLastError();
-         Logger::SNL(LL_ERROR, [this](std::ostream& os){ os << "IPC Write Get Overlapped Result error " << m_lastError << std::endl; });
-         CloseHandle(overlapped.hEvent);
-         return false;
+   bool success = true;
+   if(!ioProxy->WriteFile(m_pipeHandle, (uint8_t*)buffer + offset, numBytes, nullptr, &overlapped)) {
+      auto lastError = ::GetLastError();
+      if (lastError != ERROR_IO_PENDING) {
+         std::cout << "IPC Write File error " << m_lastError << std::endl;
+         //Logger::SNL(LL_ERROR, [this](std::ostream& os){ os << "IPC Write File error " << m_lastError << std::endl; });
+         success = false;
+      } else { 
+         DWORD waitResult = WaitForSingleObject(overlapped.hEvent, INFINITE);
+         if (waitResult != WAIT_OBJECT_0) {
+            std::cout << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl;
+            //Logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl; });
+         }
+         DWORD bytesTransferred = 0;
+         if (!GetOverlappedResult(m_pipeHandle, &overlapped, &bytesTransferred, false)) {
+            lastError = ::GetLastError();
+            std::cout << "IPC Write Get Overlapped Result error " << m_lastError << std::endl;
+            //Logger::SNL(LL_ERROR, [this](std::ostream& os) { os << "IPC Write Get Overlapped Result error " << m_lastError << std::endl; });
+            success = false;
+         }
       }
-      //std::cout << "Bytes Transferred " << bytesTransferred << " Is Complete? " << HasOverlappedIoCompleted(&overlapped) << std::endl;
    }
-   else
-   {
-      //std::cout << "All Bytes Transferred (Was Synchronous)" << std::endl;
-   }
-   CloseHandle(overlapped.hEvent);
-   return true;
+   ioProxy->CloseHandle(overlapped.hEvent);
+   return success;
 #endif
 }

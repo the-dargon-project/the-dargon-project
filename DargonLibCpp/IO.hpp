@@ -4,3 +4,4 @@
 #include "IO/IOTypedefs.hpp"
 #include "IO/IPCObject.hpp"
 #include "IO/DSP.h"
+#include "IO/IoProxy.hpp"

@@ -69,6 +69,15 @@ HANDLE OpenMainThread()
    return NULL;
 }
 
+HMODULE WaitForModuleHandle(const char* moduleName)
+{
+   std::cout << "Waiting for " << moduleName << " module load" << std::endl;
+   HMODULE hModule;
+   while ((hModule = GetModuleHandleA(moduleName)) == NULL) Sleep(10);
+   std::cout << "The " << moduleName << " module loaded.  hModule: " << hModule << std::endl;
+   return hModule;
+}
+
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
    std::stringstream ss(s);
    std::string item;

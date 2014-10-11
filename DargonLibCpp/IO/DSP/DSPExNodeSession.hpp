@@ -10,6 +10,7 @@
 #include "../../Init/BootstrapContext.hpp"
 #include "../../Util.hpp"
 #include "../IPCObject.hpp"
+#include "../IoProxy.hpp"
 #include "IDSPExFrameTransmitter.hpp"
 #include "DSPExLITransactionHandler.hpp"
 #include "DSPEXRITransactionHandler.hpp"
@@ -64,7 +65,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// implementation constructor does not connect to a server; rather, you must invoke the
       /// Connect() method after constructing the client.  
       /// </summary>
-      DSPExNodeSession(DSPExNode* node);
+      DSPExNodeSession(DSPExNode* node, std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
       
       /// <summary>
       /// Attempts to connect to the server at the given hostname and port.
@@ -222,6 +223,8 @@ namespace Dargon { namespace IO { namespace DSP {
       /// The DSPExNode that owns this DSPExSesssion. 
       /// </summary>
       DSPExNode const * const m_pNode;
+
+      std::shared_ptr<Dargon::IO::IoProxy> ioProxy;
 
       /// <summary>
       /// See: Terminated

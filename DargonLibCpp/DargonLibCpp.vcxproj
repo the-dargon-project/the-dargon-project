@@ -152,6 +152,7 @@
     <ClInclude Include="IO\DSP\IDSPExFrameTransmitter.hpp" />
     <ClInclude Include="IO\DSP\IDSPExInstructionSet.hpp" />
     <ClInclude Include="IO\DSP\IDSPExSession.hpp" />
+    <ClInclude Include="IO\IoProxy.hpp" />
     <ClInclude Include="IO\IOTypedefs.hpp" />
     <ClInclude Include="IO\IPCObject.hpp" />
     <ClInclude Include="dlc_pch.hpp" />

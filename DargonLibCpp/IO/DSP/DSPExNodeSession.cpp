@@ -25,8 +25,10 @@ bool DSPExNodeSession::kDebugEnabled = true;
 int DSPExNodeSession::kFrameProcessorCount = 2;
 int DSPExNodeSession::kFrameProcessorLimit = 16;
 
-DSPExNodeSession::DSPExNodeSession(DSPExNode* pNode)
+DSPExNodeSession::DSPExNodeSession(DSPExNode* pNode, std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
    : m_pNode(pNode),
+     ioProxy(ioProxy),
+     m_ipc(ioProxy),
      m_terminated(false),
      Terminated(m_terminated), 
      m_locallyInitializedUIDSet(0x00000000U, 0x7FFFFFFFU),
@@ -44,7 +46,7 @@ bool DSPExNodeSession::Connect(std::string host, UINT32 port)
    return false;
 }
 
-bool DSPExNodeSession::ConnectLocal(std::string pipeName)
+bool DSPExNodeSession::ConnectLocal(const std::string& pipeName)
 {
    if(!m_ipc.Open(pipeName, FileAccess::ReadWrite, FileShare::None, false))
       return false;
@@ -254,13 +256,27 @@ void DSPExNodeSession::SendMessage(DSPExInitialMessage& message)
    UINT32 messageFrameSize = 4 + 4 + 1 + (UINT32)message.DataLength;
    UINT32 transactionId = message.TransactionId;
    BYTE opcode = message.Opcode;
+   std::cout << "!!!" << messageFrameSize << " " << transactionId << std::endl;
 
    {
-      std::lock_guard<std::mutex> lock(m_writeMutex);
-      m_ipc.Write(&messageFrameSize, sizeof(messageFrameSize));
-      m_ipc.Write(&transactionId, sizeof(transactionId));
-      m_ipc.Write(&opcode, sizeof(opcode));
-      m_ipc.Write(message.DataBuffer, message.DataLength);
+      std::cout << "Entering" << std::endl;
+      try {
+         //std::lock_guard<std::mutex> lock(m_writeMutex);
+         m_writeMutex.lock();
+         if (true || message.DataLength <= 14) {
+            m_ipc.Write(&messageFrameSize, sizeof(messageFrameSize));
+            m_ipc.Write(&transactionId, sizeof(transactionId));
+            m_ipc.Write(&opcode, sizeof(opcode));
+            m_ipc.Write(message.DataBuffer, message.DataLength);
+         }
+         std::cout << "Exiting" << std::endl;
+         m_writeMutex.unlock();
+      } catch (const std::exception& e) {
+         __debugbreak();
+         MessageBoxA(NULL, e.what(), "IPC ERROR!", MB_OK);
+      } catch (...) {
+         MessageBoxA(NULL, "UNKNOWN ERROR", "IPC ERROR!", MB_OK);
+      }
    }
    
    //std::cout << "*** LEAVE SEND MESSAGE *** " << std::endl;
@@ -311,7 +327,7 @@ bool DSPExNodeSession::Echo(BYTE* buffer, UINT32 length)
    return handler.ResponseDataMatched;
 }
 
-void DSPExNodeSession::Log(UINT32 loggerLevel, DoLog logger)
+void DSPExNodeSession::Log(UINT32 loggerLevel, LoggingFunction& logger)
 {
    std::stringstream ss;
    logger(ss);

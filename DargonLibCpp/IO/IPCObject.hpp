@@ -6,6 +6,7 @@
 #include <boost/utility.hpp>
 #include "../Dargon.hpp"
 #include "IOTypedefs.hpp"
+#include "IoProxy.hpp"
 
 namespace Dargon { namespace IO {
    class IPCObject : boost::noncopyable
@@ -14,7 +15,7 @@ namespace Dargon { namespace IO {
       /// <summary>
       /// Initializes a new instance of an Inter-process Communication object.  
       /// </summary>
-      IPCObject();
+      IPCObject(std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
 
       /// <summary>
       /// Creates a new instance of a Dargon IPC object with the given name.
@@ -37,7 +38,7 @@ namespace Dargon { namespace IO {
       /// WinAPI's documentation on FILE_FLAG_WRITE_THROUGH for more information.
       /// </param>
       /// <returns>Whether or not the operation was successful</returns
-      bool Open(IN std::string pipeName, 
+      bool Open(IN const std::string& pipeName, 
                 IN Dargon::IO::FileAccess accessMode,
                 IN Dargon::IO::FileShare shareMode,
                 IN bool writesBuffered);
@@ -97,6 +98,8 @@ namespace Dargon { namespace IO {
 
    private: 
       UINT32 m_lastError;
+
+      std::shared_ptr<Dargon::IO::IoProxy> ioProxy;
 
       #ifdef WIN32
       HANDLE m_pipeHandle;

@@ -1,4 +1,5 @@
-﻿using Dargon.Game;
+﻿using Dargon.FinalFantasyXIII;
+using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends;
 using Dargon.ModificationRepositories;
@@ -46,6 +47,7 @@ namespace Dargon.Daemon
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
          IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
+         IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();
       }
 

@@ -56,7 +56,7 @@ namespace Dargon.LeagueOfLegends.Session
             if (!processKilled) {
                LeagueSession session;
                if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
-                  logger.Info("Creating new session for " + process.Id);
+                  logger.Info("Creating new session for " + process.Id + " as parent process not found " + e.ProcessDescriptor.ParentProcessId);
                   session = new LeagueSession();
                   OnSessionCreated(new LeagueSessionCreatedArgs(session));
                }

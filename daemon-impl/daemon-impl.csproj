@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AB5F3378-D1FB-4397-B337-E440837CD185}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Daemon</RootNamespace>
     <AssemblyName>DargonD</AssemblyName>
@@ -72,6 +72,10 @@
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.ffxiii-impl\libdargon.ffxiii-impl.csproj">
+      <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>
+      <Name>libdargon.ffxiii-impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>

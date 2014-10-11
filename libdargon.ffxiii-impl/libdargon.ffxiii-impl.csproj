@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dargon.FinalFantasyXIII</RootNamespace>
+    <AssemblyName>libdargon.ffxiii-impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FFXIIIGameServiceImpl.cs" />
+    <Compile Include="Lifecycle\FFXIIILifecycleServiceImpl.cs" />
+    <Compile Include="Lifecycle\IFFXIIIInjectedModuleConfigurationFactory.cs" />
+    <Compile Include="Lifecycle\FFXIIIInjectedModuleConfigurationFactory.cs" />
+    <Compile Include="Processes\FFXIIIProcessWatcherServiceImpl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
+      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
+      <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
+      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
+      <Name>common-proxies-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
+      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Name>daemon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.ffxiii-api\libdargon.ffxiii-api.csproj">
+      <Project>{21E35146-35DC-41D6-80EC-54497C0BF52E}</Project>
+      <Name>libdargon.ffxiii-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
+      <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
+      <Name>libdargon.game-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
+      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
+      <Name>libdargon.injected-module-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
+      <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
+      <Name>libdargon.process-api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

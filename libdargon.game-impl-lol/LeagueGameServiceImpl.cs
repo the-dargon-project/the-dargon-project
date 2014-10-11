@@ -69,14 +69,18 @@ namespace Dargon.LeagueOfLegends
       private void RunDebugActions()
       {
          modificationRepositoryService.ClearModifications();
+         //         var mod = modificationImportService.ImportLegacyModification(
+         //            GameType.LeagueOfLegends,
+         //            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
+         //            new[] {
+         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
+         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png",
+         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Characters\Annie\AnnieLoadScreen.dds"
+         //            });
          var mod = modificationImportService.ImportLegacyModification(
             GameType.LeagueOfLegends,
-            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-            new[] {
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png",
-               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Characters\Annie\AnnieLoadScreen.dds"
-            });
+            @"C:\lolmodprojects\Tencent Art Pack 8.74",
+            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74\ArtPack\Client\Assets", "*", SearchOption.AllDirectories));
          modificationRepositoryService.AddModification(mod);
       }
    }

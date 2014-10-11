@@ -37,6 +37,7 @@ namespace Dargon.Processes.Watching
       internal void HandleProcessWatcherNewProcessFound(object sender, ProcessFoundEventArgs e)
       {
          var lowerProcessName = e.ProcessName.ToLower();
+         logger.Info(lowerProcessName);
          var handlers = processSpawnedHandlersByProcessName.GetValueOrDefault(lowerProcessName);
          if (handlers != null) {
             foreach (var handler in handlers) {

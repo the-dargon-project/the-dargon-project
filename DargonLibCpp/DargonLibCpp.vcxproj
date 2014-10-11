@@ -96,6 +96,8 @@
     <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
     <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
     <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
+    <ClInclude Include="Collections\ConcurrentDictionary.hpp" />
+    <ClInclude Include="Collections\ConcurrentSet.hpp" />
     <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
     <ClInclude Include="Init\BootstrapContext.hpp" />
     <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />

@@ -233,5 +233,11 @@
     <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Collections\ConcurrentDictionary.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collections\ConcurrentSet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,7 +26,7 @@ namespace Dargon.InjectedModule
          this.nodeFactory = nodeFactory;
 
          var pipeName = DIM_PIPE_NAME_PREFIX + processId;
-         this.node = nodeFactory.CreateNode(true, pipeName, new List<IInstructionSet> { new SessionInstructionSet(this) });
+         this.node = nodeFactory.CreateNode(NodeRole.Server, pipeName, new List<IInstructionSet> { new SessionInstructionSet(this) });
          this.node.ClientConnected += HandleClientConnected;
       }
 
@@ -183,7 +183,7 @@ namespace Dargon.InjectedModule
                var loggerLevel = reader.ReadUInt32(); // TODO
                var messageLength = reader.ReadUInt32();
                var messageContent = reader.ReadStringOfLength((int)messageLength);
-               logger.Info("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent.Trim());
+               logger.Debug("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent.Trim());
             }
 
             session.DeregisterRITransactionHandler(this); }

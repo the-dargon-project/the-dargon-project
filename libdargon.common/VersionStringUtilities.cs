@@ -4,8 +4,17 @@ using ItzWarty;
 
 namespace Dargon
 {
-   public class VersionStringParser
+   public class VersionStringUtilities
    {
+      public string GetVersionString(uint n)
+      {
+         var b0 = n & 0xFF;
+         var b1 = (n >> 8) & 0xFF;
+         var b2 = (n >> 16) & 0xFF;
+         var b3 = (n >> 24) & 0xFF;
+         return b3 + "." + b2 + "." + b1 + "." + b0;
+      }
+
       /// <summary>
       /// Gets the version string from the given path.
       /// If no match is found

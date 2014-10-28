@@ -6,9 +6,9 @@ using NMockito;
 namespace libdargon.common.Test
 {
    [TestClass]
-   public class VersionStringParserTest : NMockitoInstance
+   public class VersionStringUtilitiesTest : NMockitoInstance
    {
-      private VersionStringParser testObj = new VersionStringParser();
+      private VersionStringUtilities testObj = new VersionStringUtilities();
 
       private const string kInvalidPath = "123ids890/A()!K/!)(DKQ:";
       private const string kValidPath = "123ids890/1.2.3.4/!)(DKQ:";

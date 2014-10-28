@@ -601,67 +601,6 @@ namespace Dargon.Patcher
 //      {
 //      }
 
-      private abstract class ReferenceCounter<TExposed> : IDisposable
-      {
-         private readonly object bigLock = new object();
-         private int referenceCount = 0;
-
-         public TExposed Take()
-         {
-            lock (bigLock) {
-               if (referenceCount == 0) {
-                  Initialize();
-               }
-               referenceCount++;
-            }
-            return GetExposed();
-         }
-
-         private void Return()
-         {
-            lock (bigLock) {
-               referenceCount--;
-               if (referenceCount == 0) {
-                  Destroy();
-               }
-            }
-         }
-
-         protected abstract void Initialize();
-         protected abstract void Destroy();
-         protected abstract TExposed GetExposed();
-
-         public void Dispose() { Return(); }
-      }
-
-      private class FileLock : ReferenceCounter<FileLock>
-      {
-         private readonly string path;
-         private FileStream fileStream;
-
-         public FileLock(string path) {
-            this.path = path;
-         }
-
-         protected override void Initialize() {
-            while (true) {
-               try {
-
-                  fileStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
-                  break;
-               }
-               catch (IOException) { // file already open
-                  Thread.Sleep(100);
-                  continue; 
-               }
-            }
-         }
-
-         protected override void Destroy() { if (fileStream != null) fileStream.Dispose(); }
-
-         protected override FileLock GetExposed() { return this; }
-      }
-
       private class ObjectStore
       {
          private readonly bool kDebugEnabled = false;

@@ -24,6 +24,7 @@ namespace Dargon.LeagueOfLegends
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
       private readonly DaemonService daemonService;
+      private readonly TemporaryFileService temporaryFileService;
       private readonly IProcessProxy processProxy;
       private readonly InjectedModuleService injectedModuleService;
       private readonly ProcessWatcherService processWatcherService;
@@ -35,16 +36,18 @@ namespace Dargon.LeagueOfLegends
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
       private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
       private readonly LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService;
+      private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
       private readonly LeagueSessionServiceImpl leagueSessionService;
       private readonly RiotFileSystem gameFileSystem;
       private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(DaemonService daemonService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
+      public LeagueGameServiceImpl(DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
       {
          logger.Info("Initializing League Game Service");
          this.daemonService = daemonService;
+         this.temporaryFileService = temporaryFileService;
          this.processProxy = processProxy;
          this.injectedModuleService = injectedModuleService;
          this.processWatcherService = processWatcherService;
@@ -57,11 +60,12 @@ namespace Dargon.LeagueOfLegends
          this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(daemonService, radsService);
          this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(daemonService);
          this.leagueModificationTasklistCompilerService = new LeagueModificationTasklistCompilerServiceImpl(taskFactory);
+         this.leagueGameModificationLinkerService = new LeagueGameModificationLinkerServiceImpl(temporaryFileService, radsService, leagueModificationRepositoryService);
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
          this.leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          this.leagueInjectedModuleConfigurationFactory = new LeagueInjectedModuleConfigurationFactory();
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
 
          RunDebugActions();
       }

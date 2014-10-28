@@ -31,6 +31,7 @@ namespace Dargon.Daemon
          var serviceLocator = new ServiceLocator();
          var core = new DaemonServiceImpl(serviceLocator, configuration);
          DaemonService daemonService = core;
+         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IProcessProxy processProxy = new ProcessProxy();
          IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();
@@ -46,7 +47,7 @@ namespace Dargon.Daemon
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();
       }

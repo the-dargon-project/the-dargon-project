@@ -121,6 +121,14 @@
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
+      <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
+      <Name>libdargon.temporary-file-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.temporary-file-impl\libdargon.temporary-file-impl.csproj">
+      <Project>{844EB06D-3F31-4322-8B57-DC6DAE28FF08}</Project>
+      <Name>libdargon.temporary-file-impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.tray-api\libdargon.tray-api.csproj">
       <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
       <Name>libdargon.tray-api</Name>

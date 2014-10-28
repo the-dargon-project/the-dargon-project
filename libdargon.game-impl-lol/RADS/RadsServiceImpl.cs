@@ -31,19 +31,32 @@ namespace Dargon.LeagueOfLegends.RADS
          }
       }
 
-      public IRadsArchiveReference GetArchiveReference(uint version) 
+      public IRadsArchiveReference GetArchiveReference(uint version)
+      {
+         RiotArchive archive;
+         if (!archivesById.TryGetValue(version, out archive)) {
+            if (archiveLoader == null) {
+               archiveLoader = new RiotArchiveLoader(solutionPath);
+            }
+            if (!archiveLoader.TryLoadArchive(version, out archive)) {
+               throw new ArchiveNotFoundException(version);
+            }
+         }
+         return new RadsArchiveReference(archive);
+      }
+
+      public RiotArchive GetArchiveUnsafe(uint version)
       {
          lock (synchronization) {
             RiotArchive archive;
-            if (!archivesById.TryGetValue(version, out archive)) {
-               if (archiveLoader == null) {
-                  archiveLoader = new RiotArchiveLoader(solutionPath);
-               }
-               if (!archiveLoader.TryLoadArchive(version, out archive)) {
-                  throw new ArchiveNotFoundException(version);
-               }
-            }
-            return new RadsArchiveReference(archive);
+            new RiotArchiveLoader(solutionPath).TryLoadArchive(version, out archive);
+            return archive;
+         }
+      }
+
+      public ReleaseManifest GetReleaseManifestUnsafe(RiotProjectType projectType) {
+         lock (synchronization) {
+            return new ReleaseManifestLoader().LoadProjectManifest(solutionPath, projectType);
          }
       }
 

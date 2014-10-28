@@ -42,12 +42,16 @@ namespace Dargon.Processes.Watching
          discoveryMethod.ProcessDiscovered += (a, b) => {
             var capture = NewProcessFound;
             if (capture != null) {
+#if !DEBUG
                try {
-                  capture(a, b);
+#endif
+                  capture(a, b);     
+#if !DEBUG
                } catch (Exception e) {
                   logger.Error("ERROR: " + e.ToString());
                   throw;
                }
+#endif
             }
          };
       }

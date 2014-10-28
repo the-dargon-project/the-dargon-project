@@ -16,7 +16,7 @@ namespace Dargon.LeagueOfLegends.Session.Phases
          logger.Info("Begin Game League Phase");
 
          if (args != null) {
-            var gameProcess = (Process)args.Tag;
+            var gameProcess = (IProcess)args.Tag;
          }
       }
 

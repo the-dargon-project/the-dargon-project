@@ -23,10 +23,11 @@ namespace Dargon.Modifications
          var repo = new LocalRepository(root);
          repo.Initialize();
 
-         foreach (var filePath in filePaths)
-         {
-            var internalPath = filePath.Substring(root.Length + PATH_DELIMITER_LENGTH);
-            repo.AddFile(internalPath);
+         foreach (var filePath in filePaths) {
+            if (!filePath.Contains(".dpm")) {
+               var internalPath = filePath.Substring(root.Length + PATH_DELIMITER_LENGTH);
+               repo.AddFile(internalPath);
+            }
          }
 
          repo.Commit("Initial Commit");

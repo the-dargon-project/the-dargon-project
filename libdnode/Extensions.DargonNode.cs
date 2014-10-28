@@ -7,6 +7,8 @@ namespace Dargon.IO
 {
    public static class Extensions
    {
+      public static bool IsDelimiter(char c) { return c == '\\' || c == '/'; }
+
       public static IReadableDargonNode GetRoot(this IReadableDargonNode node)
       {
          while (node.Parent != null) {
@@ -28,6 +30,35 @@ namespace Dargon.IO
 
       public static IReadableDargonNode GetChildOrNull(this IReadableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.NameEquals(name)); }
       public static IWritableDargonNode GetChildOrNull(this IWritableDargonNode node, string name) { return node.Children.FirstOrDefault((child) => child.NameEquals(name)); }
+
+      public static IReadableDargonNode GetRelativeOrNull(this IReadableDargonNode node, string relativePath)
+      {
+         var breadcrumbs = relativePath.Split(new[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+         var currentNode = IsDelimiter(relativePath[0]) ? node.GetRoot() : node;
+         for (var i = 0; i < breadcrumbs.Length; i++) {
+            currentNode = currentNode.GetChild(breadcrumbs[i]);
+         }
+         return currentNode;
+      }
+      public static IWritableDargonNode GetRelativeOrNull(this IWritableDargonNode node, string relativePath)
+      {
+         var breadcrumbs = relativePath.Split(new[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+         var currentNode = IsDelimiter(relativePath[0]) ? node.GetRoot() : node;
+         for (var i = 0; i < breadcrumbs.Length; i++) {
+            currentNode = currentNode.GetChild(breadcrumbs[i]);
+         }
+         return currentNode;
+      }
+      public static TNode GetRelativeOrNull<TNode>(this IReadableDargonNode node, string relativePath)
+         where TNode : IReadableDargonNode
+      {
+         var breadcrumbs = relativePath.Split(new[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
+         var currentNode = IsDelimiter(relativePath[0]) ? node.GetRoot() : node;
+         for (var i = 0; i < breadcrumbs.Length; i++) {
+            currentNode = currentNode.GetChild(breadcrumbs[i]);
+         }
+         return (TNode)currentNode;
+      }
 
       public static bool NameEquals(this IReadableDargonNode node, string name) { return node.Name.Equals(name, StringComparison.OrdinalIgnoreCase); }
 

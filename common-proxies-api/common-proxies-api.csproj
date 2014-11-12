@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDirectoryInfo.cs" />
+    <Compile Include="IFileSystemProxy.cs" />
     <Compile Include="IProcess.cs" />
     <Compile Include="IProcessProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

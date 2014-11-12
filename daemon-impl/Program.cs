@@ -32,6 +32,7 @@ namespace Dargon.Daemon
          var core = new DaemonServiceImpl(serviceLocator, configuration);
          DaemonService daemonService = core;
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+         IFileSystemProxy fileSystemProxy = new FileSystemProxy();
          IProcessProxy processProxy = new ProcessProxy();
          IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();

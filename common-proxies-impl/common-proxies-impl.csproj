@@ -7,7 +7,7 @@
     <ProjectGuid>{16A9F397-500C-4863-BB0E-AC2FA63214A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>common_proxies_impl</RootNamespace>
+    <RootNamespace>Dargon</RootNamespace>
     <AssemblyName>common-proxies-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSystemProxy.cs" />
     <Compile Include="ParentProcessUtilities.cs" />
     <Compile Include="ProcessProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

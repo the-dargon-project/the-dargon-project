@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using ItzWarty;
 using ItzWarty.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using NMockito;
+using Xunit;
 
 namespace Dargon.Processes.Watching
 {
-   [TestClass]
    public class ProcessWatcherServiceImplTest : NMockitoInstance
    {
       private ProcessWatcherServiceImpl testObj;
@@ -37,11 +33,8 @@ namespace Dargon.Processes.Watching
 
       [Mock] private IConsumer a, b, c;
 
-      [TestInitialize]
-      public void Setup()
+      public ProcessWatcherServiceImplTest()
       {
-         InitializeMocks();
-
          testObj = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher);
 
          testObj.Subscribe(a.Consume, new[] { CHROME, MAPLESTORY }, false);
@@ -50,7 +43,7 @@ namespace Dargon.Processes.Watching
          ClearInteractions(testObj);
       }
 
-      [TestMethod]
+      [Fact]
       public void InitializeHappyPathTest()
       {
          testObj.Initialize();
@@ -61,7 +54,7 @@ namespace Dargon.Processes.Watching
          VerifyNoMoreInteractions();
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleProcessWatcherNewProcessFoundOneMatchingConsumerTest()
       {
          testObj.HandleProcessWatcherNewProcessFound(processWatcher, new ProcessFoundEventArgs(MAPLESTORY, MAPLESTORY_PID, PARENT_PID));
@@ -70,7 +63,7 @@ namespace Dargon.Processes.Watching
          VerifyNoMoreInteractions(c);
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleProcessWatcherNewProcessFoundNoMatchingConsumersTest()
       {
          testObj.HandleProcessWatcherNewProcessFound(processWatcher, new ProcessFoundEventArgs(STEAM, STEAM_PID, PARENT_PID));
@@ -79,7 +72,7 @@ namespace Dargon.Processes.Watching
          VerifyNoMoreInteractions(c);
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleProcessWatcherNewProcessFoundOneMatchingConsumerTestAllMatchingConsumersTest()
       {
          testObj.HandleProcessWatcherNewProcessFound(processWatcher, new ProcessFoundEventArgs(CHROME, CHROME_PID, PARENT_PID));
@@ -88,7 +81,7 @@ namespace Dargon.Processes.Watching
          Verify(c).Consume(chromeCpd);
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleProcessWatcherNewProcessFoundOneMatchingConsumerTwoMatchingConsumersTest()
       {
          testObj.HandleProcessWatcherNewProcessFound(processWatcher, new ProcessFoundEventArgs(NOTEPAD, NOTEPAD_PID, PARENT_PID));
@@ -97,7 +90,7 @@ namespace Dargon.Processes.Watching
          Verify(c).Consume(notepadCpd);
       }
 
-      [TestMethod]
+      [Fact]
       public void SubscribeRetroactiveDiscoveryTest()
       {
          const int EXPLORER_PID = 1235;

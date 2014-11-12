@@ -1,30 +1,23 @@
-﻿using System;
+﻿using Dargon.Transport;
+using NMockito;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Transport;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NMockito;
+using Xunit;
 
 namespace Dargon.InjectedModule
 {
-   [TestClass]
    public class SessionFactoryTest : NMockitoInstance
    {
       private SessionFactory testObj;
       
       [Mock] private readonly IDtpNodeFactory dtpNodeFactory = null;
 
-      [TestInitialize]
-      public void Setup()
+      public SessionFactoryTest()
       {
-         InitializeMocks();
-
          testObj = new SessionFactory(dtpNodeFactory);
       }
 
-      [TestMethod]
+      [Fact]
       public void TestCreateSession()
       {
          const int processId = 10;

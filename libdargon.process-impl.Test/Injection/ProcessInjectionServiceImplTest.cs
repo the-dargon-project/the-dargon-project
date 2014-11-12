@@ -1,12 +1,11 @@
 ﻿using System;
 using ItzWarty;
 using ItzWarty.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NMockito;
+using Xunit;
 
 namespace Dargon.Processes.Injection
 {
-   [TestClass]
    public class ProcessInjectionServiceImplTest : NMockitoInstance
    {
       private ProcessInjectionServiceImpl testObj;
@@ -15,18 +14,15 @@ namespace Dargon.Processes.Injection
       [Mock] private readonly IProcessInjector processInjector = null;
       [Mock] private readonly IProcessInjectionConfiguration processInjectionConfiguration;
 
-      [TestInitialize]
-      public void Setup()
+      public ProcessInjectionServiceImplTest()
       {
-         InitializeMocks();
-
          testObj = new ProcessInjectionServiceImpl(serviceLocator, processInjector, processInjectionConfiguration);
 
          Verify(serviceLocator).RegisterService(typeof(ProcessInjectionService), testObj);
          VerifyNoMoreInteractions();
       }
 
-      [TestMethod]
+      [Fact]
       public void InjectToProcessDelegatesToProcessInjectorTest()
       {
          const int processId = 123;

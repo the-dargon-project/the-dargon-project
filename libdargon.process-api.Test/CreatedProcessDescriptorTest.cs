@@ -1,10 +1,9 @@
 ﻿using Dargon.Processes.Watching;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NMockito;
+using Xunit;
 
 namespace Dargon.Processes
 {
-   [TestClass]
    public class CreatedProcessDescriptorTest : NMockitoInstance
    {
       private CreatedProcessDescriptor testObj;
@@ -12,13 +11,12 @@ namespace Dargon.Processes
       private const int PROCESS_ID = 129042;
       private const int PARENT_PROCESS_ID = 28793298;
 
-      [TestInitialize]
-      public void Setup()
+      public CreatedProcessDescriptorTest()
       {
          testObj = new CreatedProcessDescriptor(PROCESS_NAME, PROCESS_ID, PARENT_PROCESS_ID);
       }
 
-      [TestMethod]
+      [Fact]
       public void PropertiesReflectConstructorArgumentsTest()
       {
          AssertEquals(PROCESS_NAME, testObj.ProcessName);

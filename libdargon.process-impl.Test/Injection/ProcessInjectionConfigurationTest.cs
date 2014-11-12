@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NMockito;
+﻿using NMockito;
+using Xunit;
 
 namespace Dargon.Processes.Injection
 {
-   [TestClass]
    public class ProcessInjectionConfigurationTest : NMockitoInstance
    {
-      private ProcessInjectionConfiguration testObj;
+      private ProcessInjectionConfiguration testObj = new ProcessInjectionConfiguration(INJECTION_ATTEMPTS, INJECTION_ATTEMPTS_DELAY);
       
       private const int INJECTION_ATTEMPTS = 1209831;
       private const int INJECTION_ATTEMPTS_DELAY = 4385402;
 
-      [TestInitialize]
-      public void Setup()
-      {
-         InitializeMocks();
-
-         testObj = new ProcessInjectionConfiguration(INJECTION_ATTEMPTS, INJECTION_ATTEMPTS_DELAY);
-      }
-
-      [TestMethod]
+      [Fact]
       public void PropertiesReflectConstructorArgumentsTest()
       {
          AssertEquals(INJECTION_ATTEMPTS, testObj.InjectionAttempts);

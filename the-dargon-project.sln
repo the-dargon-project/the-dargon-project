@@ -81,8 +81,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common-proxies-api", "commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-impl.Test", "libdargon.process-impl.Test\libdargon.process-impl.Test.csproj", "{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libtestutil", "..\libtestutil\libtestutil.csproj", "{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.common.Test", "libdargon.common.Test\libdargon.common.Test.csproj", "{9B1858F9-D321-41A1-8793-A43B1A5C6958}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-impl.Test", "libdargon.injected-module-impl.Test\libdargon.injected-module-impl.Test.csproj", "{CE788C59-661C-41CE-8D50-4C9B57181EF9}"
@@ -104,6 +102,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.temporary-file-api", "libdargon.temporary-file-api\libdargon.temporary-file-api.csproj", "{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.temporary-file-impl", "libdargon.temporary-file-impl\libdargon.temporary-file-impl.csproj", "{844EB06D-3F31-4322-8B57-DC6DAE28FF08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMockito", "..\NMockito\NMockito.csproj", "{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{20FD737B-B6F0-490B-8C58-E0E7C350B807}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -623,24 +630,6 @@ Global
 		{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}.Release|Win32.ActiveCfg = Release|Any CPU
 		{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}.Release|x86.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Any CPU.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Any CPU.Build.0 = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Mixed Platforms.Build.0 = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Win32.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|x86.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Win32.ActiveCfg = Release|Any CPU
-		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Any CPU.ActiveCfg = Release|Any CPU
 		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Any CPU.Build.0 = Release|Any CPU
 		{9B1858F9-D321-41A1-8793-A43B1A5C6958}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -842,6 +831,24 @@ Global
 		{844EB06D-3F31-4322-8B57-DC6DAE28FF08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{844EB06D-3F31-4322-8B57-DC6DAE28FF08}.Release|Win32.ActiveCfg = Release|Any CPU
 		{844EB06D-3F31-4322-8B57-DC6DAE28FF08}.Release|x86.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Any CPU.Build.0 = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|Win32.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Console|x86.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|Win32.ActiveCfg = Release|Any CPU
+		{0060E29C-DB43-45A8-97AF-17D4AEF0DAD7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

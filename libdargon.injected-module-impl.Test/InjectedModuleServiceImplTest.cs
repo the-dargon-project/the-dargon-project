@@ -1,14 +1,11 @@
-﻿using System;
-using Dargon.InjectedModule.Components;
-using Dargon.Processes.Injection;
+﻿using Dargon.Processes.Injection;
 using ItzWarty;
 using ItzWarty.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NMockito;
+using Xunit;
 
 namespace Dargon.InjectedModule
 {
-   [TestClass]
    public class InjectedModuleServiceImplTest : NMockitoInstance
    {
       private InjectedModuleServiceImpl testObj;
@@ -18,15 +15,12 @@ namespace Dargon.InjectedModule
       [Mock] private readonly ISessionFactory sessionFactory = null;
       [Mock] private readonly IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = null;
 
-      [TestInitialize]
-      public void Setup()
+      public InjectedModuleServiceImplTest()
       {
-         InitializeMocks();
-
          testObj = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration);
       }
 
-      [TestMethod]
+      [Fact]
       public void InitializeRegistersToServiceLocatorTest()
       {
          testObj.Initialize();
@@ -34,7 +28,7 @@ namespace Dargon.InjectedModule
          Verify(serviceLocator).RegisterService(typeof(InjectedModuleService), testObj);
       }
 
-      [TestMethod]
+      [Fact]
       public void InjectToProcessCreatesSessionAndDelegatesToProcess()
       {
          const int processId = 193;
@@ -55,7 +49,7 @@ namespace Dargon.InjectedModule
          VerifyNoMoreInteractions();
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleSessionEndedUnsubscribesFromSession()
       {
          var session = CreateMock<ISession>();

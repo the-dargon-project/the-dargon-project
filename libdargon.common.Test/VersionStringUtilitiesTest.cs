@@ -1,11 +1,9 @@
-﻿using System;
-using Dargon;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dargon;
 using NMockito;
+using Xunit;
 
 namespace libdargon.common.Test
 {
-   [TestClass]
    public class VersionStringUtilitiesTest : NMockitoInstance
    {
       private VersionStringUtilities testObj = new VersionStringUtilities();
@@ -15,19 +13,19 @@ namespace libdargon.common.Test
       private const string kValidPathVersionString = "1.2.3.4";
       private const uint kValidPathVersionNumber = 0x01020304U;
 
-      [TestMethod]
+      [Fact]
       public void GetVersionNumberHappyPathTest() { AssertEquals(kValidPathVersionNumber, testObj.GetVersionNumber(kValidPath)); }
 
-      [TestMethod]
+      [Fact]
       public void GetVersionNumberSadPathReturnsUint32MaxTest() { AssertEquals(uint.MaxValue, testObj.GetVersionNumber(kInvalidPath)); }
 
-      [TestMethod]
+      [Fact]
       public void GetVersionStringHappyPathTest() { AssertEquals(kValidPathVersionString, testObj.GetVersionString(kValidPath)); }
-      
-      [TestMethod]
+
+      [Fact]
       public void GetVersionStringInvalidStringReturnsEmptyStringTest() { AssertEquals("", testObj.GetVersionString(kInvalidPath)); }
 
-      [TestMethod]
+      [Fact]
       public void TryGetVersionNumberHappyPathTest()
       {
          uint versionNumber;
@@ -35,7 +33,7 @@ namespace libdargon.common.Test
          AssertEquals(kValidPathVersionNumber, versionNumber);
       }
 
-      [TestMethod]
+      [Fact]
       public void TryGetVersionNumberSadPathTest()
       {
          uint versionNumber;

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Dargon.InjectedModule;
+﻿using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.Modifications;
-using ItzWarty;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NMockito;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Dargon.LeagueOfLegends.Lifecycle
 {
-   [TestClass]
    public class LeagueLifecycleServiceImplTests : NMockitoInstance
    {
       private LeagueLifecycleServiceImpl testObj;
@@ -30,18 +27,15 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       [Mock] private readonly IModification secondModification = null;
       private IEnumerable<IModification> modifications;
 
-      [TestInitialize]
-      public void Setup()
+      public LeagueLifecycleServiceImplTests()
       {
-         InitializeMocks();
-
          testObj = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
 
          modifications = new[] { firstModification, secondModification };
          When(leagueModificationRepositoryService.EnumerateModifications()).ThenReturn(modifications);
       }
 
-      [TestMethod]
+      [Fact]
       public void InitializeSubscribesToSessionServiceSessionCreatedTest()
       {
          testObj.Initialize();
@@ -49,7 +43,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          VerifyNoMoreInteractions();
       }
 
-      [TestMethod]
+      [Fact]
       public void HandlePreclientProcessLaunchedTest()
       {
          const int processId = 13337;
@@ -64,7 +58,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          VerifyNoMoreInteractions();
       }
 
-      [TestMethod]
+      [Fact]
       public void HandleUninitializedToPreclientPhaseTransitionTest()
       {
          var firstResolutionTask = CreateMock<IResolutionTask>();

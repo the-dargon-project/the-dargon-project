@@ -3,6 +3,8 @@
    public interface IDaemonConfiguration
    {
       bool IsDebugCompilation { get; }
-      string TemporaryDirectoryPath { get; }
+
+      string UserDataDirectoryPath { get; }
+      string AppDataDirectoryPath { get; }
    }
 }

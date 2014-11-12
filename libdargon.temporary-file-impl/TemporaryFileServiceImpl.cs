@@ -15,9 +15,10 @@ namespace Dargon
 
       public TemporaryFileServiceImpl(IDaemonConfiguration configuration) {
          this.configuration = configuration;
-         this.temporaryDirectoryPath = configuration.TemporaryDirectoryPath;
+         this.temporaryDirectoryPath = Path.Combine(configuration.UserDataDirectoryPath, "temp"); ;
          this.temporaryFilesLockPath = Path.Combine(temporaryDirectoryPath, "LOCK");
          this.temporaryFilesLock = new FileLock(temporaryFilesLockPath);
+         Util.PrepareDirectory(temporaryDirectoryPath);
       }
 
       public IDisposable TakeLock() { return temporaryFilesLock.Take(); }

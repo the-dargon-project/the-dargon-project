@@ -17,21 +17,22 @@ namespace Dargon.Modifications
 
       public IModification ImportLegacyModification(GameType gameType, string root, string[] filePaths)
       {
-         root = Path.GetFullPath(root);
-         filePaths = Util.Generate(filePaths.Length, i => Path.GetFullPath(filePaths[i]));
-
-         var repo = new LocalRepository(root);
-         repo.Initialize();
-
-         foreach (var filePath in filePaths) {
-            if (!filePath.Contains(".dpm")) {
-               var internalPath = filePath.Substring(root.Length + PATH_DELIMITER_LENGTH);
-               repo.AddFile(internalPath);
-            }
-         }
-
-         repo.Commit("Initial Commit");
-         return new Modification(gameType, Guid.NewGuid(), root);
+         throw new NotImplementedException();
+//         root = Path.GetFullPath(root);
+//         filePaths = Util.Generate(filePaths.Length, i => Path.GetFullPath(filePaths[i]));
+//
+//         var repo = new LocalRepository(root);
+//         repo.Initialize();
+//
+//         foreach (var filePath in filePaths) {
+//            if (!filePath.Contains(".dpm")) {
+//               var internalPath = filePath.Substring(root.Length + PATH_DELIMITER_LENGTH);
+//               repo.AddFile(internalPath);
+//            }
+//         }
+//
+//         repo.Commit("Initial Commit");
+//         return new Modification(gameType, Guid.NewGuid(), root);
       }
    }
 }

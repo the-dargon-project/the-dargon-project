@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Dargon.Game;
 using Dargon.InjectedModule.Tasks;
 using Dargon.Modifications;
@@ -19,14 +20,14 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       public ITasklist BuildTasklist(IModification modification, ModificationTargetType target)
       {
-         if (modification.GameType != GameType.LeagueOfLegends) {
+         if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new InvalidOperationException("League Modification Compilation Service can only build tasklist for League of Legends modifications!");
          }
 
          logger.Info("Building Tasklist for Modification " + modification + " for Target Type " + target);
 
          var result = new Tasklist();
-         var repository = new LocalRepository(modification.RootPath);
+         var repository = new LocalRepository(modification.RepositoryPath);
          using (repository.TakeLock()) {
             string compilationMetadataFilepath = repository.GetMetadataFilePath(LeagueModificationObjectCompilerServiceImpl.COMPILATION_METADATA_FILE_NAME); // HACK
             string resolutionMetadataFilepath = repository.GetMetadataFilePath(LeagueModificationResolutionServiceImpl.RESOLUTION_METADATA_FILE_NAME); // HACK

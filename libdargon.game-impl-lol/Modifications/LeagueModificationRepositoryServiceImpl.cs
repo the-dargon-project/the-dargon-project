@@ -24,7 +24,7 @@ namespace Dargon.LeagueOfLegends.Modifications
       }
 
       public void AddModification(IModification modification) {
-         if (modification.GameType != GameType.LeagueOfLegends) {
+         if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new ArgumentException("Expected League of Legends modification");
          }
          modificationRepositoryService.AddModification(modification);
@@ -32,7 +32,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       public void RemoveModification(IModification modification)
       {
-         if (modification.GameType != GameType.LeagueOfLegends) {
+         if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new ArgumentException("Expected League of Legends modification");
          }
          modificationRepositoryService.RemoveModification(modification);

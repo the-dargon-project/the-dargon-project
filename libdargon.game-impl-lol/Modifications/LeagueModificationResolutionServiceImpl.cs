@@ -8,6 +8,8 @@ using Dargon.Modifications;
 using Dargon.Patcher;
 using System;
 using System.Linq;
+using ItzWarty;
+using LibGit2Sharp;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
@@ -22,7 +24,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       public IResolutionTask StartModificationResolution(IModification modification, ModificationTargetType target)
       {
-         if (modification.GameType != GameType.LeagueOfLegends) {
+         if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new InvalidOperationException("League Modification Resolution Service can only resolve League of Legends modifications!");
          }
 
@@ -30,7 +32,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
 
          var newTask = new ResolutionTask(modification);
-         AddTask(modification.LocalGuid, newTask, target);
+         AddTask(modification.RepositoryName, newTask, target);
          return newTask;
       }
 
@@ -45,20 +47,28 @@ namespace Dargon.LeagueOfLegends.Modifications
          try {
             var task = context.Task;
             var modification = task.Modification;
+            var modificationMetadata = modification.Metadata;
+            var contentPath = modificationMetadata.ContentPath.Trim('/', '\\');
+
+            logger.Info("Resolving files of modification {0}".F(modificationMetadata.Name));
+            logger.Info("  Content Path: {0}".F(contentPath));
 
             var clientResolver = context.Targets.HasFlag(ModificationTargetType.Client) ? new Resolver(context.ClientProject.ReleaseManifest.Root) : null;
             var gameResolver = context.Targets.HasFlag(ModificationTargetType.Game) ? new Resolver(context.GameProject.ReleaseManifest.Root) : null;
 
-            var repository = new LocalRepository(modification.RootPath);
-            using (repository.TakeLock()) {
-               string resolutionMetadataFilepath = repository.GetMetadataFilePath(RESOLUTION_METADATA_FILE_NAME);
+            var gitRepository = new Repository(modification.RepositoryPath);
+            var dpmRepository = new LocalRepository(modification.RepositoryPath);
+            using (dpmRepository.TakeLock()) {
+               string resolutionMetadataFilepath = dpmRepository.GetMetadataFilePath(RESOLUTION_METADATA_FILE_NAME);
                using (var resolutionMetadata = new ModificationResolutionTable(resolutionMetadataFilepath)) {
-                  foreach (var indexEntry in repository.EnumerateIndexEntries()) {
-                     if (indexEntry.Value.Flags.HasFlag(IndexEntryFlags.Directory)) {
+                  foreach (var file in gitRepository.Index) {
+                     if (!file.Path.StartsWith(contentPath, StringComparison.OrdinalIgnoreCase)) {
+                        logger.Info("Ignoring \"" + file.Path + "\" as it is not in the content directory.");
                         continue;
                      }
 
-                     string internalPath = indexEntry.Key;
+                     string internalPath = file.Path;
+                     Hash160 fileHash = Hash160.Parse(file.Id.Sha);
                      logger.Info("HAVE TO RESOLVE " + internalPath);
                      var resolutionEntry = resolutionMetadata.GetValueOrNull(internalPath);
 
@@ -94,7 +104,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                         if (resolution != null) {
                            resolutionEntry.Target = resolver.Item1;
                            resolutionEntry.ResolvedPath = resolution.GetPath();
-                           resolutionEntry.FileRevision = indexEntry.Value.RevisionHash;
+                           resolutionEntry.FileRevision = fileHash;
                            resolutionSucceeded = true;
                         }
                      }

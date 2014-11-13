@@ -42,7 +42,10 @@ namespace Dargon.Daemon
          IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
          ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(serviceLocator, processInjector, processInjectionConfiguration);
          ProcessWatcherService processWatcherService = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher).With(s => s.Initialize());
-         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(serviceLocator);
+         IModificationMetadataLoader modificationMetadataLoader = new ModificationMetadataLoader(fileSystemProxy);
+         IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
+         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataLoader, buildConfigurationLoader);
+         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, serviceLocator, fileSystemProxy, modificationLoader).With(s => s.Initialize());
          ModificationImportService modificationImportService = new ModificationImportServiceImpl(serviceLocator);
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.InjectedModule.Tasks;
@@ -15,6 +14,8 @@ using Dargon.Modifications;
 using Dargon.Processes.Watching;
 using ItzWarty;
 using NLog;
+using System.IO;
+using System.Linq;
 
 namespace Dargon.LeagueOfLegends
 {
@@ -72,20 +73,29 @@ namespace Dargon.LeagueOfLegends
 
       private void RunDebugActions()
       {
-         modificationRepositoryService.ClearModifications();
-         //         var mod = modificationImportService.ImportLegacyModification(
-         //            GameType.LeagueOfLegends,
-         //            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-         //            new[] {
-         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Ahri_Square_0.png",
-         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Assets\Images\Champions\Annie_Square_0.png",
-         //               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack\Client\Characters\Annie\AnnieLoadScreen.dds"
-         //            });
-         var mod = modificationImportService.ImportLegacyModification(
-            GameType.LeagueOfLegends,
-            @"C:\lolmodprojects\Tencent Art Pack 8.74",
-            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74\ArtPack\Client\Assets", "*", SearchOption.AllDirectories));
-         modificationRepositoryService.AddModification(mod);
+         foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
+            logger.Info(mod.RepositoryName);
+
+            var metadata = mod.Metadata;
+            logger.Info("mod: {0} {1} by {2} at {3} for {4}".F(metadata.Name, metadata.Version, metadata.Authors.Join(", "), metadata.Website, metadata.Targets.Select(t=>t.Name).Join(", ")));
+
+            leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
+            leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
+            leagueGameModificationLinkerService.LinkModificationObjects();
+         }
+          // for (var mod in modificationRepositoryService)
+          // modificationRepositoryService.ClearModifications();
+          //         var mod = modificationImportService.ImportLegacyModification(
+          //            GameType.LeagueOfLegends,
+          //            @"C:\lolmodprojects\Tencent Art Pack 8.74",
+          //            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74\ArtPack\Client\Assets", "*", SearchOption.AllDirectories));
+          //         modificationRepositoryService.AddModification(mod);
+          //
+          // var mod = modificationImportService.ImportLegacyModification(
+          //    GameType.LeagueOfLegends,
+          //    @"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style",
+          //    Directory.GetFiles(@"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style", "*", SearchOption.AllDirectories));
+          // modificationRepositoryService.AddModification(mod);
       }
    }
 

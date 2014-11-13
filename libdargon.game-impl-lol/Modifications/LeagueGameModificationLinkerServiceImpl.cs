@@ -9,6 +9,7 @@ using Dargon.Patcher;
 using Dargon.VirtualFileMapping;
 using ItzWarty;
 using ItzWarty.Collections;
+using LibGit2Sharp;
 using NLog;
 using System.Collections.Generic;
 
@@ -34,18 +35,27 @@ namespace Dargon.LeagueOfLegends.Modifications
          var manifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
          var archiveDataById = new Dictionary<uint, ArchiveData>();
          foreach (var modification in leagueModificationRepositoryService.EnumerateModifications()) {
-            var repository = new LocalRepository(modification.RootPath);
-            using (repository.TakeLock()) {
-               var compilationMetadataFilePath = repository.GetMetadataFilePath(LeagueModificationObjectCompilerServiceImpl.COMPILATION_METADATA_FILE_NAME);
-               var resolutionMetadataFilePath = repository.GetMetadataFilePath(LeagueModificationResolutionServiceImpl.RESOLUTION_METADATA_FILE_NAME);
+            var modificationMetadata = modification.Metadata;
+            var contentPath = modificationMetadata.ContentPath.Trim('/', '\\');
+
+            logger.Info("Linking files of modification {0}".F(modificationMetadata.Name));
+            logger.Info("  Content Path: {0}".F(contentPath));
+
+            var gitRepository = new Repository(modification.RepositoryPath);
+            var dpmRepository = new LocalRepository(modification.RepositoryPath);
+            using (dpmRepository.TakeLock()) {
+               var compilationMetadataFilePath = dpmRepository.GetMetadataFilePath(LeagueModificationObjectCompilerServiceImpl.COMPILATION_METADATA_FILE_NAME);
+               var resolutionMetadataFilePath = dpmRepository.GetMetadataFilePath(LeagueModificationResolutionServiceImpl.RESOLUTION_METADATA_FILE_NAME);
                using (var compilationMetadata = new ModificationCompilationTable(compilationMetadataFilePath))
                using (var resolutionMetadata = new ModificationResolutionTable(resolutionMetadataFilePath)) {
-                  foreach (var indexEntry in repository.EnumerateIndexEntries()) {
-                     if (indexEntry.Value.Flags.HasFlag(IndexEntryFlags.Directory)) {
+                  foreach (var file in gitRepository.Index) {
+                     if (!file.Path.StartsWith(contentPath, StringComparison.OrdinalIgnoreCase)) {
+                        logger.Info("Ignoring \"" + file.Path + "\" as it is not in the content directory.");
                         continue;
                      }
 
-                     string internalPath = indexEntry.Key;
+                     string internalPath = file.Path;
+                     Hash160 fileHash = Hash160.Parse(file.Id.Sha);
                      var resolutionEntry = resolutionMetadata.GetValueOrNull(internalPath);
                      var compilationEntry = compilationMetadata.GetValueOrNull(internalPath);
 
@@ -64,8 +74,8 @@ namespace Dargon.LeagueOfLegends.Modifications
                         continue;
                      }
 
-                     var sourcePath = repository.GetAbsolutePath(indexEntry.Key);
-                     var objectPath = repository.GetObjectPath(compilationEntry.CompiledFileHash);
+                     var sourcePath = dpmRepository.GetAbsolutePath(internalPath);
+                     var objectPath = dpmRepository.GetObjectPath(compilationEntry.CompiledFileHash);
                      var sourceLength = new FileInfo(sourcePath).Length;
                      var objectLength = new FileInfo(objectPath).Length;
 

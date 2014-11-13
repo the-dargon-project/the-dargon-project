@@ -37,6 +37,9 @@
     <Reference Include="LibGit2Sharp">
       <HintPath>..\packages\LibGit2Sharp.0.20.0.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -48,14 +51,23 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildConfiguration.cs" />
+    <Compile Include="ModificationMetadata.cs" />
     <Compile Include="Modification.cs" />
     <Compile Include="ModificationImportServiceImpl.cs" />
+    <Compile Include="ModificationLoader.cs" />
+    <Compile Include="BuildConfigurationLoader.cs" />
+    <Compile Include="ModificationMetadataLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
       <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
       <Name>ItzWarty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
+      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
+      <Name>common-proxies-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>

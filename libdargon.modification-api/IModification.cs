@@ -5,8 +5,10 @@ namespace Dargon.Modifications
 {
    public interface IModification
    {
-      Guid LocalGuid { get; }
-      GameType GameType { get; }
-      string RootPath { get; }
+      string RepositoryName { get; }
+      string RepositoryPath { get; }
+
+      IModificationMetadata Metadata { get; }
+      IBuildConfiguration BuildConfiguration { get; }
    }
 }

@@ -21,7 +21,7 @@ namespace Dargon.LeagueOfLegends.Modifications
    {
       protected readonly Logger logger;
 
-      private readonly Dictionary<Guid, TCancellableTaskImpl> tasksByModificationLocalGuid = new Dictionary<Guid, TCancellableTaskImpl>();
+      private readonly Dictionary<string, TCancellableTaskImpl> tasksByModificationName = new Dictionary<string, TCancellableTaskImpl>();
       private readonly CancellationTokenSource shutdownCancellationTokenSource = new CancellationTokenSource();
       private readonly DaemonService daemonService;
       private readonly CancellationToken shutdownCancellationToken;
@@ -46,11 +46,11 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       protected abstract void ProcessTaskContext(TContext context);
 
-      protected void AddTask(Guid modificationGuid, TCancellableTaskImpl task, ModificationTargetType target)
+      protected void AddTask(string modificationName, TCancellableTaskImpl task, ModificationTargetType target)
       {
          lock (previousTasksLock) {
             TCancellableTaskImpl previousTask;
-            if (tasksByModificationLocalGuid.TryGetValue(modificationGuid, out previousTask)) {
+            if (tasksByModificationName.TryGetValue(modificationName, out previousTask)) {
                previousTask.SetNext(task);
                previousTask.Cancel();
             }

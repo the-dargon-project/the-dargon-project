@@ -42,16 +42,16 @@ namespace Dargon.Daemon
          IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
          ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(serviceLocator, processInjector, processInjectionConfiguration);
          ProcessWatcherService processWatcherService = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher).With(s => s.Initialize());
-         IModificationMetadataLoader modificationMetadataLoader = new ModificationMetadataLoader(fileSystemProxy);
+         IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
+         IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
          IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
-         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataLoader, buildConfigurationLoader);
-         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, serviceLocator, fileSystemProxy, modificationLoader).With(s => s.Initialize());
-         ModificationImportService modificationImportService = new ModificationImportServiceImpl(serviceLocator);
+         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
+         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, serviceLocator, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService, modificationImportService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();
       }

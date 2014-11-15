@@ -8,19 +8,19 @@ namespace Dargon.Modifications
 {
    public class ModificationLoader : IModificationLoader
    {
-      private readonly IModificationMetadataLoader modificationMetadataLoader;
+      private readonly IModificationMetadataSerializer modificationMetadataSerializer;
       private readonly IBuildConfigurationLoader buildConfigurationLoader;
 
-      public ModificationLoader(IModificationMetadataLoader modificationMetadataLoader, IBuildConfigurationLoader buildConfigurationLoader)
+      public ModificationLoader(IModificationMetadataSerializer modificationMetadataSerializer, IBuildConfigurationLoader buildConfigurationLoader)
       {
-         this.modificationMetadataLoader = modificationMetadataLoader;
+         this.modificationMetadataSerializer = modificationMetadataSerializer;
          this.buildConfigurationLoader = buildConfigurationLoader;
       }
 
       public IModification Load(string name, string path)
       {
          return new Modification(
-            modificationMetadataLoader,
+            modificationMetadataSerializer,
             buildConfigurationLoader,
             name,
             path

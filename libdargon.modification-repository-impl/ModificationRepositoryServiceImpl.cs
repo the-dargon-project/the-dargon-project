@@ -3,9 +3,11 @@ using System.IO;
 using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.Modifications;
+using Dargon.Patcher;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Services;
+using LibGit2Sharp;
 using NLog;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +19,17 @@ namespace Dargon.ModificationRepositories
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private const string kRepositorySubdirectoryName = "repositories";
+      private const int PATH_DELIMITER_LENGTH = 1;
 
       private readonly IDaemonConfiguration configuration;
       private readonly IServiceLocator serviceLocator;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IModificationLoader modificationLoader;
+      private readonly IModificationMetadataSerializer modificationMetadataSerializer;
+      private readonly IModificationMetadataFactory modificationMetadataFactory;
       private string repositorySubdirectoryPath;
 
-      public ModificationRepositoryServiceImpl(IDaemonConfiguration configuration, IServiceLocator serviceLocator, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader)
+      public ModificationRepositoryServiceImpl(IDaemonConfiguration configuration, IServiceLocator serviceLocator, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
       {
          logger.Info("Constructing Modification Repository Service");
 
@@ -32,6 +37,8 @@ namespace Dargon.ModificationRepositories
          this.serviceLocator = serviceLocator;
          this.fileSystemProxy = fileSystemProxy;
          this.modificationLoader = modificationLoader;
+         this.modificationMetadataSerializer = modificationMetadataSerializer;
+         this.modificationMetadataFactory = modificationMetadataFactory;
       }
 
       public void Initialize()
@@ -44,21 +51,49 @@ namespace Dargon.ModificationRepositories
          fileSystemProxy.PrepareDirectory(repositorySubdirectoryPath);
       }
 
-      public void AddModification(IModification modification)
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
       {
-         logger.Info("Adding Modification " + modification); 
-//         modifications.TryAdd(modification); 
+         gameType = gameType ?? GameType.Any;
+
+         logger.Info("Importing Legacy Modification \"{0}\" from {1} for {2}".F(repositoryName, sourceRoot, gameType.Name));
+         sourceRoot = Path.GetFullPath(sourceRoot);
+         sourceFilePaths = Util.Generate(sourceFilePaths.Length, i => Path.GetFullPath(sourceFilePaths[i]));
+
+         var repositoryPath = Path.Combine(repositorySubdirectoryPath, repositoryName);
+         fileSystemProxy.PrepareDirectory(repositoryPath);
+
+         Repository.Init(repositoryPath);
+         var gitRepository = new Repository(repositoryPath);
+         var dpmRepository = new LocalRepository(repositoryPath);
+         using (dpmRepository.TakeLock()) {
+            dpmRepository.Initialize();
+            var metadata = modificationMetadataFactory.Create(repositoryName, gameType);
+            foreach (var sourceFilePath in sourceFilePaths) {
+               var internalPath = Path.Combine(metadata.ContentPath, sourceFilePath.Substring(sourceRoot.Length + PATH_DELIMITER_LENGTH));
+               var absolutePath = dpmRepository.GetAbsolutePath(internalPath);
+               fileSystemProxy.PrepareParentDirectory(absolutePath);
+               fileSystemProxy.CopyFile(sourceFilePath, absolutePath);
+
+               gitRepository.Stage(internalPath);
+            }
+            var metadataFilePath = dpmRepository.GetAbsolutePath(ModificationConstants.kMetadataFileName);
+            modificationMetadataSerializer.Save(metadataFilePath, metadata);
+            gitRepository.Stage(metadataFilePath);
+            gitRepository.Commit("Initial Commit");
+         }
+         return modificationLoader.Load(repositoryName, repositoryPath);
       }
 
-      public void RemoveModification(IModification modification)
+      public void DeleteModification(IModification modification)
       {
-         logger.Info("Removing Modification " + modification);
-//         modifications.TryRemove(modification);
+         logger.Info("Removing Modification " + modification + " at " + modification.RepositoryPath);
+         fileSystemProxy.DeleteDirectory(modification.RepositoryPath, true);
       }
 
       public IEnumerable<IModification> EnumerateModifications(GameType gameType)
       {
          foreach (var directory in fileSystemProxy.EnumerateDirectories(repositorySubdirectoryPath)) {
+            logger.Info("Candidate modification " + directory );
             IModification modification = null;
             try {
                modification = modificationLoader.Load(fileSystemProxy.GetDirectoryInfo(directory).Name, directory);

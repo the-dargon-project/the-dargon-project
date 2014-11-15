@@ -117,6 +117,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                      // Update RAF File
                      rafEntry.FileOffset = (uint)dataStartInclusive;
                      rafEntry.FileSize = (uint)objectLength;
+                     logger.Warn("Successfully linked RAF Entry for " + resolutionEntry.ResolvedPath + " in archive " + manifestEntry.ArchiveId + ".");
                   }
                }
             }

@@ -44,9 +44,10 @@
     <Compile Include="IBuildConfigurationLoader.cs" />
     <Compile Include="IModificationLoader.cs" />
     <Compile Include="IModificationMetadata.cs" />
-    <Compile Include="IModificationMetadataLoader.cs" />
+    <Compile Include="IModificationMetadataFactory.cs" />
+    <Compile Include="IModificationMetadataSerializer.cs" />
+    <Compile Include="ModificationConstants.cs" />
     <Compile Include="ModificationFlags.cs" />
-    <Compile Include="ModificationImportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

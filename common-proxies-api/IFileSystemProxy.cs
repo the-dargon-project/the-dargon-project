@@ -16,9 +16,12 @@ namespace Dargon
       IDirectoryInfo GetDirectoryInfo(string path);
       
       string ReadAllText(string path);
+      void WriteAllText(string path, string contents);
+      void CopyFile(string sourceFilePath, string destinationFilePath);
 
       void PrepareDirectory(string path);
       void PrepareParentDirectory(string path);
 
+      void DeleteDirectory(string path, bool recursive = false);
    }
 }

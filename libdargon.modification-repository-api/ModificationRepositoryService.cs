@@ -6,8 +6,8 @@ namespace Dargon.ModificationRepositories
 {
    public interface ModificationRepositoryService
    {
-      void AddModification(IModification modification);
-      void RemoveModification(IModification modification);
+      IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType = null);
+      void DeleteModification(IModification modification);
       IEnumerable<IModification> EnumerateModifications(GameType gameType = null);
    }
 }

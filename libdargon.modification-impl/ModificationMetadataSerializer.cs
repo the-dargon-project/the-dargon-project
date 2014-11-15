@@ -11,17 +11,17 @@ using NLog;
 
 namespace Dargon.Modifications
 {
-   public class ModificationMetadataLoader : IModificationMetadataLoader
+   public class ModificationMetadataSerializer : IModificationMetadataSerializer
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly IFileSystemProxy fileSystemProxy;
 
-      public ModificationMetadataLoader(IFileSystemProxy fileSystemProxy) {
+      public ModificationMetadataSerializer(IFileSystemProxy fileSystemProxy) {
          this.fileSystemProxy = fileSystemProxy;
       }
 
-      public bool TryLoadMetadataFile(string path, out IModificationMetadata result)
+      public bool TryLoad(string path, out IModificationMetadata result)
       {
          result = null;
          if (File.Exists(path)) {
@@ -34,6 +34,11 @@ namespace Dargon.Modifications
             }
          }
          return result != null;
+      }
+
+      public void Save(string path, IModificationMetadata metadata) { 
+         var json = JsonConvert.SerializeObject(metadata, Formatting.Indented,  new GameTypeConverter());
+         fileSystemProxy.WriteAllText(path, json);
       }
    }
 }

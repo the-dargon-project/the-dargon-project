@@ -54,10 +54,10 @@
     <Compile Include="BuildConfiguration.cs" />
     <Compile Include="ModificationMetadata.cs" />
     <Compile Include="Modification.cs" />
-    <Compile Include="ModificationImportServiceImpl.cs" />
     <Compile Include="ModificationLoader.cs" />
     <Compile Include="BuildConfigurationLoader.cs" />
-    <Compile Include="ModificationMetadataLoader.cs" />
+    <Compile Include="ModificationMetadataFactory.cs" />
+    <Compile Include="ModificationMetadataSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

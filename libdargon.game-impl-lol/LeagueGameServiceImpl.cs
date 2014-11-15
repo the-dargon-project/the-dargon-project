@@ -30,7 +30,6 @@ namespace Dargon.LeagueOfLegends
       private readonly InjectedModuleService injectedModuleService;
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
-      private readonly ModificationImportService modificationImportService;
       private readonly RadsServiceImpl radsService;
       private readonly ITaskFactory taskFactory;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
@@ -44,7 +43,7 @@ namespace Dargon.LeagueOfLegends
       private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, ModificationImportService modificationImportService)
+      public LeagueGameServiceImpl(DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
          logger.Info("Initializing League Game Service");
          this.daemonService = daemonService;
@@ -53,7 +52,6 @@ namespace Dargon.LeagueOfLegends
          this.injectedModuleService = injectedModuleService;
          this.processWatcherService = processWatcherService;
          this.modificationRepositoryService = modificationRepositoryService;
-         this.modificationImportService = modificationImportService;
 
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
          this.taskFactory = new TaskFactory();
@@ -73,6 +71,16 @@ namespace Dargon.LeagueOfLegends
 
       private void RunDebugActions()
       {
+         foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.Any)) {
+            modificationRepositoryService.DeleteModification(mod);
+         }
+
+         modificationRepositoryService.ImportLegacyModification(
+            "tencent-art-pack",
+            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
+            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
+            GameType.LeagueOfLegends);
+
          foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
             logger.Info(mod.RepositoryName);
 

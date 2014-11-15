@@ -12,17 +12,14 @@ namespace Dargon.Modifications
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private const string kMetadataFileName = "metadata.json";
-      private const string kBuildConfigurationFileName = "build.json";
-
-      private readonly IModificationMetadataLoader metadataLoader;
+      private readonly IModificationMetadataSerializer metadataSerializer;
       private readonly IBuildConfigurationLoader buildConfigurationLoader;
       private readonly string repositoryName;
       private readonly string repositoryPath;
 
-      public Modification(IModificationMetadataLoader metadataLoader, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath)
+      public Modification(IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath)
       {
-         this.metadataLoader = metadataLoader;
+         this.metadataSerializer = metadataSerializer;
          this.buildConfigurationLoader = buildConfigurationLoader;
          this.repositoryName = repositoryName;
          this.repositoryPath = repositoryPath;
@@ -35,18 +32,18 @@ namespace Dargon.Modifications
 
       private IModificationMetadata GetMetadata()
       {
-         var metadataFilePath = Path.Combine(repositoryPath, kMetadataFileName);
+         var metadataFilePath = Path.Combine(repositoryPath, ModificationConstants.kMetadataFileName);
 
          IModificationMetadata metadata;
-         if (!metadataLoader.TryLoadMetadataFile(metadataFilePath, out metadata)) {
+         if (!metadataSerializer.TryLoad(metadataFilePath, out metadata)) {
             metadata = new ModificationMetadata();
          }
          return metadata;
       }
 
       private IBuildConfiguration GetBuildConfiguration() 
-      { 
-         var buildConfigurationFilePath = Path.Combine(repositoryPath, kBuildConfigurationFileName);
+      {
+         var buildConfigurationFilePath = Path.Combine(repositoryPath, ModificationConstants.kBuildConfigurationFileName);
 
          IBuildConfiguration buildConfiguration;
          if (!buildConfigurationLoader.TryLoad(buildConfigurationFilePath, out buildConfiguration)) {

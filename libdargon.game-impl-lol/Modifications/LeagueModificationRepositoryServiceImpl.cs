@@ -19,23 +19,26 @@ namespace Dargon.LeagueOfLegends.Modifications
       public void ClearModifications() 
       {
          foreach (var mod in EnumerateModifications().ToList()) {
-            RemoveModification(mod);
+            DeleteModification(mod);
          }
       }
 
-      public void AddModification(IModification modification) {
-         if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths) { return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, null); }
+
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
+      {
+         if (gameType != null && !gameType.Equals(GameType.LeagueOfLegends)) {
             throw new ArgumentException("Expected League of Legends modification");
          }
-         modificationRepositoryService.AddModification(modification);
+         return modificationRepositoryService.ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, GameType.LeagueOfLegends);
       }
 
-      public void RemoveModification(IModification modification)
+      public void DeleteModification(IModification modification)
       {
          if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new ArgumentException("Expected League of Legends modification");
          }
-         modificationRepositoryService.RemoveModification(modification);
+         modificationRepositoryService.DeleteModification(modification);
       }
 
       public IEnumerable<IModification> EnumerateModifications(GameType gameType)

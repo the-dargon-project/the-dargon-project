@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.Session.Phases;
+using Dargon.Processes;
 using ItzWarty;
+using ItzWarty.Processes;
 using NLog;
 using System.Diagnostics;
 

@@ -38,6 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -58,18 +62,6 @@
     <ProjectReference Include="..\..\libdtp\libdtp.csproj">
       <Project>{C9F92566-1F94-4235-944C-19364459F9A6}</Project>
       <Name>libdtp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\common-proxies-impl\common-proxies-impl.csproj">
-      <Project>{16A9F397-500C-4863-BB0E-AC2FA63214A1}</Project>
-      <Name>common-proxies-impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
-      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
-      <Name>common-proxies-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>

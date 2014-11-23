@@ -37,6 +37,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.6\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -65,10 +72,6 @@
     <ProjectReference Include="..\..\NMockito\NMockito.csproj">
       <Project>{0060e29c-db43-45a8-97af-17d4aef0dad7}</Project>
       <Name>NMockito</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\common-proxies-api\common-proxies-api.csproj">
-      <Project>{6AAA4F38-0C18-4D29-B7A2-EDDDD08DC5FF}</Project>
-      <Name>common-proxies-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-impl\libdargon.process-impl.csproj">
       <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.FinalFantasyXIII.Lifecycle;
 using Dargon.FinalFantasyXIII.Processes;
 using Dargon.Game;
@@ -7,6 +6,7 @@ using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends.Lifecycle;
 using Dargon.Processes.Watching;
 using ItzWarty;
+using ItzWarty.Processes;
 using NLog;
 
 namespace Dargon.FinalFantasyXIII

@@ -1,9 +1,11 @@
 ﻿using Dargon.FinalFantasyXIII;
 using Dargon.Game;
 using Dargon.InjectedModule;
+using Dargon.IO;
 using Dargon.LeagueOfLegends;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
+using Dargon.Processes;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
 using Dargon.Transport;

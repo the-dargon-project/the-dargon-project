@@ -2,7 +2,9 @@
 using Dargon.LeagueOfLegends.Processes;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Dargon.Processes;
 using ItzWarty;
+using ItzWarty.Processes;
 using NLog;
 
 namespace Dargon.LeagueOfLegends.Session

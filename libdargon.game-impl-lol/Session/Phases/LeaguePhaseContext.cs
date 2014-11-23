@@ -1,4 +1,6 @@
-﻿using ItzWarty;
+﻿using Dargon.Processes;
+using ItzWarty;
+using ItzWarty.Processes;
 using NLog;
 using System.Diagnostics;
 

@@ -60,10 +60,6 @@
       <Project>{C9F92566-1F94-4235-944C-19364459F9A6}</Project>
       <Name>libdtp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NMockito\NMockito.csproj">
       <Project>{0060e29c-db43-45a8-97af-17d4aef0dad7}</Project>
       <Name>NMockito</Name>

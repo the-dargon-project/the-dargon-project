@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using Dargon.LeagueOfLegends.Processes;
+using Dargon.Processes;
+using ItzWarty.Processes;
 
 namespace Dargon.LeagueOfLegends.Session
 {

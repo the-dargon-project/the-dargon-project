@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -51,10 +54,6 @@
     <ProjectReference Include="..\..\libdtp\libdtp.csproj">
       <Project>{c9f92566-1f94-4235-944c-19364459f9a6}</Project>
       <Name>libdtp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\libwarty\ItzWarty.csproj">
-      <Project>{097B6B08-4034-408A-B3C0-A12E8F9E8893}</Project>
-      <Name>ItzWarty</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>

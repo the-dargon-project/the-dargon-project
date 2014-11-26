@@ -19,9 +19,10 @@ namespace Dargon.InjectedModule
       }
 
       [Fact]
-      public void InitializeRegistersToServiceLocatorTest()
+      public void InitializeHappyPathTest()
       {
          testObj.Initialize();
+         Verify(injectedModuleServiceConfiguration).GetInjectedDllPath();
          VerifyNoMoreInteractions();
       }
 

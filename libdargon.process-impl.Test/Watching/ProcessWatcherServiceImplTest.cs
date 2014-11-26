@@ -47,7 +47,7 @@ namespace Dargon.Processes.Watching
          testObj.Initialize();
 
          Verify(processWatcher).Start();
-         ClearInteractions(processWatcher, 1); // TODO: Subscription to NewProcessFound
+         Verify(processWatcher).NewProcessFound += testObj.HandleProcessWatcherNewProcessFound;
          VerifyNoMoreInteractions();
       }
 

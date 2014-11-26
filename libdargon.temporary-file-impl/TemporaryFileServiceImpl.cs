@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using ItzWarty;
+using System;
+using System.IO;
 
 namespace Dargon
 {
@@ -18,7 +18,7 @@ namespace Dargon
          this.temporaryDirectoryPath = Path.Combine(configuration.UserDataDirectoryPath, "temp"); ;
          this.temporaryFilesLockPath = Path.Combine(temporaryDirectoryPath, "LOCK");
          this.temporaryFilesLock = new FileLock(temporaryFilesLockPath);
-         Util.PrepareDirectory(temporaryDirectoryPath);
+         Directory.CreateDirectory(temporaryDirectoryPath);
       }
 
       public IDisposable TakeLock() { return temporaryFilesLock.Take(); }
@@ -26,7 +26,7 @@ namespace Dargon
       public string AllocateTemporaryDirectory(DateTime expires) {
          using (TakeLock()) {
             var directoryPath = Path.Combine(temporaryDirectoryPath, Guid.NewGuid().ToByteArray().ToHex());
-            Util.PrepareDirectory(directoryPath);
+            Directory.CreateDirectory(directoryPath);
             File.WriteAllBytes(Path.Combine(directoryPath, EXPIRATION_FILE_NAME), BitConverter.GetBytes(expires.GetUnixTimeMilliseconds()));
             return directoryPath;
          }
@@ -36,7 +36,8 @@ namespace Dargon
       {
          using (TakeLock()) {
             var path = Path.Combine(temporaryDirectory, fileName);
-            Util.PrepareParentDirectory(path);
+            var parentDirectory = path.Substring(0, path.LastIndexOfAny(new[]{ '/', '\\'}));
+            Directory.CreateDirectory(parentDirectory);
             return new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
          }
       }

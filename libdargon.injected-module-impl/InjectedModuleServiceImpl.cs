@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.IO;
-using Dargon.Processes.Injection;
-using Dargon.Transport;
-using ItzWarty.Services;
+﻿using Dargon.Processes.Injection;
 using NLog;
+using System.Collections.Concurrent;
+using System.IO;
 
 namespace Dargon.InjectedModule
 {
@@ -13,17 +9,15 @@ namespace Dargon.InjectedModule
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IServiceLocator serviceLocator;
       private readonly ProcessInjectionService processInjectionService;
       private readonly ISessionFactory sessionFactory;
       private readonly IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration;
       private readonly ConcurrentDictionary<int, ISession> sessionsByProcessId = new ConcurrentDictionary<int, ISession>();
 
-      public InjectedModuleServiceImpl(IServiceLocator serviceLocator, ProcessInjectionService processInjectionService, ISessionFactory sessionFactory, IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration)
+      public InjectedModuleServiceImpl(ProcessInjectionService processInjectionService, ISessionFactory sessionFactory, IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration)
       {
          logger.Info("Initializing Injected Module Service");
 
-         this.serviceLocator = serviceLocator;
          this.processInjectionService = processInjectionService;
          this.sessionFactory = sessionFactory;
          this.injectedModuleServiceConfiguration = injectedModuleServiceConfiguration;
@@ -31,8 +25,6 @@ namespace Dargon.InjectedModule
 
       public void Initialize()
       {
-         serviceLocator.RegisterService(typeof(InjectedModuleService), this);
-
          var injectedDllPath = injectedModuleServiceConfiguration.GetInjectedDllPath();
          if (!File.Exists(injectedDllPath)) {
             logger.Warn("Injected DLL does not exist at " + injectedDllPath + "!");

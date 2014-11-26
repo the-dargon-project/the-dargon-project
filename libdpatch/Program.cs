@@ -15,7 +15,7 @@ namespace Dargon.Patcher
 
          var path = "C:/dpm-repositories/test";
          Directory.Delete(path, true);
-         Util.PrepareDirectory(path);
+         Directory.CreateDirectory(path);
          Environment.CurrentDirectory = path;
          var program = new Program(Environment.CurrentDirectory);
          program.PrintStatus();

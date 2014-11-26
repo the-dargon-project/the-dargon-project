@@ -1,6 +1,4 @@
-﻿using System;
-using ItzWarty;
-using ItzWarty.Services;
+﻿using ItzWarty;
 using NMockito;
 using Xunit;
 
@@ -10,15 +8,12 @@ namespace Dargon.Processes.Injection
    {
       private ProcessInjectionServiceImpl testObj;
 
-      [Mock] private readonly IServiceLocator serviceLocator = null;
       [Mock] private readonly IProcessInjector processInjector = null;
       [Mock] private readonly IProcessInjectionConfiguration processInjectionConfiguration;
 
       public ProcessInjectionServiceImplTest()
       {
-         testObj = new ProcessInjectionServiceImpl(serviceLocator, processInjector, processInjectionConfiguration);
-
-         Verify(serviceLocator).RegisterService(typeof(ProcessInjectionService), testObj);
+         testObj = new ProcessInjectionServiceImpl(processInjector, processInjectionConfiguration);
          VerifyNoMoreInteractions();
       }
 

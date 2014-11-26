@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using ItzWarty;
 
 namespace Dargon.Daemon
 {
@@ -19,8 +17,8 @@ namespace Dargon.Daemon
          appDataDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), kAppDataSubdirectory);
          
 
-         Util.PrepareDirectory(userDataDirectoryPath);
-         Util.PrepareDirectory(appDataDirectoryPath);
+         Directory.CreateDirectory(userDataDirectoryPath);
+         Directory.CreateDirectory(appDataDirectoryPath);
       }
 
       public string UserDataDirectoryPath { get { return userDataDirectoryPath; } }

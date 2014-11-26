@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
-using Dargon.Daemon;
-using Dargon.IO;
+﻿using Dargon.IO;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.Patcher;
 using Dargon.VirtualFileMapping;
 using ItzWarty;
-using ItzWarty.Collections;
 using LibGit2Sharp;
 using NLog;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
@@ -33,7 +32,7 @@ namespace Dargon.LeagueOfLegends.Modifications
       public void LinkModificationObjects() 
       {
          var manifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
-         var archiveDataById = new Dictionary<uint, ArchiveData>();
+         var archiveDataById = new Dictionary<uint, List<ArchiveData>>();
          foreach (var modification in leagueModificationRepositoryService.EnumerateModifications()) {
             var modificationMetadata = modification.Metadata;
             var contentPath = modificationMetadata.ContentPath.Trim('/', '\\');
@@ -87,18 +86,21 @@ namespace Dargon.LeagueOfLegends.Modifications
                      }
 
                      // Get RAF Archive Data for the given archive id
-                     var archiveData = archiveDataById.GetValueOrDefault(manifestEntry.ArchiveId);
-                     if (archiveData == null) {
-                        var archive = radsService.GetArchiveUnsafe(manifestEntry.ArchiveId);
-                        var datLength = new FileInfo(archive.DatFilePath).Length;
-                        var sectors = new SectorCollection();
-                        sectors.AssignSector(new SectorRange(0, datLength), new FileSector(archive.DatFilePath, 0, datLength));
-                        archiveData = new ArchiveData(archive, sectors, datLength);
-                        archiveDataById.Add(manifestEntry.ArchiveId, archiveData);
+                     var archiveDatas = archiveDataById.GetValueOrDefault(manifestEntry.ArchiveId);
+                     if (archiveDatas == null) {
+                        archiveDataById.Add(manifestEntry.ArchiveId, archiveDatas = LoadArchiveDatas(manifestEntry));
                      }
-                     
-                     // Ensure the RAF Entry exists (release manifest can lie about what's in RAFs)
-                     var rafEntry = archiveData.Archive.GetDirectoryFile().GetFileList().GetFileEntryOrNull(RAFUtil.FormatPathToRAFPath(resolutionEntry.ResolvedPath));
+
+                     // Find the archive which contains our raf entry
+                     ArchiveData archiveData = null;
+                     RAFFileListEntry rafEntry = null;
+                     foreach (var candidate in archiveDatas) {
+                        rafEntry = candidate.Archive.GetDirectoryFile().GetFileList().GetFileEntryOrNull(RAFUtil.FormatPathToRAFPath(resolutionEntry.ResolvedPath));
+                        if (rafEntry != null) {
+                           archiveData = candidate;
+                           break;
+                        }
+                     }
                      if (rafEntry == null) {
                         logger.Warn("RAF Entry for " + resolutionEntry.ResolvedPath + " in archive " + manifestEntry.ArchiveId + " not found!?");
                         continue;
@@ -128,22 +130,27 @@ namespace Dargon.LeagueOfLegends.Modifications
          foreach (var archiveDataKvp in archiveDataById) {
             string versionString = versionStringUtilities.GetVersionString(archiveDataKvp.Key);
 
-            // Serialize the VFM
-            var vfmSerializer = new SectorCollectionSerializer();
-            var vfmFileName = versionString + ".raf.dat.vfm";
-            using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
-            using (var writer = new BinaryWriter(vfmFileStream)) {
-               vfmSerializer.Serialize(archiveDataKvp.Value.Sectors, writer);
-            }
-            logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
+            foreach (var archiveData in archiveDataKvp.Value) {
+               // Get archive name (e.g. archive_2.raf or archive_12930813.raf)
+               string archiveFileName = archiveData.Archive.RAFFilePath.With(x => x.Substring(x.LastIndexOfAny(new[] { '/', '\\' }) + 1));
 
-            // Serialize the RAF
-            var rafFileName = versionString + ".raf";
-            using (var rafFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, rafFileName)) 
-            using (var writer = new BinaryWriter(rafFileStream)) {
-               writer.Write(archiveDataKvp.Value.Archive.GetDirectoryFile().GetBytes());
+               // Serialize the VFM
+               var vfmSerializer = new SectorCollectionSerializer();
+               var vfmFileName = versionString + "/" + archiveFileName + ".dat.vfm";
+               using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
+               using (var writer = new BinaryWriter(vfmFileStream)) {
+                  vfmSerializer.Serialize(archiveData.Sectors, writer);
+               }
+               logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
+
+               // Serialize the RAF
+               var rafFileName = versionString + "/" + archiveFileName;
+               using (var rafFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, rafFileName))
+               using (var writer = new BinaryWriter(rafFileStream)) {
+                  writer.Write(archiveData.Archive.GetDirectoryFile().GetBytes());
+               }
+               logger.Info("Wrote RAF " + rafFileName + " to " + tempDir);
             }
-            logger.Info("Wrote RAF " + rafFileName + " to " + tempDir);
          }
 
          // Serialize the Release Manifest
@@ -152,6 +159,19 @@ namespace Dargon.LeagueOfLegends.Modifications
             new ReleaseManifestWriter(manifest).Save(writer);  
          }
          logger.Info("Wrote release manifest to " + tempDir);
+      }
+
+      private List<ArchiveData> LoadArchiveDatas(ReleaseManifestFileEntry manifestEntry) {
+         var archives = radsService.GetArchivesUnsafe(manifestEntry.ArchiveId);
+         var archiveDatas = new List<ArchiveData>();
+         foreach (var archive in archives) {
+            var datLength = new FileInfo(archive.DatFilePath).Length;
+            var sectors = new SectorCollection();
+            sectors.AssignSector(new SectorRange(0, datLength), new FileSector(archive.DatFilePath, 0, datLength));
+            var archiveData = new ArchiveData(archive, sectors, datLength);
+            archiveDatas.Add(archiveData);
+         }
+         return archiveDatas;
       }
 
       private class ArchiveData

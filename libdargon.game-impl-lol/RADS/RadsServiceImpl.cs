@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Dargon.IO.RADS;
+﻿using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
 using ItzWarty;
 using NLog;
+using System;
+using System.Collections.Generic;
 
 namespace Dargon.LeagueOfLegends.RADS
 {
@@ -12,7 +13,7 @@ namespace Dargon.LeagueOfLegends.RADS
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly object synchronization = new object();
-      private readonly Dictionary<uint, RiotArchive> archivesById = new Dictionary<uint, RiotArchive>();
+      private readonly Dictionary<uint, IReadOnlyList<RiotArchive>> archivesById = new Dictionary<uint, IReadOnlyList<RiotArchive>>();
       private readonly Dictionary<RiotProjectType, RiotProject> projectsByType = new Dictionary<RiotProjectType, RiotProject>();
       private readonly string solutionPath;
       private RiotArchiveLoader archiveLoader;
@@ -31,25 +32,25 @@ namespace Dargon.LeagueOfLegends.RADS
          }
       }
 
-      public IRadsArchiveReference GetArchiveReference(uint version)
+      public IReadOnlyList<IRadsArchiveReference> GetArchiveReferences(uint version)
       {
-         RiotArchive archive;
-         if (!archivesById.TryGetValue(version, out archive)) {
+         IReadOnlyList<RiotArchive> archives;
+         if (!archivesById.TryGetValue(version, out archives)) {
             if (archiveLoader == null) {
                archiveLoader = new RiotArchiveLoader(solutionPath);
             }
-            if (!archiveLoader.TryLoadArchive(version, out archive)) {
+            if (!archiveLoader.TryLoadArchives(version, out archives)) {
                throw new ArchiveNotFoundException(version);
             }
          }
-         return new RadsArchiveReference(archive);
+         return Util.Generate(archives.Count, i => new RadsArchiveReference(archives[i]));
       }
 
-      public RiotArchive GetArchiveUnsafe(uint version)
+      public IReadOnlyList<RiotArchive> GetArchivesUnsafe(uint version)
       {
          lock (synchronization) {
-            RiotArchive archive;
-            new RiotArchiveLoader(solutionPath).TryLoadArchive(version, out archive);
+            IReadOnlyList<RiotArchive> archive;
+            new RiotArchiveLoader(solutionPath).TryLoadArchives(version, out archive);
             return archive;
          }
       }

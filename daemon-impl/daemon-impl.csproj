@@ -38,9 +38,17 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.8\lib\net45\ImpromptuInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-impl">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.8\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>

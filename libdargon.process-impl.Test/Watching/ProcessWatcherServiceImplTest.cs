@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using ItzWarty.Processes;
-using ItzWarty.Services;
+﻿using ItzWarty.Processes;
 using NMockito;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Dargon.Processes.Watching
@@ -11,7 +10,6 @@ namespace Dargon.Processes.Watching
    {
       private ProcessWatcherServiceImpl testObj;
 
-      [Mock] private readonly IServiceLocator serviceLocator = null;
       [Mock] private readonly IProcessProxy processProxy = null;
       [Mock] private readonly IProcessWatcher processWatcher = null;
 
@@ -36,7 +34,7 @@ namespace Dargon.Processes.Watching
 
       public ProcessWatcherServiceImplTest()
       {
-         testObj = new ProcessWatcherServiceImpl(serviceLocator, processProxy, processWatcher);
+         testObj = new ProcessWatcherServiceImpl(processProxy, processWatcher);
 
          testObj.Subscribe(a.Consume, new[] { CHROME, MAPLESTORY }, false);
          testObj.Subscribe(b.Consume, new[] { CHROME, NOTEPAD, WORD }, false);
@@ -49,7 +47,6 @@ namespace Dargon.Processes.Watching
       {
          testObj.Initialize();
 
-         Verify(serviceLocator).RegisterService(typeof(ProcessWatcherService), testObj);
          Verify(processWatcher).Start();
          ClearInteractions(processWatcher, 1); // TODO: Subscription to NewProcessFound
          VerifyNoMoreInteractions();

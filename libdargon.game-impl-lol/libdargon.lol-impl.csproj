@@ -35,21 +35,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libdargon.utilities">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libdargon.utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libdnode.dll</HintPath>
+    </Reference>
     <Reference Include="LibGit2Sharp">
       <HintPath>..\packages\LibGit2Sharp.0.20.0.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="librads">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\librads.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.6\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\librads.0.0.1\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\librads.0.0.1\lib\net45\zlib.net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LeagueGameServiceImpl.cs" />
@@ -85,10 +99,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\librads\librads.csproj">
-      <Project>{ABF2ED7E-F5A9-4A4D-A983-3D356A126A02}</Project>
-      <Name>librads</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\libvfm\libvfm.csproj">
       <Project>{042537a3-62a7-4a9b-98d5-d425b001d86b}</Project>
       <Name>libvfm</Name>
@@ -96,10 +106,6 @@
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.common\libdargon.common.csproj">
-      <Project>{D2A303A1-665F-4F6F-9BC6-3D91A8F02978}</Project>
-      <Name>libdargon.common</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
@@ -132,10 +138,6 @@
     <ProjectReference Include="..\libdio\libdargon.filesystem-api.csproj">
       <Project>{AA2F9174-3FD1-41DC-8F15-D37D134300D4}</Project>
       <Name>libdargon.filesystem-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdnode\libdnode.csproj">
-      <Project>{D28AF7FA-367C-472C-954D-694319528208}</Project>
-      <Name>libdnode</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdpatch\libdpm.csproj">
       <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>

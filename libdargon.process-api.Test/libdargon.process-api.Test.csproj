@@ -37,9 +37,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\NMockito.0.0.6\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NMockito">
+      <HintPath>..\packages\NMockito.0.0.6\lib\net45\NMockito.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="xunit">
-      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+      <HintPath>..\packages\NMockito.0.0.6\lib\net45\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -55,10 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NMockito\NMockito.csproj">
-      <Project>{0060e29c-db43-45a8-97af-17d4aef0dad7}</Project>
-      <Name>NMockito</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>

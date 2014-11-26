@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
-using System.Threading;
-using ItzWarty;
+﻿using ItzWarty;
 using ItzWarty.Collections;
+using ItzWarty.Comparers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +9,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using NLog;
 
-using Console = ItzWarty.NullConsole;
 
 namespace Dargon.Patcher
 {
@@ -54,8 +52,8 @@ namespace Dargon.Patcher
          this.root = root;
          this.dpmPath = Path.Combine(root, ".dpm");
          this.metadataDirectoryPath = Path.Combine(dpmPath, "metadata");
-         Util.PrepareDirectory(dpmPath);
-         Util.PrepareDirectory(metadataDirectoryPath);
+         Directory.CreateDirectory(dpmPath);
+         Directory.CreateDirectory(metadataDirectoryPath);
          this.objectStore = new ObjectStore(Path.Combine(dpmPath, "objects"));
          this.repositoryLock = new FileLock(Path.Combine(dpmPath, "LOCK"));
          this.referenceManager = new ReferenceManager(Path.Combine(dpmPath, "refs"));
@@ -86,7 +84,7 @@ namespace Dargon.Patcher
             objectStore.Clear();
             if (Directory.Exists(metadataDirectoryPath)) {
                Directory.Delete(metadataDirectoryPath, true);
-               Util.PrepareDirectory(metadataDirectoryPath);
+               Directory.CreateDirectory(metadataDirectoryPath);
             }
 
             var dir = new DirectoryRevision(Hash160.Zero, new Dictionary<string, Hash160>());
@@ -228,7 +226,7 @@ namespace Dargon.Patcher
 
             // create new commit object which points to new root object and has parent reference to old commit
             logger.Info("Adding commit object...");
-            var commitObject = new CommitObject(headCommit, new Hash160[0], GetRootHash(), configurationManager.Identity, message, DateTime.UtcNow.GetUnixTimeMilliseconds());
+            var commitObject = new CommitObject(headCommit, new Hash160[0], GetRootHash(), configurationManager.Identity, message, (ulong)DateTime.UtcNow.GetUnixTimeMilliseconds());
             var commitObjectHash = objectStore.Put(serializer.SerializeCommitObject(commitObject));
             logger.Info("Commit object has hash " + commitObjectHash.ToString("x"));
 
@@ -289,11 +287,11 @@ namespace Dargon.Patcher
             var directoryRevision = serializer.DeserializeDirectoryRevision(comparedEntry.RevisionHash, objectStore.Get(comparedEntry.RevisionHash));
             var realEntries = Directory.EnumerateFileSystemEntries(realDirectoryPath).Where(path => new FileInfo(path).Name != ".dpm").ToDictionary(path => new FileInfo(path).Name, path => new { Path = path }); 
             var indexEntries = directoryRevision.Children.ToDictionary((kvp) => kvp.Key, kvp => new { Path = BuildPath(internalPath, kvp.Key), Hash = kvp.Value });
-            var realFileNames = new HashSet<string>(realEntries.Keys); 
-            var indexFileNames = new HashSet<string>(indexEntries.Keys);
-            var sharedNames = new HashSet<string>(realFileNames).With(set => set.IntersectWith(indexFileNames));
-            var realOnlyNames = new HashSet<string>(realFileNames).With(set => set.ExceptWith(sharedNames));
-            var indexOnlyNames = new HashSet<string>(indexFileNames).With(set => set.ExceptWith(sharedNames));
+            var realFileNames = new System.Collections.Generic.HashSet<string>(realEntries.Keys); 
+            var indexFileNames = new System.Collections.Generic.HashSet<string>(indexEntries.Keys);
+            var sharedNames = new System.Collections.Generic.HashSet<string>(realFileNames).With(set => set.IntersectWith(indexFileNames));
+            var realOnlyNames = new System.Collections.Generic.HashSet<string>(realFileNames).With(set => set.ExceptWith(sharedNames));
+            var indexOnlyNames = new System.Collections.Generic.HashSet<string>(indexFileNames).With(set => set.ExceptWith(sharedNames));
             foreach (var fileName in realOnlyNames) {
                var fileInternalPath = BuildPath(internalPath, fileName);
                var fileAbsolutePath = GetAbsolutePath(fileInternalPath);
@@ -546,7 +544,7 @@ namespace Dargon.Patcher
 
       public string SanitizeInternalPath(string path) { return path.Trim(new[] { '/', '\\' }); }
       public string GetAbsolutePath(string internalPath) { return Path.Combine(root, internalPath); }
-      public ulong GetTrueLastModified(string realPath) { return File.GetLastWriteTimeUtc(realPath).GetUnixTimeMilliseconds(); }
+      public ulong GetTrueLastModified(string realPath) { return (ulong)File.GetLastWriteTimeUtc(realPath).GetUnixTimeMilliseconds(); }
       public ulong GetTrueLastModifiedInternal(string internalPath) { return GetTrueLastModified(GetAbsolutePath(internalPath)); }
       private string BuildPath(params string[] strings) { return SanitizeInternalPath(string.Join(PATH_DELIMITER, strings)); }
 
@@ -608,13 +606,13 @@ namespace Dargon.Patcher
 
          public ObjectStore(string path) {
             this.path = path;
-            Util.PrepareDirectory(path);
+            Directory.CreateDirectory(path);
          }
 
          public void Clear() 
          { 
             Directory.Delete(path, true);
-            Util.PrepareDirectory(path);
+            Directory.CreateDirectory(path);
          }
 
          public byte[] Get(Hash160 hash)
@@ -629,7 +627,7 @@ namespace Dargon.Patcher
                var hash = new Hash160(sha1.ComputeHash(data));
                var path = GetObjectPath(hash);
                if (kDebugEnabled) logger.Info("Putting " + data.Length + " bytes of hash " + hash.ToString("X") + " to path " + path);
-               Util.PrepareParentDirectory(path);
+               Directory.CreateDirectory(path.Substring(0, path.LastIndexOfAny(new []{'/', '\\'})));
                File.WriteAllBytes(path, data);
                return hash;
             }
@@ -724,7 +722,7 @@ namespace Dargon.Patcher
          public ReferenceManager(string path) {
             this.path = path;
             this.headsPath = Path.Combine(path, "heads");
-            Util.PrepareDirectory(headsPath);
+            Directory.CreateDirectory(headsPath);
          }
 
          public IReadOnlyDictionary<string, Hash160> EnumerateHeads() { return EnumerateReferences(headsPath); }
@@ -768,7 +766,7 @@ namespace Dargon.Patcher
       private class IndexProvider : ReferenceCounter<IIndex>, IIndex
       {
          private readonly string path;
-         private readonly IDictionary<string, IndexEntry> entriesByInternalPath = new SortedDictionary<string, IndexEntry>();
+         private readonly IDictionary<string, IndexEntry> entriesByInternalPath = new System.Collections.Generic.SortedDictionary<string, IndexEntry>();
          private bool dirty = false;
 
          public IndexProvider(string path) {
@@ -808,7 +806,7 @@ namespace Dargon.Patcher
          }
 
          private void Save() {
-            Util.PrepareParentDirectory(path);
+            Directory.CreateDirectory(path.Substring(0, path.LastIndexOfAny(new[] { '/', '\\' })));
             using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None)) 
             using (var writer = new BinaryWriter(fs)) {
                writer.Write((uint)entriesByInternalPath.Count);

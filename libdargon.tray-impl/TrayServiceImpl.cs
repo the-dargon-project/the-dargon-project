@@ -1,6 +1,5 @@
-﻿using System;
-using Dargon.Daemon;
-using ItzWarty.Services;
+﻿using Dargon.Daemon;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,11 +10,10 @@ namespace Dargon.Tray
       private readonly DaemonService daemonService;
       private NotifyIcon notifyIcon;
 
-      public TrayServiceImpl(IServiceLocator serviceLocator, DaemonService daemonService) 
+      public TrayServiceImpl(DaemonService daemonService) 
       {
          this.daemonService = daemonService;
 
-         serviceLocator.RegisterService(typeof(TrayService), this);
          new Thread(TrayServiceThreadStart) { IsBackground = true }.Start();
       }
 

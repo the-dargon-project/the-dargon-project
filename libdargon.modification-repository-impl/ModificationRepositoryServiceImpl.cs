@@ -1,17 +1,14 @@
-﻿using System;
-using System.IO;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.Game;
-using Dargon.IO;
 using Dargon.Modifications;
 using Dargon.Patcher;
 using ItzWarty;
-using ItzWarty.Collections;
 using ItzWarty.IO;
-using ItzWarty.Services;
 using LibGit2Sharp;
 using NLog;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Dargon.ModificationRepositories
@@ -24,19 +21,17 @@ namespace Dargon.ModificationRepositories
       private const int PATH_DELIMITER_LENGTH = 1;
 
       private readonly IDaemonConfiguration configuration;
-      private readonly IServiceLocator serviceLocator;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IModificationLoader modificationLoader;
       private readonly IModificationMetadataSerializer modificationMetadataSerializer;
       private readonly IModificationMetadataFactory modificationMetadataFactory;
       private string repositorySubdirectoryPath;
 
-      public ModificationRepositoryServiceImpl(IDaemonConfiguration configuration, IServiceLocator serviceLocator, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
+      public ModificationRepositoryServiceImpl(IDaemonConfiguration configuration, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
       {
          logger.Info("Constructing Modification Repository Service");
 
          this.configuration = configuration;
-         this.serviceLocator = serviceLocator;
          this.fileSystemProxy = fileSystemProxy;
          this.modificationLoader = modificationLoader;
          this.modificationMetadataSerializer = modificationMetadataSerializer;
@@ -46,8 +41,6 @@ namespace Dargon.ModificationRepositories
       public void Initialize()
       {
          logger.Info("Initializing Modification Repository Service");
-
-         serviceLocator.RegisterService(typeof(ModificationRepositoryService), this);
 
          repositorySubdirectoryPath = Path.Combine(configuration.UserDataDirectoryPath, kRepositorySubdirectoryName);
          fileSystemProxy.PrepareDirectory(repositorySubdirectoryPath);

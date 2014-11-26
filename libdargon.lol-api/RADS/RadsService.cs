@@ -1,6 +1,8 @@
-using System;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
+using System;
+using System.Collections.Generic;
 
 namespace Dargon.LeagueOfLegends.RADS
 {
@@ -10,11 +12,11 @@ namespace Dargon.LeagueOfLegends.RADS
       event EventHandler Resumed;
       
       IRadsProjectReference GetProjectReference(RiotProjectType projectType);
-      IRadsArchiveReference GetArchiveReference(uint version);
+      IReadOnlyList<IRadsArchiveReference> GetArchiveReferences(uint version);
 
       ReleaseManifest GetReleaseManifestUnsafe(RiotProjectType projectType);
       RiotProject GetProjectUnsafe(RiotProjectType projectType);
-      RiotArchive GetArchiveUnsafe(uint version);
+      IReadOnlyList<RiotArchive> GetArchivesUnsafe(uint version);
 
       void Suspend();
       void Resume();

@@ -1,5 +1,4 @@
-﻿using ItzWarty.Services;
-using NLog;
+﻿using NLog;
 using System;
 using System.Threading;
 
@@ -15,10 +14,9 @@ namespace Dargon.Daemon
 
       public event EventHandler BeginShutdown;
 
-      public DaemonServiceImpl(IServiceLocator serviceLocator, IDaemonConfiguration configuration)
+      public DaemonServiceImpl(IDaemonConfiguration configuration)
       {
          logger.Info("Initializing Daemon");
-         serviceLocator.RegisterService(typeof(DaemonService), this);
 
          this.configuration = configuration;
       }

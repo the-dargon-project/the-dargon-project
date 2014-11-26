@@ -2,6 +2,7 @@
 using Dargon.IO;
 using Dargon.IO.RADS;
 using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
 using Dargon.LeagueOfLegends.RADS;
 using ItzWarty;
 using NLog;
@@ -20,7 +21,7 @@ namespace Dargon.LeagueOfLegends.FileSystem
       private readonly RadsService radsService;
       private readonly RiotProjectType projectType;
       private readonly ConcurrentDictionary<IReadableDargonNode, InternalHandle> handlesByNode = new ConcurrentDictionary<IReadableDargonNode, InternalHandle>();
-      private readonly Dictionary<uint, IRadsArchiveReference> archiveReferencesById = new Dictionary<uint, IRadsArchiveReference>();
+      private readonly Dictionary<uint, IReadOnlyList<IRadsArchiveReference>> archiveReferencesById = new Dictionary<uint, IReadOnlyList<IRadsArchiveReference>>();
       private readonly ReaderWriterLockSlim synchronization = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
       private readonly object initializationLock = new object();
       private readonly List<SuspendedHandleContext> suspendedHandleContexts = new List<SuspendedHandleContext>(); 
@@ -72,7 +73,9 @@ namespace Dargon.LeagueOfLegends.FileSystem
             }
 
             foreach (var kvp in archiveReferencesById) {
-               kvp.Value.Dispose();
+               foreach (var reference in kvp.Value) {
+                  reference.Dispose();
+               }
             }
             archiveReferencesById.Clear();
          });
@@ -147,14 +150,20 @@ namespace Dargon.LeagueOfLegends.FileSystem
             return new Tuple<IoResult, byte[]>(IoResult.InvalidOperation, null);
          }
 
-         RiotArchive archive;
+         IReadOnlyList<RiotArchive> archives;
          try {
-            archive = GetArchiveOrNull(asFile.ArchiveId);
+            archives = GetArchivesOrNull(asFile.ArchiveId);
          } catch (ArchiveNotFoundException) {
             return new Tuple<IoResult, byte[]>(IoResult.Unavailable, null);
          }
 
-         var entry = archive.GetDirectoryFile().GetFileList().GetFileEntryOrNull(internalHandle.Node.GetPath());
+         RAFFileListEntry entry = null;
+         foreach (var archive in archives) {
+            entry = archive.GetDirectoryFile().GetFileList().GetFileEntryOrNull(internalHandle.Node.GetPath());
+            if (entry != null) {
+               break;
+            }
+         }
          if (entry == null) {
             return new Tuple<IoResult, byte[]>(IoResult.NotFound, null);
          }
@@ -250,18 +259,18 @@ namespace Dargon.LeagueOfLegends.FileSystem
          return projectReference.Value; 
       }
 
-      private RiotArchive GetArchiveOrNull(uint archiveId)
+      private IReadOnlyList<RiotArchive> GetArchivesOrNull(uint archiveId)
       {
-         IRadsArchiveReference reference;
-         if (!archiveReferencesById.TryGetValue(archiveId, out reference)) {
+         IReadOnlyList<IRadsArchiveReference> references;
+         if (!archiveReferencesById.TryGetValue(archiveId, out references)) {
             lock (initializationLock) {
-               if (!archiveReferencesById.TryGetValue(archiveId, out reference)) {
-                  reference = radsService.GetArchiveReference(archiveId);
-                  archiveReferencesById.Add(archiveId, reference);
+               if (!archiveReferencesById.TryGetValue(archiveId, out references)) {
+                  references = radsService.GetArchiveReferences(archiveId);
+                  archiveReferencesById.Add(archiveId, references);
                }
             }
          }
-         return reference.Value;
+         return Util.Generate(references.Count, i => references[i].Value);
       }
 
       private class SuspendedHandleContext

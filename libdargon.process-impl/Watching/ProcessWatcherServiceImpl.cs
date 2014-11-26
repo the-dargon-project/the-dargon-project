@@ -1,7 +1,6 @@
 ﻿using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Processes;
-using ItzWarty.Services;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -13,15 +12,13 @@ namespace Dargon.Processes.Watching
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IServiceLocator serviceLocator;
       private readonly IProcessProxy processProxy;
       private readonly IProcessWatcher processWatcher;
       private readonly MultiValueDictionary<string, Action<CreatedProcessDescriptor>> processSpawnedHandlersByProcessName = new MultiValueDictionary<string, Action<CreatedProcessDescriptor>>();
 
-      public ProcessWatcherServiceImpl(IServiceLocator serviceLocator, IProcessProxy processProxy, IProcessWatcher processWatcher)
+      public ProcessWatcherServiceImpl(IProcessProxy processProxy, IProcessWatcher processWatcher)
       {
          logger.Info("Constructing Process Watching Service");
-         this.serviceLocator = serviceLocator;
          this.processProxy = processProxy;
          this.processWatcher = processWatcher;
       }
@@ -29,8 +26,6 @@ namespace Dargon.Processes.Watching
       public void Initialize()
       {
          logger.Info("Initializing Process Watching Service");
-         serviceLocator.RegisterService(typeof(ProcessWatcherService), this);
-
          this.processWatcher.NewProcessFound += HandleProcessWatcherNewProcessFound;
          this.processWatcher.Start();
       }
@@ -49,7 +44,7 @@ namespace Dargon.Processes.Watching
 
       public void Subscribe(Action<CreatedProcessDescriptor> handler, IEnumerable<string> names, bool retroactive)
       {
-         var lowerCaseNames = new HashSet<string>(names.Select(FormatProcessName));
+         var lowerCaseNames = new ItzWarty.Collections.HashSet<string>(names.Select(FormatProcessName));
          foreach (var lowerCaseName in lowerCaseNames) {
             processSpawnedHandlersByProcessName.Add(lowerCaseName, handler);
          }

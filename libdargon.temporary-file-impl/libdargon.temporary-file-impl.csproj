@@ -32,9 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.0.0.12\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="libdargon.utilities">
+      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

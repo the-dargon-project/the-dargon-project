@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Game;
-using Dargon.IO;
+﻿using Dargon.Game;
 using ItzWarty.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NLog;
+using System;
+using System.IO;
 
 namespace Dargon.Modifications
 {

@@ -1,6 +1,5 @@
 ﻿using Dargon.Processes.Injection;
 using ItzWarty;
-using ItzWarty.Services;
 using NMockito;
 using Xunit;
 
@@ -10,22 +9,20 @@ namespace Dargon.InjectedModule
    {
       private InjectedModuleServiceImpl testObj;
 
-      [Mock] private readonly IServiceLocator serviceLocator = null;
       [Mock] private readonly ProcessInjectionService processInjectionService = null;
       [Mock] private readonly ISessionFactory sessionFactory = null;
       [Mock] private readonly IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = null;
 
       public InjectedModuleServiceImplTest()
       {
-         testObj = new InjectedModuleServiceImpl(serviceLocator, processInjectionService, sessionFactory, injectedModuleServiceConfiguration);
+         testObj = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration);
       }
 
       [Fact]
       public void InitializeRegistersToServiceLocatorTest()
       {
          testObj.Initialize();
-
-         Verify(serviceLocator).RegisterService(typeof(InjectedModuleService), testObj);
+         VerifyNoMoreInteractions();
       }
 
       [Fact]

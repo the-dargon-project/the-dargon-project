@@ -1,5 +1,4 @@
-﻿using ItzWarty.Services;
-using NLog;
+﻿using NLog;
 
 namespace Dargon.Processes.Injection
 {
@@ -10,11 +9,9 @@ namespace Dargon.Processes.Injection
       private readonly IProcessInjector injector;
       private readonly IProcessInjectionConfiguration configuration;
 
-      public ProcessInjectionServiceImpl(IServiceLocator serviceLocator, IProcessInjector injector, IProcessInjectionConfiguration configuration)
+      public ProcessInjectionServiceImpl(IProcessInjector injector, IProcessInjectionConfiguration configuration)
       {
          logger.Info("Initializing Process Injection Service");
-
-         serviceLocator.RegisterService(typeof(ProcessInjectionService), this);
 
          this.injector = injector;
          this.configuration = configuration;

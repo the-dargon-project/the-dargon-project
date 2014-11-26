@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libdargon.filesystem-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.filesystem-api.0.0.1\lib\net45\libdargon.filesystem-api.dll</HintPath>
+    </Reference>
     <Reference Include="libdargon.utilities">
       <HintPath>..\packages\librads.0.0.1\lib\net45\libdargon.utilities.dll</HintPath>
     </Reference>
@@ -134,10 +138,6 @@
     <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
       <Name>libdargon.temporary-file-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdio\libdargon.filesystem-api.csproj">
-      <Project>{AA2F9174-3FD1-41DC-8F15-D37D134300D4}</Project>
-      <Name>libdargon.filesystem-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdpatch\libdpm.csproj">
       <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>

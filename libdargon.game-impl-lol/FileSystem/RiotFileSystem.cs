@@ -187,6 +187,17 @@ namespace Dargon.LeagueOfLegends.FileSystem
       }
 
       public void FreeHandles(IEnumerable<IFileSystemHandle> handles) { foreach (var handle in handles) FreeHandle(handle); }
+      public IoResult GetName(IFileSystemHandle handle, out string name) {
+         var internalHandle = handle as InternalHandle;
+
+         if (internalHandle == null || internalHandle.State == HandleState.Invalidated || internalHandle.State == HandleState.Disposed) {
+            name = null;
+            return IoResult.InvalidHandle;
+         }
+
+         name = internalHandle.Node.Name;
+         return IoResult.Success;
+      }
 
       public IoResult GetPath(IFileSystemHandle handle, out string path)
       {

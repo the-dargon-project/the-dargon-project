@@ -9,7 +9,7 @@ namespace Dargon.Processes.Injection
       private ProcessInjectionServiceImpl testObj;
 
       [Mock] private readonly IProcessInjector processInjector = null;
-      [Mock] private readonly IProcessInjectionConfiguration processInjectionConfiguration;
+      [Mock] private readonly IProcessInjectionConfiguration processInjectionConfiguration = null;
 
       public ProcessInjectionServiceImplTest()
       {

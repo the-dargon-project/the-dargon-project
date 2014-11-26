@@ -28,9 +28,8 @@ namespace Dargon.Processes.Watching
       private readonly CreatedProcessDescriptor notepadCpd = new CreatedProcessDescriptor(NOTEPAD, NOTEPAD_PID, PARENT_PID);
       private readonly CreatedProcessDescriptor chromeCpd = new CreatedProcessDescriptor(CHROME, CHROME_PID, PARENT_PID);
       private readonly CreatedProcessDescriptor maplestoryCpd = new CreatedProcessDescriptor(MAPLESTORY, MAPLESTORY_PID, PARENT_PID);
-      private readonly CreatedProcessDescriptor steamCpd = new CreatedProcessDescriptor(STEAM, STEAM_PID, PARENT_PID);
 
-      [Mock] private IConsumer a, b, c;
+      [Mock] private readonly IConsumer a = null, b = null, c = null;
 
       public ProcessWatcherServiceImplTest()
       {

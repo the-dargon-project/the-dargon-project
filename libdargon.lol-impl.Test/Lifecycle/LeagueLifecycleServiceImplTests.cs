@@ -39,7 +39,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       public void InitializeSubscribesToSessionServiceSessionCreatedTest()
       {
          testObj.Initialize();
-         ClearInteractions(leagueSessionService, 1);
+         Verify(leagueSessionService).SessionCreated += testObj.HandleLeagueSessionCreated;
          VerifyNoMoreInteractions();
       }
 

@@ -61,14 +61,14 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          leagueSessionService.SessionCreated += HandleLeagueSessionCreated;
       }
 
-      private void HandleLeagueSessionCreated(LeagueSessionService service, LeagueSessionCreatedArgs e)
+      internal void HandleLeagueSessionCreated(LeagueSessionService service, LeagueSessionCreatedArgs e)
       {
          var session = e.Session;
          session.PhaseChanged += HandleSessionPhaseChanged;
          session.ProcessLaunched += HandleSessionProcessLaunched;
       }
 
-      private void HandleSessionProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
+      internal void HandleSessionProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
       { 
          logger.Info("Process Launched " + e.Type + ": " + e.Process.Id);
          LeagueSessionProcessLaunchedHandler handler;

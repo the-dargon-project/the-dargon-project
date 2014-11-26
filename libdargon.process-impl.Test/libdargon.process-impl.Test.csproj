@@ -40,11 +40,26 @@
     <Reference Include="Castle.Core">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.0.0.14\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="libdargon.utilities">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libdargon.utilities.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.6\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="libdnode">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libdnode.dll</HintPath>
+    </Reference>
+    <Reference Include="librads">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\librads.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NMockito">
@@ -53,6 +68,10 @@
     <Reference Include="System" />
     <Reference Include="xunit">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="zlib.net">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\zlib.net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>

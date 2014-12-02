@@ -78,6 +78,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DispatcherCommand.cs" />
+    <Compile Include="CommandDispatchException.cs" />
     <Compile Include="DargonREPL.cs" />
     <Compile Include="ShutdownCommand.cs" />
     <Compile Include="ICommand.cs" />

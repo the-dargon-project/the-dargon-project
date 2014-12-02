@@ -8,29 +8,20 @@ using ItzWarty;
 
 namespace Dargon.CLI {
    public class DargonREPL {
-      private readonly IServiceClient serviceClient;
-      private readonly IDictionary<string, ICommand> commandsByName = new Dictionary<string, ICommand>();
+      private readonly IDispatcher dispatcher;
 
-      public DargonREPL(IServiceClient serviceClient) {
-         this.serviceClient = serviceClient;
-      }
-
-      public void RegisterCommandTarget(ICommand target) {
-         commandsByName.Add(target.Name, target);
+      public DargonREPL(IDispatcher dispatcher) {
+         this.dispatcher = dispatcher;
       }
 
       public void Run() {
          while (true) {
             Console.Write("$ ");
             var input = Console.ReadLine();
-            var inputParts = input.Split(' ');
-            var commandName = inputParts[0];
-            var subcommand = inputParts.SubArray(1).Join(" ");
-            ICommand command;
-            if (!commandsByName.TryGetValue(commandName, out command)) {
-               Console.WriteLine("Unknown command " + commandName + ".");
-            } else {
-               command.Eval(subcommand);
+            try {
+               dispatcher.Eval(input);
+            } catch (CommandDispatchException e) {
+               Console.WriteLine(e.Message);
             }
             Console.WriteLine();
          }

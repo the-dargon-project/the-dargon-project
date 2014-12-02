@@ -2,10 +2,8 @@
 using System;
 using System.Threading;
 
-namespace Dargon.Daemon
-{
-   public class DaemonServiceImpl : DaemonService
-   {
+namespace Dargon.Daemon {
+   public class DaemonServiceImpl : DaemonService {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly IDaemonConfiguration configuration;
@@ -14,8 +12,7 @@ namespace Dargon.Daemon
 
       public event EventHandler BeginShutdown;
 
-      public DaemonServiceImpl(IDaemonConfiguration configuration)
-      {
+      public DaemonServiceImpl(IDaemonConfiguration configuration) {
          logger.Info("Initializing Daemon");
 
          this.configuration = configuration;
@@ -24,15 +21,18 @@ namespace Dargon.Daemon
       public IDaemonConfiguration Configuration { get { return configuration; } }
       public bool IsShutdownSignalled { get { return isShutdownSignalled; } }
 
-      public void Run() { shutdownSignal.Wait(); }
+      public void Run() {
+         shutdownSignal.Wait();
+      }
 
-      public void Shutdown()
-      {
-         isShutdownSignalled = true;
-         var capture = BeginShutdown;
-         if (capture != null)
-            capture(this, new EventArgs());
-         shutdownSignal.Signal();
+      public void Shutdown() {
+         if (!isShutdownSignalled) {
+            isShutdownSignalled = true;
+            var capture = BeginShutdown;
+            if (capture != null)
+               capture(this, new EventArgs());
+            shutdownSignal.Signal();
+         }
       }
    }
 }

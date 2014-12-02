@@ -74,8 +74,11 @@ namespace Dargon.Daemon
          IServiceConfiguration serviceConfiguration = new DargonServiceConfiguration();
          IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
 
-         // construct Dargon dependencies
+         // construct Dargon Daemon dependencies
          DaemonService daemonService = core;
+         localServiceNode.RegisterService(daemonService, typeof(DaemonService));
+
+         // construct additional Dargon dependencies
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();

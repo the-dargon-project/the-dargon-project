@@ -48,18 +48,20 @@ namespace Dargon.CLI {
 
       private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, ServiceClientFactory serviceClientFactory, ITcpEndPoint endpoint, DargonServiceConfiguration serviceConfiguration) {
          IServiceClient serviceClient = null;
-         for (var i = 0; i < reconnectAttempts; i++) {
+         for (var i = 0; i < reconnectAttempts && serviceClient == null; i++) {
             try {
                serviceClient = serviceClientFactory.Create(endpoint);
             } catch (Exception e) {
-               if (i == 1) {
+               if (i == 0) {
                   Console.Write("Connecting to local endpoint on port " + serviceConfiguration.Port + ".");
-               } else if (i > 1) {
+               } else if (i > 0) {
                   Console.Write(".");
                }
             }
+            if (serviceClient != null && i > 0) {
+               Console.WriteLine();
+            }
          }
-         Console.WriteLine();
          return serviceClient;
       }
    }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dargon.CLI.Generic;
+using Dargon.CLI.Interface;
 using Dargon.InjectedModule;
 using Dargon.Processes.Injection;
 using Dargon.Services.Client;
@@ -22,6 +23,7 @@ namespace Dargon.CLI {
          if (string.IsNullOrWhiteSpace(input.Trim()) || input.Trim().Equals("status")) {
             bool first = true;
             foreach (var kvp in CommandsByName) {
+
                if (kvp.Key != HelpCommand.kCommandName) {
                   if (first) {
                      first = false;
@@ -33,12 +35,8 @@ namespace Dargon.CLI {
                }
             }
             return 0;
-         } else if (input.Trim().Equals("list")) {
-            foreach (var kvp in CommandsByName) {
-               if (kvp.Key != HelpCommand.kCommandName) {
-                  Console.WriteLine(kvp.Key);
-               }
-            }
+         } else if (input.Trim().Equals("list")) { 
+            new ListView(CommandsByName.Select(kvp => kvp.Key).Where(k => k != HelpCommand.kCommandName)).PrintToConsole();
             return 0;
          } else {
             return base.Eval(input);

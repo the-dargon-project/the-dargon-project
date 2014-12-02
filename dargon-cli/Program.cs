@@ -6,7 +6,9 @@ using ItzWarty.IO;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
+using System.Linq;
 using System.Threading;
+using Dargon.CLI.Interface;
 
 namespace Dargon.CLI {
    public static class Program {
@@ -27,6 +29,7 @@ namespace Dargon.CLI {
          IPofContext pofContext = new CommonPofContext();
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
          IConnectorFactory connectorFactory = new ConnectorFactory(collectionFactory, threadingProxy, networkingProxy, invocationStateFactory, pofSerializer);
+
          var serviceConfiguration = new DargonServiceConfiguration();
          var serviceClientFactory = new ServiceClientFactory(collectionFactory, serviceProxyFactory, serviceContextFactory, connectorFactory);
          var localEndPoint = tcpEndPointFactory.CreateLoopbackEndPoint(serviceConfiguration.Port);

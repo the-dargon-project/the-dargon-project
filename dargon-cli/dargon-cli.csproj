@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generic\StatusCommand.cs" />
+    <Compile Include="Interface\ListView.cs" />
     <Compile Include="ServiceCommand.cs" />
     <Compile Include="DispatcherCommand.cs" />
     <Compile Include="CommandDispatchException.cs" />

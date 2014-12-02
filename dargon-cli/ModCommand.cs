@@ -29,7 +29,9 @@ namespace Dargon.CLI {
          public int Eval(string subcommand) {
             var repositoryService = serviceClient.GetService<ModificationRepositoryService>();
             var mods = repositoryService.EnumerateModifications().ToArray();
-            Console.WriteLine("Total Modification Count: " + mods.Length);
+            if (mods.Length == 0) {
+               Console.Error.WriteLine("No modifications matched filter.");
+            }
             foreach (var mod in mods) {
                var metadata = mod.Metadata;
                Console.WriteLine("{0}({1}) by \"{2}\" for {3}".F(metadata.Name, mod.RepositoryName, metadata.Authors.Join(", "), metadata.Targets.Select(x => x.Name).Join(", ")));

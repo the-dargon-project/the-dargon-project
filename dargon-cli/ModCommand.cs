@@ -32,7 +32,7 @@ namespace Dargon.CLI {
             Console.WriteLine("Total Modification Count: " + mods.Length);
             foreach (var mod in mods) {
                var metadata = mod.Metadata;
-               Console.WriteLine("{0}({1}): {2}".F(metadata.Name, mod.RepositoryName, mod.RepositoryPath));
+               Console.WriteLine("{0}({1}) by \"{2}\" for {3}".F(metadata.Name, mod.RepositoryName, metadata.Authors.Join(", "), metadata.Targets.Select(x => x.Name).Join(", ")));
             }
             return 0;
          }

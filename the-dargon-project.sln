@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdtp", "..\libdtp\libdtp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libvfm", "..\libvfm\libvfm.csproj", "{042537A3-62A7-4A9B-98D5-D425B001D86B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.service-base", "libdargon.service-base\libdargon.service-base.csproj", "{9CFA80EE-76DC-498C-9C4E-52891851944A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Console|Any CPU = Console|Any CPU
@@ -706,6 +708,30 @@ Global
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Release|Win32.Build.0 = Release|Any CPU
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Release|x86.ActiveCfg = Release|Any CPU
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Release|x86.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Any CPU.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Win32.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|Win32.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|x86.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Console|x86.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Debug|x86.Build.0 = Debug|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|Win32.Build.0 = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|x86.ActiveCfg = Release|Any CPU
+		{9CFA80EE-76DC-498C-9C4E-52891851944A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

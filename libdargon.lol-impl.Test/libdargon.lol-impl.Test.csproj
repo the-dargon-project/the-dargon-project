@@ -131,6 +131,10 @@
       <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
       <Name>libdargon.modification-repository-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
+      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
+      <Name>libdargon.service-base</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

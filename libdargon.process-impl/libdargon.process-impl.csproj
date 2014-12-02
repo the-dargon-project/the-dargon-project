@@ -32,9 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdpo.0.0.12\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdpo.0.0.12\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
       <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>
@@ -49,7 +52,6 @@
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Injection\IProcessInjectionConfiguration.cs" />
     <Compile Include="Injection\IProcessInjector.cs" />
     <Compile Include="Injection\ProcessInjectionConfiguration.cs" />
     <Compile Include="Injection\ProcessInjectionServiceImpl.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Kernel\MemoryProtection.cs" />
     <Compile Include="Kernel\ProcessAccessRights.cs" />
     <Compile Include="Injection\ProcessInjector.cs" />
+    <Compile Include="ProcessImplPofContext.cs" />
     <Compile Include="Watching\IProcessDiscoveryMethod.cs" />
     <Compile Include="Watching\IProcessWatcher.cs" />
     <Compile Include="Watching\PollingProcessDiscoveryMethod.cs" />
@@ -74,6 +77,10 @@
     <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
       <Project>{2f26cb57-5f3b-4edf-bd9b-1cadac3fa981}</Project>
       <Name>libdargon.process-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
+      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
+      <Name>libdargon.service-base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

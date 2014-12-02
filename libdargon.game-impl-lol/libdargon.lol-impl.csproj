@@ -146,6 +146,10 @@
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>libdargon.process-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
+      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
+      <Name>libdargon.service-base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
       <Name>libdargon.temporary-file-api</Name>

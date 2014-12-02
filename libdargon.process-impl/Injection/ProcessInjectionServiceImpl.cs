@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using System.Text;
+using ItzWarty;
+using NLog;
 
 namespace Dargon.Processes.Injection
 {
@@ -17,9 +19,17 @@ namespace Dargon.Processes.Injection
          this.configuration = configuration;
       }
 
+      public IProcessInjectionConfiguration Configuration { get { return configuration; } }
+
       public bool InjectToProcess(int processId, string dllPath)
       {
          return injector.TryInject(processId, dllPath, configuration.InjectionAttempts, configuration.InjectionAttemptDelay);
+      }
+
+      public string GetStatus() {
+         var sb = new StringBuilder();
+         sb.AppendLine("Configuration: {0} attempts with {1}ms delay.".F(configuration.InjectionAttempts, configuration.InjectionAttemptDelay));
+         return sb.ToString();
       }
    }
 }

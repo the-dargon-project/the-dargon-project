@@ -103,6 +103,7 @@ namespace Dargon.Daemon
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
          localServiceNode.RegisterService(injectedModuleService, typeof(InjectedModuleService));
+         localServiceNode.RegisterService(processInjectionService, typeof(ProcessInjectionService));
 
          // construct additional Dargon dependencies
          IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);

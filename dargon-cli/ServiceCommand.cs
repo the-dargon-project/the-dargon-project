@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dargon.CLI.Generic;
 using Dargon.InjectedModule;
+using Dargon.Processes.Injection;
 using Dargon.Services.Client;
 using ItzWarty;
 
@@ -13,14 +15,28 @@ namespace Dargon.CLI {
 
       public ServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
          RegisterCommand(new InjectedModuleServiceCommand(serviceClient));
+         RegisterCommand(new ProcessInjectionServiceCommand(serviceClient));
       }
 
       public override int Eval(string input) {
          if (string.IsNullOrWhiteSpace(input.Trim()) || input.Trim().Equals("status")) {
+            bool first = true;
             foreach (var kvp in CommandsByName) {
                if (kvp.Key != HelpCommand.kCommandName) {
+                  if (first) {
+                     first = false;
+                  } else {
+                     Console.WriteLine();
+                  }
                   Console.WriteLine("service \"{0}\" status:".F(kvp.Key));
                   kvp.Value.Eval("status");
+               }
+            }
+            return 0;
+         } else if (input.Trim().Equals("list")) {
+            foreach (var kvp in CommandsByName) {
+               if (kvp.Key != HelpCommand.kCommandName) {
+                  Console.WriteLine(kvp.Key);
                }
             }
             return 0;
@@ -33,21 +49,15 @@ namespace Dargon.CLI {
          private const string kCommandName = "injected-module";
 
          public InjectedModuleServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
-            RegisterCommand(new StatusCommand(serviceClient));
+            RegisterCommand(new StatusCommand<InjectedModuleService>(serviceClient));
          }
+      }
 
-         public class StatusCommand : ICommand {
-            private readonly IServiceClient serviceClient;
+      public class ProcessInjectionServiceCommand : DispatcherCommand {
+         private const string kCommandName = "process-injection";
 
-            public StatusCommand(IServiceClient serviceClient) { this.serviceClient = serviceClient; }
-
-            public string Name { get { return "status"; } }
-
-            public int Eval(string subcommand) {
-               var service = serviceClient.GetService<InjectedModuleService>();
-               Console.WriteLine(service.GetStatus().Trim());
-               return 0;
-            }
+         public ProcessInjectionServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
+            RegisterCommand(new StatusCommand<ProcessInjectionService>(serviceClient));
          }
       }
    }

@@ -2,9 +2,11 @@
 using NLog;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
+using System.Text;
+using ItzWarty;
 
-namespace Dargon.InjectedModule
-{
+namespace Dargon.InjectedModule {
    public class InjectedModuleServiceImpl : InjectedModuleService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -40,6 +42,27 @@ namespace Dargon.InjectedModule
          sessionsByProcessId.AddOrUpdate(processId, session, (a, b) => session);
          session.Ended += HandleSessionEnded;
          return session;
+      }
+
+      public string GetStatus() {
+         StringBuilder sb = new StringBuilder();
+         var injectedModulePath = injectedModuleServiceConfiguration.GetInjectedDllPath();
+         var injectedModuleExists = File.Exists(injectedModulePath) ? "(exists)" : "(not found)";
+         sb.AppendLine("Injected Module Path: " + injectedModulePath + " " + injectedModuleExists);
+         sb.AppendLine("Sessions:");
+         var sessions = sessionsByProcessId.ToArray();
+         if (sessions.Length == 0) {
+            sb.AppendLine("(none)");
+         } else {
+            const int kPidColumnLength = 6;
+            sb.AppendLine("PID".PadLeft(kPidColumnLength) + " Configuration");
+            foreach (var session in sessions) {
+               var configuration = session.Value.Configuration.GetBootstrapConfiguration();
+               var configurationString = configuration.Flags.Concat(configuration.Properties.Select(kvp => kvp.Key + "=" + kvp.Value)).Join(" ");
+               sb.AppendLine(session.Key.ToString().PadLeft(kPidColumnLength) + " " + configurationString);
+            }
+         }
+         return sb.ToString();
       }
 
       internal void HandleSessionEnded(ISession session, SessionEndedEventArgs sessionEndedEventArgs)

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/device/array.hpp>

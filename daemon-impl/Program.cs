@@ -78,6 +78,10 @@ namespace Dargon.Daemon
          DaemonService daemonService = core;
          localServiceNode.RegisterService(daemonService, typeof(DaemonService));
 
+         // construct miscellanious common Dargon dependencies
+         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+         IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
+
          // construct modification and repository dependencies
          IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
          IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
@@ -85,9 +89,8 @@ namespace Dargon.Daemon
          IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
          ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
          localServiceNode.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
-         
-         // construct additional Dargon dependencies
-         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+
+         // construct process watching/injection dependencies
          IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();
          IProcessDiscoveryMethod processDiscoveryMethod = processDiscoveryMethodFactory.CreateOptimalProcessDiscoveryMethod();
@@ -96,10 +99,12 @@ namespace Dargon.Daemon
          IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
          ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(processInjector, processInjectionConfiguration);
          ProcessWatcherService processWatcherService = new ProcessWatcherServiceImpl(processProxy, processWatcher).With(s => s.Initialize());
-         IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
+         localServiceNode.RegisterService(injectedModuleService, typeof(InjectedModuleService));
+
+         // construct additional Dargon dependencies
          IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();

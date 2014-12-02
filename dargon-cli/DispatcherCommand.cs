@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ItzWarty;
+using ItzWarty.Collections;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ImpromptuInterface.InvokeExt;
-using ItzWarty;
 
 namespace Dargon.CLI {
    public class DispatcherCommand : ICommand, IDispatcher {
-      private readonly IDictionary<string, ICommand> commandsByName = new SortedDictionary<string, ICommand>();
+      private readonly SortedDictionary<string, ICommand> commandsByName = new SortedDictionary<string, ICommand>();
       private readonly string name;
       private IDispatcher parent;
 
@@ -17,16 +14,17 @@ namespace Dargon.CLI {
          this.RegisterCommand(new HelpCommand(this, commandsByName));
       }
 
+      public IDispatcher Parent { get { return parent; } set { parent = value; } }
+      public System.Collections.Generic.IReadOnlyDictionary<string, ICommand> CommandsByName {  get { return commandsByName; } }
+
       public void RegisterCommand(ICommand target) {
          commandsByName.Add(target.Name, target);
       }
 
-      public IDispatcher Parent { get { return parent; } set { parent = value; } }
-
       public string Name { get { return name; } }
       public string FullName { get { return GetFullName(); } }
 
-      public int Eval(string input) {
+      public virtual int Eval(string input) {
          input = input.Trim();
          var inputParts = input.Split(' ');
          var commandName = inputParts[0];

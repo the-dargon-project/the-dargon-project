@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServiceCommand.cs" />
     <Compile Include="DispatcherCommand.cs" />
     <Compile Include="CommandDispatchException.cs" />
     <Compile Include="DargonREPL.cs" />
@@ -102,6 +103,10 @@
     <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>libdargon.game-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
+      <Project>{c4b98a85-f3b6-43fe-af0a-16e34e63e238}</Project>
+      <Name>libdargon.injected-module-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>

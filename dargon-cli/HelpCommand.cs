@@ -7,6 +7,7 @@ using ItzWarty;
 
 namespace Dargon.CLI {
    public class HelpCommand : ICommand {
+      public const string kCommandName = "help";
       private readonly IDispatcher dispatcher;
       private readonly IDictionary<string, ICommand> commandsByName;
 
@@ -15,7 +16,7 @@ namespace Dargon.CLI {
          this.commandsByName = commandsByName;
       }
 
-      public string Name { get { return "help"; } }
+      public string Name { get { return kCommandName; } }
 
       public int Eval(string subcommand) {
          subcommand = subcommand.Trim();

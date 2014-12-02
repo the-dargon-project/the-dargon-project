@@ -33,7 +33,7 @@ namespace Dargon.CLI {
          var reconnectDelay = 1000;
          var serviceClient = TryConnectToEndpoint(reconnectAttempts, serviceClientFactory, localEndPoint, serviceConfiguration);
          if (serviceClient == null) {
-            Console.WriteLine("Failed to connect to endpoint.");
+            Console.Error.WriteLine("Failed to connect to endpoint.");
             return 1;
          } else {
             var dispatcher = new DispatcherCommand("registered commands");

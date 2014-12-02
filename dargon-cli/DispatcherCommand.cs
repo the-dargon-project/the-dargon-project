@@ -8,12 +8,13 @@ using ItzWarty;
 
 namespace Dargon.CLI {
    public class DispatcherCommand : ICommand, IDispatcher {
-      private readonly IDictionary<string, ICommand> commandsByName = new Dictionary<string, ICommand>();
+      private readonly IDictionary<string, ICommand> commandsByName = new SortedDictionary<string, ICommand>();
       private readonly string name;
       private IDispatcher parent;
 
       public DispatcherCommand(string name) {
          this.name = name;
+         this.RegisterCommand(new HelpCommand(this, commandsByName));
       }
 
       public void RegisterCommand(ICommand target) {
@@ -26,6 +27,7 @@ namespace Dargon.CLI {
       public string FullName { get { return GetFullName(); } }
 
       public int Eval(string input) {
+         input = input.Trim();
          var inputParts = input.Split(' ');
          var commandName = inputParts[0];
          var subcommand = inputParts.SubArray(1).Join(" ");

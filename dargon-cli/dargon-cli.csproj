@@ -79,6 +79,7 @@
     <Compile Include="CommandDispatchException.cs" />
     <Compile Include="DargonREPL.cs" />
     <Compile Include="ExitCommand.cs" />
+    <Compile Include="HelpCommand.cs" />
     <Compile Include="ModCommand.cs" />
     <Compile Include="ShutdownCommand.cs" />
     <Compile Include="ICommand.cs" />

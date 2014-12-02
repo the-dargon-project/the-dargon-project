@@ -36,7 +36,9 @@ namespace Dargon.CLI {
             Console.WriteLine("Failed to connect to endpoint.");
             return 1;
          } else {
-            new DargonREPL(serviceClient).Run();
+            var repl = new DargonREPL(serviceClient);
+            repl.RegisterCommandTarget(new ShutdownCommand(serviceClient));
+            repl.Run();
             return 0;
          }
       }

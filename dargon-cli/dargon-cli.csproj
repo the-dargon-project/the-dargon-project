@@ -79,6 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DargonREPL.cs" />
+    <Compile Include="ShutdownCommand.cs" />
+    <Compile Include="ICommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,6 +88,10 @@
     <ProjectReference Include="..\common-configuration\common-configuration.csproj">
       <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
       <Name>common-configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
+      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Name>daemon-api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

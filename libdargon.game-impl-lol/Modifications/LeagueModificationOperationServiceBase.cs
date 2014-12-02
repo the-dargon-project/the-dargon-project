@@ -10,6 +10,7 @@ using Dargon.Daemon;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.Modifications;
 using ItzWarty;
+using ItzWarty.Threading;
 using NLog;
 
 namespace Dargon.LeagueOfLegends.Modifications
@@ -22,23 +23,24 @@ namespace Dargon.LeagueOfLegends.Modifications
       protected readonly Logger logger;
 
       private readonly Dictionary<string, TCancellableTaskImpl> tasksByModificationName = new Dictionary<string, TCancellableTaskImpl>();
-      private readonly CancellationTokenSource shutdownCancellationTokenSource = new CancellationTokenSource();
       private readonly DaemonService daemonService;
-      private readonly CancellationToken shutdownCancellationToken;
+      private readonly ICancellationTokenSource shutdownCancellationTokenSource;
+      private readonly ICancellationToken shutdownCancellationToken;
       private readonly TaskProcessor[] consumers;
       private readonly object previousTasksLock = new object();
       private int roundRobinCounter = 0;
 
-      public LeagueModificationOperationServiceBase(DaemonService daemonService)
+      public LeagueModificationOperationServiceBase(IThreadingProxy threadingProxy, DaemonService daemonService)
       {
          logger = LogManager.GetLogger(GetType().FullName);
 
          this.daemonService = daemonService;
+         this.shutdownCancellationTokenSource = threadingProxy.CreateCancellationTokenSource();
          this.shutdownCancellationToken = shutdownCancellationTokenSource.Token;
 
          this.consumers = Util.Generate(
             Math.Max(1, Environment.ProcessorCount / 2),
-            i => new TaskProcessor(i, shutdownCancellationToken, ProcessTaskContext)
+            i => new TaskProcessor(threadingProxy, i, shutdownCancellationToken, ProcessTaskContext)
          );
       }
 
@@ -67,18 +69,21 @@ namespace Dargon.LeagueOfLegends.Modifications
       {
          private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+         private readonly IThreadingProxy threadingProxy;
          private readonly int id;
-         private readonly CancellationToken shutdownCancellationToken;
+         private readonly ICancellationToken shutdownCancellationToken;
          private readonly Action<TContext> processTaskContext;
          private readonly Thread thread;
-         private readonly Semaphore semaphore = new Semaphore(0, Int32.MaxValue);
+         private readonly ISemaphore semaphore;
          private readonly ConcurrentQueue<TContext> taskContextQueue = new ConcurrentQueue<TContext>();
 
-         public TaskProcessor(int id, CancellationToken shutdownCancellationToken, Action<TContext> processTaskContext)
+         public TaskProcessor(IThreadingProxy threadingProxy, int id, ICancellationToken shutdownCancellationToken, Action<TContext> processTaskContext)
          {
+            this.threadingProxy = threadingProxy;
             this.id = id;
             this.shutdownCancellationToken = shutdownCancellationToken;
             this.processTaskContext = processTaskContext;
+            this.semaphore = threadingProxy.CreateSemaphore(0, int.MaxValue);
 
             this.thread = new Thread(ThreadStart) { IsBackground = true };
             this.thread.Start();
@@ -89,7 +94,7 @@ namespace Dargon.LeagueOfLegends.Modifications
             var prefix = "t" + id + ": ";
             logger.Info(prefix + "at entry point");
             while (!shutdownCancellationToken.IsCancellationRequested) {
-               if (!semaphore.WaitOne(10000))
+               if (!semaphore.Wait(shutdownCancellationToken))
                   continue;
 
                TContext context;

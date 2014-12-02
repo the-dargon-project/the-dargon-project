@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using Dargon.Patcher;
 using ItzWarty;
+using ItzWarty.Threading;
 using LibGit2Sharp;
 
 namespace Dargon.LeagueOfLegends.Modifications
@@ -16,8 +17,8 @@ namespace Dargon.LeagueOfLegends.Modifications
    {
       public const string COMPILATION_METADATA_FILE_NAME = "COMPILATION";
 
-      public LeagueModificationObjectCompilerServiceImpl(DaemonService daemonService) 
-         : base(daemonService) { }
+      public LeagueModificationObjectCompilerServiceImpl(IThreadingProxy threadingProxy, DaemonService daemonService)
+         : base(threadingProxy, daemonService) { }
 
       public ICompilationTask CompileObjects(IModification modification, ModificationTargetType target)
       {

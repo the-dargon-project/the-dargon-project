@@ -1,4 +1,5 @@
-﻿using Dargon.Daemon;
+﻿using System.Threading;
+using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.InjectedModule.Tasks;
@@ -14,6 +15,7 @@ using Dargon.Processes;
 using Dargon.Processes.Watching;
 using ItzWarty;
 using ItzWarty.Processes;
+using ItzWarty.Threading;
 using NLog;
 using System.IO;
 using System.Linq;
@@ -44,7 +46,7 @@ namespace Dargon.LeagueOfLegends
       private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
+      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
          logger.Info("Initializing League Game Service");
          this.daemonService = daemonService;
@@ -57,8 +59,8 @@ namespace Dargon.LeagueOfLegends
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
          this.taskFactory = new TaskFactory();
          this.leagueModificationRepositoryService = new LeagueModificationRepositoryServiceImpl(modificationRepositoryService);
-         this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(daemonService, radsService);
-         this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(daemonService);
+         this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(threadingProxy, daemonService, radsService);
+         this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(threadingProxy, daemonService);
          this.leagueModificationTasklistCompilerService = new LeagueModificationTasklistCompilerServiceImpl(taskFactory);
          this.leagueGameModificationLinkerService = new LeagueGameModificationLinkerServiceImpl(temporaryFileService, radsService, leagueModificationRepositoryService);
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);

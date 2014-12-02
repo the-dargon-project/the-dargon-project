@@ -9,6 +9,7 @@ using Dargon.Patcher;
 using System;
 using System.Linq;
 using ItzWarty;
+using ItzWarty.Threading;
 using LibGit2Sharp;
 
 namespace Dargon.LeagueOfLegends.Modifications
@@ -19,8 +20,8 @@ namespace Dargon.LeagueOfLegends.Modifications
 
       private readonly RadsService radsService;
 
-      public LeagueModificationResolutionServiceImpl(DaemonService daemonService, RadsService radsService) 
-         : base(daemonService) { this.radsService = radsService; }
+      public LeagueModificationResolutionServiceImpl(IThreadingProxy threadingProxy, DaemonService daemonService, RadsService radsService)
+         : base(threadingProxy, daemonService) { this.radsService = radsService; }
 
       public IResolutionTask StartModificationResolution(IModification modification, ModificationTargetType target)
       {

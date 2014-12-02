@@ -100,7 +100,7 @@ namespace Dargon.Daemon
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
          InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();
       }

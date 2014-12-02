@@ -78,6 +78,14 @@ namespace Dargon.Daemon
          DaemonService daemonService = core;
          localServiceNode.RegisterService(daemonService, typeof(DaemonService));
 
+         // construct modification and repository dependencies
+         IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
+         IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
+         IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
+         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
+         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
+         localServiceNode.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
+
          // construct additional Dargon dependencies
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IProcessInjector processInjector = new ProcessInjector();
@@ -88,11 +96,6 @@ namespace Dargon.Daemon
          IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
          ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(processInjector, processInjectionConfiguration);
          ProcessWatcherService processWatcherService = new ProcessWatcherServiceImpl(processProxy, processWatcher).With(s => s.Initialize());
-         IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
-         IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
-         IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
-         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
-         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
          ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
          IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();

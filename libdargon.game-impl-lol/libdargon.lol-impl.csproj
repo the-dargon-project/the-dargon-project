@@ -45,14 +45,19 @@
     <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\librads.0.0.1\lib\net45\libdnode.dll</HintPath>
     </Reference>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdpo.0.0.11\lib\net45\libdpo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LibGit2Sharp">
       <HintPath>..\packages\LibGit2Sharp.0.20.0.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
     <Reference Include="librads">
       <HintPath>..\packages\librads.0.0.1\lib\net45\librads.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\libwarty.0.0.15\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libdpo.0.0.11\lib\net45\libwarty.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>

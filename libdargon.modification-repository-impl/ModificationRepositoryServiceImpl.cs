@@ -96,7 +96,7 @@ namespace Dargon.ModificationRepositories
                logger.Warn("Unable to load modification at path \"" + directory + "\".");
                logger.Warn(e.ToString());
             }
-            if (modification != null && (gameType == GameType.Any || modification.Metadata.Targets.Contains(gameType))) {
+            if (modification != null && (gameType == null || gameType == GameType.Any || modification.Metadata.Targets.Contains(gameType))) {
                yield return modification;
             }
          }

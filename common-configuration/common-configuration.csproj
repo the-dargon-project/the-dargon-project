@@ -35,11 +35,12 @@
       <HintPath>..\packages\libdsp.0.0.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="libdpo">
-      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libdpo.dll</HintPath>
+      <HintPath>..\packages\libdsp.0.0.2\lib\net45\libdpo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="libdsp">
-      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libdsp.dll</HintPath>
+      <HintPath>..\packages\libdsp.0.0.2\lib\net45\libdsp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="libwarty">
       <HintPath>..\packages\libdsp.0.0.0\lib\net45\libwarty.dll</HintPath>
@@ -65,6 +66,12 @@
     <Compile Include="CommonPofContext.cs" />
     <Compile Include="DargonServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libdargon.modification-impl\libdargon.modification-impl.csproj">
+      <Project>{65054c16-4c56-4f57-a8c1-f325b9320803}</Project>
+      <Name>libdargon.modification-impl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

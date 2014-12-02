@@ -62,7 +62,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="libdpo">
-      <HintPath>..\packages\libdpo.0.0.10\lib\net45\libdpo.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.11\lib\net45\libdpo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="librads">
@@ -70,7 +70,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.11\lib\net45\libwarty.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="libwarty.proxies-api">

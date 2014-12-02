@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dargon.PortableObjects;
 using LibGit2Sharp;
 using Newtonsoft.Json;
 using NLog;
@@ -8,48 +9,88 @@ using ProductHeaderValue = Octokit.ProductHeaderValue;
 
 namespace Dargon.Modifications
 {
-   public class Modification : IModification
+   public class Modification : IModification, IPortableObject
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IModificationMetadataSerializer metadataSerializer;
-      private readonly IBuildConfigurationLoader buildConfigurationLoader;
-      private readonly string repositoryName;
-      private readonly string repositoryPath;
+      private Data data;
+      private string repositoryName;
+      private string repositoryPath;
 
-      public Modification(IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath)
-      {
-         this.metadataSerializer = metadataSerializer;
-         this.buildConfigurationLoader = buildConfigurationLoader;
+      public Modification() {
+         data = new DataPofImpl();
+      }
+
+      public Modification(IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath) {
+         this.data = new DataLazyImpl(this, metadataSerializer, buildConfigurationLoader);
          this.repositoryName = repositoryName;
          this.repositoryPath = repositoryPath;
       }
 
       public string RepositoryName { get { return repositoryName; } }
       public string RepositoryPath { get { return repositoryPath; } }
-      public IModificationMetadata Metadata { get { return GetMetadata(); } }
-      public IBuildConfiguration BuildConfiguration { get { return GetBuildConfiguration(); } }
+      public IModificationMetadata Metadata { get { return data.Metadata; } }
+      public IBuildConfiguration BuildConfiguration { get { return data.BuildConfiguration; } }
 
-      private IModificationMetadata GetMetadata()
-      {
-         var metadataFilePath = Path.Combine(repositoryPath, ModificationConstants.kMetadataFileName);
-
-         IModificationMetadata metadata;
-         if (!metadataSerializer.TryLoad(metadataFilePath, out metadata)) {
-            metadata = new ModificationMetadata();
-         }
-         return metadata;
+      public void Serialize(IPofWriter writer) {
+         writer.WriteString(0, repositoryName);
+         writer.WriteString(1, repositoryPath);
+         writer.WriteObject(2, data.Metadata);
+         writer.WriteObject(3, data.BuildConfiguration);
       }
 
-      private IBuildConfiguration GetBuildConfiguration() 
-      {
-         var buildConfigurationFilePath = Path.Combine(repositoryPath, ModificationConstants.kBuildConfigurationFileName);
+      public void Deserialize(IPofReader reader) {
+         repositoryName = reader.ReadString(0);
+         repositoryPath = reader.ReadString(1);
+         var data = new DataPofImpl();
+         data.Metadata = reader.ReadObject<ModificationMetadata>(2);
+         data.BuildConfiguration = reader.ReadObject<BuildConfiguration>(3);
+         this.data = data;
+      }
 
-         IBuildConfiguration buildConfiguration;
-         if (!buildConfigurationLoader.TryLoad(buildConfigurationFilePath, out buildConfiguration)) {
-            buildConfiguration = new BuildConfiguration();
+      private interface Data {
+         IModificationMetadata Metadata { get; }
+         IBuildConfiguration BuildConfiguration { get; }
+      }
+
+      private class DataLazyImpl : Data {
+         private readonly Modification modification;
+         private readonly IModificationMetadataSerializer metadataSerializer;
+         private readonly IBuildConfigurationLoader buildConfigurationLoader;
+
+         public DataLazyImpl(Modification modification, IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader) {
+            this.modification = modification;
+            this.metadataSerializer = metadataSerializer;
+            this.buildConfigurationLoader = buildConfigurationLoader;
          }
-         return buildConfiguration;
+
+         public IModificationMetadata Metadata { get { return GetMetadata(); } }
+         public IBuildConfiguration BuildConfiguration { get { return GetBuildConfiguration(); } }
+
+         private IModificationMetadata GetMetadata() {
+            var metadataFilePath = Path.Combine(modification.RepositoryPath, ModificationConstants.kMetadataFileName);
+
+            IModificationMetadata metadata;
+            if (!metadataSerializer.TryLoad(metadataFilePath, out metadata)) {
+               metadata = new ModificationMetadata();
+            }
+            return metadata;
+         }
+
+         private IBuildConfiguration GetBuildConfiguration() {
+            var buildConfigurationFilePath = Path.Combine(modification.repositoryPath, ModificationConstants.kBuildConfigurationFileName);
+
+            IBuildConfiguration buildConfiguration;
+            if (!buildConfigurationLoader.TryLoad(buildConfigurationFilePath, out buildConfiguration)) {
+               buildConfiguration = new BuildConfiguration();
+            }
+            return buildConfiguration;
+         }
+      }
+
+      public class DataPofImpl : Data {
+         public IModificationMetadata Metadata { get; set; }
+         public IBuildConfiguration BuildConfiguration { get; set; }
       }
    }
 }

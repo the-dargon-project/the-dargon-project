@@ -1,9 +1,10 @@
 ﻿using System;
 using Dargon.Game;
+using Dargon.PortableObjects;
 
 namespace Dargon.Modifications
 {
-   public interface IModification
+   public interface IModification : IPortableObject
    {
       string RepositoryName { get; }
       string RepositoryPath { get; }

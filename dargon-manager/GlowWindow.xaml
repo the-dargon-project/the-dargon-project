@@ -1,0 +1,69 @@
+﻿<Window x:Class="DargonManager.GlowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="Self"
+        Title="" Height="300" Width="300"
+        WindowStartupLocation="Manual"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None"
+        ShowInTaskbar="False"
+        Foreground="#007ECA"
+        MaxWidth="5000"
+        MaxHeight="5000">
+   <Grid>
+      <Border Background="Transparent"
+              BorderBrush="{Binding Foreground, ElementName=Self}"
+              BorderThickness="5">
+         <Border.Style>
+            <Style TargetType="{x:Type Border}">
+               <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsEmbiggened}" Value="false">
+                     <Setter Property="Margin" Value="25"/>
+                     <Setter Property="Effect">
+                        <Setter.Value>
+                           <BlurEffect KernelType="Gaussian" Radius="15" RenderingBias="Quality"/>
+                        </Setter.Value>
+                     </Setter>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding IsEmbiggened}" Value="true">
+                     <Setter Property="Margin" Value="25"/>
+                     <Setter Property="Effect">
+                        <Setter.Value>
+                           <BlurEffect KernelType="Gaussian" Radius="20" RenderingBias="Quality"/>
+                        </Setter.Value>
+                     </Setter>
+                  </DataTrigger>
+               </Style.Triggers>
+            </Style>
+         </Border.Style>
+      </Border>
+      <Border Background="Transparent"
+              BorderBrush="{Binding Foreground, ElementName=Self}"
+              BorderThickness="5">
+         <Border.Style>
+            <Style TargetType="{x:Type Border}">
+               <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsEmbiggened}" Value="false">
+                     <Setter Property="Margin" Value="25"/>
+                     <Setter Property="Effect">
+                        <Setter.Value>
+                           <BlurEffect KernelType="Gaussian" Radius="10" RenderingBias="Quality"/>
+                        </Setter.Value>
+                     </Setter>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding IsEmbiggened}" Value="true">
+                     <Setter Property="Margin" Value="25"/>
+                     <Setter Property="Effect">
+                        <Setter.Value>
+                           <BlurEffect KernelType="Gaussian" Radius="15" RenderingBias="Quality" />
+                        </Setter.Value>
+                     </Setter>
+                  </DataTrigger>
+               </Style.Triggers>
+            </Style>
+         </Border.Style>
+      </Border>
+   </Grid>
+   <!--IsEmbiggened-->
+</Window>

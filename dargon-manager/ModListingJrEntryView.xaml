@@ -1,0 +1,74 @@
+﻿<ContentControl x:Class="DargonManager.ModListingJrEntryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="400"
+             Height="40"
+             Margin="0,0,0,1px">
+   <ContentControl.Resources>
+      <ResourceDictionary Source="/Dargon_UI;component/DargonUIColors.xaml"/>
+   </ContentControl.Resources>
+   <Border BorderThickness="1px">
+      <Border.Style>
+         <Style TargetType="{x:Type Border}">
+            <Style.Triggers>
+               <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="BorderBrush" Value="#007ECA" />
+                  <Setter Property="Background" Value="#47525F" />
+               </Trigger>
+               <Trigger Property="IsMouseOver" Value="False">
+                  <Setter Property="BorderBrush" Value="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}}" />
+                  <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}}" />
+               </Trigger>
+            </Style.Triggers>
+         </Style>
+      </Border.Style>
+      <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="41px"/>
+            <ColumnDefinition Width="1px"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1px"/>
+            <ColumnDefinition Width="41px"/>
+         </Grid.ColumnDefinitions>
+         <CheckBox IsChecked="{Binding IsEnabled}" Name="IsEnabledCheckbox" Width="21" Height="21">
+            <CheckBox.Template>
+               <ControlTemplate>
+                  <Image>
+                     <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                           <Style.Triggers>
+                              <DataTrigger Binding="{Binding IsEnabled}" Value="true">
+                                 <Setter Property="Source" Value="/DargonManager;component/Resources/Assets/button_checked.png"/>
+                              </DataTrigger>
+                              <DataTrigger Binding="{Binding IsEnabled}" Value="false">
+                                 <Setter Property="Source" Value="/DargonManager;component/Resources/Assets/button_notchecked.png"/>
+                              </DataTrigger>
+                           </Style.Triggers>
+                        </Style>
+                     </Image.Style>
+                  </Image>
+               </ControlTemplate>
+            </CheckBox.Template>
+         </CheckBox>
+         <Rectangle Grid.Column="1" Fill="{StaticResource HACKDARGONJRWindowTableBorderTiledBrush}" />
+         <Grid Grid.Column="2" VerticalAlignment="Center" Margin="5px,0,0,0">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--<TextBlock Grid.Row="0" Foreground="#CFCFCF" FontSize="16px" Margin="1px,-4px,0,0">Fabulous Skin Name</TextBlock>-->
+            <TextBlock Grid.Row="0" Foreground="#CACADC" FontSize="16px" Margin="0,-6px,0,-2px"
+                       Text="{Binding Name, FallbackValue='Fabulous Skin Name'}"/>
+            <TextBlock Grid.Row="1" Foreground="#9F9FAF" FontSize="12px" Margin="0,-2px,0,0"
+                       Text="{Binding Description, FallbackValue='C:/Riot Games/League of Legends/Mods/ExampleMod/'}"/>
+         </Grid>
+         <Rectangle Grid.Column="3" Fill="{StaticResource HACKDARGONJRWindowTableBorderTiledBrush}" />
+         <Image Grid.Column="4"
+                Source="/DargonManager;component/Resources/Assets/button_delete.png" 
+                Width="13px" Height="13px"/>
+      </Grid>
+   </Border>
+</ContentControl>

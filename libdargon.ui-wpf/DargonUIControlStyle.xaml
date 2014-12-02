@@ -1,0 +1,205 @@
+﻿<ResourceDictionary
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:dui="clr-namespace:Dargon.UI;assembly=Dargon_UI"
+   xmlns:duiAccordion="clr-namespace:Dargon.UI.Accordion;assembly=Dargon_UI">
+   <ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary Source="DargonUIColors.xaml" />
+   </ResourceDictionary.MergedDictionaries>
+
+
+      <Style TargetType="TextBlock" x:Key="ButtonlikeText">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="FontFamily" Value="Estrangelo Edessa"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Padding" Value="2px,1px,2px,1px"/>
+   </Style>
+   
+   <!-- Base for Buttonlikes - Tabs, Buttons, etc -->
+   <Style TargetType="Control" x:Key="Buttonlike">
+      <Setter Property="Background" Value="{StaticResource GenericBackgroundBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource GenericBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Style.Resources>
+         <Style TargetType="TextBlock" BasedOn="{StaticResource ButtonlikeText}"/>
+      </Style.Resources>
+      <Style.Triggers>
+         <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource GenericBackgroundHighlightBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GenericBorderHighlightBrush}"/>
+         </Trigger>
+      </Style.Triggers>
+   </Style>
+   
+   <!-- Buttons -->
+   <Style TargetType="Button" BasedOn="{StaticResource Buttonlike}">
+      <Setter Property="SnapsToDevicePixels" Value="true"/>
+      <Setter Property="OverridesDefaultStyle" Value="true"/>
+      <Setter Property="MinHeight" Value="23"/>
+      <Setter Property="MinWidth" Value="75"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+         <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+               <Border x:Name="Border" BorderThickness="1"
+                       Background="{StaticResource GenericBackgroundBrush}"
+                       BorderBrush="{StaticResource GenericBorderBrush}">
+                  <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+               </Border>
+               <ControlTemplate.Triggers>
+                  <Trigger Property="IsKeyboardFocused" Value="true">
+                     <Setter TargetName="Border" Property="Background" Value="{StaticResource GenericBackgroundSelectedBrush}" />
+                     <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource GenericBorderSelectedBrush}" />
+                  </Trigger>
+                  <Trigger Property="IsDefaulted" Value="true">
+                     <Setter TargetName="Border" Property="BorderBrush" Value="Red" />
+                  </Trigger>
+                  <Trigger Property="IsMouseOver" Value="true">
+                     <Setter TargetName="Border" Property="Background" Value="{StaticResource GenericBackgroundHighlightBrush}" />
+                     <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource GenericBorderHighlightBrush}" />
+                  </Trigger>
+                  <Trigger Property="IsPressed" Value="true">
+                     <Setter TargetName="Border" Property="Background" Value="{StaticResource GenericBackgroundPressedBrush}" />
+                     <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource GenericBorderPressedBrush}" />
+                  </Trigger>
+                  <Trigger Property="IsEnabled" Value="false">
+                     <Setter TargetName="Border" Property="Background" Value="White" />
+                     <Setter TargetName="Border" Property="BorderBrush" Value="White" />
+                     <Setter Property="Foreground" Value="#88FF88"/>
+                  </Trigger>
+               </ControlTemplate.Triggers>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+   </Style>
+   <Style TargetType="{x:Type duiAccordion:Section}" BasedOn="{StaticResource {x:Type Button}}"/>
+   
+   <!-- ListBox -->
+   <Style TargetType="ListBox">
+      <Setter Property="Background" Value="{StaticResource ContentControlBackgroundBrush}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      
+      <!-- Elements within a listbox -->
+      <Style.Resources>
+         <Style TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="2px,2px,2px,2px"/>
+         </Style>
+      </Style.Resources>
+   </Style>
+   
+   <!-- DataGrid -->
+   <Style TargetType="DataGrid">
+      <Setter Property="Background" Value="{StaticResource ContentControlBackgroundBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource GenericBorderBrush}"/>
+   </Style>
+   <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource Buttonlike}">
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <!-- Template the contents -->
+      <Setter Property="Template">
+         <Setter.Value>
+            <ControlTemplate TargetType="DataGridColumnHeader">
+               <ControlTemplate.Resources>
+                  <Style TargetType="Grid" x:Key="ColumnHeaderGridStyle">
+                     <Setter Property="Background" Value="{StaticResource GenericBackgroundBrush}"/>
+                  </Style>
+               </ControlTemplate.Resources>
+               <Border BorderThickness="0,0,1,1" BorderBrush="{StaticResource GenericBorderBrush}">
+                  <Grid Name="_grid" Style="{StaticResource ColumnHeaderGridStyle}">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                     </Grid.ColumnDefinitions>
+                     <Grid Grid.Column="1" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="Auto"/>
+                           <ColumnDefinition/>
+                           <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="5" Name="SortArrow" FontFamily="Webdings" FontSize="8" VerticalAlignment="Center" Margin="8px,0px,0px,0px"/>
+                        <ContentPresenter Grid.Column="1" Margin="-4px,1px,0px,1px">
+                           <ContentPresenter.Resources>
+                              <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource ButtonlikeText}"/>
+                           </ContentPresenter.Resources>
+                        </ContentPresenter>
+                        <TextBlock Grid.Column="2" Text="6" Name="DummySortArrow" FontFamily="Webdings" FontSize="8" Foreground="Transparent"/> <!-- Makes the contentpresenter centered/evened out -->
+                     </Grid>
+                     <Thumb x:Name="PART_LeftHeaderGripper" Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Width="5" Cursor="SizeWE" Opacity="0" />
+                     <Thumb x:Name="PART_RightHeaderGripper" Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Width="5" Cursor="SizeWE" Opacity="0" />
+                  </Grid>
+               </Border>
+               <ControlTemplate.Triggers>
+                  <!-- 
+                  Note: The header of a GridView uses a dummy DataGridColumnHeader spanning the 
+                  entire width of the column group control to act as a background fill.  As a 
+                  result, always adding text to a column header is a bad idea.  
+                  -->
+                  <Trigger Property="Content" Value="{x:Null}">
+                     <Setter Property="Text" TargetName="SortArrow" Value="{x:Null}"/>
+                  </Trigger>
+                  <Trigger Property="IsMouseOver" Value="True">
+                     <Setter Property="Background" TargetName="_grid" Value="{StaticResource GenericBackgroundHighlightBrush}"/>
+                  </Trigger>
+                  <Trigger Property="IsPressed" Value="True">
+                     <Setter Property="Background" TargetName="_grid" Value="{StaticResource GenericBackgroundPressedBrush}"/>
+                  </Trigger>
+                  <Trigger Property="SortDirection" Value="Ascending">
+                     <Setter Property="Text" TargetName="SortArrow" Value="5"/>
+                     <Setter Property="Background" TargetName="_grid" Value="{StaticResource GenericBackgroundSelectedBrush}"/>
+                  </Trigger>
+                  <Trigger Property="SortDirection" Value="Descending">
+                     <Setter Property="Text" TargetName="SortArrow" Value="6"/>
+                     <Setter Property="Background" TargetName="_grid" Value="{StaticResource GenericBackgroundSelectedBrush}"/>
+                  </Trigger>
+                  <Trigger Property="SortDirection" Value="{x:Null}">
+                     <Setter Property="Foreground" TargetName="SortArrow" Value="Transparent"/>
+                  </Trigger>
+               </ControlTemplate.Triggers>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+         <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource GenericBackgroundHighlightBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GenericBorderHighlightBrush}"/>
+         </Trigger>
+      </Style.Triggers>
+   </Style>
+   <Style TargetType="DataGridRow">
+      <Setter Property="BorderBrush" Value="Red"/>
+   </Style>
+   <Style TargetType="DataGridCell">
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Style.Triggers>
+         <!-- Highlights entire row when a cell is selected -->
+         <Trigger Property="IsSelected" Value="True">
+            <Setter Property="BorderBrush" Value="{StaticResource Lighten80}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource Lighten80}" />
+         </Trigger>
+
+         <!-- Highlights selected cell -->
+         <Trigger Property="IsFocused" Value="True">
+            <Setter Property="BorderBrush" Value="{StaticResource Lighten220}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+         </Trigger>
+
+         <!-- Highlights in-editing cell -->
+         <Trigger Property="IsEditing" Value="True">
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+         </Trigger>
+      </Style.Triggers>
+   </Style>
+</ResourceDictionary>

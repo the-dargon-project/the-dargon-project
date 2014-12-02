@@ -1,0 +1,320 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+   <!-- Resources -->
+   <BitmapImage x:Key="DargonVecTilted" UriSource="/Dargon_UI;component/Resources/DargonVecTilted.png"/>
+   <ImageBrush x:Key="DargonVecTiltedBrush" ImageSource="{StaticResource DargonVecTilted}" TileMode="None" Stretch="Uniform" AlignmentX="Right" AlignmentY="Bottom"/>
+
+   <BitmapImage x:Key="DargonVecTiltedStretched" UriSource="/Dargon_UI;component/Resources/DargonVecTiltedStretched.png"/>
+   <ImageBrush x:Key="DargonVecTiltedStretchedBrush" ImageSource="{StaticResource DargonVecTiltedStretched}" TileMode="None" Stretch="Uniform" AlignmentX="Right" AlignmentY="Bottom"/>
+
+   <BitmapImage x:Key="DargonVecTiltedOriginal" UriSource="/Dargon_UI;component/Resources/DargonVecTiltedOriginal.png"/>
+   <ImageBrush x:Key="DargonVecTiltedOriginalBrush" ImageSource="{StaticResource DargonVecTiltedOriginal}" TileMode="None" Stretch="Uniform" AlignmentX="Right" AlignmentY="Bottom"/>
+
+   <!-- Really bad blending -->
+   <SolidColorBrush x:Key="Lighten10">
+      <SolidColorBrush.Color>
+         <Color A="10" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten20">
+      <SolidColorBrush.Color>
+         <Color A="20" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten30">
+      <SolidColorBrush.Color>
+         <Color A="30" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten40">
+      <SolidColorBrush.Color>
+         <Color A="40" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten80">
+      <SolidColorBrush.Color>
+         <Color A="80" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten160">
+      <SolidColorBrush.Color>
+         <Color A="160" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Lighten220">
+      <SolidColorBrush.Color>
+         <Color A="220" R="255" G="255" B="255"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Darken20">
+      <SolidColorBrush.Color>
+         <Color A="20" R="0" G="0" B="0"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Darken30">
+      <SolidColorBrush.Color>
+         <Color A="30" R="0" G="0" B="0"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Darken40">
+      <SolidColorBrush.Color>
+         <Color A="40" R="0" G="0" B="0"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   <SolidColorBrush x:Key="Darken50">
+      <SolidColorBrush.Color>
+         <Color A="50" R="0" G="0" B="0"/>
+      </SolidColorBrush.Color>
+   </SolidColorBrush>
+   
+
+   <!-- Generic black theme -->
+   <Color x:Key="PopupSourceBackgroundColor" A="255" R="80" G="80" B="80"/>
+   <SolidColorBrush x:Key="PopupSourceBackgroundBrush" Color="{StaticResource PopupSourceBackgroundColor}"/>
+
+   <Color x:Key="PopupBackgroundColor" A="255" R="120" G="120" B="120"/>
+   <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource PopupBackgroundColor}"/>
+
+   <Color x:Key="WindowBackgroundColor" A="255" R="47" G="47" B="52" />
+   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
+   
+   <Color x:Key="WindowBorderColor" A="255" R="0" G="126" B="202" />
+   <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" />
+
+   <Color x:Key="WindowChromeColor" A="255" R="0" G="126" B="202"/>
+   <SolidColorBrush x:Key="WindowChromeBrush" Color="{StaticResource WindowChromeColor}" />
+
+   <Color x:Key="WindowChromeBorderColor" A="255" R="0" G="94" B="151"/>
+   <SolidColorBrush x:Key="WindowChromeBorderBrush" Color="{StaticResource WindowChromeBorderColor}" />
+
+   <LinearGradientBrush x:Key="WindowChromeBorderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0.0" Color="{StaticResource WindowChromeColor}" />
+      <GradientStop Offset="1.0" Color="{StaticResource WindowChromeBorderColor}" >
+      </GradientStop>
+   </LinearGradientBrush>
+
+   <Color x:Key="WindowChromeTextColor" A="255" R="255" G="255" B="255"/>
+   <SolidColorBrush x:Key="WindowChromeTextBrush" Color="{StaticResource WindowChromeTextColor}"/>
+
+   <Color x:Key="WindowChromeUnfocusedColor" A="255" R="0" G="106" B="162"/>
+   <SolidColorBrush x:Key="WindowChromeUnfocusedBrush" Color="{StaticResource WindowChromeUnfocusedColor}" />
+
+   <Color x:Key="WindowChromeUnfocusedBorderColor" A="255" R="0" G="63" B="101"/>
+   <SolidColorBrush x:Key="WindowChromeUnfocusedBorderBrush" Color="{StaticResource WindowChromeUnfocusedBorderColor}" />
+
+   <Color x:Key="WindowChromeHoverColor" A="255" R="10" G="146" B="252" />
+   <SolidColorBrush x:Key="WindowChromeHoverBrush" Color="{StaticResource WindowChromeHoverColor}" />
+
+   <Color x:Key="WindowChromeHoverBorderColor" A="255" R="0" G="63" B="101"/>
+   <SolidColorBrush x:Key="WindowChromeHoverBorderBrush" Color="{StaticResource WindowChromeHoverBorderColor}" />
+
+   <Color x:Key="WindowChromePressedColor" A="255" R="38" G="66" B="87" />
+   <SolidColorBrush x:Key="WindowChromePressedBrush" Color="{StaticResource WindowChromePressedColor}" />
+
+   <Color x:Key="WindowChromePressedBorderColor" A="255" R="0" G="63" B="101"/>
+   <SolidColorBrush x:Key="WindowChromePressedBorderBrush" Color="{StaticResource WindowChromePressedBorderColor}" />
+
+   <Color x:Key="WindowChromeSeparatorColor" A="255" R="50" G="176" B="252" />
+   <SolidColorBrush x:Key="WindowChromeSeparatorBrush" Color="{StaticResource WindowChromeSeparatorColor}"/>
+
+   <Color x:Key="WindowChromeTransparentSeparatorColor" A="127" R="10" G="86" B="132" />
+   <SolidColorBrush x:Key="WindowChromeTransparentSeparatorBrush" Color="{StaticResource WindowChromeTransparentSeparatorColor}"/>
+
+   <DrawingBrush x:Key="WindowChromeTableBorderTiledBrush" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,1,9000" ViewportUnits="Absolute" TileMode="FlipY">
+      <DrawingBrush.Drawing>
+         <DrawingGroup>
+            <GeometryDrawing Brush="{StaticResource WindowChromeSeparatorBrush}">
+               <GeometryDrawing.Geometry>
+                  <GeometryGroup>
+                     <RectangleGeometry Rect="0,5,1,1" />
+                     <RectangleGeometry Rect="0,7,1,1" />
+                     <RectangleGeometry Rect="0,9,1,1" />
+                     <RectangleGeometry Rect="0,11,1,1" />
+                     <RectangleGeometry Rect="0,13,1,1" />
+                     <RectangleGeometry Rect="0,15,1,1" />
+                     <RectangleGeometry Rect="0,17,1,1" />
+                     <RectangleGeometry Rect="0,19,1,1" />
+                  </GeometryGroup>
+               </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+         </DrawingGroup>
+      </DrawingBrush.Drawing>
+   </DrawingBrush>
+   <DrawingBrush x:Key="HACKDARGONJRWindowChromeTableBorderTiledBrush" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,1,9000" ViewportUnits="Absolute" TileMode="FlipY">
+      <DrawingBrush.Drawing>
+         <DrawingGroup>
+            <GeometryDrawing Brush="{StaticResource WindowChromeTransparentSeparatorBrush}">
+               <GeometryDrawing.Geometry>
+                  <GeometryGroup>
+                     <RectangleGeometry Rect="0,5,1,1" />
+                     <RectangleGeometry Rect="0,7,1,1" />
+                     <RectangleGeometry Rect="0,9,1,1" />
+                     <RectangleGeometry Rect="0,11,1,1" />
+                     <RectangleGeometry Rect="0,13,1,1" />
+                     <RectangleGeometry Rect="0,15,1,1" />
+                     <RectangleGeometry Rect="0,17,1,1" />
+                     <RectangleGeometry Rect="0,19,1,1" />
+                     <RectangleGeometry Rect="0,21,1,1" />
+                     <RectangleGeometry Rect="0,23,1,1" />
+                     <RectangleGeometry Rect="0,25,1,1" />
+                     <RectangleGeometry Rect="0,27,1,1" />
+                     <RectangleGeometry Rect="0,29,1,1" />
+                  </GeometryGroup>
+               </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+         </DrawingGroup>
+      </DrawingBrush.Drawing>
+   </DrawingBrush>
+   <DrawingBrush x:Key="HACKDARGONJRWindowTableBorderTiledBrush" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,1,9000" ViewportUnits="Absolute" TileMode="FlipY">
+      <DrawingBrush.Drawing>
+         <DrawingGroup>
+            <GeometryDrawing Brush="{StaticResource Darken50}">
+               <GeometryDrawing.Geometry>
+                  <GeometryGroup>
+                     <RectangleGeometry Rect="0,5,1,1" />
+                     <RectangleGeometry Rect="0,7,1,1" />
+                     <RectangleGeometry Rect="0,9,1,1" />
+                     <RectangleGeometry Rect="0,11,1,1" />
+                     <RectangleGeometry Rect="0,13,1,1" />
+                     <RectangleGeometry Rect="0,15,1,1" />
+                     <RectangleGeometry Rect="0,17,1,1" />
+                     <RectangleGeometry Rect="0,19,1,1" />
+                     <RectangleGeometry Rect="0,21,1,1" />
+                     <RectangleGeometry Rect="0,23,1,1" />
+                     <RectangleGeometry Rect="0,25,1,1" />
+                     <RectangleGeometry Rect="0,27,1,1" />
+                     <RectangleGeometry Rect="0,29,1,1" />
+                     <RectangleGeometry Rect="0,31,1,1" />
+                     <RectangleGeometry Rect="0,33,1,1" />
+                     <RectangleGeometry Rect="0,35,1,1" />
+                     <RectangleGeometry Rect="0,37,1,1" />
+                     <RectangleGeometry Rect="0,39,1,1" />
+                     <RectangleGeometry Rect="0,41,1,1" />
+                     <RectangleGeometry Rect="0,43,1,1" />
+                     <RectangleGeometry Rect="0,45,1,1" />
+                     <RectangleGeometry Rect="0,47,1,1" />
+                     <RectangleGeometry Rect="0,49,1,1" />
+                  </GeometryGroup>
+               </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+         </DrawingGroup>
+      </DrawingBrush.Drawing>
+   </DrawingBrush>
+   
+   <Color x:Key="GenericBorderColor" A="255" R="38" G="37" B="37"/>
+   <SolidColorBrush x:Key="GenericBorderBrush" Color="{StaticResource GenericBorderColor}"/>
+   <LinearGradientBrush x:Key="GenericBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0.00">
+         <GradientStop.Color>
+            <Color A="255" R="127" G="125" B="125"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.06">
+         <GradientStop.Color>
+            <Color A="255" R="127" G="125" B="125"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.07">
+         <GradientStop.Color>
+            <Color A="255" R="82" G="80" B="79"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="1.00">
+         <GradientStop.Color>
+            <Color A="255" R="70" G="68" B="67"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+   </LinearGradientBrush>
+
+   <Color x:Key="GenericBorderHighlightColor" A="255" R="43" G="42" B="42"/>
+   <SolidColorBrush x:Key="GenericBorderHighlightBrush" Color="{StaticResource GenericBorderHighlightColor}"/>
+   <LinearGradientBrush x:Key="GenericBackgroundHighlightBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0.00">
+         <GradientStop.Color>
+            <Color A="255" R="142" G="140" B="140"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.06">
+         <GradientStop.Color>
+            <Color A="255" R="142" G="140" B="140"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.07">
+         <GradientStop.Color>
+            <Color A="255" R="97" G="95" B="94"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="1.00">
+         <GradientStop.Color>
+            <Color A="255" R="85" G="83" B="82"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+   </LinearGradientBrush>
+
+   <Color x:Key="GenericBorderSelectedColor" A="255" R="53" G="52" B="52"/>
+   <SolidColorBrush x:Key="GenericBorderSelectedBrush" Color="{StaticResource GenericBorderSelectedColor}"/>
+   <LinearGradientBrush x:Key="GenericBackgroundSelectedBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0.00">
+         <GradientStop.Color>
+            <Color A="255" R="157" G="155" B="155"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.06">
+         <GradientStop.Color>
+            <Color A="255" R="157" G="155" B="155"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.07">
+         <GradientStop.Color>
+            <Color A="255" R="112" G="110" B="109"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="1.00">
+         <GradientStop.Color>
+            <Color A="255" R="100" G="98" B="97"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+   </LinearGradientBrush>
+
+   <Color x:Key="GenericBorderPressedColor" A="255" R="53" G="52" B="52"/>
+   <SolidColorBrush x:Key="GenericBorderPressedBrush" Color="{StaticResource GenericBorderSelectedColor}"/>
+   <LinearGradientBrush x:Key="GenericBackgroundPressedBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0.00">
+         <GradientStop.Color>
+            <Color A="255" R="122" G="120" B="120"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.06">
+         <GradientStop.Color>
+            <Color A="255" R="122" G="120" B="120"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="0.07">
+         <GradientStop.Color>
+            <Color A="255" R="67" G="55" B="54"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+      <GradientStop Offset="1.00">
+         <GradientStop.Color>
+            <Color A="255" R="55" G="53" B="52"></Color>
+         </GradientStop.Color>
+      </GradientStop>
+   </LinearGradientBrush>
+
+   <!-- Panel Colors -->
+   <Color x:Key="ContentControlBackgroundColor" A="255" R="58" G="58" B="65"/>
+   <SolidColorBrush x:Key="ContentControlBackgroundBrush" Color="{StaticResource ContentControlBackgroundColor}"/>
+
+   <Color x:Key="ContentControlBackgroundHighlightColor" A="255" R="79" G="77" B="76"/>
+   <SolidColorBrush x:Key="ContentControlBackgroundHighlightBrush" Color="{StaticResource ContentControlBackgroundHighlightColor}"/>
+
+   <Color x:Key="ContentControlBorderHighlightColor" A="255" R="149" G="147" B="146"/>
+   <SolidColorBrush x:Key="ContentControlBorderHighlightBrush" Color="{StaticResource ContentControlBorderHighlightColor}"/>
+
+   <Color x:Key="ContentControlBackgroundSelectedColor" A="255" R="94" G="92" B="91"/>
+   <SolidColorBrush x:Key="ContentControlBackgroundSelectedBrush" Color="{StaticResource ContentControlBackgroundSelectedColor}"/>
+
+   <Color x:Key="ContentControlBorderSelectedColor" A="255" R="184" G="182" B="181"/>
+   <SolidColorBrush x:Key="ContentControlBorderSelectedBrush" Color="{StaticResource ContentControlBorderSelectedColor}"/>
+
+</ResourceDictionary>

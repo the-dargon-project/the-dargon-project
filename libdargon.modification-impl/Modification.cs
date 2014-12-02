@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
-using Dargon.PortableObjects;
-using LibGit2Sharp;
-using Newtonsoft.Json;
+﻿using Dargon.PortableObjects;
 using NLog;
-using GitHubClient = Octokit.GitHubClient;
-using ProductHeaderValue = Octokit.ProductHeaderValue;
+using System.IO;
 
 namespace Dargon.Modifications
 {

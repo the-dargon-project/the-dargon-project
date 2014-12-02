@@ -1,11 +1,12 @@
-﻿using System;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Dargon.PortableObjects;
 using Dargon.Services.Client;
 using ItzWarty.Collections;
 using ItzWarty.IO;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
+using System;
+using System.Threading;
 
 namespace Dargon.CLI {
    public static class Program {
@@ -31,7 +32,7 @@ namespace Dargon.CLI {
          var localEndPoint = tcpEndPointFactory.CreateLoopbackEndPoint(serviceConfiguration.Port);
          var reconnectAttempts = 10;
          var reconnectDelay = 1000;
-         var serviceClient = TryConnectToEndpoint(reconnectAttempts, serviceClientFactory, localEndPoint, serviceConfiguration);
+         var serviceClient = TryConnectToEndpoint(reconnectAttempts, reconnectDelay, serviceClientFactory, localEndPoint, serviceConfiguration);
          if (serviceClient == null) {
             Console.Error.WriteLine("Failed to connect to endpoint.");
             return 1;
@@ -47,17 +48,19 @@ namespace Dargon.CLI {
          }
       }
 
-      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, ServiceClientFactory serviceClientFactory, ITcpEndPoint endpoint, DargonServiceConfiguration serviceConfiguration) {
+      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactory serviceClientFactory, ITcpEndPoint endpoint, DargonServiceConfiguration serviceConfiguration) {
          IServiceClient serviceClient = null;
          for (var i = 0; i < reconnectAttempts && serviceClient == null; i++) {
             try {
                serviceClient = serviceClientFactory.Create(endpoint);
             } catch (Exception e) {
+               Console.WriteLine(e);
                if (i == 0) {
                   Console.Write("Connecting to local endpoint on port " + serviceConfiguration.Port + ".");
                } else if (i > 0) {
                   Console.Write(".");
                }
+               Thread.Sleep(reconnectDelay);
             }
             if (serviceClient != null && i > 0) {
                Console.WriteLine();

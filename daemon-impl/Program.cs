@@ -73,7 +73,7 @@ namespace Dargon.Daemon
          // construct libdsp local service node
          IServiceConfiguration serviceConfiguration = new DargonServiceConfiguration();
          IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
-
+         
          // construct Dargon Daemon dependencies
          DaemonService daemonService = core;
          localServiceNode.RegisterService(daemonService, typeof(DaemonService));
@@ -85,7 +85,7 @@ namespace Dargon.Daemon
          IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
          ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
          localServiceNode.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
-
+         
          // construct additional Dargon dependencies
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IProcessInjector processInjector = new ProcessInjector();

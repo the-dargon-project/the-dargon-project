@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
@@ -72,8 +73,7 @@ namespace Dargon.LeagueOfLegends
          RunDebugActions();
       }
 
-      private void RunDebugActions()
-      {
+      private void RunDebugActions() {
          foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.Any)) {
             modificationRepositoryService.DeleteModification(mod);
          }
@@ -84,16 +84,16 @@ namespace Dargon.LeagueOfLegends
             Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
             GameType.LeagueOfLegends);
 
-         foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
-            logger.Info(mod.RepositoryName);
-
-            var metadata = mod.Metadata;
-            logger.Info("mod: {0} {1} by {2} at {3} for {4}".F(metadata.Name, metadata.Version, metadata.Authors.Join(", "), metadata.Website, metadata.Targets.Select(t=>t.Name).Join(", ")));
-
-            leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
-            leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
-            leagueGameModificationLinkerService.LinkModificationObjects();
-         }
+         // foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
+         //    logger.Info(mod.RepositoryName);
+         // 
+         //    var metadata = mod.Metadata;
+         //    logger.Info("mod: {0} {1} by {2} at {3} for {4}".F(metadata.Name, metadata.Version, metadata.Authors.Join(", "), metadata.Website, metadata.Targets.Select(t=>t.Name).Join(", ")));
+         // 
+         //    leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
+         //    leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
+         //    leagueGameModificationLinkerService.LinkModificationObjects();
+         // }
           // for (var mod in modificationRepositoryService)
           // modificationRepositoryService.ClearModifications();
           //         var mod = modificationImportService.ImportLegacyModification(

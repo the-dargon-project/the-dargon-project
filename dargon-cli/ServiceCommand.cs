@@ -16,7 +16,7 @@ namespace Dargon.CLI {
       }
 
       public override int Eval(string input) {
-         if (string.IsNullOrWhiteSpace(input.Trim())) {
+         if (string.IsNullOrWhiteSpace(input.Trim()) || input.Trim().Equals("status")) {
             foreach (var kvp in CommandsByName) {
                if (kvp.Key != HelpCommand.kCommandName) {
                   Console.WriteLine("service \"{0}\" status:".F(kvp.Key));

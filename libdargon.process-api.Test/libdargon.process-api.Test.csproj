@@ -39,13 +39,24 @@
   <ItemGroup>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NMockito">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\NMockito.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="xunit">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\xunit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>

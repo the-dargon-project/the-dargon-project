@@ -38,15 +38,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BigMath">
-      <HintPath>..\packages\BigMath.0.4.4\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\BigMath.dll</HintPath>
-    </Reference>
-    <Reference Include="libdargon.utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="libdargon.utilities">
       <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="libwarty">
       <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libwarty.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>

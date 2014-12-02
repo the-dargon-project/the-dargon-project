@@ -39,17 +39,64 @@
   <ItemGroup>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.0.0.14\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\ImpromptuInterface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.filesystem-api">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdargon.filesystem-api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.filesystem-impl">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdargon.filesystem-impl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.utilities">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\libdargon.utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdnode">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdnode.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdpo.0.0.10\lib\net45\libdpo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="librads">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\librads.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty.proxies-impl">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NMockito">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\NMockito.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="xunit">
       <HintPath>..\packages\NMockito.0.0.6\lib\net45\xunit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zlib.net">
+      <HintPath>..\packages\librads.0.0.1\lib\net45\zlib.net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>

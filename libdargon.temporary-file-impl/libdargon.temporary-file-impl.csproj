@@ -35,8 +35,12 @@
     <Reference Include="libdargon.utilities">
       <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -38,20 +38,48 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="ImpromptuInterface">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.8\lib\net45\ImpromptuInterface.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\ImpromptuInterface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.filesystem-api">
+      <HintPath>..\packages\libdargon.filesystem-api.0.0.1\lib\net45\libdargon.filesystem-api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.filesystem-impl">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdargon.filesystem-impl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdargon.utilities">
+      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdnode">
+      <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdnode.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libdsp">
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.12\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.8\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdsp.0.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,6 +98,10 @@
     <ProjectReference Include="..\..\libdtp\libdtp.csproj">
       <Project>{C9F92566-1F94-4235-944C-19364459F9A6}</Project>
       <Name>libdtp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\common-configuration\common-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>common-configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>

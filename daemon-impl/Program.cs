@@ -1,16 +1,25 @@
-﻿using Dargon.FinalFantasyXIII;
+﻿using Castle.DynamicProxy;
+using Dargon.FinalFantasyXIII;
 using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
+using Dargon.PortableObjects;
 using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
+using Dargon.Services;
+using Dargon.Services.Server;
+using Dargon.Services.Server.Phases;
+using Dargon.Services.Server.Sessions;
 using Dargon.Transport;
 using Dargon.Tray;
 using ItzWarty;
+using ItzWarty.Collections;
 using ItzWarty.IO;
+using ItzWarty.Networking;
 using ItzWarty.Processes;
+using ItzWarty.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -30,11 +39,44 @@ namespace Dargon.Daemon
          }
 
          var core = new DaemonServiceImpl(configuration);
-         DaemonService daemonService = core;
-         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+
+         // construct libwarty dependencies
+         ICollectionFactory collectionFactory = new CollectionFactory();
+         
+         // construct libwarty-proxies dependencies
          IStreamFactory streamFactory = new StreamFactory();
          IFileSystemProxy fileSystemProxy = new FileSystemProxy(streamFactory);
+         IThreadingFactory threadingFactory = new ThreadingFactory();
+         ISynchronizationFactory synchronizationFactory = new SynchronizationFactory();
+         IThreadingProxy threadingProxy = new ThreadingProxy(threadingFactory, synchronizationFactory);
+         IDnsProxy dnsProxy = new DnsProxy();
+         ITcpEndPointFactory tcpEndPointFactory = new TcpEndPointFactory(dnsProxy);
+         INetworkingInternalFactory networkingInternalFactory = new NetworkingInternalFactory(threadingProxy, streamFactory);
+         ISocketFactory socketFactory = new SocketFactory(tcpEndPointFactory, networkingInternalFactory);
+         INetworkingProxy networkingProxy = new NetworkingProxy(socketFactory, tcpEndPointFactory);
          IProcessProxy processProxy = new ProcessProxy();
+
+         // construct Castle.Core dependencies
+         ProxyGenerator proxyGenerator = new ProxyGenerator();
+
+         // construct dargon common Portable Object Format dependencies
+         IPofContext pofContext = new CommonPofContext();
+         IPofSerializer pofSerializer = new PofSerializer(pofContext);
+         
+         // construct libdsp dependencies
+         IHostSessionFactory hostSessionFactory = new HostSessionFactory(collectionFactory, pofSerializer);
+         IPhaseFactory phaseFactory = new PhaseFactory(collectionFactory, threadingProxy, networkingProxy, hostSessionFactory, pofSerializer);
+         IConnectorFactory connectorFactory = new ConnectorFactory(collectionFactory, threadingProxy, networkingProxy, phaseFactory);
+         IServiceContextFactory serviceContextFactory = new ServiceContextFactory(collectionFactory);
+         IServiceNodeFactory serviceNodeFactory = new ServiceNodeFactory(connectorFactory, serviceContextFactory, collectionFactory);
+
+         // construct libdsp local service node
+         IServiceConfiguration serviceConfiguration = new DargonServiceConfiguration();
+         IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
+
+         // construct Dargon dependencies
+         DaemonService daemonService = core;
+         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();
          IProcessDiscoveryMethod processDiscoveryMethod = processDiscoveryMethodFactory.CreateOptimalProcessDiscoveryMethod();

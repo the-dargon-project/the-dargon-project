@@ -53,21 +53,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdsp.0.0.3\lib\net45\libdsp.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\libwarty.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-api.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\libdnode.0.0.1\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +78,7 @@
     <Compile Include="DispatcherCommand.cs" />
     <Compile Include="CommandDispatchException.cs" />
     <Compile Include="DargonREPL.cs" />
+    <Compile Include="ExitCommand.cs" />
     <Compile Include="ModCommand.cs" />
     <Compile Include="ShutdownCommand.cs" />
     <Compile Include="ICommand.cs" />

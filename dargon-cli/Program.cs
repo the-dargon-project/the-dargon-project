@@ -39,6 +39,7 @@ namespace Dargon.CLI {
             var dispatcher = new DispatcherCommand("registered commands");
             dispatcher.RegisterCommand(new ShutdownCommand(serviceClient));
             dispatcher.RegisterCommand(new ModCommand(serviceClient));
+            dispatcher.RegisterCommand(new ExitCommand());
 
             var repl = new DargonREPL(dispatcher);
             repl.Run();

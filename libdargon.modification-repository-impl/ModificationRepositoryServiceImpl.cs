@@ -20,14 +20,14 @@ namespace Dargon.ModificationRepositories
       private const string kRepositorySubdirectoryName = "repositories";
       private const int PATH_DELIMITER_LENGTH = 1;
 
-      private readonly IDaemonConfiguration configuration;
+      private readonly IDargonConfiguration configuration;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IModificationLoader modificationLoader;
       private readonly IModificationMetadataSerializer modificationMetadataSerializer;
       private readonly IModificationMetadataFactory modificationMetadataFactory;
       private string repositorySubdirectoryPath;
 
-      public ModificationRepositoryServiceImpl(IDaemonConfiguration configuration, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
+      public ModificationRepositoryServiceImpl(IDargonConfiguration configuration, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
       {
          logger.Info("Constructing Modification Repository Service");
 

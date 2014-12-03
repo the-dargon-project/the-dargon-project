@@ -1,19 +1,17 @@
-﻿using Dargon.Daemon;
-using ItzWarty;
+﻿using ItzWarty;
 using System;
 using System.IO;
 
-namespace Dargon
-{
+namespace Dargon {
    public class TemporaryFileServiceImpl : TemporaryFileService
    {
       private const string EXPIRATION_FILE_NAME = ".expires";
-      private readonly IDaemonConfiguration configuration;
+      private readonly IDargonConfiguration configuration;
       private readonly string temporaryDirectoryPath;
       private readonly string temporaryFilesLockPath;
       private readonly FileLock temporaryFilesLock;
 
-      public TemporaryFileServiceImpl(IDaemonConfiguration configuration) {
+      public TemporaryFileServiceImpl(IDargonConfiguration configuration) {
          this.configuration = configuration;
          this.temporaryDirectoryPath = Path.Combine(configuration.UserDataDirectoryPath, "temp"); ;
          this.temporaryFilesLockPath = Path.Combine(temporaryDirectoryPath, "LOCK");

@@ -33,12 +33,10 @@ namespace Dargon.Daemon
       public static void Main(string[] args) { 
          InitializeLogging();
 
-         var configuration = new DaemonConfiguration();
-         if (configuration.IsDebugCompilation) {
-            logger.Error("COMPILED IN DEBUG MODE");
-         }
+#if DEBUG
+         logger.Error("COMPILED IN DEBUG MODE");
+#endif
 
-         var core = new DaemonServiceImpl(configuration);
 
          // construct libwarty dependencies
          ICollectionFactory collectionFactory = new CollectionFactory();
@@ -58,6 +56,15 @@ namespace Dargon.Daemon
 
          // construct Castle.Core dependencies
          ProxyGenerator proxyGenerator = new ProxyGenerator();
+
+         // construct root Dargon dependencies.
+         var configuration = new DargonConfiguration();
+
+         // construct system-state dependencies
+         var systemState = new SystemStateImpl(fileSystemProxy, configuration);
+
+         // construct daemon dependencies
+         var core = new DaemonServiceImpl(configuration);
 
          // construct dargon common Portable Object Format dependencies
          IPofContext pofContext = new CommonPofContext();

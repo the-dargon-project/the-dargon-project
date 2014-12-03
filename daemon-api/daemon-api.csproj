@@ -36,8 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DaemonService.cs" />
-    <Compile Include="IDaemonConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
+      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
+      <Name>libdargon.system-state-api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

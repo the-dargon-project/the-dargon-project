@@ -44,11 +44,11 @@
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.12\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,6 +77,10 @@
     <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
       <Name>libdargon.modification-repository-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
+      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
+      <Name>libdargon.system-state-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdpatch\libdpm.csproj">
       <Project>{9699E719-25FA-41DF-B966-B43CF50F9B00}</Project>

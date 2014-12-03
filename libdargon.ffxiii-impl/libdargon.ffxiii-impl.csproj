@@ -35,13 +35,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdpo.0.0.12\lib\net45\libdpo.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libdpo.0.0.12\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.15\lib\net45\libwarty.proxies-api.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>

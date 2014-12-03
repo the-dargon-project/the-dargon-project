@@ -6,19 +6,19 @@ namespace Dargon.Daemon {
    public class DaemonServiceImpl : DaemonService {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IDaemonConfiguration configuration;
+      private readonly IDargonConfiguration configuration;
       private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
       private bool isShutdownSignalled = false;
 
       public event EventHandler BeginShutdown;
 
-      public DaemonServiceImpl(IDaemonConfiguration configuration) {
+      public DaemonServiceImpl(IDargonConfiguration configuration) {
          logger.Info("Initializing Daemon");
 
          this.configuration = configuration;
       }
 
-      public IDaemonConfiguration Configuration { get { return configuration; } }
+      public IDargonConfiguration Configuration { get { return configuration; } }
       public bool IsShutdownSignalled { get { return isShutdownSignalled; } }
 
       public void Run() {

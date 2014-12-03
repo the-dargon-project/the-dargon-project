@@ -40,7 +40,7 @@
     </Reference>
     <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\ImpromptuInterface.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
     <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,15 +56,15 @@
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -94,10 +94,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\common-configuration\common-configuration.csproj">
-      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
-      <Name>common-configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
@@ -125,6 +121,14 @@
     <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
       <Name>libdargon.service-base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
+      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
+      <Name>libdargon.system-state-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\root-configuration\root-configuration.csproj">
+      <Project>{12b4f1a3-319c-4116-bc4c-d3c8c7bc1a0d}</Project>
+      <Name>root-configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

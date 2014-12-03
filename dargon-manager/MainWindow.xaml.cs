@@ -2,35 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Dargon;
-using Dargon.Manager;
+using Dargon.Manager.Controllers;
+using Dargon.Manager.Models;
+using Dargon.Manager.ViewModels;
+using DargonManager;
 using DargonManager.SampleData;
-using ItzWarty;
 
-namespace DargonManager
-{
+namespace Dargon.Manager {
    /// <summary>
    /// Interaction logic for MainWindow.xaml
    /// </summary>
    public partial class MainWindow : Window
    {
-      /// <summary>
-      /// Provides the WinAPI Window Handle of the WPF window.  We need the hWnd to send the 
-      /// resize message when our resize border is clicked.
-      /// </summary>
-      private HwndSource m_windowHandleSource;
-
+      private readonly RootController rootController;
+      private readonly ModificationImportController modificationImportController;
       private GlowWindow m_glowWindow = null;
+      private HwndSource m_windowHandleSource;
+      private StatusModel statusModel;
 
       /// <summary>
       /// Main Window with dummy data
@@ -40,81 +33,73 @@ namespace DargonManager
          this.InitializeComponent();
          SourceInitialized += ShellWindow_SourceInitialized;
 
-         //// Insert code required on object creation below this point.
-         //List<SampleModification> mods = new List<SampleModification>();
-         //mods.Add(new SampleModification { Name = "Beauty Queen Ezreal", Author = "Warty", IsEnabled = true, Type = "Actors > Ezreal" });
-         //mods.Add(new SampleModification { Name = "Naughty Nautilus", Author = "Warty", IsEnabled = true, Type = "Actors > Nautilus" });
-         //mods.Add(new SampleModification { Name = "Tencent Artwork", Author = "Ququroon", IsEnabled = false, Type = "Actors" });
-         //mods.Add(new SampleModification { Name = "Sunset Beach Rift", Author = "Yurixy Works", IsEnabled = true, Type = "Maps > Summoner's Rift" });
-         //this.DataContext = new DMViewModel(mods);
-         //
-         //AllowDrop = true;
-         //PreviewDragEnter += MainWindow_PreviewDragEnter;
-         //DragEnter += ContentControl_DragEnter;
-         //DragLeave += ContentControl_DragLeave;
-         //DragOver += ContentControl_DragOver;
-         //Drop += ContentControl_Drop;
+         // Insert code required on object creation below this point.
+         List<SampleModification> mods = new List<SampleModification>();
+         mods.Add(new SampleModification { Name = "Beauty Queen Ezreal", Author = "Warty", IsEnabled = true, Type = "Actors > Ezreal" });
+         mods.Add(new SampleModification { Name = "Naughty Nautilus", Author = "Warty", IsEnabled = true, Type = "Actors > Nautilus" });
+         mods.Add(new SampleModification { Name = "Tencent Artwork", Author = "Ququroon", IsEnabled = false, Type = "Actors" });
+         mods.Add(new SampleModification { Name = "Sunset Beach Rift", Author = "Yurixy Works", IsEnabled = true, Type = "Maps > Summoner's Rift" });
+         
+         AllowDrop = true;
+         PreviewDragEnter += MainWindow_PreviewDragEnter;
+         DragEnter += ContentControl_DragEnter;
+         DragLeave += ContentControl_DragLeave;
+         DragOver += ContentControl_DragOver;
+         Drop += ContentControl_Drop;
       }
 
-      public MainWindow(DMViewModelBase viewmodel)
-      {
-         this.InitializeComponent();
-         this.DataContext = viewmodel;
+      public MainWindow(RootController rootController) {
+         this.rootController = rootController;
+         this.modificationImportController = rootController.GetModificationImportController();
+         this.statusModel = rootController.GetStatusModel();
 
-         Loaded += (s_, e_) => {
-            AllowDrop = true;
-            DragEnter += (s, e) => {
-               var paths = (string[])e.Data.GetData(DataFormats.FileDrop);
+         InitializeComponent();
+         SourceInitialized += ShellWindow_SourceInitialized;
+         Loaded += HandleLoad;
+      }
 
-               if (paths.Length != 1)
-               {
-                  viewmodel.Status = "Invalid Drag/Drop! \r\n" +
-                                     "Only *.zip, *.rar, a directory, or an individual file may be dropped in at this time.";
-                  viewmodel.ModificationImportStatus = DMModificationImportStatus.ModBad;
+      public StatusModel StatusModel { get { return rootController.GetStatusModel(); } }
 
-                  m_glowWindow.Model.IsEmbiggened = false;
+      public ModificationListingViewModel ModificationListingViewModel { get { return rootController.GetModificationListingViewModel(); } }
 
-                  e.Effects = DragDropEffects.None;
-               }
-               else
-               {
-                  string name = new FileInfo(paths[0]).Name;
-                  if (name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ||
-                      name.EndsWith(".rar", StringComparison.OrdinalIgnoreCase))
-                     name = name.Substring(name.Length - 4);
+      private void HandleLoad(object sender, RoutedEventArgs e) {
+         AllowDrop = true;
+         DragEnter += HandleDragEnter;
+         DragLeave += HandleDragLeave;
+         // Drop += (s, e) => {
+         //    Console.WriteLine("DROP " + e.Effects);
+         //    string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
+         //    foreach (var d in data)
+         //       Console.WriteLine(d);
+         // 
+         //    viewmodel.ImportModifications(data);
+         // 
+         //    m_glowWindow.Model.IsEmbiggened = false;
+         // };
+      }
 
-                  viewmodel.Status = "Modification will be imported as " + name + "\r\n" +
-                                     "Release your mouse button to finish importing the modification.";
-                  viewmodel.ModificationImportStatus = DMModificationImportStatus.ModOk;
+      private void HandleDragEnter(object sender, DragEventArgs e) {
+         e.Handled = true;
 
-                  m_glowWindow.Model.IsEmbiggened = true;
+         var paths = (string[])e.Data.GetData(DataFormats.FileDrop);
+         if (!modificationImportController.ValidateDropHover(paths)) {
+            m_glowWindow.Model.IsEmbiggened = false;
+            e.Effects = DragDropEffects.None;
+         } else {
+            m_glowWindow.Model.IsEmbiggened = true;
+            
+            if (e.AllowedEffects.HasFlag(DragDropEffects.Copy))
+               e.Effects |= DragDropEffects.Copy;
+            if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
+               e.Effects |= DragDropEffects.Move;
+            if (e.AllowedEffects.HasFlag(DragDropEffects.Link))
+               e.Effects |= DragDropEffects.Link;
+         }
+      }
 
-                  if (e.AllowedEffects.HasFlag(DragDropEffects.Copy))
-                     e.Effects |= DragDropEffects.Copy;
-                  if (e.AllowedEffects.HasFlag(DragDropEffects.Move))
-                     e.Effects |= DragDropEffects.Move;
-                  if (e.AllowedEffects.HasFlag(DragDropEffects.Link))
-                     e.Effects |= DragDropEffects.Link;
-               }
-               e.Handled = true;
-            };
-            Drop += (s, e) => {
-               Console.WriteLine("DROP " + e.Effects);
-               string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
-               foreach (var d in data)
-                  Console.WriteLine(d);
-
-               viewmodel.ImportModifications(data);
-
-               m_glowWindow.Model.IsEmbiggened = false;
-            };
-            DragLeave += (s, e) => {
-               viewmodel.Status = null;
-               viewmodel.ModificationImportStatus = DMModificationImportStatus.None;
-
-               m_glowWindow.Model.IsEmbiggened = false;
-            };
-         };
+      private void HandleDragLeave(object sender, DragEventArgs e) {
+         modificationImportController.HandleDragLeave();
+         m_glowWindow.Model.IsEmbiggened = false;
       }
 
       private void SetupWindowGlow()

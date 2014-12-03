@@ -1,6 +1,6 @@
 ﻿<Application x:Class="Dargon.Manager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="DMWindow.xaml">
-             <!--Startup="Application_Startup" -->
+             Startup="Application_Startup">
+             <!--StartupUri="MainWindow.xaml"-->
 </Application>

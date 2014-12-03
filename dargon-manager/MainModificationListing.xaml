@@ -1,10 +1,9 @@
-﻿<ContentControl x:Class="DargonManager.ModListingJr"
+﻿<ContentControl x:Class="Dargon.Manager.MainModificationListing"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dargonManager="clr-namespace:DargonManager"
-             xmlns:manager="clr-namespace:Dargon.Manager"
+             xmlns:dargonManager="clr-namespace:Dargon.Manager"
              mc:Ignorable="d" 
              d:DesignHeight="280" d:DesignWidth="450">
    <ContentControl.Resources>
@@ -32,35 +31,15 @@
                <TextBlock Style="{StaticResource HeaderTextName}">Name</TextBlock>
             </Border>
          </StackPanel>
-         <Image Grid.Column="1" Grid.Row="2" Panel.ZIndex="200" Source="/DargonManager;component/Resources/Assets/import_bad.png">
+         <Image Grid.Column="1" Grid.Row="2" Panel.ZIndex="200">
             <Image.Style>
                <Style TargetType="{x:Type Image}">
                   <Style.Triggers>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.ModOk}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Valid}">
+                        <Setter Property="Source" Value="Resources/Assets/import_ok.png" />
                      </DataTrigger>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.ModBad}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                     </DataTrigger>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.None}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                     </DataTrigger>
-                  </Style.Triggers>
-               </Style>
-            </Image.Style>
-         </Image>
-         <Image Grid.Column="1" Grid.Row="2" Panel.ZIndex="200" Source="/DargonManager;component/Resources/Assets/import_ok.png">
-            <Image.Style>
-               <Style TargetType="{x:Type Image}">
-                  <Style.Triggers>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.ModOk}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                     </DataTrigger>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.ModBad}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                     </DataTrigger>
-                     <DataTrigger Binding="{Binding ModificationImportStatus}" Value="{x:Static manager:DMModificationImportStatus.None}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Invalid}">
+                        <Setter Property="Source" Value="Resources/Assets/import_bad.png" />
                      </DataTrigger>
                   </Style.Triggers>
                </Style>
@@ -68,10 +47,10 @@
          </Image>
          <Border Panel.ZIndex="100" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="3" BorderBrush="#3A3A41" BorderThickness="1px">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{StaticResource FavsScrollViewer}">
-               <ItemsControl ItemsSource="{Binding ListedEntities}" AlternationCount="2">
+               <ItemsControl ItemsSource="{Binding Items}" AlternationCount="2">
                   <ItemsControl.ItemTemplate>
                      <DataTemplate>
-                        <dargonManager:ModListingJrEntryView x:Name="entryView"/>
+                        <dargonManager:MainModificationListingEntry x:Name="entryView"/>
                         <DataTemplate.Triggers>
                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                               <Setter Property="Background" Value="#4B4B54" TargetName="entryView"/>

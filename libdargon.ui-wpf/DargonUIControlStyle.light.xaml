@@ -2,10 +2,10 @@
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-   xmlns:dui="clr-namespace:Dargon.UI;assembly=Dargon_UI"
-   xmlns:duiAccordion="clr-namespace:Dargon.UI.Accordion;assembly=Dargon_UI">
+   xmlns:dui="clr-namespace:Dargon.UI"
+   xmlns:duiAccordion="clr-namespace:Dargon.UI.Accordion">
    <ResourceDictionary.MergedDictionaries>
-      <ResourceDictionary Source="DargonUIColors.xaml" />
+      <ResourceDictionary Source="DargonUIColors.light.xaml" />
    </ResourceDictionary.MergedDictionaries>
 
 

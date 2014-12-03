@@ -73,7 +73,7 @@
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Resource Include="DargonUIControlStyle.xaml">
+    <Resource Include="DargonUIControlStyle.dark.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
@@ -81,11 +81,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="DargonUIColors.xaml">
+    <Page Include="DargonUIColors.light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DargonUIColors.dark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DargonUIMenuStyle.xaml">
+    <Page Include="DargonUIControlStyle.light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DargonUIMenuStyle.dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DargonUIMenuStyle.light.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

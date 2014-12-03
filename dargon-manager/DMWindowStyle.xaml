@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-   xmlns:local="clr-namespace:DargonManager">
+	xmlns:manager="clr-namespace:Dargon.Manager">
    <ResourceDictionary.MergedDictionaries>
-      <ResourceDictionary Source="/Dargon_UI;component/DargonUIColors.xaml"/>
-      <ResourceDictionary Source="/Dargon_UI;component/DargonUIMenuStyle.xaml"/>
+      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIColors.light.xaml"/>
+      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIMenuStyle.light.xaml"/>
    </ResourceDictionary.MergedDictionaries>
    
    <!--  ControlBox Button Styling -->
@@ -43,7 +43,7 @@
    </Style>
    
    <!-- Window style -->
-   <Style TargetType="{x:Type local:MainWindow}">
+   <Style TargetType="{x:Type manager:MainWindow}">
       
       <Setter Property="WindowStyle" Value="None"/>
       <Setter Property="ResizeMode" Value="NoResize"/>
@@ -53,7 +53,7 @@
       
       <Setter Property="Template">
          <Setter.Value>
-            <ControlTemplate TargetType="{x:Type local:MainWindow}">
+            <ControlTemplate TargetType="{x:Type manager:MainWindow}">
                <Border Padding="7"
                        BorderBrush="{StaticResource WindowBorderBrush}"
                        BorderThickness="1"

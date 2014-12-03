@@ -16,7 +16,7 @@ namespace Dargon.UI.Accordion
       public Expandable()
       {
          Resources = new ResourceDictionary() {
-            Source = new Uri("/Dargon_UI;component/Accordion/Expandable.xaml", UriKind.RelativeOrAbsolute)
+            Source = new Uri("/libdargon.ui-wpf;component/Accordion/Expandable.xaml", UriKind.RelativeOrAbsolute)
          };
       }
 

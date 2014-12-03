@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
    <ResourceDictionary.MergedDictionaries>
-      <ResourceDictionary Source="/Dargon_UI;component/DargonUIColors.xaml"/>
+      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIColors.xaml"/>
    </ResourceDictionary.MergedDictionaries>
    <Style TargetType="Button">
       <Setter Property="SnapsToDevicePixels" Value="true"/>

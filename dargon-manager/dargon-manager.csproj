@@ -46,11 +46,23 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="libdpo">
       <HintPath>..\packages\libdpo.0.0.12\lib\net45\libdpo.dll</HintPath>
     </Reference>
+    <Reference Include="libdsp">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\libdsp.dll</HintPath>
+    </Reference>
     <Reference Include="libwarty">
       <HintPath>..\packages\libwarty.0.0.15\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libdsp.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-impl">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -79,10 +91,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\ModificationImportController.cs" />
+    <Compile Include="Controllers\ModificationRepositoryController.cs" />
+    <Compile Include="Models\SynchronizedModificationList.cs" />
+    <Compile Include="Models\ImportValidityModel.cs" />
+    <Compile Include="Models\ImportValidityModelImpl.cs" />
+    <Compile Include="Models\StatusModelImpl.cs" />
+    <Compile Include="ViewModels\ModificationViewModel.cs" />
+    <Compile Include="Controllers\RootController.cs" />
     <Compile Include="DargonManagerApplication.cs" />
-    <Compile Include="DMModificationImportStatus.cs" />
+    <Compile Include="ImportValidity.cs" />
     <Compile Include="DMModificationViewModel.cs" />
-    <Compile Include="DMViewModelBase.cs" />
     <Compile Include="DummyShadowedWindow.xaml.cs">
       <DependentUpon>DummyShadowedWindow.xaml</DependentUpon>
     </Compile>
@@ -91,18 +110,21 @@
       <DependentUpon>GlowWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IDMListingViewModel.cs" />
-    <Compile Include="ModListingJr.xaml.cs">
-      <DependentUpon>ModListingJr.xaml</DependentUpon>
+    <Compile Include="Models\StatusModel.cs" />
+    <Compile Include="MainModificationListing.xaml.cs">
+      <DependentUpon>MainModificationListing.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModListingJrEntryView.xaml.cs">
-      <DependentUpon>ModListingJrEntryView.xaml</DependentUpon>
+    <Compile Include="ViewModels\ModificationListingViewModel.cs" />
+    <Compile Include="MainModificationListingEntry.xaml.cs">
+      <DependentUpon>MainModificationListingEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SampleData\SampleViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DMWindow.xaml.cs">
-      <DependentUpon>DMWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -140,7 +162,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DMWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -164,11 +186,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ModListingJr.xaml">
+    <Page Include="MainModificationListing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ModListingJrEntryView.xaml">
+    <Page Include="MainModificationListingEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,6 +226,18 @@
     <Resource Include="Resources\Assets\import_ok.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\common-configuration\common-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>common-configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
+      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Name>daemon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
+      <Project>{3008db66-80d6-4cf3-bf89-2534530e1c83}</Project>
+      <Name>libdargon.game-api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
       <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
       <Name>libdargon.modification-api</Name>

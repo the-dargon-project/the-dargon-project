@@ -4,13 +4,15 @@
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
    xmlns:local="clr-namespace:DargonManager"
-   x:Class="DargonManager.MainWindow"
+   xmlns:manager="clr-namespace:Dargon.Manager"
+   x:Class="Dargon.Manager.MainWindow"
    x:Name="Window"
    MinWidth="500" MinHeight="340"
    Width="582" Height="360"
    Title="Dargon Hatchling"
    WindowStartupLocation="CenterScreen"
    mc:Ignorable="d"
+   DataContext="{Binding RelativeSource={RelativeSource Self}}"
    d:DataContext="{d:DesignData /SampleData/mods.xaml}"
    Icon="/DargonManager;component/Resources/icon.ico">
    <!--
@@ -45,16 +47,16 @@
                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <!--<local:ModListing Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0px,0,0"/>-->
-            <local:ModListingJr Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0px,0,0"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,8px,0,0" VerticalAlignment="Top" Foreground="Silver"
-                       Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Status}"/>
+            <manager:MainModificationListing Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0px,0,0" DataContext="{Binding ModificationListingViewModel}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,8px,0,0" VerticalAlignment="Top" Foreground="#303030"
+                       Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=StatusModel.Status}"/>
                <!--
                Your Installed Modifications are listed above. <LineBreak/>
                Drag and Drop modifications into this window to import them.
             </TextBlock>-->
             <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,8px,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
                <StackPanel.Resources>
-                  <ResourceDictionary Source="/Dargon_UI;component/DargonUIControlStyle.xaml"/>
+                  <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIControlStyle.light.xaml"/>
                </StackPanel.Resources>
                <!--<Button Width="100px" Visibility="Hidden">Revert Changes</Button>-->
                <Button Style="{StaticResource HACKDargonJrInstallButtonStyle}" Width="100px" Margin="8px,0,0,0">Install</Button>

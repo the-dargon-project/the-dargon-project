@@ -3,7 +3,7 @@
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:local="clr-namespace:Dargon.UI">
    <ResourceDictionary.MergedDictionaries>
-      <ResourceDictionary Source="/Dargon_UI;component/DargonUI.xaml"/>
+      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUI.xaml"/>
    </ResourceDictionary.MergedDictionaries>
    
    <!--  ControlBox Button Styling -->

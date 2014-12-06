@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE7EA903-7803-4E97-A00F-1E3EAA2577F8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dargon.Wyvern</RootNamespace>
+    <AssemblyName>wyvern-impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\libdargon.hydar-local-impl.0.0.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\ImpromptuInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.hydar-api">
+      <HintPath>..\packages\libdargon.hydar-local-impl.0.0.0\lib\net45\libdargon.hydar-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.hydar-local-impl">
+      <HintPath>..\packages\libdargon.hydar-local-impl.0.0.0\lib\net45\libdargon.hydar-local-impl.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.management-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.management-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-impl.dll</HintPath>
+    </Reference>
+    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libdsp">
+      <HintPath>..\packages\libdargon.hydar-local-impl.0.0.0\lib\net45\libdsp.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\libwarty.proxies-impl.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libwyvern.account-api\libwyvern.account-api.csproj">
+      <Project>{7a74a0dc-5829-4929-80e4-9280858b3485}</Project>
+      <Name>libwyvern.account-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.account-impl\libwyvern.account-impl.csproj">
+      <Project>{1e7afee0-3408-4ad4-a407-d54daf82170b}</Project>
+      <Name>libwyvern.account-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.platform-api\libwyvern.platform-api.csproj">
+      <Project>{1DFD27D5-AD38-4339-BCAF-862272D40847}</Project>
+      <Name>libwyvern.platform-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.specialized-cache-api\libwyvern.specialized-cache-api.csproj">
+      <Project>{68b98dad-b8c6-4a8f-96da-c308538d6088}</Project>
+      <Name>libwyvern.specialized-cache-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.specialized-cache-impl\libwyvern.specialized-cache-impl.csproj">
+      <Project>{f2c96e20-2f3d-4be6-802d-965767efccea}</Project>
+      <Name>libwyvern.specialized-cache-impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\root-platform-configuration\root-platform-configuration.csproj">
+      <Project>{FB7DE8FF-6734-488B-961C-602BE08CA21D}</Project>
+      <Name>root-platform-configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -134,9 +134,14 @@ namespace Dargon.Daemon
          var config = new LoggingConfiguration();
          var debuggerTarget = new DebuggerTarget();
          config.AddTarget("debugger", debuggerTarget);
+         var debuggerRule = new LoggingRule("*", LogLevel.Trace, debuggerTarget);
+         config.LoggingRules.Add(debuggerRule);
 
-         var rule2 = new LoggingRule("*", LogLevel.Trace, debuggerTarget);
-         config.LoggingRules.Add(rule2);
+         var consoleTarget = new ColoredConsoleTarget();
+         config.AddTarget("console", consoleTarget);
+         var consoleRule = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+         config.LoggingRules.Add(consoleRule);
+
          LogManager.Configuration = config;
       }
    }

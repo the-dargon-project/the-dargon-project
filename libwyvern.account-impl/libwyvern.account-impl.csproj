@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E7AFEE0-3408-4AD4-A407-D54DAF82170B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dargon.Wyvern.Accounts</RootNamespace>
+    <AssemblyName>libwyvern.account-impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="libdargon.hydar-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.hydar-api.0.0.2\lib\net45\libdargon.hydar-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.management-api">
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountImplPofContext.cs" />
+    <Compile Include="Hydar\AccountCache.cs" />
+    <Compile Include="AccountServiceImpl.cs" />
+    <Compile Include="Hydar\AccountCreationProcessor.cs" />
+    <Compile Include="Hydar\AccountInformation.cs" />
+    <Compile Include="Hydar\CacheNames.cs" />
+    <Compile Include="Hydar\IAccountCache.cs" />
+    <Compile Include="Hydar\IPasswordUtilities.cs" />
+    <Compile Include="Hydar\PasswordUtilities.cs" />
+    <Compile Include="Hydar\TryAssignAccountIdProcessor.cs" />
+    <Compile Include="Hydar\TryReserveEmailProcessor.cs" />
+    <Compile Include="Hydar\TryInitializeAccountNameProcessor.cs" />
+    <Compile Include="Hydar\TrySetAccountPasswordProcessor.cs" />
+    <Compile Include="Management\AccountCacheMob.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libwyvern.account-api\libwyvern.account-api.csproj">
+      <Project>{7A74A0DC-5829-4929-80E4-9280858B3485}</Project>
+      <Name>libwyvern.account-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.specialized-cache-api\libwyvern.specialized-cache-api.csproj">
+      <Project>{68B98DAD-B8C6-4A8F-96DA-C308538D6088}</Project>
+      <Name>libwyvern.specialized-cache-api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License - PasswordUtilities.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace Dargon {
    public class DargonConfiguration : IDargonConfiguration {
@@ -20,5 +21,13 @@ namespace Dargon {
       public string UserDataDirectoryPath { get { return defaultUserDataDirectoryPath; } }
       public string AppDataDirectoryPath { get { return defaultAppDataDirectoryPath; } }
       public string ConfigurationDirectoryPath { get { return defaultConfigurationDirectoryPath; } }
+
+      public override string ToString() {
+         var sb = new StringBuilder();
+         sb.AppendLine("UserDataDirectoryPath: " + UserDataDirectoryPath);
+         sb.AppendLine("AppDataDirectoryPath: " + AppDataDirectoryPath);
+         sb.AppendLine("ConfigurationDirectoryPath: " + ConfigurationDirectoryPath);
+         return sb.ToString();
+      }
    }
 }

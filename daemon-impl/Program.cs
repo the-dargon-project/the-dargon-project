@@ -3,6 +3,7 @@ using Dargon.FinalFantasyXIII;
 using Dargon.Game;
 using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends;
+using Dargon.Management.Server;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using Dargon.PortableObjects;
@@ -26,9 +27,9 @@ using NLog.Targets;
 
 namespace Dargon.Daemon
 {
-   public static class Program
-   {
+   public static class Program {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+      private const int kDaemonManagementPort = 21000;
 
       public static void Main(string[] args) { 
          InitializeLogging();
@@ -36,7 +37,6 @@ namespace Dargon.Daemon
 #if DEBUG
          logger.Error("COMPILED IN DEBUG MODE");
 #endif
-
 
          // construct libwarty dependencies
          ICollectionFactory collectionFactory = new CollectionFactory();
@@ -63,12 +63,20 @@ namespace Dargon.Daemon
          // construct system-state dependencies
          var systemState = new SystemStateImpl(fileSystemProxy, configuration);
 
-         // construct daemon dependencies
-         var core = new DaemonServiceImpl(configuration);
-
          // construct dargon common Portable Object Format dependencies
          IPofContext pofContext = new CommonPofContext();
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
+
+         // construct libdargon.management dependencies
+         ITcpEndPoint managementServerEndpoint = networkingProxy.CreateAnyEndPoint(kDaemonManagementPort);
+         IMessageFactory managementServerMessageFactory = new MessageFactory();
+         IManagementSessionFactory managementSessionFactory = new ManagementSessionFactory(collectionFactory, threadingProxy, pofSerializer, managementServerMessageFactory);
+         IManagementContextFactory managementContextFactory = new ManagementContextFactory(pofContext);
+         ILocalManagementServerContext localManagementServerContext = new LocalManagementServerContext(collectionFactory, managementSessionFactory);
+         ILocalManagementRegistry localManagementServerRegistry = new LocalManagementRegistry(pofSerializer, managementContextFactory, localManagementServerContext);
+         IManagementServerConfiguration localManagementServerConfiguration = new ManagementServerConfiguration(managementServerEndpoint);
+         var localManagementServer = new LocalManagementServer(threadingProxy, networkingProxy, managementSessionFactory, localManagementServerContext, localManagementServerConfiguration);
+         localManagementServer.Initialize();
          
          // construct libdsp dependencies
          IHostSessionFactory hostSessionFactory = new HostSessionFactory(collectionFactory, pofSerializer);
@@ -80,10 +88,12 @@ namespace Dargon.Daemon
          // construct libdsp local service node
          IServiceConfiguration serviceConfiguration = new DargonServiceConfiguration();
          IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
-         
+
          // construct Dargon Daemon dependencies
+         var core = new DaemonServiceImpl(configuration);
          DaemonService daemonService = core;
          localServiceNode.RegisterService(daemonService, typeof(DaemonService));
+         localManagementServerRegistry.RegisterInstance(new DaemonServiceMob(core));
 
          // construct miscellanious common Dargon dependencies
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);

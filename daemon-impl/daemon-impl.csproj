@@ -53,6 +53,12 @@
       <HintPath>..\packages\libdargon.filesystem-impl.0.0.0\lib\net45\libdargon.filesystem-impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="libdargon.management-api">
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.management-impl">
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-impl.dll</HintPath>
+    </Reference>
     <Reference Include="libdargon.utilities">
       <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
       <Private>True</Private>
@@ -63,7 +69,7 @@
     </Reference>
     <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdpo.dll</HintPath>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdpo.dll</HintPath>
     </Reference>
     <Reference Include="libdsp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,11 +77,11 @@
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libwarty.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.proxies-api.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,13 +89,14 @@
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DaemonServiceImpl.cs" />
+    <Compile Include="DaemonServiceMob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

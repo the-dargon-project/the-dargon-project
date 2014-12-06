@@ -1,4 +1,5 @@
-﻿using Dargon.PortableObjects;
+﻿using Dargon.Management;
+using Dargon.PortableObjects;
 using Dargon.Services.PortableObjects;
 using Dargon.Modifications;
 using Dargon.Processes;
@@ -6,13 +7,16 @@ using Dargon.Processes;
 namespace Dargon {
    public class CommonPofContext : PofContext {
       public CommonPofContext() {
-         // Dargon Service Protocol 1-1000
+         // Dargon Service Protocol 1-999
          MergeContext(new DspPofContext());
 
-         // Modification-Impl 1001-2000
+         // Dargon Management 1000-1999
+         MergeContext(new ManagementPofContext());
+
+         // Modification-Impl 10000-10999
          MergeContext(new ModificationPofContext());
 
-         // Process-API and Impl 2001-3000
+         // Process-API and Impl 11000-11999
          MergeContext(new ProcessImplPofContext());
       }
    }

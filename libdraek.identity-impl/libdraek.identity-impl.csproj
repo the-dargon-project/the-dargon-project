@@ -57,6 +57,7 @@
     <Compile Include="Hydar\Identity.cs" />
     <Compile Include="Hydar\IdentityByTokenCache.cs" />
     <Compile Include="IdentityServiceProxyImpl.cs" />
+    <Compile Include="Management\AuthenticationServiceConfigurationMob.cs" />
     <Compile Include="Management\AuthenticationServiceMob.cs" />
     <Compile Include="Management\IdentityCacheMob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

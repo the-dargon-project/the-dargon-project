@@ -94,6 +94,7 @@ namespace Dargon.Wyvern {
          var identityService = new IdentityServiceProxyImpl(authenticationService);
          localManagementServerRegistry.RegisterInstance(new AuthenticationServiceMob(authenticationService));
          localManagementServerRegistry.RegisterInstance(new IdentityCacheMob(identityByTokenCache));
+         localManagementServerRegistry.RegisterInstance(new AuthenticationServiceConfigurationMob(authenticationServiceConfiguration));
 
          Application.Run();
       }

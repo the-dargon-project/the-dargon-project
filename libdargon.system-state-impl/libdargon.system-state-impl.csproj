@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libdargon.management-api">
+      <HintPath>..\packages\libdargon.management-api.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
     <Reference Include="libwarty">
       <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
     </Reference>
@@ -47,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemStateImpl.cs" />
+    <Compile Include="SystemStateMob.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">

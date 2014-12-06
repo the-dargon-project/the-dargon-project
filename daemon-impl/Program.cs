@@ -57,12 +57,6 @@ namespace Dargon.Daemon
          // construct Castle.Core dependencies
          ProxyGenerator proxyGenerator = new ProxyGenerator();
 
-         // construct root Dargon dependencies.
-         var configuration = new DargonConfiguration();
-
-         // construct system-state dependencies
-         var systemState = new SystemStateImpl(fileSystemProxy, configuration);
-
          // construct dargon common Portable Object Format dependencies
          IPofContext pofContext = new CommonPofContext();
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
@@ -77,6 +71,13 @@ namespace Dargon.Daemon
          IManagementServerConfiguration localManagementServerConfiguration = new ManagementServerConfiguration(managementServerEndpoint);
          var localManagementServer = new LocalManagementServer(threadingProxy, networkingProxy, managementSessionFactory, localManagementServerContext, localManagementServerConfiguration);
          localManagementServer.Initialize();
+
+         // construct root Dargon dependencies.
+         var configuration = new DargonConfiguration();
+
+         // construct system-state dependencies
+         var systemState = new SystemStateImpl(fileSystemProxy, configuration);
+         localManagementServerRegistry.RegisterInstance(new SystemStateMob(systemState));
          
          // construct libdsp dependencies
          IHostSessionFactory hostSessionFactory = new HostSessionFactory(collectionFactory, pofSerializer);

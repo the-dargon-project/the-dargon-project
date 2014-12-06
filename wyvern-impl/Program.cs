@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Castle.DynamicProxy;
+using Dargon.Draek.Identities;
+using Dargon.Draek.Identities.Hydar;
+using Dargon.Draek.Identities.Management;
 using Dargon.Hydar;
 using Dargon.Management.Server;
 using Dargon.PortableObjects;
@@ -82,6 +85,15 @@ namespace Dargon.Wyvern {
          var accountService = new AccountServiceImpl(accountCache);
          localManagementServerRegistry.RegisterInstance(new AccountCacheMob(accountCache));
 
+         // construct frontend identity service dependencies
+         ICache<string, Identity> identityByTokenHydarCache = new InMemoryCache<string, Identity>(Draek.Identities.Hydar.CacheNames.kIdentityByTokenCache, new ICacheIndex[0]);
+         AuthenticationTokenFactory authenticationTokenFactory = new AuthenticationTokenFactoryImpl();
+         IdentityByTokenCache identityByTokenCache = new IdentityByTokenCacheImpl(identityByTokenHydarCache);
+         IAuthenticationServiceConfiguration authenticationServiceConfiguration = new AuthenticationServiceConfiguration(systemState);
+         AuthenticationService authenticationService = new AuthenticationServiceImpl(accountService, authenticationTokenFactory, identityByTokenCache, authenticationServiceConfiguration);
+         var identityService = new IdentityServiceProxyImpl(authenticationService);
+         localManagementServerRegistry.RegisterInstance(new AuthenticationServiceMob(authenticationService));
+         localManagementServerRegistry.RegisterInstance(new IdentityCacheMob(identityByTokenCache));
 
          Application.Run();
       }

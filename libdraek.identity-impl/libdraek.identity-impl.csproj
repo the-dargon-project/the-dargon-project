@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D3F759C1-D97D-4554-A2CA-D6A3C140ACF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dargon.Draek.Identities</RootNamespace>
+    <AssemblyName>libdraek.identity-impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="libdargon.hydar-api">
+      <HintPath>..\packages\libdargon.hydar-local-impl.0.0.0\lib\net45\libdargon.hydar-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdargon.management-api">
+      <HintPath>..\packages\libdargon.management-api.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libdpo">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.0.0.15\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthenticationServiceConfiguration.cs" />
+    <Compile Include="Hydar\CacheNames.cs" />
+    <Compile Include="IAuthenticationServiceConfiguration.cs" />
+    <Compile Include="AuthenticationServiceImpl.cs" />
+    <Compile Include="AuthenticationTokenFactory.cs" />
+    <Compile Include="AuthenticationTokenFactoryImpl.cs" />
+    <Compile Include="Hydar\IdentityByTokenCacheImpl.cs" />
+    <Compile Include="Hydar\Identity.cs" />
+    <Compile Include="Hydar\IdentityByTokenCache.cs" />
+    <Compile Include="IdentityServiceProxyImpl.cs" />
+    <Compile Include="Management\AuthenticationServiceMob.cs" />
+    <Compile Include="Management\IdentityCacheMob.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
+      <Project>{AF64F441-F9AE-49DE-9BFC-533FF66B2F9D}</Project>
+      <Name>libdargon.system-state-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdraek.identity-api\libdraek.identity-api.csproj">
+      <Project>{CB5EDD76-7BC7-428C-B2FC-CE02C1BE915B}</Project>
+      <Name>libdraek.identity-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libwyvern.account-api\libwyvern.account-api.csproj">
+      <Project>{7A74A0DC-5829-4929-80E4-9280858B3485}</Project>
+      <Name>libwyvern.account-api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

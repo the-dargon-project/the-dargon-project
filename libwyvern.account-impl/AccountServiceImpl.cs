@@ -2,9 +2,9 @@
 
 namespace Dargon.Wyvern.Accounts {
    public class AccountServiceImpl : AccountService {
-      private readonly AccountCache accountCache;
+      private readonly IAccountCache accountCache;
 
-      public AccountServiceImpl(AccountCache accountCache) {
+      public AccountServiceImpl(IAccountCache accountCache) {
          this.accountCache = accountCache;
       }
 
@@ -18,6 +18,10 @@ namespace Dargon.Wyvern.Accounts {
 
       public AccountCreationResult TryCreateAccount(AccountCreationParameters parameters) {
          return accountCache.TryCreateAccount(parameters);
+      }
+
+      public AccountValidationResult ValidateAccountCredentials(string email, string hashedPassword) {
+         return accountCache.ValidateAccountCredentials(email, hashedPassword);
       }
    }
 }

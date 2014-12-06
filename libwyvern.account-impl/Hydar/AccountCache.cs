@@ -18,19 +18,23 @@ namespace Dargon.Wyvern.Accounts.Hydar {
          this.passwordUtilities = passwordUtilities;
       }
 
-      public bool ValidateAccountCredentials(string email, string hashedPassword) {
+      public AccountValidationResult ValidateAccountCredentials(string email, string hashedPassword) {
          var emailKey = BuildEmailKey(email);
          long accountId;
          if (!emailToAccountIdCache.TryGetValue(emailKey, out accountId)) {
-            return false;
+            return new AccountValidationResult(false);
          }
 
          AccountInformation accountInformation;
          if (!accountInfoByIdCache.TryGetValue(accountId, out accountInformation)) {
-            return false;
+            return new AccountValidationResult(false);
          }
 
-         return passwordUtilities.ValidatePassword(hashedPassword, accountInformation.SaltedPassword);
+         if (!passwordUtilities.ValidatePassword(hashedPassword, accountInformation.SaltedPassword)) {
+            return new AccountValidationResult(false);
+         }
+
+         return new AccountValidationResult(true, accountId, accountInformation.Name);
       }
 
       public AccountInformation GetAccountInformationOrNull(long accountId) {
@@ -45,7 +49,7 @@ namespace Dargon.Wyvern.Accounts.Hydar {
       public bool TryInitializeAccountName(long accountId, string newName) {
          return accountInfoByIdCache.Invoke(accountId, new TryInitializeAccountNameProcessor(newName));
       }
-
+       
       public AccountCreationResult TryCreateAccount(AccountCreationParameters parameters) {
          var rawEmail = parameters.Email;
          var emailKey = BuildEmailKey(rawEmail);

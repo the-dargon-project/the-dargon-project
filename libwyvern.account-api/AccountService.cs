@@ -9,5 +9,6 @@ namespace Dargon.Wyvern.Accounts {
       bool TrySetAccountPassword(long accountId, string password);
       bool TryInitializeAccountName(long accountId, string newName);
       AccountCreationResult TryCreateAccount(AccountCreationParameters parameters);
+      AccountValidationResult ValidateAccountCredentials(string email, string hashedPassword);
    }
 }

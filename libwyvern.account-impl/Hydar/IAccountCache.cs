@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dargon.Wyvern.Accounts.Hydar {
    public interface IAccountCache {
-      bool ValidateAccountCredentials(string hashedPassword, string email);
+      AccountValidationResult ValidateAccountCredentials(string hashedPassword, string email);
       AccountInformation GetAccountInformationOrNull(long accountId);
       bool TrySetAccountPassword(long accountId, string hashedPassword);
       bool TryInitializeAccountName(long accountId, string newName);

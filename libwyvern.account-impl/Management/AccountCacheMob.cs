@@ -15,8 +15,13 @@ namespace Dargon.Wyvern.Accounts.Management {
       }
 
       [ManagedOperation]
-      public bool ValidateAccountCredentials(string email, string hashedPassword) {
-         return accountCache.ValidateAccountCredentials(email, hashedPassword);
+      public string ValidateAccountCredentials(string email, string hashedPassword) {
+         var validationResult = accountCache.ValidateAccountCredentials(email, hashedPassword);
+         var sb = new StringBuilder();
+         sb.AppendLine("Success: " + validationResult.Success);
+         sb.AppendLine("AccountId: " + validationResult.AccountId);
+         sb.AppendLine("AccountName: " + validationResult.AccountName);
+         return sb.ToString();
       }
 
       [ManagedOperation]

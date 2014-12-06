@@ -30,15 +30,15 @@ namespace Dargon.Wyvern.Specialized {
          return countCache.GetValueOrDefault(name);
       }
 
-      public long TakeNextValue() { return countCache.Invoke(name, new PostIncrementProcessor()); }
+      public long TakeNextValue() { return countCache.Invoke(name, new IncrementProcessor()); }
 
-      public class PostIncrementProcessor : IEntryProcessor<string, long, long> {
+      public class IncrementProcessor : IEntryProcessor<string, long, long> {
          public long Process(IEntry<string, long> entry) {
             entry.FlagAsDirty();
             if (!entry.IsPresent) {
                return entry.Value = 0;
             } else {
-               return entry.Value++;
+               return ++entry.Value;
             }
          }
       }

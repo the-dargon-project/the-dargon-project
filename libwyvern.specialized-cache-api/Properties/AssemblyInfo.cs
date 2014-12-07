@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("libwyvern.specialized-cache-api")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Wyvern Specialized Cache API")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("The Dargon Project")]
 [assembly: AssemblyProduct("libwyvern.specialized-cache-api")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © Michael 'ItzWarty' Yu 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

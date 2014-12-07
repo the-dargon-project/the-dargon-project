@@ -26,11 +26,11 @@ namespace Dargon.CLI {
          INetworkingInternalFactory networkingInternalFactory = new NetworkingInternalFactory(threadingProxy, streamFactory);
          ISocketFactory networkingProxy = new SocketFactory(tcpEndPointFactory, networkingInternalFactory);
          IInvocationStateFactory invocationStateFactory = new InvocationStateFactory(threadingProxy);
-         IPofContext pofContext = new CommonPofContext();
+         IPofContext pofContext = new ClientPofContext();
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
          IConnectorFactory connectorFactory = new ConnectorFactory(collectionFactory, threadingProxy, networkingProxy, invocationStateFactory, pofSerializer);
 
-         var serviceConfiguration = new DargonServiceConfiguration();
+         var serviceConfiguration = new ClientServiceConfiguration();
          var serviceClientFactory = new ServiceClientFactory(collectionFactory, serviceProxyFactory, serviceContextFactory, connectorFactory);
          var localEndPoint = tcpEndPointFactory.CreateLoopbackEndPoint(serviceConfiguration.Port);
          var reconnectAttempts = 10;
@@ -52,7 +52,7 @@ namespace Dargon.CLI {
          }
       }
 
-      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactory serviceClientFactory, ITcpEndPoint endpoint, DargonServiceConfiguration serviceConfiguration) {
+      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactory serviceClientFactory, ITcpEndPoint endpoint, ClientServiceConfiguration serviceConfiguration) {
          IServiceClient serviceClient = null;
          for (var i = 0; i < reconnectAttempts && serviceClient == null; i++) {
             try {

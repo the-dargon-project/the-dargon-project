@@ -94,6 +94,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>client-root-configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
@@ -125,10 +129,6 @@
     <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
       <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
       <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\root-configuration\root-configuration.csproj">
-      <Project>{12b4f1a3-319c-4116-bc4c-d3c8c7bc1a0d}</Project>
-      <Name>root-configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

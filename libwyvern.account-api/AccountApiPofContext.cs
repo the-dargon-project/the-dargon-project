@@ -10,6 +10,8 @@ namespace Dargon.Wyvern.Accounts {
       private const int kBasePofId = 1000000;
       public AccountApiPofContext() {
          RegisterPortableObjectType(kBasePofId + 0, typeof(AccountCreationParameters));
+         RegisterPortableObjectType(kBasePofId + 1, typeof(AccountCreationResult));
+         RegisterPortableObjectType(kBasePofId + 2, typeof(AccountValidationResult));
       }
    }
 }

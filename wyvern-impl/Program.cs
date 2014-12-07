@@ -64,8 +64,9 @@ namespace Dargon.Wyvern {
          server.Initialize();
 
          // construct system-state dependencies
-         SystemState systemState = null;//new SystemStateFileSystemImpl(fileSystemProxy, configuration);
-         localManagementServerRegistry.RegisterInstance(new SystemStateMob(systemState));
+         ICache<string, string> systemStateCache = new InMemoryCache<string, string>("SystemState", new ICacheIndex[0]);
+         SystemState systemState = new PlatformSystemStateImpl(systemStateCache);
+         localManagementServerRegistry.RegisterInstance(new ClientSystemStateMob(systemState));
 
          // construct platform foundational dependencies
          ICacheFactory cacheFactory = new CacheFactory();

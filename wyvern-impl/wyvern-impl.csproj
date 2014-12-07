@@ -126,9 +126,9 @@
       <Project>{f2c96e20-2f3d-4be6-802d-965767efccea}</Project>
       <Name>libwyvern.specialized-cache-impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\root-platform-configuration\root-platform-configuration.csproj">
+    <ProjectReference Include="..\platform-root-configuration\platform-root-configuration.csproj">
       <Project>{FB7DE8FF-6734-488B-961C-602BE08CA21D}</Project>
-      <Name>root-platform-configuration</Name>
+      <Name>platform-root-configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

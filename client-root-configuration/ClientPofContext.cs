@@ -5,8 +5,8 @@ using Dargon.Modifications;
 using Dargon.Processes;
 
 namespace Dargon {
-   public class CommonPofContext : PofContext {
-      public CommonPofContext() {
+   public class ClientPofContext : PofContext {
+      public ClientPofContext() {
          // Dargon Service Protocol 1-999
          MergeContext(new DspPofContext());
 

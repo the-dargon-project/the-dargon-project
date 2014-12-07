@@ -226,6 +226,10 @@
     <Resource Include="Resources\Assets\import_ok.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>client-root-configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
@@ -249,10 +253,6 @@
     <ProjectReference Include="..\libdargon.ui-wpf\libdargon.ui-wpf.csproj">
       <Project>{01a4a8de-41db-4944-8d52-39fa519e00a6}</Project>
       <Name>libdargon.ui-wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\root-configuration\root-configuration.csproj">
-      <Project>{12b4f1a3-319c-4116-bc4c-d3c8c7bc1a0d}</Project>
-      <Name>root-configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,7 +58,7 @@ namespace Dargon.Daemon
          ProxyGenerator proxyGenerator = new ProxyGenerator();
 
          // construct dargon common Portable Object Format dependencies
-         IPofContext pofContext = new CommonPofContext();
+         IPofContext pofContext = new ClientPofContext();
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
 
          // construct libdargon.management dependencies
@@ -87,7 +87,7 @@ namespace Dargon.Daemon
          IServiceNodeFactory serviceNodeFactory = new ServiceNodeFactory(connectorFactory, serviceContextFactory, collectionFactory);
 
          // construct libdsp local service node
-         IServiceConfiguration serviceConfiguration = new DargonServiceConfiguration();
+         IServiceConfiguration serviceConfiguration = new ClientServiceConfiguration();
          IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
 
          // construct Dargon Daemon dependencies

@@ -62,13 +62,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\client-common\client-common.csproj">
+      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
+      <Name>client-common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\desktop-common\desktop-common.csproj">
-      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
-      <Name>desktop-common</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>

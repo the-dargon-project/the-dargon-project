@@ -111,13 +111,17 @@
       <Project>{c9f92566-1f94-4235-944c-19364459f9a6}</Project>
       <Name>libdtp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\client-common\client-common.csproj">
+      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
+      <Name>client-common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>client-root-configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\desktop-common\desktop-common.csproj">
-      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
-      <Name>desktop-common</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.ffxiii-impl\libdargon.ffxiii-impl.csproj">
       <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>
@@ -190,10 +194,6 @@
     <ProjectReference Include="..\libdargon.tray-impl\libdargon.tray-impl.csproj">
       <Project>{6D00D055-8C83-4616-B56E-357665DCC73F}</Project>
       <Name>libdargon.tray-impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\root-configuration\root-configuration.csproj">
-      <Project>{12b4f1a3-319c-4116-bc4c-d3c8c7bc1a0d}</Project>
-      <Name>root-configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

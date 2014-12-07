@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 
 namespace Dargon {
-   public class DargonConfiguration : IDargonConfiguration {
+   public class ClientConfiguration : IClientConfiguration {
       private const string kDefaultUserDataPathName = ".dargon";
       private const string kDefaultAppDataSubdirectory = "ItzWarty/Dargon";
       private const string kDefaultConfigurationDirectoryName = "configuration";
@@ -12,7 +12,7 @@ namespace Dargon {
       private readonly string defaultAppDataDirectoryPath;
       private readonly string defaultConfigurationDirectoryPath;
 
-      public DargonConfiguration() {
+      public ClientConfiguration() {
          defaultUserDataDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), kDefaultUserDataPathName);
          defaultAppDataDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), kDefaultAppDataSubdirectory);
          defaultConfigurationDirectoryPath = Path.Combine(defaultUserDataDirectoryPath, kDefaultConfigurationDirectoryName);

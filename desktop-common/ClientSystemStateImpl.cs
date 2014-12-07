@@ -4,16 +4,15 @@ using ItzWarty;
 using ItzWarty.IO;
 
 namespace Dargon {
-   public class SystemStateImpl : SystemState {
+   public class ClientSystemStateImpl : SystemState {
       private const string kSystemStateConfigurationDirectoryName = "system-state";
       private readonly IFileSystemProxy fileSystemProxy;
-      private readonly IDargonConfiguration configuration;
+      private readonly string configurationDirectoryPath;
       private readonly string basePath;
 
-      public SystemStateImpl(IFileSystemProxy fileSystemProxy, IDargonConfiguration configuration) {
+      public ClientSystemStateImpl(IFileSystemProxy fileSystemProxy, string configurationDirectoryPath) {
          this.fileSystemProxy = fileSystemProxy;
-         this.configuration = configuration;
-         this.basePath = Path.Combine(configuration.ConfigurationDirectoryPath, kSystemStateConfigurationDirectoryName);
+         this.basePath = Path.Combine(configurationDirectoryPath, kSystemStateConfigurationDirectoryName);
          fileSystemProxy.PrepareDirectory(basePath);
       }
 

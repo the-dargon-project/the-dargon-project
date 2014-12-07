@@ -73,11 +73,11 @@ namespace Dargon.Daemon
          localManagementServer.Initialize();
 
          // construct root Dargon dependencies.
-         var configuration = new DargonConfiguration();
+         var configuration = new ClientConfiguration();
 
          // construct system-state dependencies
-         var systemState = new SystemStateImpl(fileSystemProxy, configuration);
-         localManagementServerRegistry.RegisterInstance(new SystemStateMob(systemState));
+         var systemState = new ClientSystemStateImpl(fileSystemProxy, configuration.ConfigurationDirectoryPath);
+         localManagementServerRegistry.RegisterInstance(new ClientSystemStateMob(systemState));
          
          // construct libdsp dependencies
          IHostSessionFactory hostSessionFactory = new HostSessionFactory(collectionFactory, pofSerializer);

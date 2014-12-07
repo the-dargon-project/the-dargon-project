@@ -6,12 +6,12 @@ namespace Dargon {
    public class TemporaryFileServiceImpl : TemporaryFileService
    {
       private const string EXPIRATION_FILE_NAME = ".expires";
-      private readonly IDargonConfiguration configuration;
+      private readonly IClientConfiguration configuration;
       private readonly string temporaryDirectoryPath;
       private readonly string temporaryFilesLockPath;
       private readonly FileLock temporaryFilesLock;
 
-      public TemporaryFileServiceImpl(IDargonConfiguration configuration) {
+      public TemporaryFileServiceImpl(IClientConfiguration configuration) {
          this.configuration = configuration;
          this.temporaryDirectoryPath = Path.Combine(configuration.UserDataDirectoryPath, "temp"); ;
          this.temporaryFilesLockPath = Path.Combine(temporaryDirectoryPath, "LOCK");

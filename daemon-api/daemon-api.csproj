@@ -39,6 +39,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\desktop-common\desktop-common.csproj">
+      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
+      <Name>desktop-common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
       <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
       <Name>libdargon.system-state-api</Name>

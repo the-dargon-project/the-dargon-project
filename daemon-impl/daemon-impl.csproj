@@ -115,6 +115,10 @@
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\desktop-common\desktop-common.csproj">
+      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
+      <Name>desktop-common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.ffxiii-impl\libdargon.ffxiii-impl.csproj">
       <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>
       <Name>libdargon.ffxiii-impl</Name>
@@ -170,10 +174,6 @@
     <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
       <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
       <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-impl\libdargon.system-state-impl.csproj">
-      <Project>{98894E11-BB5E-4596-94EB-116287EA2D00}</Project>
-      <Name>libdargon.system-state-impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>

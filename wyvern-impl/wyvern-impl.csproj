@@ -98,10 +98,6 @@
       <Project>{AF64F441-F9AE-49DE-9BFC-533FF66B2F9D}</Project>
       <Name>libdargon.system-state-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-impl\libdargon.system-state-impl.csproj">
-      <Project>{98894E11-BB5E-4596-94EB-116287EA2D00}</Project>
-      <Name>libdargon.system-state-impl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdraek.identity-api\libdraek.identity-api.csproj">
       <Project>{CB5EDD76-7BC7-428C-B2FC-CE02C1BE915B}</Project>
       <Name>libdraek.identity-api</Name>

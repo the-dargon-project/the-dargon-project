@@ -63,11 +63,8 @@ namespace Dargon.Wyvern {
          var server = new LocalManagementServer(threadingProxy, networkingProxy, managementSessionFactory, managementServerContext, managementServerConfiguration);
          server.Initialize();
 
-         // construct root Dargon dependencies.
-         var configuration = new DargonConfiguration();
-
          // construct system-state dependencies
-         var systemState = new SystemStateImpl(fileSystemProxy, configuration);
+         SystemState systemState = null;//new SystemStateFileSystemImpl(fileSystemProxy, configuration);
          localManagementServerRegistry.RegisterInstance(new SystemStateMob(systemState));
 
          // construct platform foundational dependencies

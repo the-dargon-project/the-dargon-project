@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Dargon.Management;
 
 namespace Dargon {
-   public class SystemStateMob {
+   public class ClientSystemStateMob {
       private readonly SystemState systemState;
 
-      public SystemStateMob(SystemState systemState) {
+      public ClientSystemStateMob(SystemState systemState) {
          this.systemState = systemState;
       }
 

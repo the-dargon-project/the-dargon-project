@@ -82,10 +82,6 @@
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
       <Name>libdargon.modification-repository-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
-      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
-      <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdpatch\libdpm.csproj">
       <Project>{9699E719-25FA-41DF-B966-B43CF50F9B00}</Project>
       <Name>libdpm</Name>

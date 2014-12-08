@@ -65,10 +65,6 @@
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
-      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
-      <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
       <Name>libdargon.temporary-file-api</Name>

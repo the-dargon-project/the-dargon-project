@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dargon.SystemState.Api">
+      <HintPath>..\packages\Dargon.SystemState.Api.0.0.0\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+    </Reference>
     <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
@@ -63,12 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
-      <Project>{AF64F441-F9AE-49DE-9BFC-533FF66B2F9D}</Project>
-      <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

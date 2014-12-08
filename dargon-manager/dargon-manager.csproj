@@ -246,10 +246,6 @@
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
       <Name>libdargon.modification-repository-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
-      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
-      <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.ui-wpf\libdargon.ui-wpf.csproj">
       <Project>{01a4a8de-41db-4944-8d52-39fa519e00a6}</Project>
       <Name>libdargon.ui-wpf</Name>

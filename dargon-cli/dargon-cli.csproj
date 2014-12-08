@@ -126,10 +126,6 @@
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
       <Name>libdargon.service-base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.system-state-api\libdargon.system-state-api.csproj">
-      <Project>{af64f441-f9ae-49de-9bfc-533ff66b2f9d}</Project>
-      <Name>libdargon.system-state-api</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

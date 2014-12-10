@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/integer.hpp>
+#include <cstdint>
 #include "Util/noncopyable.hpp"
 // An IN paramter is read by the method, but not mutated by the method.
 #define IN
@@ -15,15 +15,15 @@
 #define OPTIONAL
 
 // Basic Type Definitions
-typedef boost::uint8_t  UINT8;
-typedef boost::uint16_t UINT16;
-typedef boost::uint32_t UINT32;
-typedef boost::uint64_t UINT64;
+typedef std::uint8_t  UINT8;
+typedef std::uint16_t UINT16;
+typedef std::uint32_t UINT32;
+typedef std::uint64_t UINT64;
 
-typedef boost::int8_t  INT8;
-typedef boost::int16_t INT16;
-typedef boost::int32_t INT32;
-typedef boost::int64_t INT64;
+typedef std::int8_t  INT8;
+typedef std::int16_t INT16;
+typedef std::int32_t INT32;
+typedef std::int64_t INT64;
 
 typedef INT8   SBYTE;
 typedef UINT8  BYTE;

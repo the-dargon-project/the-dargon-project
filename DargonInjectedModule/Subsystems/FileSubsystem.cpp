@@ -14,24 +14,8 @@ using namespace dargon::Subsystems;
 
 const bool kDebugEnabled = true;
 
-// - singleton ------------------------------------------------------------------------------------
-FileSubsystem* FileSubsystem::s_instance = nullptr;
-FileSubsystem* FileSubsystem::GetInstance()
-{
-   if(s_instance == nullptr)
-      s_instance = new FileSubsystem();
-   return s_instance;
-}
-
-// - instance -------------------------------------------------------------------------------------
-FileSubsystem::FileSubsystem() 
-{
-   // Register DIM Task Handlers
-   auto dimTaskManager = s_core->GetTaskManager();
-   if (dimTaskManager) {
-      dimTaskManager->RegisterTaskHandler(new FileSwapTaskHandler(this));
-   }
-}
+FileSubsystem::FileSubsystem(std::shared_ptr<dargon::IO::DIM::CommandManager> command_manager)
+   : command_manager(command_manager), file_swap_task_handler(std::make_shared<FileSwapTaskHandler>(this)) { }
 
 bool FileSubsystem::Initialize()
 {
@@ -40,6 +24,9 @@ bool FileSubsystem::Initialize()
    else
    {
       Subsystem::Initialize();
+
+      // Register DIM Task Handlers
+      command_manager->RegisterTaskHandler(file_swap_task_handler.get());
 
       // Ensure we've been told to initialize
       if(std::find(s_bootstrap_context->argument_flags.begin(),
@@ -70,6 +57,10 @@ bool FileSubsystem::Uninitialize()
    else
    {
       Subsystem::Uninitialize();
+
+      // Unregister Task Handlers
+      command_manager->UnregisterTaskHandler(file_swap_task_handler.get());
+
       UninstallCreateEventADetour();
       UninstallCreateEventWDetour();
       UninstallCreateFileADetour();

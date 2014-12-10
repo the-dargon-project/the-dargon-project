@@ -15,61 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\IPCObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExLITransactionHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExFrameProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Init\Bootloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dlc_pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Init\BootloaderRemoteLogger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DSPExNodeSession.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DSP\DefaultDSPExInstructionSet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DIM\DIMTaskManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="countdown_event.cpp">
@@ -87,114 +33,9 @@
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="io.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Init\Bootloader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSP.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPConstants.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPEx.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\IDSPExFrameTransmitter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\IOTypedefs.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\IPCObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\IDSPExSession.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExInitialMessage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExMessage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExRITransactionHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExFrameTransmitter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExFrameProcessor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dlc_pch.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Init\BootloaderRemoteLogger.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DIMTask.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DIMTaskTypes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITDIMRunTasksHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExNode.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExTypeDefs.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\IDSPExInstructionSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DSPExNodeSession.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DIMTaskManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DSP\DefaultDSPExInstructionSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\IDIMTaskHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DIMInstructionSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\IoProxy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="noncopyable.hpp">
@@ -239,13 +80,7 @@
     <ClInclude Include="util.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="io.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dargon.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Init\bootstrap_context.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

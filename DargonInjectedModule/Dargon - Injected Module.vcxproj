@@ -136,14 +136,74 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Init\Bootloader.cpp" />
+    <ClCompile Include="Init\BootloaderRemoteLogger.cpp" />
+    <ClCompile Include="io.cpp" />
+    <ClCompile Include="IO\DIM\CommandManager.cpp" />
+    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp" />
+    <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
+    <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
+    <ClCompile Include="IO\DSP\DefaultDSPExInstructionSet.cpp" />
+    <ClCompile Include="IO\DSP\DSPExFrameProcessor.cpp" />
+    <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp" />
+    <ClCompile Include="IO\DSP\DSPExLITransactionHandler.cpp" />
+    <ClCompile Include="IO\DSP\DSPExNode.cpp" />
+    <ClCompile Include="IO\DSP\DSPExNodeSession.cpp" />
+    <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp" />
+    <ClCompile Include="IO\IPCObject.cpp" />
     <ClCompile Include="Subsystems\FileOverrideTaskHandler.cpp" />
     <ClCompile Include="Subsystems\FileSwapTaskHandler.cpp" />
     <ClCompile Include="Subsystems\KernelSubsystem.cpp" />
     <ClCompile Include="ThirdParty\guicon.cpp" />
-    <ClInclude Include="Core.hpp" />
+    <ClInclude Include="Application.hpp" />
+    <ClInclude Include="Configuration.hpp" />
+    <ClInclude Include="Core.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClCompile Include="DllMain.cpp" />
     <ClInclude Include="DSPExHandlers\DSPExLol.hpp" />
     <ClInclude Include="feature_toggles.hpp" />
+    <ClInclude Include="Init\Bootloader.hpp" />
+    <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
+    <ClInclude Include="Init\bootstrap_context.hpp" />
+    <ClInclude Include="io.hpp" />
+    <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
+    <ClInclude Include="IO\DIM\DIMTask.hpp" />
+    <ClInclude Include="IO\DIM\CommandManager.hpp" />
+    <ClInclude Include="IO\DIM\DIMTaskTypes.hpp" />
+    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp" />
+    <ClInclude Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.hpp" />
+    <ClInclude Include="IO\DIM\IDIMTaskHandler.hpp" />
+    <ClInclude Include="IO\DSP.h" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITDIMRunTasksHandler.hpp" />
+    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.hpp" />
+    <ClInclude Include="IO\DSP\DefaultDSPExInstructionSet.hpp" />
+    <ClInclude Include="IO\DSP\DSP.hpp" />
+    <ClInclude Include="IO\DSP\DSPConstants.hpp" />
+    <ClInclude Include="IO\DSP\DSPEx.hpp" />
+    <ClInclude Include="IO\DSP\DSPExFrameProcessor.hpp" />
+    <ClInclude Include="IO\DSP\DSPExFrameTransmitter.hpp" />
+    <ClInclude Include="IO\DSP\DSPExInitialMessage.hpp" />
+    <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp" />
+    <ClInclude Include="IO\DSP\DSPExMessage.hpp" />
+    <ClInclude Include="IO\DSP\DSPExNode.hpp" />
+    <ClInclude Include="IO\DSP\DSPExNodeSession.hpp" />
+    <ClInclude Include="IO\DSP\DSPExRITransactionHandler.hpp" />
+    <ClInclude Include="IO\DSP\DSPExTypeDefs.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExFrameTransmitter.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExInstructionSet.hpp" />
+    <ClInclude Include="IO\DSP\IDSPExSession.hpp" />
+    <ClInclude Include="IO\IoProxy.hpp" />
+    <ClInclude Include="IO\IOTypedefs.hpp" />
+    <ClInclude Include="IO\IPCObject.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Subsystem.hpp" />
     <ClInclude Include="Subsystem.Detours.hpp" />
@@ -159,7 +219,9 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="ThirdParty\guicon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Core.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Subsystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">

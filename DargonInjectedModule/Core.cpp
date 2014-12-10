@@ -33,7 +33,6 @@ using namespace dargon::IO::DSP::ClientImpl;
 using namespace dargon::IO::DIM;
 
 Core::Core(HMODULE hModule) : module_handle(hModule), task_manager(nullptr) {
-   file_logger::initialize("C:/DargonLog.log");
 
    std::cout << "Entered Core::Core, suspending main thread" << std::endl;
    main_thread_handle = OpenMainThread();
@@ -69,11 +68,11 @@ void Core::Initialize(std::shared_ptr<const bootstrap_context> context)
    toggles.tasklist_enabled = dargon::contains(context->argument_flags, "--enable-dim-tasklist");
    
    // Initialize DIM Task List Manager if it's enabled
-   if (toggles.tasklist_enabled)
-   {
-      std::cout << "DIM Task Lists are enabled - Initialize DIM Task Manager" << std::endl;
-      task_manager = new DIMTaskManager();
-   }
+   // if (toggles.tasklist_enabled)
+   // {
+   //    std::cout << "DIM Task Lists are enabled - Initialize DIM Task Manager" << std::endl;
+   //    task_manager = new CommandManager();
+   // }
 
    // Initialize Dargon Subsystems
    std::cout << "Initializing Subsystems" << std::endl;
@@ -111,7 +110,7 @@ void Core::Initialize(std::shared_ptr<const bootstrap_context> context)
    std::cout << "Core::Initialize end" << std::endl;
 }
 
-DIMTaskManager* Core::GetTaskManager()
+CommandManager* Core::GetTaskManager()
 {
    return task_manager;
 }

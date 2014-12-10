@@ -8,20 +8,26 @@
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverride.hpp"
 
+namespace dargon { namespace IO { namespace DIM {
+   class CommandManager;
+} } }
+
+
+namespace dargon {
+   namespace Subsystems {
+      class FileSwapTaskHandler;
+   }
+}
+
 namespace dargon { namespace Subsystems {
    class FileSubsystem : public dargon::Subsystem
    {
-      // - singleton ------------------------------------------------------------------------------
    private:
-      static FileSubsystem* s_instance;
-   public:
-      static FileSubsystem* GetInstance();
-      
-      // - instance -------------------------------------------------------------------------------
-   private:
-      FileSubsystem();
+      std::shared_ptr<dargon::IO::DIM::CommandManager> command_manager;
+      std::shared_ptr<dargon::Subsystems::FileSwapTaskHandler> file_swap_task_handler;
 
    public:
+      FileSubsystem(std::shared_ptr<dargon::IO::DIM::CommandManager> command_manager);
       bool Initialize() override;
       bool Uninitialize() override;
 

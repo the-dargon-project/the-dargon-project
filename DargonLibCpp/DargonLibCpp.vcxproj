@@ -91,45 +91,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp" />
-    <ClCompile Include="Init\Bootloader.cpp" />
-    <ClCompile Include="Init\BootloaderRemoteLogger.cpp" />
-    <ClCompile Include="io.cpp" />
-    <ClCompile Include="IO\DIM\DIMTaskManager.cpp" />
-    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp" />
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.cpp" />
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.cpp" />
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
-    <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
-    <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
     <ClCompile Include="util.cpp" />
     <ClInclude Include="base.hpp" />
     <ClInclude Include="concurrent_dictionary.hpp" />
     <ClInclude Include="concurrent_set.hpp" />
     <ClInclude Include="dargon.hpp" />
-    <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
-    <ClInclude Include="Init\bootstrap_context.hpp" />
-    <ClInclude Include="io.hpp" />
-    <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
-    <ClInclude Include="IO\DIM\DIMTask.hpp" />
-    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp" />
-    <ClInclude Include="IO\DIM\IDIMTaskHandler.hpp" />
-    <ClInclude Include="IO\DIM\DIMTaskManager.hpp" />
-    <ClInclude Include="IO\DIM\DIMTaskTypes.hpp" />
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.hpp" />
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.hpp" />
-    <ClInclude Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.hpp" />
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.hpp">
-      <FileType>CppCode</FileType>
-    </ClInclude>
-    <ClCompile Include="IO\DSP\DefaultDSPExInstructionSet.cpp" />
-    <ClCompile Include="IO\DSP\DSPExNodeSession.cpp" />
-    <ClCompile Include="IO\DSP\DSPExFrameProcessor.cpp" />
-    <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp" />
-    <ClCompile Include="IO\DSP\DSPExLITransactionHandler.cpp" />
-    <ClCompile Include="IO\DSP\DSPExNode.cpp" />
-    <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp" />
-    <ClCompile Include="IO\IPCObject.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="dlc_pch.cpp" />
     <ClCompile Include="buffer_manager.cpp" />
     <ClCompile Include="countdown_event.cpp" />
@@ -138,29 +104,6 @@
     <ClInclude Include="util.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Init\Bootloader.hpp" />
-    <ClInclude Include="IO\DSP.h" />
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp" />
-    <ClInclude Include="IO\DSP\ClientImpl\DSPExRITDIMRunTasksHandler.hpp" />
-    <ClInclude Include="IO\DSP\DefaultDSPExInstructionSet.hpp" />
-    <ClInclude Include="IO\DSP\DSP.hpp" />
-    <ClInclude Include="IO\DSP\DSPConstants.hpp" />
-    <ClInclude Include="IO\DSP\DSPEx.hpp" />
-    <ClInclude Include="IO\DSP\DSPExNodeSession.hpp" />
-    <ClInclude Include="IO\DSP\DSPExFrameProcessor.hpp" />
-    <ClInclude Include="IO\DSP\DSPExInitialMessage.hpp" />
-    <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp" />
-    <ClInclude Include="IO\DSP\DSPExMessage.hpp" />
-    <ClInclude Include="IO\DSP\DSPExNode.hpp" />
-    <ClInclude Include="IO\DSP\DSPExRITransactionHandler.hpp" />
-    <ClInclude Include="IO\DSP\DSPExFrameTransmitter.hpp" />
-    <ClInclude Include="IO\DSP\DSPExTypeDefs.hpp" />
-    <ClInclude Include="IO\DSP\IDSPExFrameTransmitter.hpp" />
-    <ClInclude Include="IO\DSP\IDSPExInstructionSet.hpp" />
-    <ClInclude Include="IO\DSP\IDSPExSession.hpp" />
-    <ClInclude Include="IO\IoProxy.hpp" />
-    <ClInclude Include="IO\IOTypedefs.hpp" />
-    <ClInclude Include="IO\IPCObject.hpp" />
     <ClInclude Include="dlc_pch.hpp" />
     <ClInclude Include="logger.hpp" />
     <ClInclude Include="blocking_queue.hpp" />

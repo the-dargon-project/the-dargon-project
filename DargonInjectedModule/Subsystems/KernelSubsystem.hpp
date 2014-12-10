@@ -8,17 +8,9 @@
 namespace dargon { namespace Subsystems {
    class KernelSubsystem : public dargon::Subsystem 
    {
-      // - singleton ------------------------------------------------------------------------------
-   private:
-      static KernelSubsystem* s_instance;
-   public:
-      static KernelSubsystem* GetInstance();
-      
       // - instance -------------------------------------------------------------------------------
-   private:
-      KernelSubsystem();
-
    public:
+      KernelSubsystem();
       bool Initialize() override;
       bool Uninitialize() override;
       

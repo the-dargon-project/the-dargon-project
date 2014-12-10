@@ -4,7 +4,7 @@
 #include <vector>
 #include <Windows.h>
 #include "Init/bootstrap_context.hpp"
-#include "IO/DIM/DIMTaskManager.hpp"
+#include "IO/DIM/CommandManager.hpp"
 
 namespace dargon { namespace InjectedModule {
    class Core 
@@ -12,7 +12,7 @@ namespace dargon { namespace InjectedModule {
    private:
       HMODULE module_handle;
       HANDLE main_thread_handle;
-      dargon::IO::DIM::DIMTaskManager* task_manager;
+      dargon::IO::DIM::CommandManager* task_manager;
 
    public:
       // The common entry point reached when entering through DllMain or main.
@@ -29,7 +29,7 @@ namespace dargon { namespace InjectedModule {
       void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> context);
 
    public:
-      // Gets the DIMTaskManager, or null if it doesn't exist
-      dargon::IO::DIM::DIMTaskManager* GetTaskManager();
+      // Gets the CommandManager, or null if it doesn't exist
+      dargon::IO::DIM::CommandManager* GetTaskManager();
    };
 } }

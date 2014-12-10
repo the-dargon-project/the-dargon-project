@@ -7,15 +7,6 @@
 
 using namespace dargon::Subsystems;
 
-// - singleton ------------------------------------------------------------------------------------
-KernelSubsystem* KernelSubsystem::s_instance = nullptr;
-KernelSubsystem* KernelSubsystem::GetInstance()
-{
-   if(s_instance == nullptr)
-      s_instance = new KernelSubsystem();
-   return s_instance;
-}
-
 // - instance -------------------------------------------------------------------------------------
 KernelSubsystem::KernelSubsystem()
 {

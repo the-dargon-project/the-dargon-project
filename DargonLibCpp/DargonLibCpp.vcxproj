@@ -107,7 +107,7 @@
     <ClInclude Include="concurrent_set.hpp" />
     <ClInclude Include="dargon.hpp" />
     <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
-    <ClInclude Include="Init\BootstrapContext.hpp" />
+    <ClInclude Include="Init\bootstrap_context.hpp" />
     <ClInclude Include="io.hpp" />
     <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
     <ClInclude Include="IO\DIM\DIMTask.hpp" />

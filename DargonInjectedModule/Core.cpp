@@ -20,6 +20,7 @@
 #include "Subsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
 #include "Subsystems/FileSubsystem.hpp"
+#include "feature_toggles.hpp"
 
 #include "ThirdParty/guicon.h"
 
@@ -31,54 +32,47 @@ using namespace dargon::Subsystems;
 using namespace dargon::IO::DSP::ClientImpl;
 using namespace dargon::IO::DIM;
 
-Core::Core(HMODULE hModule) : m_pDIMTaskManager(nullptr)
-{
-   m_moduleHandle = hModule;
-   file_logger::Initialize("C:/DargonLog.log");
+Core::Core(HMODULE hModule) : module_handle(hModule), task_manager(nullptr) {
+   file_logger::initialize("C:/DargonLog.log");
 
    std::cout << "Entered Core::Core, suspending main thread" << std::endl;
-   m_mainThreadHandle = OpenMainThread();
-   std::cout << " - Thread ID " << m_mainThreadHandle << std::endl;
-   SuspendThread(m_mainThreadHandle);
+   main_thread_handle = OpenMainThread();
+   std::cout << " - Thread ID " << main_thread_handle << std::endl;
+   SuspendThread(main_thread_handle);
 
    std::cout << "Creating Dargon Bootstrap thread" << std::endl;
-   _beginthreadex(
-      nullptr,
-      0,
-      Bootstrap,
-      this,
-      0,
-      nullptr
-   );
+   _beginthreadex(nullptr, 0, Bootstrap, this, 0, nullptr);
 }
 
-unsigned int WINAPI Core::Bootstrap(void* pThis)
-{
+unsigned int WINAPI Core::Bootstrap(void* pThis) {
    std::cout << "Entered Core Bootstrap" << std::endl;
    Bootloader::BootstrapInjectedModule(
       std::bind(&Core::Initialize, (Core*)pThis, _1),
-      ((Core*)pThis)->m_moduleHandle
+      ((Core*)pThis)->module_handle
    );
    std::cout << "Exit Core Bootstrap" << std::endl;
    return 0;
 }
 
-void Core::Initialize(const BootstrapContext* context)
+void Core::Initialize(std::shared_ptr<const bootstrap_context> context)
 {
    std::cout << "At Core::Initialize with Bootstrap Context" << std::endl
-             << " - Argument Flags: " << dargon::join(context->ArgumentFlags, " ") << std::endl
+             << " - Argument Flags: " << dargon::join(context->argument_flags, " ") << std::endl
              << " - Argument Properties: ";
-   for(auto kvp : context->ArgumentProperties)
+   for (auto kvp : context->argument_properties) {
       std::cout << kvp.first << "=" << kvp.second << " ";
+   }
    std::cout << std::endl;
    
-   bool tasksEnabled = std::find(context->ArgumentFlags.begin(), context->ArgumentFlags.end(), "--enable-dim-tasklist") != context->ArgumentFlags.end();
+   // load feature toggles:
+   feature_toggles toggles;
+   toggles.tasklist_enabled = dargon::contains(context->argument_flags, "--enable-dim-tasklist");
    
    // Initialize DIM Task List Manager if it's enabled
-   if (tasksEnabled)
+   if (toggles.tasklist_enabled)
    {
       std::cout << "DIM Task Lists are enabled - Initialize DIM Task Manager" << std::endl;
-      m_pDIMTaskManager = new DIMTaskManager();
+      task_manager = new DIMTaskManager();
    }
 
    // Initialize Dargon Subsystems
@@ -88,36 +82,36 @@ void Core::Initialize(const BootstrapContext* context)
    FileSubsystem::GetInstance()->Initialize();
 
    // Initialize mods
-   if(tasksEnabled)
+   if(toggles.tasklist_enabled)
    {
       std::cout << "Registering DIM Task Manager Instruction Set" << std::endl;
-      context->DIMSession->AddInstructionSet(m_pDIMTaskManager->ReleaseInstructionSet());
+      context->dtp_session->AddInstructionSet(task_manager->ReleaseInstructionSet());
       
       std::cout << "Querying Initial DIM Task List" << std::endl;
-      auto transactionId = context->DIMSession->TakeLocallyInitializedTransactionId();
-      auto handler = m_pDIMTaskManager->ConstructInitialTaskListQueryHandler(transactionId);
-      context->DIMSession->RegisterAndInitializeLITransactionHandler(*handler);
+      auto transactionId = context->dtp_session->TakeLocallyInitializedTransactionId();
+      auto handler = task_manager->ConstructInitialTaskListQueryHandler(transactionId);
+      context->dtp_session->RegisterAndInitializeLITransactionHandler(*handler);
 
       std::cout << "Waiting for initial DIM Task List" << std::endl;
       handler->CompletionLatch.wait();
       
       std::cout << "Processing Initial DIM Task List... " << std::endl;
       auto tasks = handler->ReleaseTasks();
-      m_pDIMTaskManager->ProcessTasks(tasks);
+      task_manager->ProcessTasks(tasks);
 
       std::cout << "Initial DIM Task List processed." << std::endl;
    }
    
-   std::cout << "Core::Initialize resuming main thread " << m_mainThreadHandle << std::endl;
+   std::cout << "Core::Initialize resuming main thread " << main_thread_handle << std::endl;
 
    // The thread's suspend count might be more than 1, so invoke resumethread until the thread 
    // resumes...
-   while(ResumeThread(m_mainThreadHandle) > 0);
+   while(ResumeThread(main_thread_handle) > 0);
 
    std::cout << "Core::Initialize end" << std::endl;
 }
 
-DIMTaskManager* Core::GetDIMTaskManager()
+DIMTaskManager* Core::GetTaskManager()
 {
-   return m_pDIMTaskManager;
+   return task_manager;
 }

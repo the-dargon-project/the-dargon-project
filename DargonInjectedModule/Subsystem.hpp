@@ -1,11 +1,12 @@
 #pragma once
 
 #include "stdafx.h"
+#include <memory>
 #include <unordered_set>
 
 #include <IO/DIM/IDIMTaskHandler.hpp>
 
-#include "Init/BootstrapContext.hpp"
+#include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
 #include "noncopyable.hpp"
 #include "Core.hpp"
@@ -27,7 +28,7 @@ namespace dargon {
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the
       // subsystem.  The pointed-to memory is owned by the Dargon Injected Module's core and this
       // field is initialized in the Initialize() method.
-      static const dargon::Init::BootstrapContext* s_bootstrapContext;
+      static std::shared_ptr<const dargon::Init::bootstrap_context> s_bootstrap_context;
 
       // Injected Module Core
       static InjectedModule::Core* s_core;
@@ -48,7 +49,7 @@ namespace dargon {
       // and file_logger, which are required for use by subsystem instances.  The static subsystem
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
-      static void OnCoreBootstrap(InjectedModule::Core* core, const dargon::Init::BootstrapContext* bootstrapContext);
+      static void OnCoreBootstrap(InjectedModule::Core* core, std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context);
 
       // Subsystems
       static const std::unordered_set<Subsystem*>& Subsystems;

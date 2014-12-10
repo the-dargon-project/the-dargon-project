@@ -25,4 +25,5 @@ namespace dargon {
 
    bool iequals(const std::string& a, const std::string& b);
    std::string join(const std::vector<std::string>& strings, const char* delimiter);
+   bool contains(const std::vector<std::string>& collection, const char* string);
 }

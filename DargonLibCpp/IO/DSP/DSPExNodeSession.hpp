@@ -1,11 +1,12 @@
 #pragma once 
 
 #include <unordered_map>
+#include <memory>
 #include <mutex>
 #include <iostream>
 #include <thread>
 #include <deque>
-#include "../../Init/BootstrapContext.hpp"
+#include "../../Init/bootstrap_context.hpp"
 #include "../../util.hpp"
 #include "../../noncopyable.hpp"
 #include "../IPCObject.hpp"
@@ -183,10 +184,10 @@ namespace dargon { namespace IO { namespace DSP {
       void Log(UINT32 file_loggerLevel, LoggingFunction& file_logger);
 
       /// <summary>
-      /// Fills the given BootstrapContext structure's Flags and Properties fields with data
+      /// Fills the given bootstrap_context structure's Flags and Properties fields with data
       /// recieved from the Daemon.
       /// </summary>
-      void GetBootstrapArguments(dargon::Init::BootstrapContext* context);
+      void GetBootstrapArguments(std::shared_ptr<dargon::Init::bootstrap_context> context);
 
       /// <summary>
       /// Registers a task handler for Dargon Injected Module task list entries.

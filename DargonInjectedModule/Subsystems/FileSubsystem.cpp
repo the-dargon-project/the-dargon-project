@@ -2,7 +2,7 @@
 #include <iostream>
 #include "util.hpp"
 #include "IO/DSP/DSPExNodeSession.hpp"
-#include "Init/BootstrapContext.hpp"
+#include "Init/bootstrap_context.hpp"
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "FileSubsystem.hpp"
@@ -27,9 +27,8 @@ FileSubsystem* FileSubsystem::GetInstance()
 FileSubsystem::FileSubsystem() 
 {
    // Register DIM Task Handlers
-   auto dimTaskManager = s_core->GetDIMTaskManager();
-   if (dimTaskManager)
-   {
+   auto dimTaskManager = s_core->GetTaskManager();
+   if (dimTaskManager) {
       dimTaskManager->RegisterTaskHandler(new FileSwapTaskHandler(this));
    }
 }
@@ -43,9 +42,9 @@ bool FileSubsystem::Initialize()
       Subsystem::Initialize();
 
       // Ensure we've been told to initialize
-      if(std::find(s_bootstrapContext->ArgumentFlags.begin(),
-                   s_bootstrapContext->ArgumentFlags.end(),
-                   "--enable-filesystem-hooks") == s_bootstrapContext->ArgumentFlags.end())
+      if(std::find(s_bootstrap_context->argument_flags.begin(),
+                   s_bootstrap_context->argument_flags.end(),
+                   "--enable-filesystem-hooks") == s_bootstrap_context->argument_flags.end())
       {
          std::cout << "At FileSubsystem Init but --enable-filesystem-hooks not set" << std::endl;
          return false;
@@ -60,7 +59,7 @@ bool FileSubsystem::Initialize()
       InstallWriteFileDetour(hModuleKernel32);
       InstallCloseHandleDetour(hModuleKernel32);
       InstallSetFilePointerDetour(hModuleKernel32);
-      s_bootstrapContext->IoProxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer);
+      s_bootstrap_context->io_proxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer);
       return true;
    }
 }

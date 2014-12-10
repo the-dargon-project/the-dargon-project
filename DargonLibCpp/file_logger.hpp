@@ -13,7 +13,7 @@ namespace dargon {
    class file_logger : public logger, dargon::noncopyable
    {
    public:
-      static void Initialize(std::string fileName);
+      static void initialize(std::string fileName);
       static inline void L(UINT32 file_loggerLevel, LoggingFunction file_logger);
       // System-level logging.  Stuff that only Core Implementors care about.
       static inline void SL(UINT32 file_loggerLevel, LoggingFunction file_logger);

@@ -2,10 +2,11 @@
 
 #include <windef.h>
 #include <functional>
-#include "BootstrapContext.hpp"
+#include <memory>
+#include "bootstrap_context.hpp"
 
 namespace dargon { namespace Init {
-   typedef std::function<void(const BootstrapContext*)> FunctionInitialize;
+   typedef std::function<void(std::shared_ptr<const bootstrap_context>)> FunctionInitialize;
 
    class Bootloader : dargon::noncopyable {
    public:

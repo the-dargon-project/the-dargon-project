@@ -1,7 +1,8 @@
 #include "../../dlc_pch.hpp"
+#include <memory>
 #include <sstream>
 #include <process.h>
-#include "../../Init/BootstrapContext.hpp"
+#include "../../Init/bootstrap_context.hpp"
 #include "../../util.hpp"
 #include "../IPCObject.hpp"
 #include "DSP.hpp"
@@ -339,15 +340,15 @@ void DSPExNodeSession::Log(UINT32 file_loggerLevel, LoggingFunction& file_logger
    handler.CompletionLatch.wait();
 }
 
-void DSPExNodeSession::GetBootstrapArguments(dargon::Init::BootstrapContext* context)
+void DSPExNodeSession::GetBootstrapArguments(std::shared_ptr<dargon::Init::bootstrap_context> context)
 {
    UINT32 transactionId = m_locallyInitializedUIDSet.take();
    DSPExLITBootstrapGetArgsHandler handler(transactionId);
    RegisterAndInitializeLITransactionHandler(handler);
    std::cout << "Waiting for Bootstrap Arguments handler to complete " << std::endl;
    handler.CompletionLatch.wait();
-   context->ArgumentFlags = std::move(handler.m_flags);
-   context->ArgumentProperties = std::move(handler.m_properties);
+   context->argument_flags = std::move(handler.m_flags);
+   context->argument_properties = std::move(handler.m_properties);
 }
 
 void DSPExNodeSession::DumpToConsole(DSPExMessage& message)

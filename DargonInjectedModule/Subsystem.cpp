@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Subsystem.hpp"
-#include "Init/BootstrapContext.hpp"
+#include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
 
 using namespace dargon;
@@ -8,16 +8,16 @@ using namespace dargon::InjectedModule;
 using namespace dargon::IO::DIM;
 
 dargon::logger* Subsystem::s_logger;
-const dargon::Init::BootstrapContext* Subsystem::s_bootstrapContext;
+std::shared_ptr<const dargon::Init::bootstrap_context> Subsystem::s_bootstrap_context;
 Core* Subsystem::s_core;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;
 const std::unordered_set<Subsystem*>& Subsystem::Subsystems(Subsystem::s_subsystems);
 
-void Subsystem::OnCoreBootstrap(Core* core, const dargon::Init::BootstrapContext* bootstrapContext)
+void Subsystem::OnCoreBootstrap(Core* core, std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context)
 {
    s_core = core;
-   s_bootstrapContext = bootstrapContext;
-   s_logger = bootstrapContext->logger;
+   s_bootstrap_context = bootstrap_context;
+   s_logger = bootstrap_context->logger;
 }
 
 DWORD* Subsystem::GetVTablePointer(void* pObject)

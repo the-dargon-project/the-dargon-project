@@ -138,4 +138,14 @@ namespace dargon {
          return ss.str();
       }
    }
+
+   bool contains(const std::vector<std::string>& collection, const char * string) {
+      for (auto s : collection) {
+         if (s.compare(string) == 0) {
+            return true;
+         }
+      }
+      return false;
+   }
+
 }

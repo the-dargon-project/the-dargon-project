@@ -143,6 +143,7 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="Core.hpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClInclude Include="DSPExHandlers\DSPExLol.hpp" />
+    <ClInclude Include="feature_toggles.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Subsystem.hpp" />
     <ClInclude Include="Subsystem.Detours.hpp" />

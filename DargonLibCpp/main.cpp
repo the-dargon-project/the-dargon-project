@@ -21,7 +21,7 @@ int main()
 {
    try
    {
-      file_logger::Initialize("C:/DargonLog.log");
+      file_logger::initialize("C:/DargonLog.log");
       //buffer_managerTest();
       //HardCodedEchoTest();
       //HardCodedEchoTest2();

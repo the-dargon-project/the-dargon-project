@@ -73,7 +73,7 @@ BOOL WINAPI KernelSubsystem::MyCreateProcessA(LPCSTR lpApplicationName, LPSTR lp
 bool KernelSubsystem::ShouldSuspendProcess(const char* path)
 {
    auto processName = GetFileName(std::string(path));
-   for(auto property : s_bootstrapContext->ArgumentProperties)
+   for(auto property : s_bootstrap_context->argument_properties)
    {
       if(dargon::iequals(property.first, "launchsuspended"))
       {

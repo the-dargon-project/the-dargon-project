@@ -10,7 +10,7 @@
 
 using namespace dargon;
 file_logger* file_logger::s_instance = nullptr;
-void file_logger::Initialize(std::string fileName)
+void file_logger::initialize(std::string fileName)
 {
    s_instance = new file_logger(fileName);
 }

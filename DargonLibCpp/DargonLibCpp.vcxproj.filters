@@ -18,22 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util\BufferManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IO\IPCObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util\CountdownEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DSP\DSPExLITransactionHandler.cpp">
@@ -90,6 +81,15 @@
     <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="countdown_event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="buffer_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dargon.hpp">
@@ -99,12 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Init\Bootloader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\UniqueIdentificationSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\BufferManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\DSP.hpp">
@@ -134,9 +128,6 @@
     <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Util\CountdownEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DSP\IDSPExSession.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,26 +146,11 @@
     <ClInclude Include="IO\DSP\DSPExFrameTransmitter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Logger.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\ILogger.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\LoggerLevels.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\Logger.inl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.hpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\BlockingQueue.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\DSPExFrameProcessor.hpp">
       <Filter>Header Files</Filter>
@@ -233,16 +209,40 @@
     <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collections\ConcurrentDictionary.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collections\ConcurrentSet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\IoProxy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Util\noncopyable.hpp">
+    <ClInclude Include="noncopyable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="countdown_event.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logger_levels.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_logger.inl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer_manager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unique_id_set.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="concurrent_set.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="concurrent_dictionary.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="blocking_queue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

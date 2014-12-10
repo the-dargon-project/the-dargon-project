@@ -1,13 +1,13 @@
 #pragma once
 
 #include <vector>
-#include "../../Util/noncopyable.hpp"
+#include "../../noncopyable.hpp"
 
 #include "DIMTask.hpp"
 #include "DIMTaskTypes.hpp"
 
 namespace dargon { namespace IO { namespace DIM {
-   class IDIMTaskHandler : dargon::util::noncopyable {
+   class IDIMTaskHandler : dargon::noncopyable {
    private:
 
    public:

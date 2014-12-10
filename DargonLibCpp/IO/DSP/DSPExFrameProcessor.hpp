@@ -9,7 +9,7 @@
 
 #include "../../Dargon.hpp"
 #include "../IPCObject.hpp"
-#include "../../Util/CountdownEvent.hpp"
+#include "../../countdown_event.hpp"
 #include "DSPExNodeSession.hpp"
 
 namespace dargon { namespace IO { namespace DSP {

@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "Dargon.hpp"
-#include "Util/CountdownEvent.hpp"
+#include "countdown_event.hpp"
 #include "IO/DSP/DSPEx.hpp"
 #include "IO/DSP/IDSPExSession.hpp"
 #include "IO/DSP/DSPExRITransactionHandler.hpp"
@@ -27,7 +27,7 @@ namespace dargon { namespace IO { namespace DIM {
 
       // Stops many threads from simultaneously filling the overrides vector
       std::mutex m_fillMutex;
-      dargon::util::CountdownEvent m_headerReceivedLatch;
+      dargon::countdown_event m_headerReceivedLatch;
 
       // We can mark another DSPExLITHandler as completed on our own completion.
       // This is used for the LITH which blocks until we've processed a task list.

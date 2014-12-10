@@ -25,7 +25,7 @@ namespace dargon { namespace InjectedModule {
       static unsigned int WINAPI Bootstrap(void* pThis);
 
       // Initializes the DIM Core after the bootloader initializes basic necessities such as 
-      // loggers, Dargon Service Protocol Ex Client, etc.
+      // file_loggers, Dargon Service Protocol Ex Client, etc.
       void Initialize(const dargon::Init::BootstrapContext* context);
 
    public:

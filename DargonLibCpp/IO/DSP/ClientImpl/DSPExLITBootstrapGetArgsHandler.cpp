@@ -11,7 +11,7 @@
 #include "../DSPExInitialMessage.hpp"
 #include "../IDSPExSession.hpp"
 #include "DSPExLITBootstrapGetArgsHandler.hpp"
-using dargon::util::Logger;
+using dargon::file_logger;
 using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
 
@@ -22,7 +22,7 @@ DSPExLITBootstrapGetArgsHandler::DSPExLITBootstrapGetArgsHandler(UINT32 transact
 
 void DSPExLITBootstrapGetArgsHandler::InitializeInteraction(IDSPExSession& session)
 {
-   Logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Initialize Bootstrap Get Args Interaction" << std::endl; });
+   file_logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Initialize Bootstrap Get Args Interaction" << std::endl; });
    //std::cout << "Reminder: Currently sending 0 as PID" << std::endl;
    //DWORD pid = 0; 
    DWORD pid = GetProcessId(GetCurrentProcess());
@@ -38,7 +38,7 @@ void DSPExLITBootstrapGetArgsHandler::InitializeInteraction(IDSPExSession& sessi
 
 void DSPExLITBootstrapGetArgsHandler::ProcessMessage(IDSPExSession& session, DSPExMessage& message)
 {
-   Logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Processing Message of Echo Interaction" << std::endl; });
+   file_logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Processing Message of Echo Interaction" << std::endl; });
    
    std::cout << "AE: " << *(UINT32*)message.DataBuffer << " (ptr: " << (void*)message.DataBuffer << ")" << std::endl;
    std::cout << "AF: " << *(UINT32*)(message.DataBuffer + 4) << " (ptr: " << (void*)(message.DataBuffer + 4) << ")" << std::endl;
@@ -49,7 +49,7 @@ void DSPExLITBootstrapGetArgsHandler::ProcessMessage(IDSPExSession& session, DSP
 
    UINT32 kvpCount;
    input_stream.read((char*)&kvpCount, 4);
-   Logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap KVP Count " << kvpCount << std::endl; });
+   file_logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap KVP Count " << kvpCount << std::endl; });
 
    typedef std::pair<std::string, std::string> KeyValuePair;
    std::vector<KeyValuePair> keyValuePairs(kvpCount);
@@ -77,7 +77,7 @@ void DSPExLITBootstrapGetArgsHandler::ProcessMessage(IDSPExSession& session, DSP
 
    UINT32 flagCount;
    input_stream.read((char*)&flagCount, 4);
-   Logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap flag Count " << flagCount << std::endl; });
+   file_logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap flag Count " << flagCount << std::endl; });
    //std::unique_ptr<std::string[]> flags(new std::string[flagCount]);
    std::vector<std::string> flags(flagCount);
    for (UINT32 i = 0; i < flagCount; i++)

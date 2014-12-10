@@ -1,7 +1,7 @@
 #include "dlc_pch.hpp"
 #include "BootloaderRemoteLogger.hpp"
 #include "BootstrapContext.hpp"
-#include "../Util/ILogger.hpp"
+#include "../logger.hpp"
 #include "../IO/DSP/DSPExNodeSession.hpp"
 #include "../IO/DSP/ClientImpl/DSPExLITRemoteLogHandler.hpp"
 using namespace dargon::Init;
@@ -13,7 +13,7 @@ BootloaderRemoteLogger::BootloaderRemoteLogger(const BootstrapContext* context)
 {
 }
 
-void BootloaderRemoteLogger::Log(UINT32 loggerLevel, LoggingFunction logger)
+void BootloaderRemoteLogger::Log(UINT32 file_loggerLevel, LoggingFunction file_logger)
 {
-   m_context->DIMSession->Log(loggerLevel, logger);
+   m_context->DIMSession->Log(file_loggerLevel, file_logger);
 }

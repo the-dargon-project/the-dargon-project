@@ -96,7 +96,7 @@ void FileSubsystem::AddFileOverride(FileOverrideTargetDescriptor descriptor, Fil
 // - static ---------------------------------------------------------------------------------------
 FileOverrideMap FileSubsystem::s_fileOverridesMap;
 AdvancedOverrideMap FileSubsystem::s_advancedOverridesMap;
-dargon::Collections::concurrent_set<HANDLE> FileSubsystem::mitmHandles;
+dargon::concurrent_set<HANDLE> FileSubsystem::mitmHandles;
 
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);
@@ -252,7 +252,7 @@ BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumb
    BOOL result = m_trampReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
    if (mitm) {
       OnPostReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-      //   Logger::GetOutputStream(LL_VERBOSE) << "  trampReadFile result: " << result << endl;
+      //   file_logger::GetOutputStream(LL_VERBOSE) << "  trampReadFile result: " << result << endl;
    }
    return result;
 }

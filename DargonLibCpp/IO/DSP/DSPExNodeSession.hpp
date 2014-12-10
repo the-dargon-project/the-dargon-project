@@ -9,7 +9,7 @@
 #include <boost/pool/pool.hpp>
 #include "../../Init/BootstrapContext.hpp"
 #include "../../Util.hpp"
-#include "../../Util/noncopyable.hpp"
+#include "../../noncopyable.hpp"
 #include "../IPCObject.hpp"
 #include "../IoProxy.hpp"
 #include "IDSPExFrameTransmitter.hpp"
@@ -34,7 +34,7 @@
 namespace dargon { namespace IO { namespace DSP {
    class DSPExFrameProcessor;
 
-   class DSPExNodeSession : public IDSPExSession, dargon::util::noncopyable
+   class DSPExNodeSession : public IDSPExSession, dargon::noncopyable
    {
       typedef DSPExRITransactionHandler*(DSPExRITransactionHandlerFactory)(UINT32 transactionId);
       typedef std::unordered_map<BYTE, DSPExRITransactionHandlerFactory*> FactoryMap;
@@ -181,8 +181,8 @@ namespace dargon { namespace IO { namespace DSP {
       /// <returns></returns>
       bool Echo(BYTE* buffer, UINT32 length);
 
-      // @seealso: ILogger
-      void Log(UINT32 loggerLevel, LoggingFunction& logger);
+      // @seealso: logger
+      void Log(UINT32 file_loggerLevel, LoggingFunction& file_logger);
 
       /// <summary>
       /// Fills the given BootstrapContext structure's Flags and Properties fields with data
@@ -253,14 +253,14 @@ namespace dargon { namespace IO { namespace DSP {
       /// set their HIGH bit; The set is initially filled to the range [0x00000000, 0x7FFFFFFF]
       /// low: 0b00000000 00000000 00000000 00000000 high: 0b01111111 11111111 11111111 11111111
       /// </summary>
-      dargon::util::UniqueIdentificationSet<TransactionIdType> m_locallyInitializedUIDSet;
+      dargon::unique_id_set<TransactionIdType> m_locallyInitializedUIDSet;
       
       /// <summary>
       /// This provides an initially filled Unique Identification Set for interactions IDing.
       /// We give UIDs from this set to label remotely initiated interactions.  Initially,
       /// the set is empty.  Technically, the valid range of the set is [0x80000000, 0xFFFFFFFF]
       /// </summary>
-      dargon::util::UniqueIdentificationSet<TransactionIdType> m_remotelyInitializedUIDSet;
+      dargon::unique_id_set<TransactionIdType> m_remotelyInitializedUIDSet;
       
       /// <summary>
       /// Pairs locally initialized transactions with their associated transaction handlers.  
@@ -316,7 +316,7 @@ namespace dargon { namespace IO { namespace DSP {
       /// The output buffer pool provides a pool of buffers.  We use this for message transmitting
       /// so that we don't spend a lot of time allocating and deallocating blocks of memory.
       /// </summary>
-      dargon::util::BufferManager m_frameBufferPool;
+      dargon::buffer_manager m_frameBufferPool;
 
       /// Instruction sets for this DSPExNodeSession specifically.
       std::vector<IDSPExInstructionSet*> m_instructionSets;

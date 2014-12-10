@@ -1,25 +1,25 @@
 #pragma once
 
-#include "ConcurrentDictionary.hpp"
+#include "concurrent_dictionary.hpp"
 
-namespace dargon { namespace Collections {
+namespace dargon {
    template <typename TKey,
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, bool>>>
-   class ConcurrentSet_iterator : public std::iterator<std::forward_iterator_tag, const TKey>
+   class concurrent_set_iterator : public std::iterator<std::forward_iterator_tag, const TKey>
    {
-      typedef ConcurrentSet_iterator<TKey, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
-      typedef ConcurrentDictionary_iterator<TKey, bool, KeyHash, KeyEqualityComparer, PairAllocator> dict_iterator_t;
+      typedef concurrent_set_iterator<TKey, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
+      typedef concurrent_dictionary_iterator<TKey, bool, KeyHash, KeyEqualityComparer, PairAllocator> dict_iterator_t;
       typedef std::pair<const TKey, bool> pair_t;
 
    private:
       dict_iterator_t it;
 
    public:
-      ConcurrentSet_iterator() { }
-      explicit ConcurrentSet_iterator(dict_iterator_t it) : it(it) { }
-      ConcurrentSet_iterator(const my_t& iterator) : it(iterator.it) { }
+      concurrent_set_iterator() { }
+      explicit concurrent_set_iterator(dict_iterator_t it) : it(it) { }
+      concurrent_set_iterator(const my_t& iterator) : it(iterator.it) { }
 
       my_t operator++() { ++it; return *this; }
       my_t operator++(int) { my_t copy(*this); ++it; return copy; }
@@ -35,11 +35,11 @@ namespace dargon { namespace Collections {
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, bool>>>
-   class ConcurrentSet
+   class concurrent_set
    {
-      typedef ConcurrentSet<TKey, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
-      typedef ConcurrentDictionary<TKey, bool, KeyHash, KeyEqualityComparer, PairAllocator> dict_t;
-      typedef ConcurrentSet_iterator<TKey, KeyHash, KeyEqualityComparer, PairAllocator> iterator;
+      typedef concurrent_set<TKey, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
+      typedef concurrent_dictionary<TKey, bool, KeyHash, KeyEqualityComparer, PairAllocator> dict_t;
+      typedef concurrent_set_iterator<TKey, KeyHash, KeyEqualityComparer, PairAllocator> iterator;
       typedef std::pair<TKey, bool> pair_t;
 
       dict_t dict;
@@ -57,10 +57,4 @@ namespace dargon { namespace Collections {
       iterator begin() const { return iterator(dict.begin()); }
       iterator end() const { return iterator(dict.end()); }
    };
-
-   template <typename TKey,
-             class KeyHash = std::hash<TKey>,
-             class KeyEqualityComparer = std::equal_to<TKey>,
-             class PairAllocator = std::allocator<std::pair<const TKey, bool>>>
-   using concurrent_set = ConcurrentSet<TKey, KeyHash, KeyEqualityComparer, PairAllocator>;
-} }
+} 

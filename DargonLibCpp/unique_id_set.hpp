@@ -5,14 +5,14 @@
 #include <type_traits>
 #include <mutex>
 #include <stdexcept>
-#include "../Dargon.hpp"
+#include "Dargon.hpp"
 #include "noncopyable.hpp"
 
-namespace dargon { namespace util {
+namespace dargon { 
    // #define TValue UINT32
 
    template<typename TValue, typename = typename std::enable_if<std::is_arithmetic<TValue>::value, TValue>::type>
-   class UniqueIdentificationSet : dargon::util::noncopyable
+   class unique_id_set : dargon::noncopyable
    {
       class _Node {
       public:
@@ -36,10 +36,10 @@ namespace dargon { namespace util {
       std::mutex mutex;
 
    public:
-      UniqueIdentificationSet(bool filled) : UniqueIdentificationSet(filled ? limits::min() : 0, filled ? limits::min() : 0) {}
-      UniqueIdentificationSet(TValue low, TValue high) : front(new _Node(low, high)) { }
+      unique_id_set(bool filled) : unique_id_set(filled ? limits::min() : 0, filled ? limits::min() : 0) {}
+      unique_id_set(TValue low, TValue high) : front(new _Node(low, high)) { }
 
-      TValue TakeUniqueID() {
+      TValue take() {
          TLock lock(mutex);
          if (front == nullptr) {
             throw std::runtime_error("Attempted to take Unique ID from empty Unique ID set.");
@@ -56,12 +56,12 @@ namespace dargon { namespace util {
          }
       }
 
-      bool TakeUniqueID(TValue value) {
+      bool take(TValue value) {
          if (front == nullptr) {
             return false;
          } else {
             if (front->low == value) {
-               TakeUniqueID(); // Takes frontmost value
+               take(); // Takes frontmost value
                return true;
             } else {
                for (auto current = front; current != nullptr; current = current->next) {
@@ -95,7 +95,7 @@ namespace dargon { namespace util {
          }
       }
 
-      bool GiveUniqueID(TValue value) {
+      bool give(TValue value) {
          TLock lock(mutex);
          if (front == nullptr) {
             front = new _Node(value, value);
@@ -148,15 +148,15 @@ namespace dargon { namespace util {
    
    private:
       template<typename TValue_, typename = typename std::enable_if<std::is_arithmetic<TValue_>::value, TValue_>::type>
-      friend inline std::ostream& operator<<(std::ostream& os, const dargon::util::UniqueIdentificationSet<TValue_>& self) {
+      friend inline std::ostream& operator<<(std::ostream& os, const dargon::unique_id_set<TValue_>& self) {
          return os;
       }
       /*
       
 
-inline std::ostream& dargon::util::operator<<(std::ostream& os, const dargon::util::UniqueIdentificationSet& uidSet) 
+inline std::ostream& dargon::operator<<(std::ostream& os, const dargon::unique_id_set& uidSet) 
 {
-   os << "[UniqueIdentificationSet {";
+   os << "[unique_id_set {";
    {
       std::mutex& mutex = const_cast<std::mutex&>(uidSet.mutex);
       std::lock_guard<std::mutex> lock(mutex);
@@ -189,4 +189,4 @@ inline std::ostream& dargon::util::operator<<(std::ostream& os, const dargon::ut
          }
       }
    };
-} }
+}

@@ -2,9 +2,9 @@
 
 #include <windef.h>
 #include <memory>
-#include "../Util/Logger.hpp"
-#include "../Util/noncopyable.hpp"
-#include "../IO/IoProxy.hpp"
+#include "file_logger.hpp"
+#include "noncopyable.hpp"
+#include "IO/IoProxy.hpp"
 
 namespace dargon { namespace IO { namespace DSP {
    class DSPExNode;
@@ -16,7 +16,7 @@ namespace dargon { namespace Init {
    {
    public:
       HMODULE ApplicationModuleHandle;
-      dargon::util::ILogger* Logger;
+      dargon::logger* logger;
       dargon::IO::DSP::DSPExNode* DSPExNode;
       dargon::IO::DSP::DSPExNodeSession* DIMSession;
 

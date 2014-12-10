@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include <unordered_map>
-#include <Collections/ConcurrentSet.hpp>
+#include <concurrent_set.hpp>
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "FileSubsystemTypedefs.hpp"
@@ -31,7 +31,7 @@ namespace dargon { namespace Subsystems {
    private:
       static FileOverrideMap s_fileOverridesMap;
       static AdvancedOverrideMap s_advancedOverridesMap;
-      static dargon::Collections::concurrent_set<HANDLE> mitmHandles;
+      static dargon::concurrent_set<HANDLE> mitmHandles;
 
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);

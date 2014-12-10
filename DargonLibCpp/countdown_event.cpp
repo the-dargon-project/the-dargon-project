@@ -1,40 +1,38 @@
-#include "../dlc_pch.hpp"
+#include "dlc_pch.hpp"
 #include <mutex>
 #include <condition_variable>
-#include "../Dargon.hpp"
-#include "CountdownEvent.hpp"
-using namespace dargon::util;
-CountdownEvent::CountdownEvent(UINT32 initialValue)
+#include "Dargon.hpp"
+#include "countdown_event.hpp"
+
+using namespace dargon;
+
+countdown_event::countdown_event(UINT32 initialValue)
    : m_counter(initialValue)
 {
 }
-void CountdownEvent::Signal()
-{
+
+void countdown_event::signal() {
    std::unique_lock<std::mutex> lock(m_mutex);
-   if(m_counter > 0)
-   {
+   if (m_counter > 0) {
       m_counter--;
-      if(m_counter == 0)
-      {
+      if (m_counter == 0) {
          m_conditionVariable.notify_all();
       }
    }
 }
-void CountdownEvent::Wait() const
-{
+
+void countdown_event::wait() const {
    std::unique_lock<std::mutex> lock(m_mutex);
-   if(m_counter > 0)
-   {
+   if (m_counter > 0) {
       m_conditionVariable.wait(lock);
    }
 }
-bool CountdownEvent::Wait(UINT32 milliseconds) const
-{
+
+bool countdown_event::wait(UINT32 milliseconds) const {
    std::unique_lock<std::mutex> lock(m_mutex);
-   if (m_counter > 0)
-   {
+   if (m_counter > 0) {
       auto waitResult = m_conditionVariable.wait_for(lock, std::chrono::milliseconds(milliseconds));
-      if(waitResult == std::cv_status::timeout)
+      if (waitResult == std::cv_status::timeout)
          return false;
       else
          return true;

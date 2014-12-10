@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "Subsystem.hpp"
 #include "Init/BootstrapContext.hpp"
-#include "Util/ILogger.hpp"
+#include "logger.hpp"
 
 using namespace dargon;
 using namespace dargon::InjectedModule;
 using namespace dargon::IO::DIM;
 
-dargon::util::ILogger* Subsystem::s_logger;
+dargon::logger* Subsystem::s_logger;
 const dargon::Init::BootstrapContext* Subsystem::s_bootstrapContext;
 Core* Subsystem::s_core;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;
@@ -17,7 +17,7 @@ void Subsystem::OnCoreBootstrap(Core* core, const dargon::Init::BootstrapContext
 {
    s_core = core;
    s_bootstrapContext = bootstrapContext;
-   s_logger = bootstrapContext->Logger;
+   s_logger = bootstrapContext->logger;
 }
 
 DWORD* Subsystem::GetVTablePointer(void* pObject)

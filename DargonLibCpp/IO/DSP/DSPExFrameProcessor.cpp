@@ -5,7 +5,7 @@
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
 using namespace dargon::IO::DSP;
-using dargon::util::Logger;
+using dargon::file_logger;
 
 DSPExFrameProcessor::DSPExFrameProcessor(DSPExNodeSession& client, FrameHandled onFrameHandled)
    : m_client(client),
@@ -79,7 +79,7 @@ void DSPExFrameProcessor::RunDSPExIteration()
    int remainingByteCount = frameSize - sizeof(frameSize) - sizeof(transactionId);
 
    bool isLocallyInitializedTransaction = (transactionId >> 31) != 0x01; // != for server initiated
-   Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Got DSPEx Frame of length " << frameSize << " id " << transactionId << " (Is LIT? " << isLocallyInitializedTransaction << ")" << std::endl; });
+   file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Got DSPEx Frame of length " << frameSize << " id " << transactionId << " (Is LIT? " << isLocallyInitializedTransaction << ")" << std::endl; });
    if(isLocallyInitializedTransaction)
    {
       auto transaction = m_client.FindLITransactionHandler(transactionId);
@@ -91,7 +91,7 @@ void DSPExFrameProcessor::RunDSPExIteration()
       }
       else
       {
-         Logger::L(LL_ERROR, [transactionId](std::ostream& os){ 
+         file_logger::L(LL_ERROR, [transactionId](std::ostream& os){ 
             os << "Unrecognized transaction " << transactionId
                << "; eating message frame." << std::endl; 
          });
@@ -113,16 +113,16 @@ void DSPExFrameProcessor::RunDSPExIteration()
          DSPExInitialMessage message(transactionId, opcode, buffer + 9, remainingByteCount - 1);
          m_client.DumpToConsole(message);
          
-         Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Creating transaction handler for TransactionId " << transactionId << " opcode " << (int)opcode << std::endl; });
+         file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Creating transaction handler for TransactionId " << transactionId << " opcode " << (int)opcode << std::endl; });
          auto transaction = m_client.CreateAndRegisterRITransactionHandler(transactionId, (int)opcode);
          if(transaction) // Null if unsupported
          {
-            Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Created transaction handler for TransactionId " << transaction->TransactionId << std::endl; });
+            file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Created transaction handler for TransactionId " << transaction->TransactionId << std::endl; });
             transaction->ProcessInitialMessage(m_client, message);
          }
          else
          {
-            Logger::L(LL_ERROR, [opcode](std::ostream& os){
+            file_logger::L(LL_ERROR, [opcode](std::ostream& os){
                os << "DSPExClient did not have RITHandler support for opcode " << (int)opcode << std::endl;
             });
          }

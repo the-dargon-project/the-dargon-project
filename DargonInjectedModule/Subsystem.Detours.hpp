@@ -63,13 +63,13 @@
          { \
             if(m_tramp##DetouredMethodName == NULL) /**/ \
             { /**/ \
-               /* Logger::GetOutputStream(LL_INFO) << "Attempt Detour: " #DetouredMethodName " " << endl; /**/ \
+               /* file_logger::GetOutputStream(LL_INFO) << "Attempt Detour: " #DetouredMethodName " " << endl; /**/ \
                m_real##DetouredMethodName = (DelegateTypeName*)(pVtable[vTableOffset]); /**/ \
-               /* Logger::GetOutputStream(LL_INFO) << "real" #DetouredMethodName ": " << m_real##DetouredMethodName << endl; /**/ \
+               /* file_logger::GetOutputStream(LL_INFO) << "real" #DetouredMethodName ": " << m_real##DetouredMethodName << endl; /**/ \
                m_tramp##DetouredMethodName = (DelegateTypeName*)DetourFunction((PBYTE)m_real##DetouredMethodName, (PBYTE)&myDetouredMethodImplementation); /**/ \
-               /* Logger::GetOutputStream(LL_INFO) << "Done!" << endl; /**/ \
+               /* file_logger::GetOutputStream(LL_INFO) << "Done!" << endl; /**/ \
             }else{ /**/ \
-               /* Logger::GetOutputStream(LL_INFO) << "Already detoured " #DetouredMethodName "!: " << m_real##DetouredMethodName << endl; /**/ \
+               /* file_logger::GetOutputStream(LL_INFO) << "Already detoured " #DetouredMethodName "!: " << m_real##DetouredMethodName << endl; /**/ \
             } /**/\
          } \
          void ClassName::Uninstall##DetouredMethodName##Detour() \

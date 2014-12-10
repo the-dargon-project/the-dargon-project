@@ -6,8 +6,8 @@
 #include <IO/DIM/IDIMTaskHandler.hpp>
 
 #include "Init/BootstrapContext.hpp"
-#include "Util/ILogger.hpp"
-#include "Util/noncopyable.hpp"
+#include "logger.hpp"
+#include "noncopyable.hpp"
 #include "Core.hpp"
 
 namespace dargon {
@@ -16,13 +16,13 @@ namespace dargon {
    //       control to static methods.  As only one instance exists and all fields are static, 
    //       there is no differentiation between instance and static members.
    // See ISubsystem.Detours.hpp for information related to implementing a subsystem.
-   class Subsystem : dargon::util::noncopyable
+   class Subsystem : dargon::noncopyable
    {
       // - Static ---------------------------------------------------------------------------------
    protected:
-      // Logger object which must be initialized at the start of the Initialize method before hooks
-      // are set.  The m_logger field is to be accessible by the macros defined in DetoursUtil.hpp
-      static dargon::util::ILogger* s_logger;
+      // file_logger object which must be initialized at the start of the Initialize method before hooks
+      // are set.  The m_file_logger field is to be accessible by the macros defined in DetoursUtil.hpp
+      static dargon::logger* s_logger;
 
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the
       // subsystem.  The pointed-to memory is owned by the Dargon Injected Module's core and this
@@ -45,7 +45,7 @@ namespace dargon {
 
    public:
       // When the Dargon Core bootstraps, the static subsystem class stores the bootstrap context
-      // and logger, which are required for use by subsystem instances.  The static subsystem
+      // and file_logger, which are required for use by subsystem instances.  The static subsystem
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
       static void OnCoreBootstrap(InjectedModule::Core* core, const dargon::Init::BootstrapContext* bootstrapContext);

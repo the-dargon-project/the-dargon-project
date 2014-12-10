@@ -14,9 +14,9 @@
 using namespace dargon;
 using namespace dargon::IO;
 using namespace dargon::IO::DSP;
-using namespace dargon::util;
+using namespace dargon;
 
-void BufferManagerTest();
+void buffer_managerTest();
 void HardCodedEchoTest();
 void HardCodedEchoTest2();
 //void HardCodedEchoTest3();
@@ -25,8 +25,8 @@ int main()
 {
    try
    {
-      Logger::Initialize("C:/DargonLog.log");
-      //BufferManagerTest();
+      file_logger::Initialize("C:/DargonLog.log");
+      //buffer_managerTest();
       //HardCodedEchoTest();
       //HardCodedEchoTest2();
       //HardCodedEchoTest3();
@@ -41,7 +41,7 @@ int main()
       BYTE buffer[256];
       memset(buffer, 0x10, sizeof(buffer));
       //while(true)
-         Logger::L(LL_ALWAYS, [&](std::ostream& os){ os << "Echo Result: " << session->Echo(buffer, 1) << std::endl; });
+         file_logger::L(LL_ALWAYS, [&](std::ostream& os){ os << "Echo Result: " << session->Echo(buffer, 1) << std::endl; });
       while(true) Sleep(1000);
       return 0;
    }
@@ -53,19 +53,19 @@ int main()
 
 bool UIDSetTest()
 {
-   dargon::util::UniqueIdentificationSet<UINT32> uidSet(true);
-   std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
-   std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
-   std::cout << uidSet.TakeUniqueID(10) << " // " << uidSet << std::endl;
-   std::cout << uidSet.TakeUniqueID(20) << " // " << uidSet << std::endl;
-   std::cout << uidSet.GiveUniqueID(20) << " // " << uidSet << std::endl;
-   std::cout << uidSet.GiveUniqueID(0) << " // " << uidSet << std::endl;
-   std::cout << uidSet.GiveUniqueID(1) << " // " << uidSet << std::endl;
-   std::cout << uidSet.GiveUniqueID(11) << " // " << uidSet << std::endl;
-   std::cout << uidSet.GiveUniqueID(10) << " // " << uidSet << std::endl;
+   dargon::unique_id_set<UINT32> uidSet(true);
+   std::cout << uidSet.take() << " // " << uidSet << std::endl;
+   std::cout << uidSet.take() << " // " << uidSet << std::endl;
+   std::cout << uidSet.take(10) << " // " << uidSet << std::endl;
+   std::cout << uidSet.take(20) << " // " << uidSet << std::endl;
+   std::cout << uidSet.give(20) << " // " << uidSet << std::endl;
+   std::cout << uidSet.give(0) << " // " << uidSet << std::endl;
+   std::cout << uidSet.give(1) << " // " << uidSet << std::endl;
+   std::cout << uidSet.give(11) << " // " << uidSet << std::endl;
+   std::cout << uidSet.give(10) << " // " << uidSet << std::endl;
 
-   auto uidSet2 = UniqueIdentificationSet<UINT32>(false);
-   std::cout << uidSet2.TakeUniqueID() << " // " << uidSet2 << std::endl;
+   auto uidSet2 = unique_id_set<UINT32>(false);
+   std::cout << uidSet2.take() << " // " << uidSet2 << std::endl;
    return true;
 }
 
@@ -173,18 +173,18 @@ void HardCodedEchoTest2()
 //      std::cout << e.what() << std::endl;
 //   }
 //}
-void BufferManagerTest()
+void buffer_managerTest()
 {
-   BufferManager bufferManager(20, DSPConstants::kMaxMessageSize);
+   buffer_manager buffer_manager(20, DSPConstants::kMaxMessageSize);
    std::vector<dargon::Blob*> buffers;
    for(int i = 0; i < 30; i++)
    {
-      auto buffer = bufferManager.TakeBuffer();
+      auto buffer = buffer_manager.take();
       std::cout << "Buffer data pointer " << std::hex << (void*)buffer->data << std::dec << std::endl; 
       buffers.push_back(buffer);
    }
    for(auto buffer : buffers)
    {
-      bufferManager.ReturnBuffer(buffer);
+      buffer_manager.give(buffer);
    }
 }

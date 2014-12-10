@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "../../Util/noncopyable.hpp"
+#include "../../noncopyable.hpp"
 #include "../IoProxy.hpp"
 #include "DSPExTypeDefs.hpp"
 #include "IDSPExSession.hpp"
@@ -12,7 +12,7 @@
 #include "DSPExRITransactionHandler.hpp"
 
 namespace dargon { namespace IO { namespace DSP {
-   class DSPExNode : dargon::util::noncopyable {   
+   class DSPExNode : dargon::noncopyable {   
    private:
       const DSPExNodeRole m_role;
       const std::string m_pipeName;

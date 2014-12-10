@@ -1,9 +1,9 @@
 #include <queue>
 #include <condition_variable>
 
-namespace dargon { namespace util { 
+namespace dargon {  
    template <typename T>
-   class BlockingQueue
+   class blocking_queue
    {
    private:
       typedef std::deque<T> container_type; // Constant time insertion/deletion at front/back.
@@ -48,4 +48,4 @@ namespace dargon { namespace util {
          return m_queue.size(); 
       }
    };
-} }
+} 

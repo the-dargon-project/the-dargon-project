@@ -2,7 +2,7 @@
 
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
-#include "../../Util/noncopyable.hpp"
+#include "../../noncopyable.hpp"
 #include "IDSPExSession.hpp"
 #include "DSPExMessage.hpp"
 #include "DSPExInitialMessage.hpp"
@@ -10,7 +10,7 @@
 namespace dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExRITransactionHandler : dargon::util::noncopyable
+   class DSPExRITransactionHandler : dargon::noncopyable
    {
    public:
       /// <summary>

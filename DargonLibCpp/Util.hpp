@@ -4,13 +4,13 @@
 #include <string>
 #include <vector>
 
-#include "Util/ILogger.hpp"
-#include "Util/Logger.hpp"
+#include "logger.hpp"
+#include "file_logger.hpp"
 
-#include "Util/CountdownEvent.hpp"
+#include "countdown_event.hpp"
 
-#include "Util/BufferManager.hpp"
-#include "Util/UniqueIdentificationSet.hpp"
+#include "buffer_manager.hpp"
+#include "unique_id_set.hpp"
 
 std::string GetFileName(const std::string& filePath);
 

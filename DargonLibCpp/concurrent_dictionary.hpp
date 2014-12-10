@@ -11,17 +11,17 @@
 // determined by a dice roll between 13 17 19 23 29 and 31
 #define CONCURRENT_DICTIONARY_BUCKET_COUNT ((int)25)
 
-namespace dargon { namespace Collections {
+namespace dargon { 
 
    template <typename TKey,
              typename TValue,
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, TValue>>>
-   class ConcurrentDictionary_bucket
+   class concurrent_dictionary_bucket
    {
    public:
-      typedef ConcurrentDictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
+      typedef concurrent_dictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
       typedef std::mutex MutexType;
       typedef std::lock_guard<MutexType> LockType;
       typedef std::pair<const TKey, TValue> PairType;
@@ -33,8 +33,8 @@ namespace dargon { namespace Collections {
       std::unordered_map<const TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> dict;
 
    public:
-      ConcurrentDictionary_bucket(const my_t* next) : count(0), next(next) { }
-      ~ConcurrentDictionary_bucket() { }
+      concurrent_dictionary_bucket(const my_t* next) : count(0), next(next) { }
+      ~concurrent_dictionary_bucket() { }
 
       bool insert(const TKey key, TValue value) {
          LockType lock(mutex);
@@ -78,10 +78,10 @@ namespace dargon { namespace Collections {
              class KeyHash = std::hash<TKey>, 
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, TValue>>>
-   class ConcurrentDictionary_iterator : public std::iterator<std::forward_iterator_tag, std::pair<const TKey, TValue>>
+   class concurrent_dictionary_iterator : public std::iterator<std::forward_iterator_tag, std::pair<const TKey, TValue>>
    {
-      typedef ConcurrentDictionary_iterator<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
-      typedef ConcurrentDictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> bucket_t;
+      typedef concurrent_dictionary_iterator<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
+      typedef concurrent_dictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> bucket_t;
       typedef std::pair<const TKey, TValue> value_t;
       typedef std::vector<value_t, PairAllocator> pairs_t;
 
@@ -98,8 +98,8 @@ namespace dargon { namespace Collections {
             currentPairs = this->bucket->copy_pairs();
          }
          */
-      ConcurrentDictionary_iterator() : ConcurrentDictionary_iterator(nullptr, 0) { }
-      explicit ConcurrentDictionary_iterator(bucket_t* bucket, int currentProgress) : bucket(bucket), currentProgress(currentProgress) { 
+      concurrent_dictionary_iterator() : concurrent_dictionary_iterator(nullptr, 0) { }
+      explicit concurrent_dictionary_iterator(bucket_t* bucket, int currentProgress) : bucket(bucket), currentProgress(currentProgress) { 
          while (this->bucket != nullptr) {
             if (this->bucket->size() > 0) {
                currentPairs = std::make_shared<pairs_t>(this->bucket->copy_pairs());
@@ -111,7 +111,7 @@ namespace dargon { namespace Collections {
             }
          }
       }
-      ConcurrentDictionary_iterator(const my_t& iterator) : bucket(iterator.bucket), currentProgress(iterator.currentProgress), currentPairs(iterator.currentPairs) { }
+      concurrent_dictionary_iterator(const my_t& iterator) : bucket(iterator.bucket), currentProgress(iterator.currentProgress), currentPairs(iterator.currentPairs) { }
 
       my_t operator++() { increment(); return *this; }
       my_t operator++(int) { my_t copy(*this); increment(); return copy; }
@@ -143,11 +143,11 @@ namespace dargon { namespace Collections {
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, TValue>>>
-   class ConcurrentDictionary
+   class concurrent_dictionary
    {
-      typedef ConcurrentDictionary<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
-      typedef ConcurrentDictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> bucket;
-      typedef ConcurrentDictionary_iterator<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> iterator;
+      typedef concurrent_dictionary<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> my_t;
+      typedef concurrent_dictionary_bucket<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> bucket;
+      typedef concurrent_dictionary_iterator<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator> iterator;
 
       mutable std::array<std::unique_ptr<bucket>, CONCURRENT_DICTIONARY_BUCKET_COUNT> buckets;
       mutable KeyHash key_hash;
@@ -155,7 +155,7 @@ namespace dargon { namespace Collections {
       bucket* GetBucket(const TKey& key) const { return buckets[(unsigned int)(key_hash(key)) % CONCURRENT_DICTIONARY_BUCKET_COUNT].get(); }
 
    public:
-      ConcurrentDictionary() : key_hash() { 
+      concurrent_dictionary() : key_hash() { 
          for (auto i = CONCURRENT_DICTIONARY_BUCKET_COUNT - 1; i >= 0; --i) {
             auto next = i + 1 == CONCURRENT_DICTIONARY_BUCKET_COUNT ? nullptr : buckets[i + 1].get();
             buckets[i] = std::move(std::unique_ptr<bucket>(new bucket(next)));
@@ -187,5 +187,5 @@ namespace dargon { namespace Collections {
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,
              class PairAllocator = std::allocator<std::pair<const TKey, TValue>>>
-   using concurrent_map = ConcurrentDictionary<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator>;
-} }
+   using concurrent_map = concurrent_dictionary<TKey, TValue, KeyHash, KeyEqualityComparer, PairAllocator>;
+} 

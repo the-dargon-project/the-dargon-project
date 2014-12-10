@@ -11,5 +11,5 @@ DSPExLITransactionHandler::DSPExLITransactionHandler(UINT32 transactionId)
 
 void DSPExLITransactionHandler::OnCompletion()
 {
-   m_completionLatch.Signal();
+   m_completionLatch.signal();
 }

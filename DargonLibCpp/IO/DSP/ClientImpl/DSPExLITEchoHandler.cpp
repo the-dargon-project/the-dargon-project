@@ -6,7 +6,7 @@
 #include "../DSPExInitialMessage.hpp"
 #include "../IDSPExSession.hpp"
 #include "DSPExLITEchoHandler.hpp"
-using dargon::util::Logger;
+using dargon::file_logger;
 using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
 
@@ -19,7 +19,7 @@ DSPExLITEchoHandler::DSPExLITEchoHandler(UINT32 transactionId, BYTE* data, UINT3
 }
 void DSPExLITEchoHandler::InitializeInteraction(IDSPExSession& session)
 {
-   Logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Initialize Echo Interaction" << std::endl; });
+   file_logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Initialize Echo Interaction" << std::endl; });
    session.SendMessage(
       DSPExInitialMessage(
          TransactionId,
@@ -31,7 +31,7 @@ void DSPExLITEchoHandler::InitializeInteraction(IDSPExSession& session)
 }
 void DSPExLITEchoHandler::ProcessMessage(IDSPExSession& session, DSPExMessage& message)
 {
-   Logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Processing Message of Echo Interaction" << std::endl; });
+   file_logger::L(LL_ALWAYS, [](std::ostream& os){ os << "Processing Message of Echo Interaction" << std::endl; });
 
    bool match = message.DataLength == m_dataLength;
    if(match) // If length matches, memcmp

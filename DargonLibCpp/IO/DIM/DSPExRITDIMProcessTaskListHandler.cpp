@@ -12,7 +12,7 @@
 #include "IO/DSP/IDSPExSession.hpp"
 #include "DSPExRITDIMProcessTaskListHandler.hpp"
 
-using dargon::util::Logger;
+using dargon::file_logger;
 using namespace dargon::IO::DIM;
 using namespace dargon::IO::DSP;
 
@@ -30,7 +30,7 @@ DSPExRITDIMProcessTaskListHandler::DSPExRITDIMProcessTaskListHandler(
 
 void DSPExRITDIMProcessTaskListHandler::ProcessInitialMessage(IDSPExSession& session, dargon::IO::DSP::DSPExInitialMessage& message)
 {
-   Logger::L(LL_ALWAYS, [&](std::ostream& os){ os << "Processing Initial Message of DIM.ProcessTaskList"
+   file_logger::L(LL_ALWAYS, [&](std::ostream& os){ os << "Processing Initial Message of DIM.ProcessTaskList"
                                                  << "Buffer: " << std::hex << (void*)message.DataBuffer << " Length: " << std::dec << message.DataLength << std::endl; });
    
    boost::interprocess::bufferstream input_stream((char*)message.DataBuffer, message.DataLength);
@@ -39,12 +39,12 @@ void DSPExRITDIMProcessTaskListHandler::ProcessInitialMessage(IDSPExSession& ses
    m_tasks.resize(m_taskCount);
    m_tasks.clear(); // leaves capacity() the same
          
-   m_headerReceivedLatch.Signal();
+   m_headerReceivedLatch.signal();
 
    if (m_taskCount == 0)
    {
       if (m_completeOnCompletion)
-         m_completeOnCompletion->CompletionLatch.Signal();
+         m_completeOnCompletion->CompletionLatch.signal();
       
       session.DeregisterRITransactionHandler(this);
    }
@@ -53,7 +53,7 @@ void DSPExRITDIMProcessTaskListHandler::ProcessInitialMessage(IDSPExSession& ses
 void DSPExRITDIMProcessTaskListHandler::ProcessMessage(IDSPExSession& session, DSPExMessage& message)
 {
    // Don't process body messages until the header has been recieved
-   m_headerReceivedLatch.Wait();
+   m_headerReceivedLatch.wait();
 
    boost::interprocess::bufferstream input_stream((char*)message.DataBuffer, message.DataLength);
    
@@ -76,7 +76,7 @@ void DSPExRITDIMProcessTaskListHandler::ProcessMessage(IDSPExSession& session, D
    if (m_tasks.size() == m_taskCount)
    {
       if (m_completeOnCompletion)
-         m_completeOnCompletion->CompletionLatch.Signal();
+         m_completeOnCompletion->CompletionLatch.signal();
       
       session.DeregisterRITransactionHandler(this);
    }

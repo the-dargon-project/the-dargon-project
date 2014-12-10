@@ -2,15 +2,14 @@
 
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
-#include "../../Util/noncopyable.hpp"
+#include "../../noncopyable.hpp"
 #include "IDSPExSession.hpp"
 #include "DSPExMessage.hpp"
-using dargon::util::CountdownEvent;
 
 namespace dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExLITransactionHandler : dargon::util::noncopyable
+   class DSPExLITransactionHandler : dargon::noncopyable
    {
    public:
       /// <summary>
@@ -23,7 +22,7 @@ namespace dargon { namespace IO { namespace DSP {
       /// awaiting this DSPExTransactionHandler's results can continue onwards, with the transaction
       /// results available to them.
       /// </summary>
-      CountdownEvent& CompletionLatch; //Noncopyable
+      dargon::countdown_event& CompletionLatch; //Noncopyable
 
       /// <summary>
       /// Creates the initial message which begins our interaction.
@@ -58,6 +57,6 @@ namespace dargon { namespace IO { namespace DSP {
       void OnCompletion();
 
    private:
-      CountdownEvent m_completionLatch;
+      dargon::countdown_event m_completionLatch;
    };
 } } }

@@ -2,9 +2,9 @@
 
 #include <map>
 #include <mutex>
-#include "../Dargon.hpp"
+#include "Dargon.hpp"
 
-namespace dargon { namespace util {
+namespace dargon { 
    /// <summary>
    /// Allows users to request buffers of a given size from a pool of preallocated buffers.  These
    /// buffers can later be returned to the pool.  The pool maintains a maxium size, ensuring that
@@ -22,7 +22,7 @@ namespace dargon { namespace util {
    ///
    /// TODO: Cap the cumulative size of the allocated pool and free huge buffers?
    /// </summary>
-   class BufferManager
+   class buffer_manager
    {
       typedef std::multimap<UINT32, dargon::Blob*> PoolMap;
    public:
@@ -37,7 +37,7 @@ namespace dargon { namespace util {
       /// <param name="minBufferSize">
       /// The minimum size (in bytes) of a buffer allocated by this buffer manager.
       /// </param>
-      BufferManager(UINT32 maxPoolSize, UINT32 minBufferSize);
+      buffer_manager(UINT32 maxPoolSize, UINT32 minBufferSize);
 
       /// <summary>
       /// Gets a Dargon Blob of the given size or larger. The returned Dargon BLOB will not have its
@@ -47,7 +47,7 @@ namespace dargon { namespace util {
       /// If the requested buffer size is larger than the designated maximum buffer size of this 
       /// pool, then a new buffer will always be allocated. 
       /// </summary>
-      dargon::Blob* TakeBuffer(UINT32 size = 0);
+      dargon::Blob* take(UINT32 size = 0);
 
       /// <summary>
       /// Returns a Dargon Buffer to the pool.
@@ -55,7 +55,7 @@ namespace dargon { namespace util {
       /// <param name="blob">
       /// The Dargon Blob to return to the buffer manager.
       /// </param>
-      void ReturnBuffer(dargon::Blob* blob);
+      void give(dargon::Blob* blob);
 
    private:
       UINT32 m_maxPoolSize;
@@ -63,4 +63,4 @@ namespace dargon { namespace util {
       PoolMap m_poolContents;
       std::mutex m_mutex;
    };
-} }
+} 

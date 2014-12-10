@@ -34,9 +34,9 @@ void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE
    context->DIMSession->GetBootstrapArguments(context);
    std::cout << "Bootloader::BootstrapInjectedModule GetBootstrapArguments passed" << std::endl;
 
-   // Create a DSPEx Remote Logger
-   context->Logger = new BootloaderRemoteLogger(context);
-   std::cout << "Bootloader::BootstrapInjectedModule Logger Constructed" << std::endl;
+   // Create a DSPEx Remote file_logger
+   context->logger = new BootloaderRemoteLogger(context);
+   std::cout << "Bootloader::BootstrapInjectedModule file_logger Constructed" << std::endl;
 
    // Call application's init handler
    init(context);

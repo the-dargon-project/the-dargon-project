@@ -3,19 +3,19 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
-#include "../Dargon.hpp"
+#include "Dargon.hpp"
 #include "noncopyable.hpp"
 
-namespace dargon { namespace util {
+namespace dargon { 
    /// <summary>
-   /// Implementation of a C#/Java-like latch/countdownevent object.  Allows none, one, or many
+   /// Implementation of a C#/Java-like latch/countdown_event object.  Allows none, one, or many
    /// threads to synchronize themselves.  The object has an initial count N and may be Signal()ed
    /// by any thread.  When object has been signaled N times, all threads waiting on it are 
    /// released.  All operations on the object after it reaches N are no-ops; nothing occurs.
    ///
    /// If you wish to use this object many times, consider using a barrier object.
    /// </summary>
-   class CountdownEvent : dargon::util::noncopyable
+   class countdown_event : dargon::noncopyable
    {
    public:
       /// <summary>
@@ -24,7 +24,7 @@ namespace dargon { namespace util {
       /// <param name="initialValue">
       /// The initial value set to our counter.
       /// </param>
-      CountdownEvent(UINT32 initialValue = 0);
+      countdown_event(UINT32 initialValue = 0);
 
       /// <summary>
       /// Signals the latch object, atomically decrementing its internal counter to a minimum value
@@ -32,22 +32,22 @@ namespace dargon { namespace util {
       /// counter is initially zero, then the overhead of this call is negligible (it's a simple jmp
       /// operation).
       /// </summary>
-      void Signal();
+      void signal();
 
       /// <summary>
       /// Waits indefinitely for the the internal counter of the object to reach zero.  
       /// </summary>
-      void Wait() const;
+      void wait() const;
 
       /// <summary>
       /// Waits the given number of milliseconds for the internal counter of the object to reach 
       /// zero.  Returns true if the counter reaches zero during/before the call of this method.
       /// </summary>
-      bool Wait(UINT32 milliseconds) const;
+      bool wait(UINT32 milliseconds) const;
 
    private:
       std::atomic<UINT32> m_counter;
       mutable std::mutex m_mutex;
       mutable std::condition_variable m_conditionVariable;
    };
-} }
+}

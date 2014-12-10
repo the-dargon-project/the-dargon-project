@@ -11,7 +11,7 @@
 #include "IPCObject.hpp"
 
 using namespace dargon::IO;
-using dargon::util::Logger;
+using dargon::file_logger;
 
 IPCObject::IPCObject(std::shared_ptr<dargon::IO::IoProxy> ioProxy)
    : m_lastError(0), m_pipeHandle(0), ioProxy(ioProxy)
@@ -81,7 +81,7 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
                           IN              uint32_t numBytes, 
                           OUT OPTIONAL    uint32_t* paramBytesRead)
 {
-   Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Read: buffer " << buffer << " numBytes " << numBytes << std::endl; });
+   file_logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Read: buffer " << buffer << " numBytes " << numBytes << std::endl; });
 
    static_assert(sizeof(DWORD) == sizeof(uint32_t), "DWORD size isn't same as UINT32 size!");
    if(numBytes == 0) return true;
@@ -106,7 +106,7 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
          m_lastError = ::GetLastError();
          if(m_lastError != ERROR_IO_PENDING)
          {
-            Logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "Read byte failed with error " << m_lastError << std::endl; });//; read " << bytesRead << " of " << numBytes << " remaining bytes." << std::endl; });
+            file_logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "Read byte failed with error " << m_lastError << std::endl; });//; read " << bytesRead << " of " << numBytes << " remaining bytes." << std::endl; });
             ioProxy->CloseHandle(overlapped.hEvent);
             return false;
          }
@@ -124,13 +124,13 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
          //std::cout << "ReadBytes: Waiting for single object" << std::endl;
          DWORD waitResult = WaitForSingleObject(overlapped.hEvent, INFINITE);
          if(waitResult != WAIT_OBJECT_0)
-            Logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "IPC Object Read Wait for Single Object returned " << std::hex << waitResult << std::endl; });
+            file_logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "IPC Object Read Wait for Single Object returned " << std::hex << waitResult << std::endl; });
          
          //std::cout << "ReadBytes: Getting overlapped result" << std::endl;
          if(!GetOverlappedResult(m_pipeHandle, &overlapped, &bytesTransferred, TRUE))
          {
             m_lastError = ::GetLastError();
-            Logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "Get Overlapped IO Result failed with error " << m_lastError << std::endl; });
+            file_logger::SNL(LL_ERROR, [=](std::ostream& os){ os << "Get Overlapped IO Result failed with error " << m_lastError << std::endl; });
             ioProxy->CloseHandle(overlapped.hEvent);
             return false;
          }
@@ -145,10 +145,10 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
    //for(int i = 0; i < totalBytesToRead; i++)
    //{
    //   int value = *((BYTE*)buffer + i);
-   //   Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "R " << i << ": " << std::hex << std::setw(2) << value << std::dec << " (" << value << ") '" << (char)value << "'" << std::endl; });
+   //   file_logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "R " << i << ": " << std::hex << std::setw(2) << value << std::dec << " (" << value << ") '" << (char)value << "'" << std::endl; });
    //}
 
-      //Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ 
+      //file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ 
       //   os << "Read Bytes: ";
       //   if(bytesRead > 0)
       //   {
@@ -165,7 +165,7 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
 
       //buffer = (BYTE*)buffer + bytesRead;
       //numBytes -= bytesRead;
-      //Logger::SNL(LL_VERBOSE, [=](std::ostream& os) { os << "Read byte count " << bytesRead << ", " << numBytes << " remaining" << std::endl; });
+      //file_logger::SNL(LL_VERBOSE, [=](std::ostream& os) { os << "Read byte count " << bytesRead << ", " << numBytes << " remaining" << std::endl; });
    //}
    return true;
 #endif
@@ -200,19 +200,19 @@ bool IPCObject::Write(IN           const void* buffer,
       auto lastError = ::GetLastError();
       if (lastError != ERROR_IO_PENDING) {
          std::cout << "IPC Write File error " << m_lastError << std::endl;
-         //Logger::SNL(LL_ERROR, [this](std::ostream& os){ os << "IPC Write File error " << m_lastError << std::endl; });
+         //file_logger::SNL(LL_ERROR, [this](std::ostream& os){ os << "IPC Write File error " << m_lastError << std::endl; });
          success = false;
       } else { 
          DWORD waitResult = WaitForSingleObject(overlapped.hEvent, INFINITE);
          if (waitResult != WAIT_OBJECT_0) {
             std::cout << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl;
-            //Logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl; });
+            //file_logger::SNL(LL_ERROR, [=](std::ostream& os) { os << "IPC Object Write Wait for Single Object returned " << std::hex << waitResult << std::endl; });
          }
          DWORD bytesTransferred = 0;
          if (!GetOverlappedResult(m_pipeHandle, &overlapped, &bytesTransferred, false)) {
             lastError = ::GetLastError();
             std::cout << "IPC Write Get Overlapped Result error " << m_lastError << std::endl;
-            //Logger::SNL(LL_ERROR, [this](std::ostream& os) { os << "IPC Write Get Overlapped Result error " << m_lastError << std::endl; });
+            //file_logger::SNL(LL_ERROR, [this](std::ostream& os) { os << "IPC Write Get Overlapped Result error " << m_lastError << std::endl; });
             success = false;
          }
       }

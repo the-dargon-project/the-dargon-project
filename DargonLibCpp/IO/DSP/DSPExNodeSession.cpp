@@ -19,7 +19,7 @@
 
 using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
-using namespace dargon::util;
+using namespace dargon;
 
 bool DSPExNodeSession::kDebugEnabled = true;
 int DSPExNodeSession::kFrameProcessorCount = 2;
@@ -88,7 +88,7 @@ void DSPExNodeSession::AddFrameProcessor()
             *this, 
             [this](DSPExFrameProcessor* processor) {
                // Return the processor's frame buffer to the buffer pool
-               m_frameBufferPool.ReturnBuffer(processor->GetAndResetAssignedFrame());
+               m_frameBufferPool.give(processor->GetAndResetAssignedFrame());
 
                // Move the processor from the Busy collection to the Idle collection
                {
@@ -97,7 +97,7 @@ void DSPExNodeSession::AddFrameProcessor()
                                          m_busyFrameProcessors.end(),
                                          processor);
                   if(match == m_busyFrameProcessors.end())
-                     Logger::L(LL_ERROR, [](std::ostream& os){ os << "Didn't find completed processor in busy list!?" << std::endl; });
+                     file_logger::L(LL_ERROR, [](std::ostream& os){ os << "Didn't find completed processor in busy list!?" << std::endl; });
                   else
                      m_busyFrameProcessors.erase(match);
 
@@ -126,21 +126,21 @@ void DSPExNodeSession::FrameReceivingThreadStart()
       UINT32 length = 0;
       if(!m_ipc.ReadBytes(&length, sizeof(length)))
       {
-         Logger::L(LL_ERROR, [=](std::ostream& os){ os << "Read Length error " << m_ipc.GetLastError() << std::endl; });
+         file_logger::L(LL_ERROR, [=](std::ostream& os){ os << "Read Length error " << m_ipc.GetLastError() << std::endl; });
          return;
       }
       if(length > DSPConstants::kMaxMessageSize)
-         Logger::L(LL_WARN, [=](std::ostream& os){ os << "DSPEx Frame Size larger than permitted by specification (length " << length << ")" << std::endl; });
+         file_logger::L(LL_WARN, [=](std::ostream& os){ os << "DSPEx Frame Size larger than permitted by specification (length " << length << ")" << std::endl; });
       else
-         Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Got DSPEx Frame Size " << std::dec << length << "" << std::endl; });
+         file_logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Got DSPEx Frame Size " << std::dec << length << "" << std::endl; });
 
-      auto frameBufferBlob = m_frameBufferPool.TakeBuffer(length);
+      auto frameBufferBlob = m_frameBufferPool.take(length);
       std::cout << "!! Took Frame Buffer with data location " << std::hex << (void*)frameBufferBlob->data << std::dec << std::endl;
 
       *(UINT32*)frameBufferBlob->data = length;
       if(!m_ipc.ReadBytes(frameBufferBlob->data + 4, length - 4))
       {
-         Logger::L(LL_ERROR, [=](std::ostream& os){ os << "Read Block of length " << length <<  " error " << m_ipc.GetLastError() << std::endl; });
+         file_logger::L(LL_ERROR, [=](std::ostream& os){ os << "Read Block of length " << length <<  " error " << m_ipc.GetLastError() << std::endl; });
          return;
       }
       
@@ -162,7 +162,7 @@ void DSPExNodeSession::FrameReceivingThreadStart()
 }
 UINT32 DSPExNodeSession::TakeLocallyInitializedTransactionId()
 {
-   return m_locallyInitializedUIDSet.TakeUniqueID();
+   return m_locallyInitializedUIDSet.take();
 }
 
 void DSPExNodeSession::RegisterAndInitializeLITransactionHandler(DSPExLITransactionHandler& th)
@@ -178,7 +178,7 @@ void DSPExNodeSession::DeregisterLITransactionHandler(DSPExLITransactionHandler&
    LockType lock(m_locallyInitializedTransactionMutex);
    m_locallyInitializedTransactions.erase(th.TransactionId);
    lock.unlock();
-   m_locallyInitializedUIDSet.GiveUniqueID(th.TransactionId);
+   m_locallyInitializedUIDSet.give(th.TransactionId);
 }
 
 DSPExLITransactionHandler* DSPExNodeSession::FindLITransactionHandler(UINT32 transactionId)
@@ -206,19 +206,19 @@ DSPExRITransactionHandler* DSPExNodeSession::CreateAndRegisterRITransactionHandl
       return nullptr;
    else
    {  
-      Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Constructed RITHandler for opcode " << (int)opcode << std::endl; });
+      file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Constructed RITHandler for opcode " << (int)opcode << std::endl; });
       LockType lock(m_remotelyInitializedTransactionMutex);
       
-      Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Registering RITHandler for opcode " << (int)opcode << std::endl; });
+      file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Registering RITHandler for opcode " << (int)opcode << std::endl; });
       m_remotelyInitializedTransactions.insert(
          std::make_pair(transactionId, pResult)
       );
       
-      Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Freeing Mutex" << std::endl; });
+      file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Freeing Mutex" << std::endl; });
       lock.unlock();
       
-      Logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Registering transactionId " << transactionId << std::endl; });
-      m_remotelyInitializedUIDSet.GiveUniqueID(transactionId);
+      file_logger::SNL(LL_VERBOSE, [=](std::ostream& os){ os << "Registering transactionId " << transactionId << std::endl; });
+      m_remotelyInitializedUIDSet.give(transactionId);
       return pResult;
    }
 }
@@ -228,7 +228,7 @@ void DSPExNodeSession::DeregisterRITransactionHandler(DSPExRITransactionHandler*
    LockType lock(m_remotelyInitializedTransactionMutex);
    m_remotelyInitializedTransactions.erase(handler->TransactionId);
    lock.unlock();
-   m_remotelyInitializedUIDSet.TakeUniqueID(handler->TransactionId);
+   m_remotelyInitializedUIDSet.take(handler->TransactionId);
    delete handler;
 }
 
@@ -320,31 +320,31 @@ void DSPExNodeSession::AddInstructionSet(IDSPExInstructionSet* instructionSet)
 
 bool DSPExNodeSession::Echo(BYTE* buffer, UINT32 length)
 {
-   UINT32 transactionId = m_locallyInitializedUIDSet.TakeUniqueID();
+   UINT32 transactionId = m_locallyInitializedUIDSet.take();
    DSPExLITEchoHandler handler(transactionId, buffer, length);
    RegisterAndInitializeLITransactionHandler(handler);
-   handler.CompletionLatch.Wait();
+   handler.CompletionLatch.wait();
    return handler.ResponseDataMatched;
 }
 
-void DSPExNodeSession::Log(UINT32 loggerLevel, LoggingFunction& logger)
+void DSPExNodeSession::Log(UINT32 file_loggerLevel, LoggingFunction& file_logger)
 {
    std::stringstream ss;
-   logger(ss);
+   file_logger(ss);
 
-   UINT32 transactionId = m_locallyInitializedUIDSet.TakeUniqueID();
-   DSPExLITRemoteLogHandler handler(transactionId, loggerLevel, ss.str());
+   UINT32 transactionId = m_locallyInitializedUIDSet.take();
+   DSPExLITRemoteLogHandler handler(transactionId, file_loggerLevel, ss.str());
    RegisterAndInitializeLITransactionHandler(handler);
-   handler.CompletionLatch.Wait();
+   handler.CompletionLatch.wait();
 }
 
 void DSPExNodeSession::GetBootstrapArguments(dargon::Init::BootstrapContext* context)
 {
-   UINT32 transactionId = m_locallyInitializedUIDSet.TakeUniqueID();
+   UINT32 transactionId = m_locallyInitializedUIDSet.take();
    DSPExLITBootstrapGetArgsHandler handler(transactionId);
    RegisterAndInitializeLITransactionHandler(handler);
    std::cout << "Waiting for Bootstrap Arguments handler to complete " << std::endl;
-   handler.CompletionLatch.Wait();
+   handler.CompletionLatch.wait();
    context->ArgumentFlags = std::move(handler.m_flags);
    context->ArgumentProperties = std::move(handler.m_properties);
 }
@@ -352,7 +352,7 @@ void DSPExNodeSession::GetBootstrapArguments(dargon::Init::BootstrapContext* con
 void DSPExNodeSession::DumpToConsole(DSPExMessage& message)
 {
    if (!kDebugEnabled) return;
-   Logger::SNL(
+   file_logger::SNL(
       LL_VERBOSE,
       [&](std::ostream& os) { 
          os << "Transaction ID: " << message.TransactionId << std::endl; 
@@ -364,7 +364,7 @@ void DSPExNodeSession::DumpToConsole(DSPExMessage& message)
 void DSPExNodeSession::DumpToConsole(DSPExInitialMessage& message)
 {
    if (!kDebugEnabled) return;
-   Logger::SNL(
+   file_logger::SNL(
       LL_VERBOSE,
       [&](std::ostream& os) { 
          os << "Transaction ID: " << message.TransactionId << " opcode " << message.Opcode << std::endl;

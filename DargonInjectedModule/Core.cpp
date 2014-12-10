@@ -17,8 +17,7 @@
 #include <IO/DIM/DIMTaskTypes.hpp>
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "Util.hpp"
-#include <Util/Logger.hpp>
-#include <Util/LoggerLevels.hpp>
+#include <file_logger.hpp>
 
 #include "Core.hpp"
 #include "Subsystem.hpp"
@@ -29,7 +28,7 @@
 
 using namespace dargon::InjectedModule;
 using namespace dargon::Init;
-using namespace dargon::util;
+using namespace dargon;
 using namespace std::placeholders;
 using namespace dargon::Subsystems;
 using namespace dargon::IO::DSP::ClientImpl;
@@ -38,7 +37,7 @@ using namespace dargon::IO::DIM;
 Core::Core(HMODULE hModule) : m_pDIMTaskManager(nullptr)
 {
    m_moduleHandle = hModule;
-   Logger::Initialize("C:/DargonLog.log");
+   file_logger::Initialize("C:/DargonLog.log");
 
    std::cout << "Entered Core::Core, suspending main thread" << std::endl;
    m_mainThreadHandle = OpenMainThread();
@@ -103,7 +102,7 @@ void Core::Initialize(const BootstrapContext* context)
       context->DIMSession->RegisterAndInitializeLITransactionHandler(*handler);
 
       std::cout << "Waiting for initial DIM Task List" << std::endl;
-      handler->CompletionLatch.Wait();
+      handler->CompletionLatch.wait();
       
       std::cout << "Processing Initial DIM Task List... " << std::endl;
       auto tasks = handler->ReleaseTasks();

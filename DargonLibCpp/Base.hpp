@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "Util/noncopyable.hpp"
+#include "noncopyable.hpp"
 // An IN paramter is read by the method, but not mutated by the method.
 #define IN
 
@@ -33,7 +33,7 @@ typedef UINT16 USHORT;
 
 namespace dargon {
 
-   class Blob : private dargon::util::noncopyable
+   class Blob : private dargon::noncopyable
    {
    public:
       // The size of our blob's data block

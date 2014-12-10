@@ -100,8 +100,8 @@
     <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
     <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
     <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
-    <ClInclude Include="Collections\ConcurrentDictionary.hpp" />
-    <ClInclude Include="Collections\ConcurrentSet.hpp" />
+    <ClInclude Include="concurrent_dictionary.hpp" />
+    <ClInclude Include="concurrent_set.hpp" />
     <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
     <ClInclude Include="Init\BootstrapContext.hpp" />
     <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
@@ -128,9 +128,9 @@
     <ClCompile Include="dlc_pch.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Util.cpp" />
-    <ClCompile Include="Util\BufferManager.cpp" />
-    <ClCompile Include="Util\CountdownEvent.cpp" />
-    <ClCompile Include="Util\Logger.cpp" />
+    <ClCompile Include="buffer_manager.cpp" />
+    <ClCompile Include="countdown_event.cpp" />
+    <ClCompile Include="file_logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.hpp" />
@@ -160,16 +160,16 @@
     <ClInclude Include="IO\IOTypedefs.hpp" />
     <ClInclude Include="IO\IPCObject.hpp" />
     <ClInclude Include="dlc_pch.hpp" />
+    <ClInclude Include="logger.hpp" />
     <ClInclude Include="Util.hpp" />
-    <ClInclude Include="Util\BlockingQueue.hpp" />
-    <ClInclude Include="Util\BufferManager.hpp" />
-    <ClInclude Include="Util\CountdownEvent.hpp" />
-    <ClInclude Include="Util\ILogger.hpp" />
-    <ClInclude Include="Util\Logger.hpp" />
-    <ClInclude Include="Util\Logger.inl.hpp" />
-    <ClInclude Include="Util\LoggerLevels.hpp" />
-    <ClInclude Include="Util\noncopyable.hpp" />
-    <ClInclude Include="Util\UniqueIdentificationSet.hpp" />
+    <ClInclude Include="blocking_queue.hpp" />
+    <ClInclude Include="buffer_manager.hpp" />
+    <ClInclude Include="countdown_event.hpp" />
+    <ClInclude Include="file_logger.hpp" />
+    <ClInclude Include="file_logger.inl.hpp" />
+    <ClInclude Include="logger_levels.hpp" />
+    <ClInclude Include="noncopyable.hpp" />
+    <ClInclude Include="unique_id_set.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

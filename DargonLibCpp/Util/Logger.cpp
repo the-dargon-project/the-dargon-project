@@ -1,6 +1,5 @@
 #include "../dlc_pch.hpp"
-#include <boost/algorithm/string.hpp> //trim
-#include <boost/thread.hpp>
+#include <thread>
 #include <sstream>
 #include <iomanip>
 #include "Logger.hpp"
@@ -47,7 +46,7 @@ void Logger::Log(UINT32 loggerLevel, LoggingFunction loggingFunction)
                 << std::setw(2) << systemTime.wSecond << ':'
                 << std::setw(3) << systemTime.wMilliseconds << ' '
                 << std::setw(4) << systemTime.wYear << '|'
-                << std::setw(4) << std::hex << boost::this_thread::get_id() << std::dec << "|";
+                << std::setw(4) << std::hex << std::this_thread::get_id() << std::dec << "|";
 #else
    UINT32 a = "Don't compile";
    #pragma message "Warning: Using localtime is unsafe for multithreaded environment!"

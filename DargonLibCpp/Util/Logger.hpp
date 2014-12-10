@@ -4,8 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <mutex>
-#include <boost/iostreams/tee.hpp>
-#include <boost/iostreams/stream.hpp>
 #include "../Dargon.hpp"
 #include "ILogger.hpp"
 #include "LoggerLevels.hpp"

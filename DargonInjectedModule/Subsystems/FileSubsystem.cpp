@@ -9,6 +9,7 @@
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverrideTaskHandler.hpp"
 #include "FileSwapTaskHandler.hpp"
+#include "../IO/DIM/CommandManager.hpp"
 
 using namespace dargon::Subsystems;
 

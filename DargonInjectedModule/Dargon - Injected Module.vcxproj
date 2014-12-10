@@ -162,9 +162,6 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClCompile Include="ThirdParty\guicon.cpp" />
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="Configuration.hpp" />
-    <ClInclude Include="Core.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClCompile Include="DllMain.cpp" />
     <ClInclude Include="DSPExHandlers\DSPExLol.hpp" />
     <ClInclude Include="feature_toggles.hpp" />
@@ -219,9 +216,6 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="ThirdParty\guicon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Subsystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -4,18 +4,15 @@
 #include "logger.hpp"
 
 using namespace dargon;
-using namespace dargon::InjectedModule;
 using namespace dargon::IO::DIM;
 
 dargon::logger* Subsystem::s_logger;
 std::shared_ptr<const dargon::Init::bootstrap_context> Subsystem::s_bootstrap_context;
-Core* Subsystem::s_core;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;
 const std::unordered_set<Subsystem*>& Subsystem::Subsystems(Subsystem::s_subsystems);
 
-void Subsystem::OnCoreBootstrap(Core* core, std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context)
+void Subsystem::Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context)
 {
-   s_core = core;
    s_bootstrap_context = bootstrap_context;
    s_logger = bootstrap_context->logger;
 }

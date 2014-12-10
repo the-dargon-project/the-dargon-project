@@ -9,7 +9,6 @@
 #include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
 #include "noncopyable.hpp"
-#include "Core.hpp"
 
 namespace dargon {
    // Base Interface for a subsystem (formally Hooker in Dargon r1).
@@ -30,9 +29,6 @@ namespace dargon {
       // field is initialized in the Initialize() method.
       static std::shared_ptr<const dargon::Init::bootstrap_context> s_bootstrap_context;
 
-      // Injected Module Core
-      static InjectedModule::Core* s_core;
-
       // list of instantiated subsystems
       static std::unordered_set<Subsystem*> s_subsystems;
 
@@ -49,7 +45,7 @@ namespace dargon {
       // and file_logger, which are required for use by subsystem instances.  The static subsystem
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
-      static void OnCoreBootstrap(InjectedModule::Core* core, std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context);
+      static void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context);
 
       // Subsystems
       static const std::unordered_set<Subsystem*>& Subsystems;

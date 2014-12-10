@@ -66,6 +66,7 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
 
    // initialize subsystem dependencies
    std::cout << "Initializing Subsystems" << std::endl;
+   Subsystem::Initialize(context);
    auto file_subsystem = std::make_shared<FileSubsystem>(command_manager);
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();

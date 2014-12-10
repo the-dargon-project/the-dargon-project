@@ -5,8 +5,6 @@
 #include <iostream>
 #include <thread>
 #include <deque>
-#include <boost/utility.hpp>
-#include <boost/pool/pool.hpp>
 #include "../../Init/BootstrapContext.hpp"
 #include "../../Util.hpp"
 #include "../../noncopyable.hpp"

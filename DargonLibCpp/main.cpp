@@ -5,10 +5,6 @@
 #include "Util.hpp"
 #include "IO.hpp"
 #include "IO/DSP.h"
-#include <boost/iostreams/stream.hpp>
-#include <boost/iostreams/copy.hpp>
-#include <boost/function.hpp>
-#include <boost/asio.hpp>
 #include "IO/DSP/DSPExFrameTransmitter.hpp"
 
 using namespace dargon;

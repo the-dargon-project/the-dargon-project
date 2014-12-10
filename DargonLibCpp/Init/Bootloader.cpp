@@ -1,4 +1,5 @@
 #include "../dlc_pch.hpp"
+#include <sstream>
 #include "../IO.hpp"
 #include "../IO/IoProxy.hpp"
 #include "Bootloader.hpp"

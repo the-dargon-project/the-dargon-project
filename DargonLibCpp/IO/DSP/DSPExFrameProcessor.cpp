@@ -1,5 +1,6 @@
 #include "../../dlc_pch.hpp"
 #include <WinBase.h> // ThreadProc
+#include <process.h>
 #include "DSPExFrameProcessor.hpp"
 #include "DSPExNodeSession.hpp"
 #include "../../Dargon.hpp"

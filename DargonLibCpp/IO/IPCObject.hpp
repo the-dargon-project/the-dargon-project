@@ -1,8 +1,7 @@
 #pragma once
 
+#include <memory>
 #include <string>
-#include <boost/asio.hpp>
-#include <boost/utility.hpp>
 #include "../Base.hpp"
 #include "../noncopyable.hpp"
 #include "../Dargon.hpp"

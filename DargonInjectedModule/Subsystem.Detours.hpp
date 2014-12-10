@@ -1,7 +1,6 @@
 #pragma once
 
 #include "stdafx.h"
-#include <boost/signals2.hpp>
 #include <functional>
 #include <detours.h>
 

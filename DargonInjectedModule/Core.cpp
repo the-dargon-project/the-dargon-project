@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
+#include <process.h>
 #include <Windows.h>
 
 #include "Init/Bootloader.hpp"

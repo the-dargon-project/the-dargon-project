@@ -1,5 +1,8 @@
 #include "dlc_pch.hpp"
+#include <algorithm>
+#include <mutex>
 #include "buffer_manager.hpp"
+#include "Base.hpp"
 
 using namespace dargon;
 
@@ -11,14 +14,15 @@ dargon::Blob* buffer_manager::take(UINT32 size) {
    std::unique_lock<std::mutex> lock(m_mutex);
    auto it = m_poolContents.lower_bound(size);
    if (it != m_poolContents.end()) {
-      auto returnedBlob = *it;
+      auto returnedBlob = it;
       m_poolContents.erase(it);
       lock.unlock();
-      return returnedBlob.second;
-   } else // size is greater than anything in our pool, alloc new blob
-   {
+      return returnedBlob->second;
+   } else {
+      // size is greater than anything in our pool, alloc new blob
       lock.unlock();
-      return new Blob(std::max(size, m_minBufferSize));
+      auto blobSize = std::max(size, m_minBufferSize);
+      return new Blob(blobSize);
    }
 }
 

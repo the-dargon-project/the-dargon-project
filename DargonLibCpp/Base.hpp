@@ -32,16 +32,14 @@ typedef INT16  SHORT;
 typedef UINT16 USHORT;
 
 namespace dargon {
-
-   class Blob : private dargon::noncopyable
-   {
+   class Blob : dargon::noncopyable {
    public:
       // The size of our blob's data block
       UINT32 const size;
 
       // Pointer to the data block of our blob.  Owned and disposed by the blob.
       UINT8* const data;
-      
+
       /// <summary>
       /// Initializes a new instance of a binary large object of the given size.
       /// </summary>
@@ -49,7 +47,7 @@ namespace dargon {
       /// The size of our new blob's data block.
       /// </param>
       Blob(UINT32 newSize);
-      
+
       /// <summary>
       /// Initializes a new instance of a binary large object of the given size.
       /// </summary>

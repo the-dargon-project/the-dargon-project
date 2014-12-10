@@ -1,5 +1,6 @@
 #include "../../dlc_pch.hpp"
 #include <sstream>
+#include <process.h>
 #include "../../Init/BootstrapContext.hpp"
 #include "../../Util.hpp"
 #include "../IPCObject.hpp"

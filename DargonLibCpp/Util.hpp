@@ -6,9 +6,7 @@
 
 #include "logger.hpp"
 #include "file_logger.hpp"
-
 #include "countdown_event.hpp"
-
 #include "buffer_manager.hpp"
 #include "unique_id_set.hpp"
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../stdafx.h"
-#include <boost/signals2.hpp>
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "KernelSubsystemTypedefs.hpp"

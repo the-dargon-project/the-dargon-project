@@ -1,8 +1,8 @@
 #include "../../dlc_pch.hpp"
+#include <memory>
 #include <string>
 #include <thread>
 #include <functional>
-#include <string>
 #include "../../Util.hpp"
 #include "DSPExFrameTransmitter.hpp"
 #include "DSPConstants.hpp"

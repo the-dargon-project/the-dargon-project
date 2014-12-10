@@ -13,7 +13,7 @@
 #include <IO/DIM/IDIMTaskHandler.hpp>
 #include <IO/DIM/DIMTaskTypes.hpp>
 #include "IO/DSP/DSPExNodeSession.hpp"
-#include "Util.hpp"
+#include "util.hpp"
 #include <logger.hpp>
 
 #include "Core.hpp"

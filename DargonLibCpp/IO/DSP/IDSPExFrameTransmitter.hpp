@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include "../../Dargon.hpp"
+#include "../../dargon.hpp"
 
 namespace dargon { namespace IO { namespace DSP {
    // Params: Buffer, Length

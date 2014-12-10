@@ -1,8 +1,8 @@
 #include "../../../dlc_pch.hpp"
 #include <istream>
 #include <sstream>
-#include "../../../Dargon.hpp"
-#include "../../../Util.hpp"
+#include "../../../dargon.hpp"
+#include "../../../util.hpp"
 #include "../../../binary_reader.hpp"
 #include "../DSPEx.hpp"
 #include "../DSPExMessage.hpp"

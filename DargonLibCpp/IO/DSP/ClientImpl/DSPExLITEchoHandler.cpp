@@ -1,6 +1,6 @@
 #include "../../../dlc_pch.hpp"
-#include "../../../Dargon.hpp"
-#include "../../../Util.hpp"
+#include "../../../dargon.hpp"
+#include "../../../util.hpp"
 #include "../DSPEx.hpp"
 #include "../DSPExMessage.hpp"
 #include "../DSPExInitialMessage.hpp"

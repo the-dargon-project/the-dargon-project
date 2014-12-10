@@ -2,7 +2,7 @@
 
 #include "../dlc_pch.hpp"
 #include <Windows.h>
-#include "../Util.hpp"
+#include "../util.hpp"
 
 //-------------------------------------------------------------------------------------------------
 // ::CreateEventA

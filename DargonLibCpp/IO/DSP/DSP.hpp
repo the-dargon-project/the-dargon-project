@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "../../Dargon.hpp"
+#include "../../dargon.hpp"
 
 #define DSP_OK                        ((BYTE)0x00)
 #define DSP_DONE                      (DSP_OK)

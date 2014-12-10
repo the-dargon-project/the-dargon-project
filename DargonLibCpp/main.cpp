@@ -1,9 +1,9 @@
 #include "dlc_pch.hpp"
 #include <iostream>
 #include <memory>
-#include "Dargon.hpp"
-#include "Util.hpp"
-#include "IO.hpp"
+#include "dargon.hpp"
+#include "util.hpp"
+#include "io.hpp"
 #include "IO/DSP.h"
 #include "IO/DSP/DSPExFrameTransmitter.hpp"
 
@@ -172,7 +172,7 @@ void HardCodedEchoTest2()
 void buffer_managerTest()
 {
    buffer_manager buffer_manager(20, DSPConstants::kMaxMessageSize);
-   std::vector<dargon::Blob*> buffers;
+   std::vector<dargon::blob*> buffers;
    for(int i = 0; i < 30; i++)
    {
       auto buffer = buffer_manager.take();

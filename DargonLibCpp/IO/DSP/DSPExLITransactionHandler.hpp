@@ -1,7 +1,7 @@
 #pragma once 
 
-#include "../../Dargon.hpp"
-#include "../../Util.hpp"
+#include "../../dargon.hpp"
+#include "../../util.hpp"
 #include "../../noncopyable.hpp"
 #include "IDSPExSession.hpp"
 #include "DSPExMessage.hpp"

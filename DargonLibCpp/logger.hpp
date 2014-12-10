@@ -2,7 +2,7 @@
 
 #include <ostream>
 #include <functional>
-#include "Dargon.hpp"
+#include "dargon.hpp"
 #include "logger_levels.hpp"
 
 // Verbose file_logger Level - for things that happen every single frame

@@ -32,7 +32,7 @@ typedef INT16  SHORT;
 typedef UINT16 USHORT;
 
 namespace dargon {
-   class Blob : dargon::noncopyable {
+   class blob : dargon::noncopyable {
    public:
       // The size of our blob's data block
       UINT32 const size;
@@ -46,7 +46,7 @@ namespace dargon {
       /// <param name="newSize">
       /// The size of our new blob's data block.
       /// </param>
-      Blob(UINT32 newSize);
+      blob(UINT32 newSize);
 
       /// <summary>
       /// Initializes a new instance of a binary large object of the given size.
@@ -55,14 +55,14 @@ namespace dargon {
       /// The size of our new blob's data block.
       /// </param>
       /// <param name="newData">
-      /// Our blob's new data block, which becomes owned by the Blob object.  When the blob object
+      /// Our blob's new data block, which becomes owned by the blob object.  When the blob object
       /// is destructed, then the data block's memory is freed.
       /// </param>
-      Blob(UINT32 newSize, UINT8* newData);
+      blob(UINT32 newSize, UINT8* newData);
 
       /// <summary>
       /// Frees the data block associated with this blob.
       /// </summary>
-      ~Blob();
+      ~blob();
    };
 }

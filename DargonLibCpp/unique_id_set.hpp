@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <mutex>
 #include <stdexcept>
-#include "Dargon.hpp"
+#include "dargon.hpp"
 #include "noncopyable.hpp"
 
 namespace dargon { 

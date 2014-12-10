@@ -2,7 +2,7 @@
 
 #include "dlc_pch.hpp"
 #include <string>
-#include "../../../Dargon.hpp"
+#include "../../../dargon.hpp"
 #include "../DSPEx.hpp"
 #include "../IDSPExSession.hpp"
 #include "../DSPExLITransactionHandler.hpp"

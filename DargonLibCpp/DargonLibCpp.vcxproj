@@ -90,9 +90,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="base.cpp" />
     <ClCompile Include="Init\Bootloader.cpp" />
     <ClCompile Include="Init\BootloaderRemoteLogger.cpp" />
-    <ClCompile Include="IO.cpp" />
+    <ClCompile Include="io.cpp" />
     <ClCompile Include="IO\DIM\DIMTaskManager.cpp" />
     <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp" />
     <ClCompile Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.cpp" />
@@ -100,10 +101,14 @@
     <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp" />
     <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp" />
     <ClCompile Include="IO\DSP\ClientImpl\DSPExRITEchoHandler.cpp" />
+    <ClCompile Include="util.cpp" />
+    <ClInclude Include="base.hpp" />
     <ClInclude Include="concurrent_dictionary.hpp" />
     <ClInclude Include="concurrent_set.hpp" />
+    <ClInclude Include="dargon.hpp" />
     <ClInclude Include="Init\BootloaderRemoteLogger.hpp" />
     <ClInclude Include="Init\BootstrapContext.hpp" />
+    <ClInclude Include="io.hpp" />
     <ClInclude Include="IO\DIM\DIMInstructionSet.hpp" />
     <ClInclude Include="IO\DIM\DIMTask.hpp" />
     <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp" />
@@ -126,18 +131,14 @@
     <ClCompile Include="IO\IPCObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="dlc_pch.cpp" />
-    <ClCompile Include="Base.cpp" />
-    <ClCompile Include="Util.cpp" />
     <ClCompile Include="buffer_manager.cpp" />
     <ClCompile Include="countdown_event.cpp" />
     <ClCompile Include="file_logger.cpp" />
     <ClInclude Include="binary_reader.hpp" />
+    <ClInclude Include="util.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base.hpp" />
-    <ClInclude Include="Dargon.hpp" />
     <ClInclude Include="Init\Bootloader.hpp" />
-    <ClInclude Include="IO.hpp" />
     <ClInclude Include="IO\DSP.h" />
     <ClInclude Include="IO\DSP\ClientImpl\DSPExLITEchoHandler.hpp" />
     <ClInclude Include="IO\DSP\ClientImpl\DSPExRITDIMRunTasksHandler.hpp" />
@@ -162,7 +163,6 @@
     <ClInclude Include="IO\IPCObject.hpp" />
     <ClInclude Include="dlc_pch.hpp" />
     <ClInclude Include="logger.hpp" />
-    <ClInclude Include="Util.hpp" />
     <ClInclude Include="blocking_queue.hpp" />
     <ClInclude Include="buffer_manager.hpp" />
     <ClInclude Include="countdown_event.hpp" />

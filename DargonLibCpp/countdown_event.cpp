@@ -1,7 +1,7 @@
 #include "dlc_pch.hpp"
 #include <mutex>
 #include <condition_variable>
-#include "Dargon.hpp"
+#include "dargon.hpp"
 #include "countdown_event.hpp"
 
 using namespace dargon;

@@ -2,7 +2,7 @@
 #include <sstream>
 #include <process.h>
 #include "../../Init/BootstrapContext.hpp"
-#include "../../Util.hpp"
+#include "../../util.hpp"
 #include "../IPCObject.hpp"
 #include "DSP.hpp"
 #include "DSPConstants.hpp"
@@ -135,11 +135,11 @@ void DSPExNodeSession::FrameReceivingThreadStart()
       else
          file_logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Got DSPEx Frame Size " << std::dec << length << "" << std::endl; });
 
-      auto frameBufferBlob = m_frameBufferPool.take(length);
-      std::cout << "!! Took Frame Buffer with data location " << std::hex << (void*)frameBufferBlob->data << std::dec << std::endl;
+      auto frameBufferblob = m_frameBufferPool.take(length);
+      std::cout << "!! Took Frame Buffer with data location " << std::hex << (void*)frameBufferblob->data << std::dec << std::endl;
 
-      *(UINT32*)frameBufferBlob->data = length;
-      if(!m_ipc.ReadBytes(frameBufferBlob->data + 4, length - 4))
+      *(UINT32*)frameBufferblob->data = length;
+      if(!m_ipc.ReadBytes(frameBufferblob->data + 4, length - 4))
       {
          file_logger::L(LL_ERROR, [=](std::ostream& os){ os << "Read Block of length " << length <<  " error " << m_ipc.GetLastError() << std::endl; });
          return;
@@ -155,7 +155,7 @@ void DSPExNodeSession::FrameReceivingThreadStart()
          
          m_busyFrameProcessors.push_back(frameProcessor);
          lock.unlock();
-         frameProcessor->AssignFrame(frameBufferBlob);
+         frameProcessor->AssignFrame(frameBufferblob);
          
          std::cout << "!! Assigned Frame Buffer to Processor" << std::endl;
       }

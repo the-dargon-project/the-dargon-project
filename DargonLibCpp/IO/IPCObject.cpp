@@ -8,7 +8,7 @@
 #include <Windows.h>
 #endif
 
-#include "../Util.hpp"
+#include "../util.hpp"
 #include "IPCObject.hpp"
 
 using namespace dargon::IO;
@@ -59,7 +59,7 @@ void IPCObject::Close()
 //-------------------------------------------------------------------------------------------------
 // IO Read/Write Operations
 //-------------------------------------------------------------------------------------------------
-dargon::Blob* IPCObject::ReadBytes(IN uint32_t numBytes)
+dargon::blob* IPCObject::ReadBytes(IN uint32_t numBytes)
 {
 #ifdef WIN32
    return nullptr;
@@ -73,7 +73,7 @@ dargon::Blob* IPCObject::ReadBytes(IN uint32_t numBytes)
    //}
    //else
    //{
-   //   return new Blob(numBytes, data);
+   //   return new blob(numBytes, data);
    //}
 #endif
 }

@@ -3,7 +3,7 @@
 #include <string>
 #include <thread>
 #include <functional>
-#include "../../Util.hpp"
+#include "../../util.hpp"
 #include "DSPExFrameTransmitter.hpp"
 #include "DSPConstants.hpp"
 using namespace dargon::IO::DSP;

@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <string>
-#include "../Base.hpp"
+#include "../base.hpp"
 #include "../noncopyable.hpp"
-#include "../Dargon.hpp"
+#include "../dargon.hpp"
 #include "IOTypedefs.hpp"
 #include "IoProxy.hpp"
 
@@ -57,21 +57,21 @@ namespace dargon { namespace IO {
       // IO Read/Write Operations
       //-------------------------------------------------------------------------------------------
       /// <summary>
-      /// Tries to read the given number of bytes and returns a pointer to a Dargon BLOB if 
-      /// successful, or NULL if unsuccessful.  The returned BLOB might not be of the requested
-      /// number of bytes if we reach the end of the stream; if that occurs, a BLOB of a smaller
+      /// Tries to read the given number of bytes and returns a pointer to a Dargon blob if 
+      /// successful, or NULL if unsuccessful.  The returned blob might not be of the requested
+      /// number of bytes if we reach the end of the stream; if that occurs, a blob of a smaller
       /// size is returned.
       /// 
-      /// You are responsible for deleting the returned Blob.
+      /// You are responsible for deleting the returned blob.
       /// </summary>
       /// <param name="numBytes">
       /// The number of bytes to read
       /// </param>
       /// <returns>
-      /// A Blob of less than or equal to the given number of requested bytes.  Returns NULL if the
+      /// A blob of less than or equal to the given number of requested bytes.  Returns NULL if the
       /// function fails.  The error can then be accessed via the GetLastError() member method;
       /// </returns>
-      dargon::Blob* ReadBytes(IN uint32_t numBytes);
+      dargon::blob* ReadBytes(IN uint32_t numBytes);
 
       /// <summary>
       /// Performs a read operation on the IPC Object.

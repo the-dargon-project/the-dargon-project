@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../dlc_pch.hpp"
-#include "../../../Dargon.hpp"
+#include "../../../dargon.hpp"
 #include "../DSPEx.hpp"
 #include "../IDSPExSession.hpp"
 #include "../DSPExRITransactionHandler.hpp"

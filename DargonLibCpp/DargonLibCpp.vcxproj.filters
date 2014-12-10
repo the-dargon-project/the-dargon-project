@@ -21,9 +21,6 @@
     <ClCompile Include="IO\IPCObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Base.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IO\DSP\DSPExFrameTransmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
     <ClCompile Include="Init\Bootloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dlc_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DSP\ClientImpl\DSPExLITRemoteLogHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DSP\DSPExNode.cpp">
@@ -90,14 +81,17 @@
     <ClCompile Include="buffer_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dargon.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Init\Bootloader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -122,9 +116,6 @@
     <ClInclude Include="IO\IPCObject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Base.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DSP\DSPExLITransactionHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,9 +123,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\DSPExInitialMessage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\DSPExMessage.hpp">
@@ -246,6 +234,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="binary_reader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dargon.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

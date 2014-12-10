@@ -5,7 +5,7 @@
 #include <functional>
 #include <condition_variable>
 
-#include "../../Dargon.hpp"
+#include "../../dargon.hpp"
 #include "../IPCObject.hpp"
 #include "../../countdown_event.hpp"
 #include "DSPExNodeSession.hpp"
@@ -24,7 +24,7 @@ namespace dargon { namespace IO { namespace DSP {
       DSPExNodeSession& m_client;
 
       // Pointer to the DSPEx frame (blob) that has been read by the DSPExClient.
-      dargon::Blob* m_pFrame;
+      dargon::blob* m_pFrame;
 
       // The thread associated with this frame processor.
       std::thread m_thread;
@@ -41,10 +41,10 @@ namespace dargon { namespace IO { namespace DSP {
       DSPExFrameProcessor(DSPExNodeSession& client, FrameHandled onFrameHandled);
 
       // Assigns a DSPEx frame buffer to the DSPEx frame processor.
-      void AssignFrame(dargon::Blob* frame);
+      void AssignFrame(dargon::blob* frame);
 
       // Gets the DSPEx frame buffer assigned to the given frame processor and resets it to nullptr.
-      dargon::Blob* GetAndResetAssignedFrame();
+      dargon::blob* GetAndResetAssignedFrame();
 
    private:
       static unsigned int WINAPI StaticThreadStart(void* pThis);

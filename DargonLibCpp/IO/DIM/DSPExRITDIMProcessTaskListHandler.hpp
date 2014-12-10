@@ -4,7 +4,7 @@
 #include <memory>
 #include <mutex>
 
-#include "Dargon.hpp"
+#include "dargon.hpp"
 #include "countdown_event.hpp"
 #include "IO/DSP/DSPEx.hpp"
 #include "IO/DSP/IDSPExSession.hpp"

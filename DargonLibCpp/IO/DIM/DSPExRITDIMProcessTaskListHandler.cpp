@@ -1,8 +1,8 @@
 #include <istream>
 #include <sstream>
 #include <mutex>
-#include "Dargon.hpp"
-#include "Util.hpp"
+#include "dargon.hpp"
+#include "util.hpp"
 #include "binary_reader.hpp"
 #include "IO/DSP/DSPEx.hpp"
 #include "IO/DSP/DSPExMessage.hpp"

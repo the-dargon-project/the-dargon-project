@@ -21,7 +21,7 @@ namespace dargon {
       // - Static ---------------------------------------------------------------------------------
    protected:
       // file_logger object which must be initialized at the start of the Initialize method before hooks
-      // are set.  The m_file_logger field is to be accessible by the macros defined in DetoursUtil.hpp
+      // are set.  The m_file_logger field is to be accessible by the macros defined in Detoursutil.hpp
       static dargon::logger* s_logger;
 
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <mutex>
-#include "Dargon.hpp"
+#include "dargon.hpp"
 #include "logger.hpp"
 #include "logger_levels.hpp"
 #include "noncopyable.hpp"

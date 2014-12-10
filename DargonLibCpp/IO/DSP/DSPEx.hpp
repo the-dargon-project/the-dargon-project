@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Dargon.hpp"
+#include "../../dargon.hpp"
 
 typedef BYTE DSPEx;
 

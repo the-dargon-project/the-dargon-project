@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Util.hpp"
+#include "util.hpp"
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "KernelSubsystem.hpp"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Base.hpp"
+#include "../base.hpp"
 
 namespace dargon { namespace IO {
    enum class FileAccess : uint32_t {

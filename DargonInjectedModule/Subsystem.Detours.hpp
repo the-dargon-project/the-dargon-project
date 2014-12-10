@@ -24,19 +24,6 @@
             return true; \
          }
 
-#define  DIM_DECL_STATIC_EVENT(CallbackFunctionType, EventName) \
-         private: \
-         static boost::signals2::signal<CallbackFunctionType> On##EventName; \
-         public: \
-         static boost::signals2::connection Add##EventName##Handler(boost::signals2::signal<CallbackFunctionType>::slot_type callback);
-
-#define  DIM_IMPL_STATIC_EVENT(ClassName, CallbackFunctionType, EventName) \
-         boost::signals2::signal<CallbackFunctionType> ClassName::On##EventName; \
-         boost::signals2::connection ClassName::Add##EventName##Handler(boost::signals2::signal<CallbackFunctionType>::slot_type callback) \
-         { \
-            return ClassName::On##EventName.connect(callback); \
-         }
-
 #define DIM_INVOKE_EVENT(eventList, DelegateTypeName, ...) eventList(##__VA_ARGS__);
 //#define DIM_INVOKE_CANCELLABLE_EVENT(eventList, DelegateTypeName, ...) \
 //        list<DelegateTypeName>::iterator it##eventList; \
@@ -47,8 +34,6 @@
 #define  DIM_DECL_DETOUR(DetouredMethodName, DelegateTypeName) \
          static DelegateTypeName* m_real##DetouredMethodName;  \
          static DelegateTypeName* m_tramp##DetouredMethodName; \
-         DIM_DECL_STATIC_EVENT(DelegateTypeName##NoCC, Pre##DetouredMethodName); /**/ \
-         DIM_DECL_STATIC_EVENT(DelegateTypeName##NoCC, Post##DetouredMethodName); /**/ \
          public: \
          static void Install##DetouredMethodName##Detour(DWORD* pVtable); \
          static void Uninstall##DetouredMethodName##Detour(); \
@@ -57,8 +42,6 @@
 #define  DIM_IMPL_DETOUR(ClassName, DetouredMethodName, DelegateTypeName, vTableOffset, myDetouredMethodImplementation) \
          DelegateTypeName* ClassName::m_real##DetouredMethodName = NULL; \
          DelegateTypeName* ClassName::m_tramp##DetouredMethodName = NULL; \
-         DIM_IMPL_STATIC_EVENT(ClassName, DelegateTypeName##NoCC, Pre##DetouredMethodName); /**/ \
-         DIM_IMPL_STATIC_EVENT(ClassName, DelegateTypeName##NoCC, Post##DetouredMethodName); /**/ \
          void ClassName::Install##DetouredMethodName##Detour(DWORD* pVtable) \
          { \
             if(m_tramp##DetouredMethodName == NULL) /**/ \
@@ -83,8 +66,6 @@
 #define  DIM_DECL_STATIC_DETOUR(ClassName, FriendlyFunctionName, DetouredMethodType, DetouredMethodName, TrampolineName) \
          static DetouredMethodType* m_real##FriendlyFunctionName;  \
          static DetouredMethodType* m_tramp##FriendlyFunctionName; \
-         DIM_DECL_STATIC_EVENT(DetouredMethodType##NoCC, Pre##FriendlyFunctionName); /**/ \
-         DIM_DECL_STATIC_EVENT(DetouredMethodType##NoCC, Post##FriendlyFunctionName); /**/ \
          public: \
          static void Install##FriendlyFunctionName##Detour(HMODULE hModule); \
          static void Uninstall##FriendlyFunctionName##Detour(); \
@@ -93,8 +74,6 @@
 #define  DIM_IMPL_STATIC_DETOUR(ClassName, FriendlyFunctionName, DetouredMethodType, DetouredMethodName, TrampolineName) \
          DetouredMethodType* ClassName::m_real##FriendlyFunctionName = NULL; \
          DetouredMethodType* ClassName::m_tramp##FriendlyFunctionName = NULL; \
-         DIM_IMPL_STATIC_EVENT(ClassName, DetouredMethodType##NoCC, Pre##FriendlyFunctionName); /**/ \
-         DIM_IMPL_STATIC_EVENT(ClassName, DetouredMethodType##NoCC, Post##FriendlyFunctionName); /**/ \
          void ClassName::Install##FriendlyFunctionName##Detour(HMODULE ModuleHandle) \
          { \
             if(m_tramp##FriendlyFunctionName == NULL) /**/ \

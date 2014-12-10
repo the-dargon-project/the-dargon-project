@@ -4,7 +4,6 @@
 #include <thread>
 #include <functional>
 #include <condition_variable>
-#include <boost/signals2.hpp>
 #include <boost/thread/barrier.hpp>
 
 #include "../../Dargon.hpp"

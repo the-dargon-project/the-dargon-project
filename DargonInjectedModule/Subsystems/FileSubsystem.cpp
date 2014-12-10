@@ -246,14 +246,8 @@ BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumb
                << " lpOverlapped: " << lpOverlapped << std::endl;
          });
       }
-
-      OnPreReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
    }
    BOOL result = m_trampReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-   if (mitm) {
-      OnPostReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
-      //   file_logger::GetOutputStream(LL_VERBOSE) << "  trampReadFile result: " << result << endl;
-   }
    return result;
 }
 
@@ -272,12 +266,8 @@ BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
             os << "CloseHandle: hObject: " << hObject << std::endl;
          });
       }
-      OnPreCloseHandle(hObject);
    }
    BOOL result = m_trampCloseHandle(hObject);
-   if (mitm) {
-      OnPostCloseHandle(hObject);
-   }
    return result;
 }
 DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
@@ -295,11 +285,7 @@ DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove,
          });
       }
 
-      OnPreSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
    }
    DWORD result = m_trampSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
-   if (mitm) {
-      OnPostSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
-   }
    return result;
 }

@@ -131,6 +131,7 @@
     <ClCompile Include="buffer_manager.cpp" />
     <ClCompile Include="countdown_event.cpp" />
     <ClCompile Include="file_logger.cpp" />
+    <ClInclude Include="binary_reader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.hpp" />

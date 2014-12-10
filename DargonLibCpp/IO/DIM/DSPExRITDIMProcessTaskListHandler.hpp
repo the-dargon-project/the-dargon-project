@@ -21,8 +21,8 @@ namespace dargon { namespace IO { namespace DIM {
 
       // When set to true, the first message (header) has been received and m_overrides is sized
       // to fit overrides.
-      volatile bool m_headerReceived;
-      volatile UINT32 m_taskCount;
+      bool m_headerReceived;
+      uint32_t m_taskCount;
       std::vector<dargon::IO::DIM::DIMTask*> m_tasks;
 
       // Stops many threads from simultaneously filling the overrides vector

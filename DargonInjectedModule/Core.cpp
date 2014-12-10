@@ -17,7 +17,7 @@
 #include <IO/DIM/DIMTaskTypes.hpp>
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "Util.hpp"
-#include <file_logger.hpp>
+#include <logger.hpp>
 
 #include "Core.hpp"
 #include "Subsystem.hpp"

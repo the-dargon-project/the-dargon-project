@@ -1,11 +1,9 @@
 #include "../../../dlc_pch.hpp"
 #include <istream>
 #include <sstream>
-#include <boost/iostreams/stream.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/interprocess/streams/bufferstream.hpp>
 #include "../../../Dargon.hpp"
 #include "../../../Util.hpp"
+#include "../../../binary_reader.hpp"
 #include "../DSPEx.hpp"
 #include "../DSPExMessage.hpp"
 #include "../DSPExInitialMessage.hpp"
@@ -45,28 +43,25 @@ void DSPExLITBootstrapGetArgsHandler::ProcessMessage(IDSPExSession& session, DSP
    std::cout << "AG: " << *(UINT32*)(message.DataBuffer + 8) << " (ptr: " << (void*)(message.DataBuffer + 8) << ")" << std::endl;
    std::cout << "AH: " << *(UINT32*)(message.DataBuffer + 12) << " (ptr: " << (void*)(message.DataBuffer + 12) << ")" << std::endl;
 
-   boost::interprocess::bufferstream input_stream((char*)message.DataBuffer, message.DataLength);
+   dargon::binary_reader reader(message.DataBuffer, message.DataLength);
 
-   UINT32 kvpCount;
-   input_stream.read((char*)&kvpCount, 4);
+   UINT32 kvpCount = reader.read_uint32();
    file_logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap KVP Count " << kvpCount << std::endl; });
 
    typedef std::pair<std::string, std::string> KeyValuePair;
    std::vector<KeyValuePair> keyValuePairs(kvpCount);
    for (UINT32 i = 0; i < kvpCount; i++)
    {
-      UINT32 keyLength;
-      input_stream.read((char*)&keyLength, 4);
+      UINT32 keyLength = reader.read_uint32();
       char* keyBuffer = new char[keyLength + 1];// + 1 for null terminator
-      input_stream.read(keyBuffer, keyLength);
+      reader.read_bytes(keyBuffer, keyLength);
       keyBuffer[keyLength] = 0;                 // Set last char to null terminator
 
       keyValuePairs[i].first = std::string(keyBuffer);
 
-      UINT32 valueLength;
-      input_stream.read((char*)&valueLength, 4);
+      UINT32 valueLength = reader.read_uint32();
       char* valueBuffer = new char[valueLength + 1];
-      input_stream.read(valueBuffer, valueLength);
+      reader.read_bytes(valueBuffer, valueLength);
       valueBuffer[valueLength] = 0;
 
       keyValuePairs[i].second = std::string(valueBuffer);
@@ -75,17 +70,15 @@ void DSPExLITBootstrapGetArgsHandler::ProcessMessage(IDSPExSession& session, DSP
       delete keyBuffer;
    }
 
-   UINT32 flagCount;
-   input_stream.read((char*)&flagCount, 4);
+   UINT32 flagCount = reader.read_uint32();
    file_logger::L(LL_ALWAYS, [=](std::ostream& os){ os << "Got Bootstrap flag Count " << flagCount << std::endl; });
    //std::unique_ptr<std::string[]> flags(new std::string[flagCount]);
    std::vector<std::string> flags(flagCount);
    for (UINT32 i = 0; i < flagCount; i++)
    {
-      UINT32 flagLength;
-      input_stream.read((char*)&flagLength, 4);
+      UINT32 flagLength = reader.read_uint32();
       char* flagBuffer = new char[flagLength + 1];
-      input_stream.read(flagBuffer, flagLength);
+      reader.read_bytes(flagBuffer, flagLength);
       flagBuffer[flagLength] = 0;
 
       flags[i] = std::string(flagBuffer);

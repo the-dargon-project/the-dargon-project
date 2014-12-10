@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include <boost/algorithm/string.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/interprocess/streams/bufferstream.hpp>
+#include "binary_reader.hpp"
 #include "FileSwapTaskHandler.hpp"
 #include "FileSubsystem.hpp"
 
@@ -21,18 +19,16 @@ void FileSwapTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DI
       auto task = it->second;
       std::cout << "HANDLE FILE SWAP TASK" << std::endl;
 
-      boost::interprocess::bufferstream input_stream((char*)task->data, task->length);
+      dargon::binary_reader reader(task->data, task->length);
 
       FileOverrideTargetDescriptor descriptor;
-      input_stream.read((char*)&descriptor.targetVolumeSerialNumber, sizeof(descriptor.targetVolumeSerialNumber));
-      input_stream.read((char*)&descriptor.targetFileIndexHigh, sizeof(descriptor.targetFileIndexHigh));
-      input_stream.read((char*)&descriptor.targetFileIndexLow, sizeof(descriptor.targetFileIndexLow));
+      reader.read_bytes(&descriptor.targetVolumeSerialNumber, sizeof(descriptor.targetVolumeSerialNumber));
+      reader.read_bytes(&descriptor.targetFileIndexHigh, sizeof(descriptor.targetFileIndexHigh));
+      reader.read_bytes(&descriptor.targetFileIndexLow, sizeof(descriptor.targetFileIndexLow));
 
-      UINT32 replacementPathLength;
-      input_stream.read((char*)&replacementPathLength, sizeof(replacementPathLength));
-
+      UINT32 replacementPathLength = reader.read_uint32();
       char* replacementPath = new char[replacementPathLength + 1];
-      input_stream.read(replacementPath, replacementPathLength);
+      reader.read_bytes(replacementPath, replacementPathLength);
       replacementPath[replacementPathLength] = 0;
 
       FileOverride fileOverride;

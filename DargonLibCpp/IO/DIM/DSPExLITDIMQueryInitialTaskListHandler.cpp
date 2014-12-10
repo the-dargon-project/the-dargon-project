@@ -1,7 +1,5 @@
 #include "../../dlc_pch.hpp"
-#include <boost/iostreams/stream.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/interprocess/streams/bufferstream.hpp>
+#include "../../binary_reader.hpp"
 #include "../DSP/DSPEx.hpp"
 #include "../DSP/DSPExInitialMessage.hpp"
 #include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
@@ -32,32 +30,23 @@ void DSPExLITDIMQueryInitialTaskListHandler::ProcessMessage(dargon::IO::DSP::IDS
 { 
    std::cout << "Processing response message of DSPExLITDIMQueryInitialTaskListHandler" << std::endl;
 
-   boost::interprocess::bufferstream input_stream((char*)message.DataBuffer, message.DataLength);
+   dargon::binary_reader reader(message.DataBuffer, message.DataLength);
 
-   UINT32 taskCount;
-   input_stream.read((char*)&taskCount, sizeof(taskCount));
+   UINT32 taskCount = reader.read_uint32();
    std::cout << "Got task count " << taskCount << std::endl;
 
    for (UINT32 i = 0; i < taskCount; i++) {
-      UINT32 typeLength;
-      input_stream.read((char*)&typeLength, sizeof(typeLength));
-
-      char* typeBuffer = new char[typeLength + 1]; // +1 for null terminator
-      input_stream.read(typeBuffer, typeLength);
-      typeBuffer[typeLength] = 0;
-
-      std::string type(typeBuffer);
+      std::string type = reader.read_long_text();
       //delete typeBuffer;
       std::cout << "Read task type " << type << std::endl;
 
-      UINT32 dataLength;
-      input_stream.read((char*)&dataLength, sizeof(dataLength));
+      UINT32 dataLength = reader.read_uint32();
       std::cout << "Read task data length " << dataLength << std::endl;
       std::cout << "BYTES ALLOCATED FOR DIMTASK: " << sizeof(DIMTask) + dataLength << std::endl;
 
       std::cout << "Reading task contents" << std::endl;
       UINT8* taskData = new UINT8[dataLength];
-      input_stream.read((char*)taskData, dataLength);
+      reader.read_bytes(taskData, dataLength);
       std::cout << "Read task of type " << type << " and data length " << dataLength << std::endl;
 
       DIMTask* task = new DIMTask();

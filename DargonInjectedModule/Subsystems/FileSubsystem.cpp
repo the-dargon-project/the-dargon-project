@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
-#include <boost/nowide/convert.hpp>
+#include "Util.hpp"
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "Init/BootstrapContext.hpp"
 #include "../Subsystem.hpp"
@@ -180,7 +180,7 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
          LL_VERBOSE,
          [=](std::ostream& os){
          os << "CreateFileW:"
-            << " lpFilePath: " << boost::nowide::narrow(lpFilePath)
+            << " lpFilePath: " << dargon::narrow(lpFilePath)
             << " dwDesiredAccess: " << dwDesiredAccess
             << " dwShareMode: " << dwShareMode
             << " lpSecurityAttributes: " << lpSecurityAttributes

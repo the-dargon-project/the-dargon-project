@@ -1,10 +1,15 @@
 #include "dlc_pch.hpp"
+#include <clocale>
+#include <codecvt>
+#include <locale>
 #include <string>
 #include <sstream> 
 #include <vector>
 #include <Windows.h>
 #include <TlHelp32.h>
 #include "Util.hpp"
+
+using namespace dargon;
 
 std::string GetFileName(const std::string& path)
 {
@@ -92,4 +97,12 @@ std::vector<std::string> split(const std::string &s, char delim) {
    std::vector<std::string> elems;
    split(s, delim, elems);
    return elems;
+}
+
+std::string narrow(const std::wstring &s) {
+   return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(s);
+}
+
+std::wstring wide(const std::string &s) {
+   return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(s);
 }

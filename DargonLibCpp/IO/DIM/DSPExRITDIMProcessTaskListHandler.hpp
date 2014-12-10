@@ -27,7 +27,7 @@ namespace dargon { namespace IO { namespace DIM {
 
       // Stops many threads from simultaneously filling the overrides vector
       std::mutex m_fillMutex;
-      dargon::Util::CountdownEvent m_headerReceivedLatch;
+      dargon::util::CountdownEvent m_headerReceivedLatch;
 
       // We can mark another DSPExLITHandler as completed on our own completion.
       // This is used for the LITH which blocks until we've processed a task list.

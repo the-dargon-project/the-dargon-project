@@ -8,11 +8,11 @@
 #include "../Dargon.hpp"
 #include "noncopyable.hpp"
 
-namespace dargon { namespace Util {
+namespace dargon { namespace util {
    // #define TValue UINT32
 
    template<typename TValue, typename = typename std::enable_if<std::is_arithmetic<TValue>::value, TValue>::type>
-   class UniqueIdentificationSet : dargon::Util::noncopyable
+   class UniqueIdentificationSet : dargon::util::noncopyable
    {
       class _Node {
       public:
@@ -148,13 +148,13 @@ namespace dargon { namespace Util {
    
    private:
       template<typename TValue_, typename = typename std::enable_if<std::is_arithmetic<TValue_>::value, TValue_>::type>
-      friend inline std::ostream& operator<<(std::ostream& os, const dargon::Util::UniqueIdentificationSet<TValue_>& self) {
+      friend inline std::ostream& operator<<(std::ostream& os, const dargon::util::UniqueIdentificationSet<TValue_>& self) {
          return os;
       }
       /*
       
 
-inline std::ostream& dargon::Util::operator<<(std::ostream& os, const dargon::Util::UniqueIdentificationSet& uidSet) 
+inline std::ostream& dargon::util::operator<<(std::ostream& os, const dargon::util::UniqueIdentificationSet& uidSet) 
 {
    os << "[UniqueIdentificationSet {";
    {

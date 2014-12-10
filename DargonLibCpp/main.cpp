@@ -14,7 +14,7 @@
 using namespace dargon;
 using namespace dargon::IO;
 using namespace dargon::IO::DSP;
-using namespace dargon::Util;
+using namespace dargon::util;
 
 void BufferManagerTest();
 void HardCodedEchoTest();
@@ -53,7 +53,7 @@ int main()
 
 bool UIDSetTest()
 {
-   dargon::Util::UniqueIdentificationSet<UINT32> uidSet(true);
+   dargon::util::UniqueIdentificationSet<UINT32> uidSet(true);
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID(10) << " // " << uidSet << std::endl;

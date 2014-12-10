@@ -16,7 +16,7 @@ namespace dargon { namespace Init {
    {
    public:
       HMODULE ApplicationModuleHandle;
-      dargon::Util::ILogger* Logger;
+      dargon::util::ILogger* Logger;
       dargon::IO::DSP::DSPExNode* DSPExNode;
       dargon::IO::DSP::DSPExNodeSession* DIMSession;
 

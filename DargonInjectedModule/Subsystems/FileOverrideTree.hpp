@@ -6,7 +6,7 @@
 
 namespace dargon { namespace Subsystems {
    // todo: self-balancing tree would be ideal here...
-   struct FileOverrideNode : dargon::Util::noncopyable {
+   struct FileOverrideNode : dargon::util::noncopyable {
       // length of the data chunk represented
       UINT32 length;
 
@@ -43,7 +43,7 @@ namespace dargon { namespace Subsystems {
    // the assumption is made that the file's replacements all lie within the same file (ie dpf).
    // if doing a full file swap, set fileOverrideTree == nullptr.
    // if traversal leads to a null pointer, an override is not defined. perform normal file read.
-   class FileOverrideTree : dargon::Util::noncopyable {
+   class FileOverrideTree : dargon::util::noncopyable {
       FileOverrideNode* m_root;
 
    public:

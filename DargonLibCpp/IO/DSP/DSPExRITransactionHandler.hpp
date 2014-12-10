@@ -10,7 +10,7 @@
 namespace dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExRITransactionHandler : dargon::Util::noncopyable
+   class DSPExRITransactionHandler : dargon::util::noncopyable
    {
    public:
       /// <summary>

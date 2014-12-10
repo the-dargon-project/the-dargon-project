@@ -7,7 +7,7 @@
 #include "DIMTaskTypes.hpp"
 
 namespace dargon { namespace IO { namespace DIM {
-   class IDIMTaskHandler : dargon::Util::noncopyable {
+   class IDIMTaskHandler : dargon::util::noncopyable {
    private:
 
    public:

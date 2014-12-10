@@ -29,7 +29,7 @@
 
 using namespace dargon::InjectedModule;
 using namespace dargon::Init;
-using namespace dargon::Util;
+using namespace dargon::util;
 using namespace std::placeholders;
 using namespace dargon::Subsystems;
 using namespace dargon::IO::DSP::ClientImpl;

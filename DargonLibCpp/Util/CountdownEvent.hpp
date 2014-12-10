@@ -6,7 +6,7 @@
 #include "../Dargon.hpp"
 #include "noncopyable.hpp"
 
-namespace dargon { namespace Util {
+namespace dargon { namespace util {
    /// <summary>
    /// Implementation of a C#/Java-like latch/countdownevent object.  Allows none, one, or many
    /// threads to synchronize themselves.  The object has an initial count N and may be Signal()ed
@@ -15,7 +15,7 @@ namespace dargon { namespace Util {
    ///
    /// If you wish to use this object many times, consider using a barrier object.
    /// </summary>
-   class CountdownEvent : dargon::Util::noncopyable
+   class CountdownEvent : dargon::util::noncopyable
    {
    public:
       /// <summary>

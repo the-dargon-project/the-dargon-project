@@ -16,13 +16,13 @@ namespace dargon {
    //       control to static methods.  As only one instance exists and all fields are static, 
    //       there is no differentiation between instance and static members.
    // See ISubsystem.Detours.hpp for information related to implementing a subsystem.
-   class Subsystem : dargon::Util::noncopyable
+   class Subsystem : dargon::util::noncopyable
    {
       // - Static ---------------------------------------------------------------------------------
    protected:
       // Logger object which must be initialized at the start of the Initialize method before hooks
       // are set.  The m_logger field is to be accessible by the macros defined in DetoursUtil.hpp
-      static dargon::Util::ILogger* s_logger;
+      static dargon::util::ILogger* s_logger;
 
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the
       // subsystem.  The pointed-to memory is owned by the Dargon Injected Module's core and this

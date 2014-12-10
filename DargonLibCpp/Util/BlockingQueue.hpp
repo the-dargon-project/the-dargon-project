@@ -1,7 +1,7 @@
 #include <queue>
 #include <condition_variable>
 
-namespace dargon { namespace Util { 
+namespace dargon { namespace util { 
    template <typename T>
    class BlockingQueue
    {

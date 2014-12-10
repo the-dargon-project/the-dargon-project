@@ -7,7 +7,7 @@
 namespace dargon { namespace Init {
    typedef std::function<void(const BootstrapContext*)> FunctionInitialize;
 
-   class Bootloader : dargon::Util::noncopyable {
+   class Bootloader : dargon::util::noncopyable {
    public:
       static void BootstrapInjectedModule(const FunctionInitialize& init, HMODULE moduleHandle);
    };

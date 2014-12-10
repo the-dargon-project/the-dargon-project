@@ -6,7 +6,7 @@
 #include "../IO/DSP/DSPExNode.hpp"
 
 namespace dargon { namespace Init {
-   class BootloaderRemoteLogger : dargon::Util::noncopyable, public dargon::Util::ILogger
+   class BootloaderRemoteLogger : dargon::util::noncopyable, public dargon::util::ILogger
    {
    private:
       const BootstrapContext* m_context;

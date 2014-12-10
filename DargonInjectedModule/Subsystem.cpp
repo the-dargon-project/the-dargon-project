@@ -7,7 +7,7 @@ using namespace dargon;
 using namespace dargon::InjectedModule;
 using namespace dargon::IO::DIM;
 
-dargon::Util::ILogger* Subsystem::s_logger;
+dargon::util::ILogger* Subsystem::s_logger;
 const dargon::Init::BootstrapContext* Subsystem::s_bootstrapContext;
 Core* Subsystem::s_core;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;

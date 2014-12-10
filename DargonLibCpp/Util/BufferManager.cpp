@@ -1,6 +1,6 @@
 #include "../dlc_pch.hpp"
 #include "BufferManager.hpp"
-using namespace dargon::Util;
+using namespace dargon::util;
 BufferManager::BufferManager(UINT32 maxPoolSize, UINT32 minBufferSize)
    : m_maxPoolSize(maxPoolSize), 
      m_minBufferSize(minBufferSize)

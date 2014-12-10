@@ -10,7 +10,7 @@
 #include "IoProxy.hpp"
 
 namespace dargon { namespace IO {
-   class IPCObject : dargon::Util::noncopyable
+   class IPCObject : dargon::util::noncopyable
    {
    public:
       /// <summary>

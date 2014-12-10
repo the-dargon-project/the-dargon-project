@@ -12,7 +12,7 @@
 #include "DSPExRITransactionHandler.hpp"
 
 namespace dargon { namespace IO { namespace DSP {
-   class DSPExNode : dargon::Util::noncopyable {   
+   class DSPExNode : dargon::util::noncopyable {   
    private:
       const DSPExNodeRole m_role;
       const std::string m_pipeName;

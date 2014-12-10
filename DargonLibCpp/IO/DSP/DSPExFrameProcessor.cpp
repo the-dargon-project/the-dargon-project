@@ -5,7 +5,7 @@
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
 using namespace dargon::IO::DSP;
-using dargon::Util::Logger;
+using dargon::util::Logger;
 
 DSPExFrameProcessor::DSPExFrameProcessor(DSPExNodeSession& client, FrameHandled onFrameHandled)
    : m_client(client),

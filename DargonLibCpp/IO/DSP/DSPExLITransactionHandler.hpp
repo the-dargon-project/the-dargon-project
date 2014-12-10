@@ -5,12 +5,12 @@
 #include "../../Util/noncopyable.hpp"
 #include "IDSPExSession.hpp"
 #include "DSPExMessage.hpp"
-using dargon::Util::CountdownEvent;
+using dargon::util::CountdownEvent;
 
 namespace dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExLITransactionHandler : dargon::Util::noncopyable
+   class DSPExLITransactionHandler : dargon::util::noncopyable
    {
    public:
       /// <summary>

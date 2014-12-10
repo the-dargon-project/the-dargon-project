@@ -33,7 +33,7 @@ typedef UINT16 USHORT;
 
 namespace dargon {
 
-   class Blob : private dargon::Util::noncopyable
+   class Blob : private dargon::util::noncopyable
    {
    public:
       // The size of our blob's data block

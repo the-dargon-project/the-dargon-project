@@ -12,7 +12,7 @@
 #include "IO/DSP/IDSPExSession.hpp"
 #include "DSPExRITDIMProcessTaskListHandler.hpp"
 
-using dargon::Util::Logger;
+using dargon::util::Logger;
 using namespace dargon::IO::DIM;
 using namespace dargon::IO::DSP;
 

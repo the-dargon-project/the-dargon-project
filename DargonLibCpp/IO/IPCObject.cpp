@@ -11,7 +11,7 @@
 #include "IPCObject.hpp"
 
 using namespace dargon::IO;
-using dargon::Util::Logger;
+using dargon::util::Logger;
 
 IPCObject::IPCObject(std::shared_ptr<dargon::IO::IoProxy> ioProxy)
    : m_lastError(0), m_pipeHandle(0), ioProxy(ioProxy)

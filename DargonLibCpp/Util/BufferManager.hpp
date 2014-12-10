@@ -4,7 +4,7 @@
 #include <mutex>
 #include "../Dargon.hpp"
 
-namespace dargon { namespace Util {
+namespace dargon { namespace util {
    /// <summary>
    /// Allows users to request buffers of a given size from a pool of preallocated buffers.  These
    /// buffers can later be returned to the pool.  The pool maintains a maxium size, ensuring that

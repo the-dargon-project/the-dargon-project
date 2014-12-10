@@ -8,7 +8,7 @@
 #include "../DSPExInitialMessage.hpp"
 #include "../IDSPExSession.hpp"
 #include "DSPExRITEchoHandler.hpp"
-using dargon::Util::Logger;
+using dargon::util::Logger;
 using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
 

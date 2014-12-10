@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Dargon { namespace Util {
+namespace dargon { namespace Util {
    struct noncopyable {
       noncopyable() = default;
       noncopyable(const noncopyable&) = delete;

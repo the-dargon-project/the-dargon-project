@@ -4,9 +4,9 @@
 #include "Base.hpp"
 #include "Util/noncopyable.hpp"
 
-namespace Dargon { namespace Subsystems {
+namespace dargon { namespace Subsystems {
    // todo: self-balancing tree would be ideal here...
-   struct FileOverrideNode : Dargon::Util::noncopyable {
+   struct FileOverrideNode : dargon::Util::noncopyable {
       // length of the data chunk represented
       UINT32 length;
 
@@ -43,7 +43,7 @@ namespace Dargon { namespace Subsystems {
    // the assumption is made that the file's replacements all lie within the same file (ie dpf).
    // if doing a full file swap, set fileOverrideTree == nullptr.
    // if traversal leads to a null pointer, an override is not defined. perform normal file read.
-   class FileOverrideTree : Dargon::Util::noncopyable {
+   class FileOverrideTree : dargon::Util::noncopyable {
       FileOverrideNode* m_root;
 
    public:

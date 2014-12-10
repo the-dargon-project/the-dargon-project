@@ -3,14 +3,14 @@
 #include "DIMTaskManager.hpp"
 #include "DIMInstructionSet.hpp"
 #include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
-using namespace Dargon::IO::DIM;
+using namespace dargon::IO::DIM;
 
 DIMTaskManager::DIMTaskManager() 
    : m_instructionSet(new DIMInstructionSet(this))
 {
 }
 
-Dargon::IO::DSP::IDSPExInstructionSet* DIMTaskManager::ReleaseInstructionSet()
+dargon::IO::DSP::IDSPExInstructionSet* DIMTaskManager::ReleaseInstructionSet()
 {
    return m_instructionSet;
 }

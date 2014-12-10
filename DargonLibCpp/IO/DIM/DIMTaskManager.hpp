@@ -13,7 +13,7 @@
 #include "DIMInstructionSet.hpp"
 #include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
 
-namespace Dargon { namespace IO { namespace DIM {
+namespace dargon { namespace IO { namespace DIM {
    class DIMTaskManager {
       typedef std::mutex MutexType;
       typedef std::unique_lock<MutexType> LockType;
@@ -25,7 +25,7 @@ namespace Dargon { namespace IO { namespace DIM {
       
    public:
       DIMTaskManager();
-      Dargon::IO::DSP::IDSPExInstructionSet* ReleaseInstructionSet();
+      dargon::IO::DSP::IDSPExInstructionSet* ReleaseInstructionSet();
       void RegisterTaskHandler(IDIMTaskHandler* handler);
       DSPExLITDIMQueryInitialTaskListHandler* ConstructInitialTaskListQueryHandler(UINT32 transactionId);
       void ProcessTasks(std::vector<DIMTask*>& tasks);

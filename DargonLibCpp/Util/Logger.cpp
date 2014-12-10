@@ -8,7 +8,7 @@
 #include <Windows.h>
 #endif
 
-using namespace Dargon::Util;
+using namespace dargon::Util;
 Logger* Logger::s_instance = nullptr;
 void Logger::Initialize(std::string fileName)
 {

@@ -7,7 +7,7 @@
 
 typedef std::function<void(std::ostream&)> LoggingFunction;
 
-namespace Dargon { namespace Util {
+namespace dargon { namespace Util {
    class ILogger
    {
    public:

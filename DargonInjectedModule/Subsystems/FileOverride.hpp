@@ -6,7 +6,7 @@
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverrideTree.hpp"
 
-namespace Dargon { namespace Subsystems {
+namespace dargon { namespace Subsystems {
    struct FileOverrideTargetDescriptor {
       DWORD targetVolumeSerialNumber;
       DWORD targetFileIndexHigh;

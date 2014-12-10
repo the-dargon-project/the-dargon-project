@@ -10,7 +10,7 @@
 #include "FileOverrideTaskHandler.hpp"
 #include "FileSwapTaskHandler.hpp"
 
-using namespace Dargon::Subsystems;
+using namespace dargon::Subsystems;
 
 const bool kDebugEnabled = true;
 
@@ -96,7 +96,7 @@ void FileSubsystem::AddFileOverride(FileOverrideTargetDescriptor descriptor, Fil
 // - static ---------------------------------------------------------------------------------------
 FileOverrideMap FileSubsystem::s_fileOverridesMap;
 AdvancedOverrideMap FileSubsystem::s_advancedOverridesMap;
-Dargon::Collections::concurrent_set<HANDLE> FileSubsystem::mitmHandles;
+dargon::Collections::concurrent_set<HANDLE> FileSubsystem::mitmHandles;
 
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);

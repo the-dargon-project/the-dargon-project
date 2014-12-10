@@ -9,8 +9,8 @@
 #include "LoggerLevels.hpp"
 #include "noncopyable.hpp"
 
-namespace Dargon { namespace Util { 
-   class Logger : public ILogger, Dargon::Util::noncopyable
+namespace dargon { namespace Util { 
+   class Logger : public ILogger, dargon::Util::noncopyable
    {
    public:
       static void Initialize(std::string fileName);
@@ -52,7 +52,7 @@ namespace Dargon { namespace Util {
          std::lock_guard<std::mutex> lock(myMutex); \
          if(!hasRun) \
          { \
-            Dargon::Util::Logger::GetOutputStream(LoggerLevel) << a; \
+            dargon::Util::Logger::GetOutputStream(LoggerLevel) << a; \
             hasRun = true; \
          } \
       } \

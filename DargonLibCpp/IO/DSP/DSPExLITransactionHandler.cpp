@@ -1,6 +1,6 @@
 #include "../../Dargon.hpp"
 #include "DSPExLITransactionHandler.hpp"
-using namespace Dargon::IO::DSP;
+using namespace dargon::IO::DSP;
 
 DSPExLITransactionHandler::DSPExLITransactionHandler(UINT32 transactionId)
    : TransactionId(transactionId), 

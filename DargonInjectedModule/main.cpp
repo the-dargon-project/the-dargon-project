@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "Core.hpp"
 using namespace std;
-using namespace Dargon::InjectedModule;
+using namespace dargon::InjectedModule;
 
 int main(int argc, wchar_t* argv[])
 {

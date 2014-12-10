@@ -6,8 +6,8 @@
 #include "../Subsystem.Detours.hpp"
 #include "KernelSubsystemTypedefs.hpp"
 
-namespace Dargon { namespace Subsystems {
-   class KernelSubsystem : public Dargon::Subsystem 
+namespace dargon { namespace Subsystems {
+   class KernelSubsystem : public dargon::Subsystem 
    {
       // - singleton ------------------------------------------------------------------------------
    private:

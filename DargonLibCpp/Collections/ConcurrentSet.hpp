@@ -2,7 +2,7 @@
 
 #include "ConcurrentDictionary.hpp"
 
-namespace Dargon { namespace Collections {
+namespace dargon { namespace Collections {
    template <typename TKey,
              class KeyHash = std::hash<TKey>,
              class KeyEqualityComparer = std::equal_to<TKey>,

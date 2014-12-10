@@ -6,7 +6,7 @@
 #include "../IDSPExSession.hpp"
 #include "../DSPExRITransactionHandler.hpp"
 
-namespace Dargon { namespace IO { namespace DSP { namespace ClientImpl {
+namespace dargon { namespace IO { namespace DSP { namespace ClientImpl {
    class DSPExRITEchoHandler : public DSPExRITransactionHandler
    {
    public:

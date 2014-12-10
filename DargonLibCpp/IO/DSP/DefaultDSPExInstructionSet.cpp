@@ -2,8 +2,8 @@
 #include "ClientImpl/DSPExRITEchoHandler.hpp"
 #include "DefaultDSPExInstructionSet.hpp"
 
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
 
 bool DefaultDSPExInstructionSet::TryConstructRITHandler(UINT32 transactionId, DSPEx opcode, OUT DSPExRITransactionHandler** ppResult) 
 {

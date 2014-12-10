@@ -10,24 +10,24 @@
 #include "Util/noncopyable.hpp"
 #include "Core.hpp"
 
-namespace Dargon {
+namespace dargon {
    // Base Interface for a subsystem (formally Hooker in Dargon r1).
    // Note: All Subsystems should be treated like singletons.  Their instance methods should pass
    //       control to static methods.  As only one instance exists and all fields are static, 
    //       there is no differentiation between instance and static members.
    // See ISubsystem.Detours.hpp for information related to implementing a subsystem.
-   class Subsystem : Dargon::Util::noncopyable
+   class Subsystem : dargon::Util::noncopyable
    {
       // - Static ---------------------------------------------------------------------------------
    protected:
       // Logger object which must be initialized at the start of the Initialize method before hooks
       // are set.  The m_logger field is to be accessible by the macros defined in DetoursUtil.hpp
-      static Dargon::Util::ILogger* s_logger;
+      static dargon::Util::ILogger* s_logger;
 
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the
       // subsystem.  The pointed-to memory is owned by the Dargon Injected Module's core and this
       // field is initialized in the Initialize() method.
-      static const Dargon::Init::BootstrapContext* s_bootstrapContext;
+      static const dargon::Init::BootstrapContext* s_bootstrapContext;
 
       // Injected Module Core
       static InjectedModule::Core* s_core;
@@ -48,14 +48,14 @@ namespace Dargon {
       // and logger, which are required for use by subsystem instances.  The static subsystem
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
-      static void OnCoreBootstrap(InjectedModule::Core* core, const Dargon::Init::BootstrapContext* bootstrapContext);
+      static void OnCoreBootstrap(InjectedModule::Core* core, const dargon::Init::BootstrapContext* bootstrapContext);
 
       // Subsystems
       static const std::unordered_set<Subsystem*>& Subsystems;
 
       // - Instance -------------------------------------------------------------------------------
    private:
-      std::unordered_set<Dargon::IO::DIM::IDIMTaskHandler*> m_taskHandlers;
+      std::unordered_set<dargon::IO::DIM::IDIMTaskHandler*> m_taskHandlers;
 
    protected:
       bool m_initialized;
@@ -65,7 +65,7 @@ namespace Dargon {
       Subsystem();
       ~Subsystem();
 
-      void AddTaskHandler(Dargon::IO::DIM::IDIMTaskHandler* handler);
+      void AddTaskHandler(dargon::IO::DIM::IDIMTaskHandler* handler);
 
    public:
       // Initializes the Dargon Injected Module subsystem.  

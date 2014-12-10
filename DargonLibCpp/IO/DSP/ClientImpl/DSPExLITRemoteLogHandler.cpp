@@ -6,9 +6,9 @@
 #include "../IDSPExSession.hpp"
 #include "../DSPExLITransactionHandler.hpp"
 
-using namespace Dargon::IO;
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
+using namespace dargon::IO;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
 
 DSPExLITRemoteLogHandler::DSPExLITRemoteLogHandler(UINT32 transactionId, UINT32 loggerLevel, std::string message)
    : DSPExLITransactionHandler(transactionId), m_loggerLevel(loggerLevel), m_message(message)

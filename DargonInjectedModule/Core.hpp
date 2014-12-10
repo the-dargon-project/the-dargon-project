@@ -6,13 +6,13 @@
 #include "Init/BootstrapContext.hpp"
 #include "IO/DIM/DIMTaskManager.hpp"
 
-namespace Dargon { namespace InjectedModule {
+namespace dargon { namespace InjectedModule {
    class Core 
    {
    private:
       HMODULE m_moduleHandle;
       HANDLE m_mainThreadHandle;
-      Dargon::IO::DIM::DIMTaskManager* m_pDIMTaskManager;
+      dargon::IO::DIM::DIMTaskManager* m_pDIMTaskManager;
 
    public:
       // The common entry point reached when entering through DllMain or main.
@@ -26,10 +26,10 @@ namespace Dargon { namespace InjectedModule {
 
       // Initializes the DIM Core after the bootloader initializes basic necessities such as 
       // loggers, Dargon Service Protocol Ex Client, etc.
-      void Initialize(const Dargon::Init::BootstrapContext* context);
+      void Initialize(const dargon::Init::BootstrapContext* context);
 
    public:
       // Gets the DIMTaskManager, or null if it doesn't exist
-      Dargon::IO::DIM::DIMTaskManager* GetDIMTaskManager();
+      dargon::IO::DIM::DIMTaskManager* GetDIMTaskManager();
    };
 } }

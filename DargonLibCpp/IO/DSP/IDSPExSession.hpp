@@ -5,7 +5,7 @@
 #include "DSPExMessage.hpp"
 #include "DSPExInitialMessage.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class DSPExLITransactionHandler;
    class DSPExRITransactionHandler;
 

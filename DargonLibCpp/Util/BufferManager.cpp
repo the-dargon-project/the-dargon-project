@@ -1,12 +1,12 @@
 #include "../dlc_pch.hpp"
 #include "BufferManager.hpp"
-using namespace Dargon::Util;
+using namespace dargon::Util;
 BufferManager::BufferManager(UINT32 maxPoolSize, UINT32 minBufferSize)
    : m_maxPoolSize(maxPoolSize), 
      m_minBufferSize(minBufferSize)
 {
 }
-Dargon::Blob* BufferManager::TakeBuffer(UINT32 size)
+dargon::Blob* BufferManager::TakeBuffer(UINT32 size)
 {
    std::unique_lock<std::mutex> lock(m_mutex);
    auto it = m_poolContents.lower_bound(size);
@@ -23,7 +23,7 @@ Dargon::Blob* BufferManager::TakeBuffer(UINT32 size)
       return new Blob(std::max(size, m_minBufferSize));
    }
 }
-void BufferManager::ReturnBuffer(Dargon::Blob* blob)
+void BufferManager::ReturnBuffer(dargon::Blob* blob)
 {
    std::unique_lock<std::mutex> lock(m_mutex);
    m_poolContents.insert(PoolMap::value_type(blob->size, blob));

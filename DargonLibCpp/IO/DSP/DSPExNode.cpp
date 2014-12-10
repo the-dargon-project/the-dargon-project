@@ -2,9 +2,9 @@
 
 #include "DSPExNode.hpp"
 #include "DSPExNodeSession.hpp"
-using namespace Dargon::IO::DSP;
+using namespace dargon::IO::DSP;
 
-DSPExNode::DSPExNode(DSPExNodeRole role, std::string defaultPipeName, std::shared_ptr<Dargon::IO::IoProxy> ioProxy) : m_role(role), m_pipeName(defaultPipeName), ioProxy(std::move(ioProxy))
+DSPExNode::DSPExNode(DSPExNodeRole role, std::string defaultPipeName, std::shared_ptr<dargon::IO::IoProxy> ioProxy) : m_role(role), m_pipeName(defaultPipeName), ioProxy(std::move(ioProxy))
 {
    if (m_role == DSPExNodeRole::Server)
    {

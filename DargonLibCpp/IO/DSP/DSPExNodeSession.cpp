@@ -17,15 +17,15 @@
 #include "ClientImpl/DSPExLITBootstrapGetArgsHandler.hpp"
 #include "ClientImpl/DSPExLITRemoteLogHandler.hpp"
 
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
-using namespace Dargon::Util;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
+using namespace dargon::Util;
 
 bool DSPExNodeSession::kDebugEnabled = true;
 int DSPExNodeSession::kFrameProcessorCount = 2;
 int DSPExNodeSession::kFrameProcessorLimit = 16;
 
-DSPExNodeSession::DSPExNodeSession(DSPExNode* pNode, std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
+DSPExNodeSession::DSPExNodeSession(DSPExNode* pNode, std::shared_ptr<dargon::IO::IoProxy> ioProxy)
    : m_pNode(pNode),
      ioProxy(ioProxy),
      m_ipc(ioProxy),
@@ -338,7 +338,7 @@ void DSPExNodeSession::Log(UINT32 loggerLevel, LoggingFunction& logger)
    handler.CompletionLatch.Wait();
 }
 
-void DSPExNodeSession::GetBootstrapArguments(Dargon::Init::BootstrapContext* context)
+void DSPExNodeSession::GetBootstrapArguments(dargon::Init::BootstrapContext* context)
 {
    UINT32 transactionId = m_locallyInitializedUIDSet.TakeUniqueID();
    DSPExLITBootstrapGetArgsHandler handler(transactionId);

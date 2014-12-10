@@ -6,22 +6,22 @@
 #include "../Util/noncopyable.hpp"
 #include "../IO/IoProxy.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class DSPExNode;
    class DSPExNodeSession;
 } } }
 
-namespace Dargon { namespace Init {
+namespace dargon { namespace Init {
    struct BootstrapContext 
    {
    public:
       HMODULE ApplicationModuleHandle;
-      Dargon::Util::ILogger* Logger;
-      Dargon::IO::DSP::DSPExNode* DSPExNode;
-      Dargon::IO::DSP::DSPExNodeSession* DIMSession;
+      dargon::Util::ILogger* Logger;
+      dargon::IO::DSP::DSPExNode* DSPExNode;
+      dargon::IO::DSP::DSPExNodeSession* DIMSession;
 
       std::vector<std::string> ArgumentFlags;
       std::vector<std::pair<std::string, std::string>> ArgumentProperties;
-      std::shared_ptr<Dargon::IO::IoProxy> IoProxy;
+      std::shared_ptr<dargon::IO::IoProxy> IoProxy;
    };
 } }

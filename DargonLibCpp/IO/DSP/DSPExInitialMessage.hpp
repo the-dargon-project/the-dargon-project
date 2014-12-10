@@ -3,7 +3,7 @@
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    /// <summary>
    /// DSP Interactions begin with a DSPExInitialMessage message being sent.  This message will
    /// contain opcode information, allowing the DSP Server or Client to use the appropriate

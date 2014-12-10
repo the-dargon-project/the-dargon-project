@@ -31,10 +31,10 @@
 // Frame Processor
 #include "DSPExFrameProcessor.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class DSPExFrameProcessor;
 
-   class DSPExNodeSession : public IDSPExSession, Dargon::Util::noncopyable
+   class DSPExNodeSession : public IDSPExSession, dargon::Util::noncopyable
    {
       typedef DSPExRITransactionHandler*(DSPExRITransactionHandlerFactory)(UINT32 transactionId);
       typedef std::unordered_map<BYTE, DSPExRITransactionHandlerFactory*> FactoryMap;
@@ -66,7 +66,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// implementation constructor does not connect to a server; rather, you must invoke the
       /// Connect() method after constructing the client.  
       /// </summary>
-      DSPExNodeSession(DSPExNode* node, std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
+      DSPExNodeSession(DSPExNode* node, std::shared_ptr<dargon::IO::IoProxy> ioProxy);
       
       /// <summary>
       /// Attempts to connect to the server at the given hostname and port.
@@ -188,12 +188,12 @@ namespace Dargon { namespace IO { namespace DSP {
       /// Fills the given BootstrapContext structure's Flags and Properties fields with data
       /// recieved from the Daemon.
       /// </summary>
-      void GetBootstrapArguments(Dargon::Init::BootstrapContext* context);
+      void GetBootstrapArguments(dargon::Init::BootstrapContext* context);
 
       /// <summary>
       /// Registers a task handler for Dargon Injected Module task list entries.
       /// </summary>
-      void RegisterDIMTaskHandler(Dargon::IO::DIM::IDIMTaskHandler* handler);
+      void RegisterDIMTaskHandler(dargon::IO::DIM::IDIMTaskHandler* handler);
 
       /// <summary>
       /// Processes the given task list
@@ -225,7 +225,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// </summary>
       DSPExNode const * const m_pNode;
 
-      std::shared_ptr<Dargon::IO::IoProxy> ioProxy;
+      std::shared_ptr<dargon::IO::IoProxy> ioProxy;
 
       /// <summary>
       /// See: Terminated
@@ -253,14 +253,14 @@ namespace Dargon { namespace IO { namespace DSP {
       /// set their HIGH bit; The set is initially filled to the range [0x00000000, 0x7FFFFFFF]
       /// low: 0b00000000 00000000 00000000 00000000 high: 0b01111111 11111111 11111111 11111111
       /// </summary>
-      Dargon::Util::UniqueIdentificationSet<TransactionIdType> m_locallyInitializedUIDSet;
+      dargon::Util::UniqueIdentificationSet<TransactionIdType> m_locallyInitializedUIDSet;
       
       /// <summary>
       /// This provides an initially filled Unique Identification Set for interactions IDing.
       /// We give UIDs from this set to label remotely initiated interactions.  Initially,
       /// the set is empty.  Technically, the valid range of the set is [0x80000000, 0xFFFFFFFF]
       /// </summary>
-      Dargon::Util::UniqueIdentificationSet<TransactionIdType> m_remotelyInitializedUIDSet;
+      dargon::Util::UniqueIdentificationSet<TransactionIdType> m_remotelyInitializedUIDSet;
       
       /// <summary>
       /// Pairs locally initialized transactions with their associated transaction handlers.  
@@ -316,7 +316,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// The output buffer pool provides a pool of buffers.  We use this for message transmitting
       /// so that we don't spend a lot of time allocating and deallocating blocks of memory.
       /// </summary>
-      Dargon::Util::BufferManager m_frameBufferPool;
+      dargon::Util::BufferManager m_frameBufferPool;
 
       /// Instruction sets for this DSPExNodeSession specifically.
       std::vector<IDSPExInstructionSet*> m_instructionSets;
@@ -324,6 +324,6 @@ namespace Dargon { namespace IO { namespace DSP {
       
       FactoryMap kDSPExOpcodeHandlers;
 
-      friend Dargon::IO::DSP::DSPExFrameProcessor;
+      friend dargon::IO::DSP::DSPExFrameProcessor;
    };
 } } }

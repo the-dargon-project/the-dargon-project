@@ -11,9 +11,9 @@
 #include "../DSPExInitialMessage.hpp"
 #include "../IDSPExSession.hpp"
 #include "DSPExLITBootstrapGetArgsHandler.hpp"
-using Dargon::Util::Logger;
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
+using dargon::Util::Logger;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
 
 DSPExLITBootstrapGetArgsHandler::DSPExLITBootstrapGetArgsHandler(UINT32 transactionId)
    : DSPExLITransactionHandler(transactionId)

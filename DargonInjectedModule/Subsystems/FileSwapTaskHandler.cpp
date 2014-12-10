@@ -6,7 +6,7 @@
 #include "FileSwapTaskHandler.hpp"
 #include "FileSubsystem.hpp"
 
-using namespace Dargon::Subsystems;
+using namespace dargon::Subsystems;
 
 FileSwapTaskHandler::FileSwapTaskHandler(FileSubsystem* fileSubsystem) 
    : fileSubsystem(fileSubsystem)

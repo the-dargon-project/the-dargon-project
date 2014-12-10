@@ -5,8 +5,8 @@
 #include "../Util/noncopyable.hpp"
 #include "../IO/DSP/DSPExNode.hpp"
 
-namespace Dargon { namespace Init {
-   class BootloaderRemoteLogger : Dargon::Util::noncopyable, public Dargon::Util::ILogger
+namespace dargon { namespace Init {
+   class BootloaderRemoteLogger : dargon::Util::noncopyable, public dargon::Util::ILogger
    {
    private:
       const BootstrapContext* m_context;

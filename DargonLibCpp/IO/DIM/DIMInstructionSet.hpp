@@ -10,10 +10,10 @@
 #include "DSPExRITDIMProcessTaskListHandler.hpp"
 #include "DSPExLITDIMQueryInitialTaskListHandler.hpp";
 
-namespace Dargon { namespace IO { namespace DIM {
+namespace dargon { namespace IO { namespace DIM {
    class DIMTaskManager;
 
-   class DIMInstructionSet : public Dargon::IO::DSP::IDSPExInstructionSet {
+   class DIMInstructionSet : public dargon::IO::DSP::IDSPExInstructionSet {
    private:
       DIMTaskManager* m_owner;
       DSPExLITDIMQueryInitialTaskListHandler* m_completeOnCompletion;
@@ -21,13 +21,13 @@ namespace Dargon { namespace IO { namespace DIM {
    public:
       DIMInstructionSet(DIMTaskManager* owner) : m_owner(owner), m_completeOnCompletion(nullptr) { }
 
-      virtual bool TryConstructRITHandler(UINT32 transactionId, DSPEx opcode, OUT Dargon::IO::DSP::DSPExRITransactionHandler** ppResult) override
+      virtual bool TryConstructRITHandler(UINT32 transactionId, DSPEx opcode, OUT dargon::IO::DSP::DSPExRITransactionHandler** ppResult) override
       {
          *ppResult = nullptr;
          switch (opcode)
          {
             case DSP_EX_S2C_DIM_RUN_TASKS:
-               *ppResult = new Dargon::IO::DIM::DSPExRITDIMProcessTaskListHandler(transactionId, m_owner, m_completeOnCompletion);
+               *ppResult = new dargon::IO::DIM::DSPExRITDIMProcessTaskListHandler(transactionId, m_owner, m_completeOnCompletion);
                m_completeOnCompletion = nullptr;
                break;
          }

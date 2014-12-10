@@ -8,8 +8,8 @@
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverride.hpp"
 
-namespace Dargon { namespace Subsystems {
-   class FileSubsystem : public Dargon::Subsystem
+namespace dargon { namespace Subsystems {
+   class FileSubsystem : public dargon::Subsystem
    {
       // - singleton ------------------------------------------------------------------------------
    private:
@@ -31,7 +31,7 @@ namespace Dargon { namespace Subsystems {
    private:
       static FileOverrideMap s_fileOverridesMap;
       static AdvancedOverrideMap s_advancedOverridesMap;
-      static Dargon::Collections::concurrent_set<HANDLE> mitmHandles;
+      static dargon::Collections::concurrent_set<HANDLE> mitmHandles;
 
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);

@@ -6,9 +6,9 @@
 
 #define TT_FILESWAP ("FILE_SWAP")
 
-namespace Dargon {
+namespace dargon {
    namespace Subsystems {
-      class FileSwapTaskHandler : public Dargon::IO::DIM::IDIMTaskHandler {
+      class FileSwapTaskHandler : public dargon::IO::DIM::IDIMTaskHandler {
       private:
          FileSubsystem* fileSubsystem;
 

@@ -7,10 +7,10 @@
 #include "DSPExMessage.hpp"
 #include "DSPExInitialMessage.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExRITransactionHandler : Dargon::Util::noncopyable
+   class DSPExRITransactionHandler : dargon::Util::noncopyable
    {
    public:
       /// <summary>

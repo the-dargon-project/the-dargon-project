@@ -11,7 +11,7 @@
 // determined by a dice roll between 13 17 19 23 29 and 31
 #define CONCURRENT_DICTIONARY_BUCKET_COUNT ((int)25)
 
-namespace Dargon { namespace Collections {
+namespace dargon { namespace Collections {
 
    template <typename TKey,
              typename TValue,

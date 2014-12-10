@@ -3,11 +3,11 @@
 #include <map>
 #include <unordered_map>
 #include "../../Base.hpp"
-namespace Dargon { namespace IO { namespace DIM {
+namespace dargon { namespace IO { namespace DIM {
    class IDIMTaskHandler;
    struct  DIMTask;
 } } }
 
-typedef std::unordered_multimap<Dargon::IO::DIM::IDIMTaskHandler*, Dargon::IO::DIM::DIMTask*> DIMHandlerToTasksMap;
+typedef std::unordered_multimap<dargon::IO::DIM::IDIMTaskHandler*, dargon::IO::DIM::DIMTask*> DIMHandlerToTasksMap;
 
 #define TaskType std::string

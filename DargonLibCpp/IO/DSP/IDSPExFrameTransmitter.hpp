@@ -3,7 +3,7 @@
 #include <functional>
 #include "../../Dargon.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    // Params: Buffer, Length
    typedef std::function<void(BYTE*, int)> FrameReceivedHandler;
    typedef std::function<void()> FrameSendCompleteHandler;

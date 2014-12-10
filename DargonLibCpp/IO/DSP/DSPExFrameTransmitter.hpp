@@ -7,7 +7,7 @@
 #include "../IPCObject.hpp"
 #include "IDSPExFrameTransmitter.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class DSPExFrameTransmitter : public IDSPExFrameTransmitter
    {
       typedef void(*FunctionThreadStart)();
@@ -15,7 +15,7 @@ namespace Dargon { namespace IO { namespace DSP {
       /// <summary>
       /// Initializes a new instance of a Frame Transmitter for DSPEx
       /// </summary>
-      DSPExFrameTransmitter(std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
+      DSPExFrameTransmitter(std::shared_ptr<dargon::IO::IoProxy> ioProxy);
 
       /// <summary>
       /// Connects to a remote endpoint

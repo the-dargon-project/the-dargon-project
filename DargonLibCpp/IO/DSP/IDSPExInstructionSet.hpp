@@ -3,7 +3,7 @@
 #include "DSPEx.hpp"
 #include "DSPExRITransactionHandler.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    class IDSPExInstructionSet
    {
    public:

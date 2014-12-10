@@ -4,7 +4,7 @@
 #include <mutex>
 #include "../Dargon.hpp"
 
-namespace Dargon { namespace Util {
+namespace dargon { namespace Util {
    /// <summary>
    /// Allows users to request buffers of a given size from a pool of preallocated buffers.  These
    /// buffers can later be returned to the pool.  The pool maintains a maxium size, ensuring that
@@ -24,7 +24,7 @@ namespace Dargon { namespace Util {
    /// </summary>
    class BufferManager
    {
-      typedef std::multimap<UINT32, Dargon::Blob*> PoolMap;
+      typedef std::multimap<UINT32, dargon::Blob*> PoolMap;
    public:
       /// <summary>
       /// Initializes a new instance of a Buffer Manager with the given maximum pool size and 
@@ -47,7 +47,7 @@ namespace Dargon { namespace Util {
       /// If the requested buffer size is larger than the designated maximum buffer size of this 
       /// pool, then a new buffer will always be allocated. 
       /// </summary>
-      Dargon::Blob* TakeBuffer(UINT32 size = 0);
+      dargon::Blob* TakeBuffer(UINT32 size = 0);
 
       /// <summary>
       /// Returns a Dargon Buffer to the pool.
@@ -55,7 +55,7 @@ namespace Dargon { namespace Util {
       /// <param name="blob">
       /// The Dargon Blob to return to the buffer manager.
       /// </param>
-      void ReturnBuffer(Dargon::Blob* blob);
+      void ReturnBuffer(dargon::Blob* blob);
 
    private:
       UINT32 m_maxPoolSize;

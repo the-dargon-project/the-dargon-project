@@ -10,17 +10,17 @@
 #include "../Util.hpp"
 #include "IPCObject.hpp"
 
-using namespace Dargon::IO;
-using Dargon::Util::Logger;
+using namespace dargon::IO;
+using dargon::Util::Logger;
 
-IPCObject::IPCObject(std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
+IPCObject::IPCObject(std::shared_ptr<dargon::IO::IoProxy> ioProxy)
    : m_lastError(0), m_pipeHandle(0), ioProxy(ioProxy)
 {
 }
 
 bool IPCObject::Open(IN const std::string& pipeName, 
-                     IN Dargon::IO::FileAccess accessMode,
-                     IN Dargon::IO::FileShare shareMode,
+                     IN dargon::IO::FileAccess accessMode,
+                     IN dargon::IO::FileShare shareMode,
                      IN bool writesBuffered) 
 {
 #ifdef WIN32
@@ -58,7 +58,7 @@ void IPCObject::Close()
 //-------------------------------------------------------------------------------------------------
 // IO Read/Write Operations
 //-------------------------------------------------------------------------------------------------
-Dargon::Blob* IPCObject::ReadBytes(IN uint32_t numBytes)
+dargon::Blob* IPCObject::ReadBytes(IN uint32_t numBytes)
 {
 #ifdef WIN32
    return nullptr;

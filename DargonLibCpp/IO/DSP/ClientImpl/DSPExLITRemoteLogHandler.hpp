@@ -7,7 +7,7 @@
 #include "../IDSPExSession.hpp"
 #include "../DSPExLITransactionHandler.hpp"
 
-namespace Dargon { namespace IO { namespace DSP { namespace ClientImpl {
+namespace dargon { namespace IO { namespace DSP { namespace ClientImpl {
    class DSPExLITRemoteLogHandler : public DSPExLITransactionHandler
    {
       UINT32 m_loggerLevel;

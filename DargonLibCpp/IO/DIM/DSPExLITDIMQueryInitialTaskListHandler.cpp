@@ -7,15 +7,15 @@
 #include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
 #include "DIMTask.hpp"
 
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DIM;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DIM;
 
 DSPExLITDIMQueryInitialTaskListHandler::DSPExLITDIMQueryInitialTaskListHandler(UINT32 transactionId)
    : DSPExLITransactionHandler(transactionId), m_tasks()
 {
 }
 
-void DSPExLITDIMQueryInitialTaskListHandler::InitializeInteraction(Dargon::IO::DSP::IDSPExSession& session)
+void DSPExLITDIMQueryInitialTaskListHandler::InitializeInteraction(dargon::IO::DSP::IDSPExSession& session)
 {
    session.SendMessage(
       DSPExInitialMessage(
@@ -28,7 +28,7 @@ void DSPExLITDIMQueryInitialTaskListHandler::InitializeInteraction(Dargon::IO::D
    std::cout << "Sent DSP_EX_C2S_DIM_READY_FOR_TASKS Message with Transaction Id " << TransactionId << std::endl;
 }
 
-void DSPExLITDIMQueryInitialTaskListHandler::ProcessMessage(Dargon::IO::DSP::IDSPExSession& session, Dargon::IO::DSP::DSPExMessage& message) 
+void DSPExLITDIMQueryInitialTaskListHandler::ProcessMessage(dargon::IO::DSP::IDSPExSession& session, dargon::IO::DSP::DSPExMessage& message) 
 { 
    std::cout << "Processing response message of DSPExLITDIMQueryInitialTaskListHandler" << std::endl;
 

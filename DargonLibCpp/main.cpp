@@ -11,10 +11,10 @@
 #include <boost/asio.hpp>
 #include "IO/DSP/DSPExFrameTransmitter.hpp"
 
-using namespace Dargon;
-using namespace Dargon::IO;
-using namespace Dargon::IO::DSP;
-using namespace Dargon::Util;
+using namespace dargon;
+using namespace dargon::IO;
+using namespace dargon::IO::DSP;
+using namespace dargon::Util;
 
 void BufferManagerTest();
 void HardCodedEchoTest();
@@ -53,7 +53,7 @@ int main()
 
 bool UIDSetTest()
 {
-   Dargon::Util::UniqueIdentificationSet<UINT32> uidSet(true);
+   dargon::Util::UniqueIdentificationSet<UINT32> uidSet(true);
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID() << " // " << uidSet << std::endl;
    std::cout << uidSet.TakeUniqueID(10) << " // " << uidSet << std::endl;
@@ -120,7 +120,7 @@ void HardCodedEchoTest()
 }
 void HardCodedEchoTest2()
 {
-   auto ioProxy = std::make_shared<Dargon::IO::IoProxy>();
+   auto ioProxy = std::make_shared<dargon::IO::IoProxy>();
    ioProxy->Initialize();
    IPCObject ipc(ioProxy);
    ipc.Open("dargon", FileAccess::ReadWrite, FileShare::None, false);
@@ -176,7 +176,7 @@ void HardCodedEchoTest2()
 void BufferManagerTest()
 {
    BufferManager bufferManager(20, DSPConstants::kMaxMessageSize);
-   std::vector<Dargon::Blob*> buffers;
+   std::vector<dargon::Blob*> buffers;
    for(int i = 0; i < 30; i++)
    {
       auto buffer = bufferManager.TakeBuffer();

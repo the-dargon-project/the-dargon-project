@@ -3,7 +3,7 @@
 #include <condition_variable>
 #include "../Dargon.hpp"
 #include "CountdownEvent.hpp"
-using namespace Dargon::Util;
+using namespace dargon::Util;
 CountdownEvent::CountdownEvent(UINT32 initialValue)
    : m_counter(initialValue)
 {

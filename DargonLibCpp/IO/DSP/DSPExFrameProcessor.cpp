@@ -4,8 +4,8 @@
 #include "DSPExNodeSession.hpp"
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
-using namespace Dargon::IO::DSP;
-using Dargon::Util::Logger;
+using namespace dargon::IO::DSP;
+using dargon::Util::Logger;
 
 DSPExFrameProcessor::DSPExFrameProcessor(DSPExNodeSession& client, FrameHandled onFrameHandled)
    : m_client(client),
@@ -27,7 +27,7 @@ DSPExFrameProcessor::DSPExFrameProcessor(DSPExNodeSession& client, FrameHandled 
    std::cout << "Done Constructing Frame Processor" << std::endl;
 }
 
-void DSPExFrameProcessor::AssignFrame(Dargon::Blob* frame)
+void DSPExFrameProcessor::AssignFrame(dargon::Blob* frame)
 {
    m_pFrame = frame;
    
@@ -35,7 +35,7 @@ void DSPExFrameProcessor::AssignFrame(Dargon::Blob* frame)
    m_condition.notify_one();
 }
 
-Dargon::Blob* DSPExFrameProcessor::GetAndResetAssignedFrame()
+dargon::Blob* DSPExFrameProcessor::GetAndResetAssignedFrame()
 {
    auto result = m_pFrame;
    m_pFrame = nullptr;

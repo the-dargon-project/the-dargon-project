@@ -2,7 +2,7 @@
 #include "FileSubsystem.hpp"
 #include "FileOverrideTaskHandler.hpp"
 
-using namespace Dargon::Subsystems;
+using namespace dargon::Subsystems;
 
 bool FileOverrideTaskHandler::IsTaskTypeSupported(std::string& type)
 {

@@ -27,13 +27,13 @@
 
 #include "ThirdParty/guicon.h"
 
-using namespace Dargon::InjectedModule;
-using namespace Dargon::Init;
-using namespace Dargon::Util;
+using namespace dargon::InjectedModule;
+using namespace dargon::Init;
+using namespace dargon::Util;
 using namespace std::placeholders;
-using namespace Dargon::Subsystems;
-using namespace Dargon::IO::DSP::ClientImpl;
-using namespace Dargon::IO::DIM;
+using namespace dargon::Subsystems;
+using namespace dargon::IO::DSP::ClientImpl;
+using namespace dargon::IO::DIM;
 
 Core::Core(HMODULE hModule) : m_pDIMTaskManager(nullptr)
 {

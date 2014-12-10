@@ -4,7 +4,7 @@
 #include "ThirdParty/guicon.h"
 #include <iomanip>
 using namespace std;
-using namespace Dargon::InjectedModule;
+using namespace dargon::InjectedModule;
 
 /// <summary>
 /// Entry point of our application, the component of Dargon that is executed in the

@@ -4,9 +4,9 @@
 #include "Bootloader.hpp"
 #include "BootstrapContext.hpp"
 #include "BootloaderRemoteLogger.hpp"
-using namespace Dargon::Init;
-using namespace Dargon::IO;
-using namespace Dargon::IO::DSP;
+using namespace dargon::Init;
+using namespace dargon::IO;
+using namespace dargon::IO::DSP;
 
 void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE moduleHandle)
 {

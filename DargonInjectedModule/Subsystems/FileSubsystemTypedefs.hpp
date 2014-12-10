@@ -10,9 +10,9 @@
 
 struct FileOverrideInstanceDescription {
    HANDLE hReplacementFile;
-   Dargon::Subsystems::FileOverrideTree* pOverrideTree;
+   dargon::Subsystems::FileOverrideTree* pOverrideTree;
 
-   FileOverrideInstanceDescription(HANDLE handle, Dargon::Subsystems::FileOverrideTree* overrideTree)
+   FileOverrideInstanceDescription(HANDLE handle, dargon::Subsystems::FileOverrideTree* overrideTree)
       : hReplacementFile(handle), pOverrideTree(overrideTree)
    {
    }

@@ -2,7 +2,7 @@
 
 #include "../Base.hpp"
 
-namespace Dargon { namespace IO {
+namespace dargon { namespace IO {
    enum class FileAccess : uint32_t {
       Read              = (0x80000000L),
       Write             = (0x40000000L),

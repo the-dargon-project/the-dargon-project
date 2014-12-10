@@ -12,13 +12,13 @@
 #include "IO/DSP/IDSPExSession.hpp"
 #include "DSPExRITDIMProcessTaskListHandler.hpp"
 
-using Dargon::Util::Logger;
-using namespace Dargon::IO::DIM;
-using namespace Dargon::IO::DSP;
+using dargon::Util::Logger;
+using namespace dargon::IO::DIM;
+using namespace dargon::IO::DSP;
 
 DSPExRITDIMProcessTaskListHandler::DSPExRITDIMProcessTaskListHandler(
    UINT32 transactionId, DIMTaskManager* owner, 
-   Dargon::IO::DSP::DSPExLITransactionHandler* completeOnCompletion)
+   dargon::IO::DSP::DSPExLITransactionHandler* completeOnCompletion)
    : DSPExRITransactionHandler(transactionId), 
      m_owner(owner),
      m_completeOnCompletion(completeOnCompletion),
@@ -28,7 +28,7 @@ DSPExRITDIMProcessTaskListHandler::DSPExRITDIMProcessTaskListHandler(
 {
 }
 
-void DSPExRITDIMProcessTaskListHandler::ProcessInitialMessage(IDSPExSession& session, Dargon::IO::DSP::DSPExInitialMessage& message)
+void DSPExRITDIMProcessTaskListHandler::ProcessInitialMessage(IDSPExSession& session, dargon::IO::DSP::DSPExInitialMessage& message)
 {
    Logger::L(LL_ALWAYS, [&](std::ostream& os){ os << "Processing Initial Message of DIM.ProcessTaskList"
                                                  << "Buffer: " << std::hex << (void*)message.DataBuffer << " Length: " << std::dec << message.DataLength << std::endl; });

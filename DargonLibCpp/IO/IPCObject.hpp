@@ -9,14 +9,14 @@
 #include "IOTypedefs.hpp"
 #include "IoProxy.hpp"
 
-namespace Dargon { namespace IO {
-   class IPCObject : Dargon::Util::noncopyable
+namespace dargon { namespace IO {
+   class IPCObject : dargon::Util::noncopyable
    {
    public:
       /// <summary>
       /// Initializes a new instance of an Inter-process Communication object.  
       /// </summary>
-      IPCObject(std::shared_ptr<Dargon::IO::IoProxy> ioProxy);
+      IPCObject(std::shared_ptr<dargon::IO::IoProxy> ioProxy);
 
       /// <summary>
       /// Creates a new instance of a Dargon IPC object with the given name.
@@ -40,8 +40,8 @@ namespace Dargon { namespace IO {
       /// </param>
       /// <returns>Whether or not the operation was successful</returns
       bool Open(IN const std::string& pipeName, 
-                IN Dargon::IO::FileAccess accessMode,
-                IN Dargon::IO::FileShare shareMode,
+                IN dargon::IO::FileAccess accessMode,
+                IN dargon::IO::FileShare shareMode,
                 IN bool writesBuffered);
 
       /// <summary>
@@ -72,7 +72,7 @@ namespace Dargon { namespace IO {
       /// A Blob of less than or equal to the given number of requested bytes.  Returns NULL if the
       /// function fails.  The error can then be accessed via the GetLastError() member method;
       /// </returns>
-      Dargon::Blob* ReadBytes(IN uint32_t numBytes);
+      dargon::Blob* ReadBytes(IN uint32_t numBytes);
 
       /// <summary>
       /// Performs a read operation on the IPC Object.
@@ -100,7 +100,7 @@ namespace Dargon { namespace IO {
    private: 
       UINT32 m_lastError;
 
-      std::shared_ptr<Dargon::IO::IoProxy> ioProxy;
+      std::shared_ptr<dargon::IO::IoProxy> ioProxy;
 
       #ifdef WIN32
       HANDLE m_pipeHandle;

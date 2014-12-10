@@ -2,7 +2,7 @@
 
 #include "../../Dargon.hpp"
 
-namespace Dargon { namespace IO { namespace DSP {
+namespace dargon { namespace IO { namespace DSP {
    /// <summary>
    /// After the initial DSPExInitialMessage message is sent, DSPExMessages are sent.  These
    /// Messages just contain transaction id and FileTree.

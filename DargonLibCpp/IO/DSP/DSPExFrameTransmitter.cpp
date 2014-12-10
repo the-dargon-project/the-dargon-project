@@ -6,10 +6,10 @@
 #include "../../Util.hpp"
 #include "DSPExFrameTransmitter.hpp"
 #include "DSPConstants.hpp"
-using namespace Dargon::IO::DSP;
-using Dargon::Util::Logger;
+using namespace dargon::IO::DSP;
+using dargon::Util::Logger;
 
-DSPExFrameTransmitter::DSPExFrameTransmitter(std::shared_ptr<Dargon::IO::IoProxy> ioProxy)
+DSPExFrameTransmitter::DSPExFrameTransmitter(std::shared_ptr<dargon::IO::IoProxy> ioProxy)
    : m_ipc(ioProxy)
 {
 }

@@ -68,7 +68,7 @@ typedef FunctionSetFilePointer* PFunctionSetFilePointer;
 typedef void (FunctionSetFilePointerNoCC)(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
 typedef FunctionSetFilePointerNoCC* PFunctionSetFilePointerNoCC;
 
-namespace Dargon { namespace IO { 
+namespace dargon { namespace IO { 
    class IoProxy
    {
       PFunctionCreateEventA _createEventA;

@@ -3,17 +3,17 @@
 #include "Init/BootstrapContext.hpp"
 #include "Util/ILogger.hpp"
 
-using namespace Dargon;
-using namespace Dargon::InjectedModule;
-using namespace Dargon::IO::DIM;
+using namespace dargon;
+using namespace dargon::InjectedModule;
+using namespace dargon::IO::DIM;
 
-Dargon::Util::ILogger* Subsystem::s_logger;
-const Dargon::Init::BootstrapContext* Subsystem::s_bootstrapContext;
+dargon::Util::ILogger* Subsystem::s_logger;
+const dargon::Init::BootstrapContext* Subsystem::s_bootstrapContext;
 Core* Subsystem::s_core;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;
 const std::unordered_set<Subsystem*>& Subsystem::Subsystems(Subsystem::s_subsystems);
 
-void Subsystem::OnCoreBootstrap(Core* core, const Dargon::Init::BootstrapContext* bootstrapContext)
+void Subsystem::OnCoreBootstrap(Core* core, const dargon::Init::BootstrapContext* bootstrapContext)
 {
    s_core = core;
    s_bootstrapContext = bootstrapContext;

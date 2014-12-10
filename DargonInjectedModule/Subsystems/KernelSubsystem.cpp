@@ -7,7 +7,7 @@
 #include "KernelSubsystem.hpp"
 #include "KernelSubsystemTypedefs.hpp"
 
-using namespace Dargon::Subsystems;
+using namespace dargon::Subsystems;
 
 // - singleton ------------------------------------------------------------------------------------
 KernelSubsystem* KernelSubsystem::s_instance = nullptr;

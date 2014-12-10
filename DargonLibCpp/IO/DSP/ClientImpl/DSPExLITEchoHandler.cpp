@@ -6,9 +6,9 @@
 #include "../DSPExInitialMessage.hpp"
 #include "../IDSPExSession.hpp"
 #include "DSPExLITEchoHandler.hpp"
-using Dargon::Util::Logger;
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
+using dargon::Util::Logger;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
 
 DSPExLITEchoHandler::DSPExLITEchoHandler(UINT32 transactionId, BYTE* data, UINT32 dataLength)
    : DSPExLITransactionHandler(transactionId),

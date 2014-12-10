@@ -4,9 +4,9 @@
 #include "../Util/ILogger.hpp"
 #include "../IO/DSP/DSPExNodeSession.hpp"
 #include "../IO/DSP/ClientImpl/DSPExLITRemoteLogHandler.hpp"
-using namespace Dargon::Init;
-using namespace Dargon::IO::DSP;
-using namespace Dargon::IO::DSP::ClientImpl;
+using namespace dargon::Init;
+using namespace dargon::IO::DSP;
+using namespace dargon::IO::DSP::ClientImpl;
 
 BootloaderRemoteLogger::BootloaderRemoteLogger(const BootstrapContext* context)
    : m_context(context)

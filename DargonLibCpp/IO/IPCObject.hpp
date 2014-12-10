@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <boost/integer.hpp>
 #include <boost/asio.hpp>
 #include <boost/utility.hpp>
+#include "../Base.hpp"
 #include "../Util/noncopyable.hpp"
 #include "../Dargon.hpp"
 #include "IOTypedefs.hpp"
@@ -72,7 +72,7 @@ namespace Dargon { namespace IO {
       /// A Blob of less than or equal to the given number of requested bytes.  Returns NULL if the
       /// function fails.  The error can then be accessed via the GetLastError() member method;
       /// </returns>
-      Dargon::Blob* ReadBytes(IN boost::uint32_t numBytes);
+      Dargon::Blob* ReadBytes(IN uint32_t numBytes);
 
       /// <summary>
       /// Performs a read operation on the IPC Object.
@@ -86,7 +86,7 @@ namespace Dargon { namespace IO {
       /// length.
       /// </summary>
       bool Write(IN const void* buffer, 
-                 IN boost::uint32_t numBytes);
+                 IN uint32_t numBytes);
 
       /// <summary>
       /// Writes the given buffer to the IPC object's underlying stream using the given offset and

@@ -8,7 +8,6 @@
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/function.hpp>
-#include <boost/thread.hpp>
 #include <boost/asio.hpp>
 #include "IO/DSP/DSPExFrameTransmitter.hpp"
 

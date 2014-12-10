@@ -58,7 +58,7 @@ void IPCObject::Close()
 //-------------------------------------------------------------------------------------------------
 // IO Read/Write Operations
 //-------------------------------------------------------------------------------------------------
-Dargon::Blob* IPCObject::ReadBytes(IN boost::uint32_t numBytes)
+Dargon::Blob* IPCObject::ReadBytes(IN uint32_t numBytes)
 {
 #ifdef WIN32
    return nullptr;
@@ -78,12 +78,12 @@ Dargon::Blob* IPCObject::ReadBytes(IN boost::uint32_t numBytes)
 }
 
 bool IPCObject::ReadBytes(OUT             void* buffer, 
-                          IN              boost::uint32_t numBytes, 
-                          OUT OPTIONAL    boost::uint32_t* paramBytesRead)
+                          IN              uint32_t numBytes, 
+                          OUT OPTIONAL    uint32_t* paramBytesRead)
 {
    Logger::L(LL_VERBOSE, [=](std::ostream& os){ os << "Read: buffer " << buffer << " numBytes " << numBytes << std::endl; });
 
-   static_assert(sizeof(DWORD) == sizeof(boost::uint32_t), "DWORD size isn't same as UINT32 size!");
+   static_assert(sizeof(DWORD) == sizeof(uint32_t), "DWORD size isn't same as UINT32 size!");
    if(numBytes == 0) return true;
    if(paramBytesRead != nullptr) *paramBytesRead = numBytes;
 
@@ -172,15 +172,15 @@ bool IPCObject::ReadBytes(OUT             void* buffer,
 }
 
 bool IPCObject::Write(IN const void* buffer, 
-                      IN boost::uint32_t numBytes)
+                      IN uint32_t numBytes)
 {
    return Write(buffer, 0, numBytes, nullptr);
 }
 
 bool IPCObject::Write(IN           const void* buffer, 
-                      IN           boost::uint32_t offset, 
-                      IN           boost::uint32_t numBytes,
-                      OUT OPTIONAL boost::uint32_t* bytesWritten)
+                      IN           uint32_t offset, 
+                      IN           uint32_t numBytes,
+                      OUT OPTIONAL uint32_t* bytesWritten)
 {
    if(numBytes == 0) {
       if(bytesWritten)
@@ -189,7 +189,7 @@ bool IPCObject::Write(IN           const void* buffer,
    }
 
 #ifdef WIN32
-   static_assert(sizeof(DWORD) == sizeof(boost::uint32_t), "DWORD size isn't same as UINT32 size!");
+   static_assert(sizeof(DWORD) == sizeof(uint32_t), "DWORD size isn't same as UINT32 size!");
 
    OVERLAPPED overlapped;
    ZeroMemory(&overlapped, sizeof(OVERLAPPED));

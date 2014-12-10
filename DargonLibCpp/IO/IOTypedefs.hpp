@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/integer.hpp>
+#include "../Base.hpp"
 
 namespace Dargon { namespace IO {
    enum class FileAccess : uint32_t {

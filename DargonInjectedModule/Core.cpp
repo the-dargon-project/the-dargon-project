@@ -7,10 +7,6 @@
 #include <stdio.h>
 #include <Windows.h>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/nowide/iostream.hpp>
-#include <boost/nowide/convert.hpp>
-
 #include "Init/Bootloader.hpp"
 #include <IO/DIM/DIMTask.hpp>
 #include <IO/DIM/IDIMTaskHandler.hpp>
@@ -69,7 +65,7 @@ unsigned int WINAPI Core::Bootstrap(void* pThis)
 void Core::Initialize(const BootstrapContext* context)
 {
    std::cout << "At Core::Initialize with Bootstrap Context" << std::endl
-             << " - Argument Flags: " << boost::algorithm::join(context->ArgumentFlags, " ") << std::endl
+             << " - Argument Flags: " << dargon::join(context->ArgumentFlags, " ") << std::endl
              << " - Argument Properties: ";
    for(auto kvp : context->ArgumentProperties)
       std::cout << kvp.first << "=" << kvp.second << " ";

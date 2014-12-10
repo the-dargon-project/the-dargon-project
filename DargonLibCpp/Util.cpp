@@ -120,4 +120,22 @@ namespace dargon {
       }
       return true;
    }
+
+   std::string join(const std::vector<std::string>& strings, const char* delimiter) {
+      auto size = strings.size();
+      if (size == 0) {
+         return "";
+      } else if (size == 1) {
+         return strings[0];
+      } else {
+         std::stringstream ss;
+         for (auto i = 0; i < size; i++) {
+            if (i != 0) {
+               ss << delimiter;
+            }
+            ss << strings[i];
+         }
+         return ss.str();
+      }
+   }
 }

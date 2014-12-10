@@ -26,4 +26,5 @@ namespace dargon {
    std::wstring wide(const std::string &s);
 
    bool iequals(const std::string& a, const std::string& b);
+   std::string join(const std::vector<std::string>& strings, const char* delimiter);
 }

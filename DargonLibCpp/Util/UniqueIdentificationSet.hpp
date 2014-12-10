@@ -3,16 +3,16 @@
 #include <limits>
 #include <list>
 #include <type_traits>
-#include <boost/utility.hpp>
 #include <mutex>
 #include <stdexcept>
 #include "../Dargon.hpp"
+#include "noncopyable.hpp"
 
 namespace Dargon { namespace Util {
    // #define TValue UINT32
 
    template<typename TValue, typename = typename std::enable_if<std::is_arithmetic<TValue>::value, TValue>::type>
-   class UniqueIdentificationSet : boost::noncopyable
+   class UniqueIdentificationSet : Dargon::Util::noncopyable
    {
       class _Node {
       public:

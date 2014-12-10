@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boost/integer.hpp>
-#include <boost/utility.hpp>
+#include "Util/noncopyable.hpp"
 // An IN paramter is read by the method, but not mutated by the method.
 #define IN
 
@@ -33,7 +33,7 @@ typedef UINT16 USHORT;
 
 namespace Dargon {
 
-   class Blob : private boost::noncopyable
+   class Blob : private Dargon::Util::noncopyable
    {
    public:
       // The size of our blob's data block

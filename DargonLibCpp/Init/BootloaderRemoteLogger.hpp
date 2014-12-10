@@ -1,12 +1,12 @@
 #pragma once
 
 #include "dlc_pch.hpp"
-#include <boost/noncopyable.hpp>
 #include "../Util/ILogger.hpp"
+#include "../Util/noncopyable.hpp"
 #include "../IO/DSP/DSPExNode.hpp"
 
 namespace Dargon { namespace Init {
-   class BootloaderRemoteLogger : boost::noncopyable, public Dargon::Util::ILogger
+   class BootloaderRemoteLogger : Dargon::Util::noncopyable, public Dargon::Util::ILogger
    {
    private:
       const BootstrapContext* m_context;

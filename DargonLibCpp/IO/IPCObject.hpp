@@ -4,12 +4,13 @@
 #include <boost/integer.hpp>
 #include <boost/asio.hpp>
 #include <boost/utility.hpp>
+#include "../Util/noncopyable.hpp"
 #include "../Dargon.hpp"
 #include "IOTypedefs.hpp"
 #include "IoProxy.hpp"
 
 namespace Dargon { namespace IO {
-   class IPCObject : boost::noncopyable
+   class IPCObject : Dargon::Util::noncopyable
    {
    public:
       /// <summary>

@@ -3,8 +3,8 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
-#include <boost/utility.hpp>
 #include "../Dargon.hpp"
+#include "noncopyable.hpp"
 
 namespace Dargon { namespace Util {
    /// <summary>
@@ -15,7 +15,7 @@ namespace Dargon { namespace Util {
    ///
    /// If you wish to use this object many times, consider using a barrier object.
    /// </summary>
-   class CountdownEvent : boost::noncopyable
+   class CountdownEvent : Dargon::Util::noncopyable
    {
    public:
       /// <summary>

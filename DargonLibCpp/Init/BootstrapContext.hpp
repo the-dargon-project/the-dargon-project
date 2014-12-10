@@ -2,8 +2,8 @@
 
 #include <windef.h>
 #include <memory>
-#include <boost/noncopyable.hpp>
 #include "../Util/Logger.hpp"
+#include "../Util/noncopyable.hpp"
 #include "../IO/IoProxy.hpp"
 
 namespace Dargon { namespace IO { namespace DSP {

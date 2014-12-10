@@ -242,5 +242,8 @@
     <ClInclude Include="IO\IoProxy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Util\noncopyable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

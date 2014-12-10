@@ -9,6 +9,7 @@
 #include <boost/pool/pool.hpp>
 #include "../../Init/BootstrapContext.hpp"
 #include "../../Util.hpp"
+#include "../../Util/noncopyable.hpp"
 #include "../IPCObject.hpp"
 #include "../IoProxy.hpp"
 #include "IDSPExFrameTransmitter.hpp"
@@ -33,7 +34,7 @@
 namespace Dargon { namespace IO { namespace DSP {
    class DSPExFrameProcessor;
 
-   class DSPExNodeSession : public IDSPExSession, boost::noncopyable
+   class DSPExNodeSession : public IDSPExSession, Dargon::Util::noncopyable
    {
       typedef DSPExRITransactionHandler*(DSPExRITransactionHandlerFactory)(UINT32 transactionId);
       typedef std::unordered_map<BYTE, DSPExRITransactionHandlerFactory*> FactoryMap;

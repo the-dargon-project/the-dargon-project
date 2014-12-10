@@ -2,7 +2,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <boost/noncopyable.hpp>
 #include "Base.hpp"
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverrideTree.hpp"

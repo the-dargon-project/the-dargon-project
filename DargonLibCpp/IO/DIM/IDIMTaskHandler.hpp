@@ -1,13 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <boost/noncopyable.hpp>
+#include "../../Util/noncopyable.hpp"
 
 #include "DIMTask.hpp"
 #include "DIMTaskTypes.hpp"
 
 namespace Dargon { namespace IO { namespace DIM {
-   class IDIMTaskHandler : boost::noncopyable {
+   class IDIMTaskHandler : Dargon::Util::noncopyable {
    private:
 
    public:

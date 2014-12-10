@@ -1,8 +1,8 @@
 #pragma once 
 
-#include <boost/utility.hpp>
 #include "../../Dargon.hpp"
 #include "../../Util.hpp"
+#include "../../Util/noncopyable.hpp"
 #include "IDSPExSession.hpp"
 #include "DSPExMessage.hpp"
 using Dargon::Util::CountdownEvent;
@@ -10,7 +10,7 @@ using Dargon::Util::CountdownEvent;
 namespace Dargon { namespace IO { namespace DSP {
    class IDSPExSession;
 
-   class DSPExLITransactionHandler : boost::noncopyable
+   class DSPExLITransactionHandler : Dargon::Util::noncopyable
    {
    public:
       /// <summary>

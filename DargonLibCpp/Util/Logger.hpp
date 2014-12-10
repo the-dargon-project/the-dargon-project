@@ -9,9 +9,10 @@
 #include "../Dargon.hpp"
 #include "ILogger.hpp"
 #include "LoggerLevels.hpp"
+#include "noncopyable.hpp"
 
 namespace Dargon { namespace Util { 
-   class Logger : public ILogger, boost::noncopyable
+   class Logger : public ILogger, Dargon::Util::noncopyable
    {
    public:
       static void Initialize(std::string fileName);

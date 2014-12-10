@@ -7,6 +7,7 @@
 
 #include "Init/BootstrapContext.hpp"
 #include "Util/ILogger.hpp"
+#include "Util/noncopyable.hpp"
 #include "Core.hpp"
 
 namespace Dargon {
@@ -15,7 +16,7 @@ namespace Dargon {
    //       control to static methods.  As only one instance exists and all fields are static, 
    //       there is no differentiation between instance and static members.
    // See ISubsystem.Detours.hpp for information related to implementing a subsystem.
-   class Subsystem : boost::noncopyable
+   class Subsystem : Dargon::Util::noncopyable
    {
       // - Static ---------------------------------------------------------------------------------
    protected:

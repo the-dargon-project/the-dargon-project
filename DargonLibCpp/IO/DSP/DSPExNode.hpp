@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <boost/noncopyable.hpp>
 
+#include "../../Util/noncopyable.hpp"
 #include "../IoProxy.hpp"
 #include "DSPExTypeDefs.hpp"
 #include "IDSPExSession.hpp"
@@ -12,7 +12,7 @@
 #include "DSPExRITransactionHandler.hpp"
 
 namespace Dargon { namespace IO { namespace DSP {
-   class DSPExNode : boost::noncopyable {   
+   class DSPExNode : Dargon::Util::noncopyable {   
    private:
       const DSPExNodeRole m_role;
       const std::string m_pipeName;

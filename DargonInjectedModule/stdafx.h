@@ -11,6 +11,4 @@
 #include <string>
 #include <iostream>
 
-#include <boost/noncopyable.hpp>
-
 #endif

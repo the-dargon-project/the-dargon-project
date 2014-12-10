@@ -54,24 +54,24 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto flags = context->argument_flags;
    auto properties = context->argument_properties;
    auto io_proxy = context->io_proxy;
-   auto dtp_node = std::shared_ptr<dargon::IO::DSP::DSPExNode>(context->dtp_node);
-   auto dtp_session = std::shared_ptr<dargon::IO::DSP::DSPExNodeSession>(context->dtp_session);
-   auto logger = std::shared_ptr<dargon::logger>(context->logger);
+   auto dtp_node = context->dtp_node;
+   auto dtp_session = context->dtp_session;
+   auto logger = context->logger;
 
    // load configuration
    auto configuration = Configuration::Parse(flags, properties);
-
+   
    // construct task manager
    auto command_manager = std::make_shared<CommandManager>(dtp_session, configuration);
-
+   
    // initialize subsystem dependencies
    std::cout << "Initializing Subsystems" << std::endl;
-   Subsystem::Initialize(context);
+   Subsystem::Initialize(context, configuration, logger);
    auto file_subsystem = std::make_shared<FileSubsystem>(command_manager);
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();
    kernel_subsystem->Initialize();
-
+   
    // initialize task manager.
    command_manager->Initialize();
 

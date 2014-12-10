@@ -1,2 +1,2 @@
-#include "dlc_pch.hpp"
+#include "stdafx.h"
 #include "io.hpp"

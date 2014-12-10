@@ -1,4 +1,4 @@
-#include "dlc_pch.hpp"
+#include "stdafx.h"
 #include <memory>
 #include "BootloaderRemoteLogger.hpp"
 #include "bootstrap_context.hpp"

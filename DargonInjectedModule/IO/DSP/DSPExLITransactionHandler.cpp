@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "dargon.hpp"
 #include "DSPExLITransactionHandler.hpp"
 using namespace dargon::IO::DSP;

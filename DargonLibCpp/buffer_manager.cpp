@@ -14,10 +14,10 @@ dargon::blob* buffer_manager::take(UINT32 size) {
    std::unique_lock<std::mutex> lock(m_mutex);
    auto it = m_poolContents.lower_bound(size);
    if (it != m_poolContents.end()) {
-      auto returnedblob = it;
+      auto returned_blob = it->second;
       m_poolContents.erase(it);
       lock.unlock();
-      return returnedblob->second;
+      return returned_blob;
    } else {
       // size is greater than anything in our pool, alloc new blob
       lock.unlock();

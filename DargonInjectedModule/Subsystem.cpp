@@ -2,19 +2,25 @@
 #include "Subsystem.hpp"
 #include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
+#include "Configuration.hpp"
 
 using namespace dargon;
 using namespace dargon::IO::DIM;
 
-dargon::logger* Subsystem::s_logger;
+std::shared_ptr<dargon::logger> Subsystem::s_logger;
 std::shared_ptr<const dargon::Init::bootstrap_context> Subsystem::s_bootstrap_context;
+std::shared_ptr<Configuration> Subsystem::s_configuration;
 std::unordered_set<Subsystem*> Subsystem::s_subsystems;
 const std::unordered_set<Subsystem*>& Subsystem::Subsystems(Subsystem::s_subsystems);
 
-void Subsystem::Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context)
-{
+void Subsystem::Initialize(
+   std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context,
+   std::shared_ptr<Configuration> configuration,
+   std::shared_ptr<dargon::logger> logger
+) {
    s_bootstrap_context = bootstrap_context;
-   s_logger = bootstrap_context->logger;
+   s_configuration = configuration;
+   s_logger = logger;
 }
 
 DWORD* Subsystem::GetVTablePointer(void* pObject)

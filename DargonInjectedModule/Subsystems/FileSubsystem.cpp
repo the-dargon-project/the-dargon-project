@@ -30,10 +30,7 @@ bool FileSubsystem::Initialize()
       command_manager->RegisterTaskHandler(file_swap_task_handler.get());
 
       // Ensure we've been told to initialize
-      if(std::find(s_bootstrap_context->argument_flags.begin(),
-                   s_bootstrap_context->argument_flags.end(),
-                   "--enable-filesystem-hooks") == s_bootstrap_context->argument_flags.end())
-      {
+      if (!s_configuration->IsFlagSet(Configuration::EnableFileSystemHooksFlag)) {
          std::cout << "At FileSubsystem Init but --enable-filesystem-hooks not set" << std::endl;
          return false;
       }
@@ -61,6 +58,12 @@ bool FileSubsystem::Uninitialize()
 
       // Unregister Task Handlers
       command_manager->UnregisterTaskHandler(file_swap_task_handler.get());
+
+      // Ensure we've been told to initialize
+      if (!s_configuration->IsFlagSet(Configuration::EnableFileSystemHooksFlag)) {
+         std::cout << "At FileSubsystem Uninitialize but --enable-filesystem-hooks not set" << std::endl;
+         return false;
+      }
 
       UninstallCreateEventADetour();
       UninstallCreateEventWDetour();
@@ -145,20 +148,21 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
       }
       else // advanced override
       {
-         auto tree = override->second.pOverrideTree;
-         HANDLE fileHandleReplacement = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-
-         // If the replacement doesn't exist, nothing special happens. Otherwise, 
-         // register advanced override.
-         if (fileHandleReplacement != INVALID_HANDLE_VALUE)
-         {
-            s_advancedOverridesMap.insert(
-               AdvancedOverrideMap::value_type(
-                  fileHandle,
-                  FileOverrideInstanceDescription(fileHandleReplacement, tree)
-               )
-            );
-         }
+         // not implemented
+         // auto tree = override->second.pOverrideTree;
+         // HANDLE fileHandleReplacement = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+         // 
+         // // If the replacement doesn't exist, nothing special happens. Otherwise, 
+         // // register advanced override.
+         // if (fileHandleReplacement != INVALID_HANDLE_VALUE)
+         // {
+         //    s_advancedOverridesMap.insert(
+         //       AdvancedOverrideMap::value_type(
+         //          fileHandle,
+         //          FileOverrideInstanceDescription(fileHandleReplacement, tree)
+         //       )
+         //    );
+         // }
       }
    }
    return fileHandle;
@@ -204,22 +208,24 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
       }
       else // advanced override
       {
-         auto tree = override->second.pOverrideTree;
-         HANDLE fileHandleReplacement = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-
-         // If the replacement doesn't exist, nothing special happens. Otherwise, 
-         // register advanced override.
-         if (fileHandleReplacement != INVALID_HANDLE_VALUE)
-         {
-            s_advancedOverridesMap.insert(
-               AdvancedOverrideMap::value_type(
-                  fileHandle,
-                  FileOverrideInstanceDescription(fileHandleReplacement, tree)
-               )
-            );
-         }
+         // not implemented
+         // auto tree = override->second.pOverrideTree;
+         // HANDLE fileHandleReplacement = m_trampCreateFileA(override->second.replacementPath.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+         // 
+         // // If the replacement doesn't exist, nothing special happens. Otherwise, 
+         // // register advanced override.
+         // if (fileHandleReplacement != INVALID_HANDLE_VALUE)
+         // {
+         //    s_advancedOverridesMap.insert(
+         //       AdvancedOverrideMap::value_type(
+         //          fileHandle,
+         //          FileOverrideInstanceDescription(fileHandleReplacement, tree)
+         //       )
+         //    );
+         // }
       }
    }
+
    return fileHandle;
 }
 

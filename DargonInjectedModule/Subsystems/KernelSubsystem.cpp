@@ -8,24 +8,20 @@
 using namespace dargon::Subsystems;
 
 // - instance -------------------------------------------------------------------------------------
-KernelSubsystem::KernelSubsystem()
-{
-}
+KernelSubsystem::KernelSubsystem() {}
 
-bool KernelSubsystem::Initialize()
-{
-   if(Subsystem::Initialize())
-   {
+bool KernelSubsystem::Initialize() {
+   if (Subsystem::Initialize()) {
       HMODULE hModuleKernel32 = WaitForModuleHandle("Kernel32.dll");
       InstallCreateProcessADetour(hModuleKernel32);
       return true;
    }
 }
 
-bool KernelSubsystem::Uninitialize()
-{
+bool KernelSubsystem::Uninitialize() {
    if (Subsystem::Uninitialize()) {
-
+      UninstallCreateProcessADetour();
+      return false;
    } else {
       return true;
    }
@@ -49,8 +45,9 @@ BOOL WINAPI KernelSubsystem::MyCreateProcessA(LPCSTR lpApplicationName, LPSTR lp
       }
    );
 
-   if(ShouldSuspendProcess(lpApplicationName))
+   if (ShouldSuspendProcess(lpApplicationName)) {
       dwCreationFlags |= CREATE_SUSPENDED;
+   }
 
    auto result = m_trampCreateProcessA(
       lpApplicationName, lpCommandLine, lpProcessAttributes,
@@ -64,20 +61,17 @@ BOOL WINAPI KernelSubsystem::MyCreateProcessA(LPCSTR lpApplicationName, LPSTR lp
 bool KernelSubsystem::ShouldSuspendProcess(const char* path)
 {
    auto processName = GetFileName(std::string(path));
-   for(auto property : s_bootstrap_context->argument_properties)
-   {
-      if(dargon::iequals(property.first, "launchsuspended"))
-      {
-         std::cout << "KernelSubsystem::ShouldSuspendProcess have launchsuspended property with value " << property.second << std::endl;
+   auto launchSuspendedValue = s_configuration->GetProperty(Configuration::LaunchSuspendedKey);
+   if (launchSuspendedValue.size() == 0) {
+      return false;
+   }
 
-         auto fileNames = split(property.second, ',');
+   std::cout << "KernelSubsystem::ShouldSuspendProcess have " << Configuration::LaunchSuspendedKey << " property with value " << launchSuspendedValue << std::endl;
 
-         for (auto fileName : fileNames) {
-            std::cout << "KernelSubsystem::ShouldSuspendProcess Compare Process Name " << fileName << " to " << property.second << std::endl;
-
-            if (dargon::iequals(processName, fileName))
-               return true;
-         }
+   auto fileNames = split(launchSuspendedValue, ',');
+   for (auto fileName : fileNames) {
+      if (dargon::iequals(processName, fileName)) {
+         return true;
       }
    }
    return false;

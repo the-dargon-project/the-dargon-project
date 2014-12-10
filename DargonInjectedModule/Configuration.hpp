@@ -13,6 +13,8 @@ namespace dargon {
 
    public:
       static const std::string EnableTaskListFlag;
+      static const std::string EnableFileSystemHooksFlag;
+      static const std::string LaunchSuspendedKey;
 
       static std::shared_ptr<Configuration> Parse(flags_t flags, property_pairs_t properties);
       static std::shared_ptr<Configuration> Parse(flags_t flags, properties_t properties);

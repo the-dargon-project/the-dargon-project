@@ -23,16 +23,16 @@ void Bootloader::BootstrapInjectedModule(const FunctionInitialize& init, HMODULE
 
    // Connect to DSPEx server and get bootstrap arguments
    std::string nodeName = "DargonInjectedModule_" + std::to_string(GetProcessId(GetCurrentProcess()));
-   context->dtp_node = new DSPExNode(DSPExNodeRole::Client, nodeName, context->io_proxy);
+   context->dtp_node = std::shared_ptr<DSPExNode>(new DSPExNode(DSPExNodeRole::Client, nodeName, context->io_proxy));
    std::cout << "DSPExNode constructed for named pipe " << nodeName << std::endl;
    
-   context->dtp_session = context->dtp_node->Connect(nodeName);
+   context->dtp_session = std::shared_ptr<DSPExNodeSession>(context->dtp_node->Connect(nodeName));
    std::cout << "Bootloader::BootstrapInjectedModule DSPExClient::ConnectLocal passed" << std::endl;
    context->dtp_session->GetBootstrapArguments(context);
    std::cout << "Bootloader::BootstrapInjectedModule GetBootstrapArguments passed" << std::endl;
 
    // Create a DSPEx Remote file_logger
-   context->logger = new BootloaderRemoteLogger(context);
+   context->logger = std::make_shared<BootloaderRemoteLogger>(context);
    std::cout << "Bootloader::BootstrapInjectedModule file_logger Constructed" << std::endl;
 
    // Call application's init handler

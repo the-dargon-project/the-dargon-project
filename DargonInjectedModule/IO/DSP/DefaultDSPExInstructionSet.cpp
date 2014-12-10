@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "DSPEx.hpp"
 #include "ClientImpl/DSPExRITEchoHandler.hpp"
 #include "DefaultDSPExInstructionSet.hpp"

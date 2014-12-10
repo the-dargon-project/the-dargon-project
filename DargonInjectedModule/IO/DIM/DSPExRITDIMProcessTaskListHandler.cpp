@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <istream>
 #include <sstream>
 #include <mutex>

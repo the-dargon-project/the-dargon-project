@@ -1,4 +1,4 @@
-#include "dlc_pch.hpp"
+#include "stdafx.h"
 #include "dargon.hpp"
 #include "util.hpp"
 #include "../DSPEx.hpp"

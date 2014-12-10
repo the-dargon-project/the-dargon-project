@@ -14,9 +14,9 @@ namespace dargon { namespace IO { namespace DSP {
 namespace dargon { namespace Init {
    struct bootstrap_context {
       HMODULE module_handle;
-      dargon::logger* logger;
-      dargon::IO::DSP::DSPExNode* dtp_node;
-      dargon::IO::DSP::DSPExNodeSession* dtp_session;
+      std::shared_ptr<dargon::logger> logger;
+      std::shared_ptr<dargon::IO::DSP::DSPExNode> dtp_node;
+      std::shared_ptr<dargon::IO::DSP::DSPExNodeSession> dtp_session;
       std::shared_ptr<dargon::IO::IoProxy> io_proxy;
       std::vector<std::string> argument_flags;
       std::vector<std::pair<std::string, std::string>> argument_properties;

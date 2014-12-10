@@ -4,11 +4,12 @@
 #include <memory>
 #include <unordered_set>
 
-#include <IO/DIM/IDIMTaskHandler.hpp>
-
-#include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
 #include "noncopyable.hpp"
+
+#include "Configuration.hpp"
+#include "Init/bootstrap_context.hpp"
+#include "IO/DIM/IDIMTaskHandler.hpp"
 
 namespace dargon {
    // Base Interface for a subsystem (formally Hooker in Dargon r1).
@@ -22,12 +23,14 @@ namespace dargon {
    protected:
       // file_logger object which must be initialized at the start of the Initialize method before hooks
       // are set.  The m_file_logger field is to be accessible by the macros defined in Detoursutil.hpp
-      static dargon::logger* s_logger;
+      static std::shared_ptr<dargon::logger> s_logger;
 
       // Pointer to the Bootstrap Context which is guaranteed to be valid for the lifetime of the
       // subsystem.  The pointed-to memory is owned by the Dargon Injected Module's core and this
       // field is initialized in the Initialize() method.
       static std::shared_ptr<const dargon::Init::bootstrap_context> s_bootstrap_context;
+
+      static std::shared_ptr<Configuration> Subsystem::s_configuration;
 
       // list of instantiated subsystems
       static std::unordered_set<Subsystem*> s_subsystems;
@@ -45,7 +48,7 @@ namespace dargon {
       // and file_logger, which are required for use by subsystem instances.  The static subsystem
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
-      static void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context);
+      static void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context, std::shared_ptr<Configuration> configuration, std::shared_ptr<dargon::logger> logger);
 
       // Subsystems
       static const std::unordered_set<Subsystem*>& Subsystems;

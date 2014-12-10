@@ -24,4 +24,6 @@ std::vector<std::string> split(const std::string &s, char delim);
 namespace dargon {
    std::string narrow(const std::wstring &s);
    std::wstring wide(const std::string &s);
+
+   bool iequals(const std::string& a, const std::string& b);
 }

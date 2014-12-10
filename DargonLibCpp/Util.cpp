@@ -99,10 +99,25 @@ std::vector<std::string> split(const std::string &s, char delim) {
    return elems;
 }
 
-std::string narrow(const std::wstring &s) {
-   return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(s);
-}
+namespace dargon {
+   std::string narrow(const std::wstring &s) {
+      return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(s);
+   }
 
-std::wstring wide(const std::string &s) {
-   return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(s);
+   std::wstring wide(const std::string &s) {
+      return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().from_bytes(s);
+   }
+
+   bool iequals(const std::string& a, const std::string& b) {
+      auto length = a.length();
+      if (length != b.length()) {
+         return false;
+      }
+      for (size_t i = 0; i < length; i++) {
+         if (tolower(a[i]) != tolower(b[i])) {
+            return false;
+         }
+      }
+      return true;
+   }
 }

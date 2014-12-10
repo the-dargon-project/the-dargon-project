@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/signals2.hpp>
 #include "Util.hpp"
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
@@ -77,7 +75,7 @@ bool KernelSubsystem::ShouldSuspendProcess(const char* path)
    auto processName = GetFileName(std::string(path));
    for(auto property : s_bootstrapContext->ArgumentProperties)
    {
-      if(boost::iequals(property.first, "launchsuspended"))
+      if(dargon::iequals(property.first, "launchsuspended"))
       {
          std::cout << "KernelSubsystem::ShouldSuspendProcess have launchsuspended property with value " << property.second << std::endl;
 
@@ -86,7 +84,7 @@ bool KernelSubsystem::ShouldSuspendProcess(const char* path)
          for (auto fileName : fileNames) {
             std::cout << "KernelSubsystem::ShouldSuspendProcess Compare Process Name " << fileName << " to " << property.second << std::endl;
 
-            if (boost::iequals(processName, fileName))
+            if (dargon::iequals(processName, fileName))
                return true;
          }
       }

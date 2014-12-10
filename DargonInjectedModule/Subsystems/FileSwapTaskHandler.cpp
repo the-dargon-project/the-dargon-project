@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <boost/algorithm/string.hpp>
+#include "Util.hpp"
 #include "binary_reader.hpp"
 #include "FileSwapTaskHandler.hpp"
 #include "FileSubsystem.hpp"
@@ -11,7 +11,7 @@ FileSwapTaskHandler::FileSwapTaskHandler(FileSubsystem* fileSubsystem)
 {
 }
 
-bool FileSwapTaskHandler::IsTaskTypeSupported(TaskType& type) { return boost::iequals(type, TT_FILESWAP);  }
+bool FileSwapTaskHandler::IsTaskTypeSupported(TaskType& type) { return dargon::iequals(type, TT_FILESWAP);  }
 
 void FileSwapTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end) {
    std::cout << "HANDLING FILE SWAP TASKS" << std::endl;

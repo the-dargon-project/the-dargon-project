@@ -129,6 +129,28 @@ namespace Dargon.LeagueOfLegends.FileSystem
          return new Tuple<IoResult, IFileSystemHandle[]>(IoResult.Success, results);
       }
 
+      public IoResult AllocateRelativeHandleFromPath(IFileSystemHandle baseNode, string relativePath, out IFileSystemHandle handle) {
+         var result = ReadOperation(() => AllocateRelativeHandleFromPathInternal(baseNode, relativePath));
+         handle = result.Item2;
+         return result.Item1;
+      }
+
+      private Tuple<IoResult, IFileSystemHandle> AllocateRelativeHandleFromPathInternal(IFileSystemHandle baseNode, string relativePath) {
+         var internalHandle = baseNode as InternalHandle;
+
+         if (internalHandle == null || internalHandle.State == HandleState.Invalidated || internalHandle.State == HandleState.Disposed) {
+            return new Tuple<IoResult, IFileSystemHandle>(IoResult.InvalidHandle, null);
+         }
+
+         var foundNode = internalHandle.Node.GetRelativeOrNull(relativePath);
+
+         if (foundNode == null) {
+            return new Tuple<IoResult, IFileSystemHandle>(IoResult.NotFound, null);
+         }
+
+         return new Tuple<IoResult, IFileSystemHandle>(IoResult.Success, GetNodeHandle(foundNode));
+      }
+
       public IoResult ReadAllBytes(IFileSystemHandle handle, out byte[] bytes)
       {
          var result = ReadOperation(() => ReadAllBytesInternal(handle));

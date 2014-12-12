@@ -70,6 +70,7 @@ namespace Dargon.ModificationRepositories
                fileSystemProxy.CopyFile(sourceFilePath, absolutePath);
 
                gitRepository.Stage(internalPath);
+               dpmRepository.AddFile(internalPath);
             }
             var metadataFilePath = dpmRepository.GetAbsolutePath(ModificationConstants.kMetadataFileName);
             modificationMetadataSerializer.Save(metadataFilePath, metadata);

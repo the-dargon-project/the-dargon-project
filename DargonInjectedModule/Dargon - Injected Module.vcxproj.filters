@@ -156,9 +156,6 @@
     <ClInclude Include="io.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\FileSwapCommandHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialCommandListHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -169,6 +166,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DIM\IDIMCommandHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\FileRedirectionCommandHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -254,10 +254,10 @@
     <ClCompile Include="io.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\FileSwapCommandHandler.cpp">
+    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialCommandListHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialCommandListHandler.cpp">
+    <ClCompile Include="Commands\FileRedirectionCommandHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

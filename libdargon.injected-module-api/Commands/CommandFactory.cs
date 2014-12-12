@@ -5,9 +5,9 @@ namespace Dargon.InjectedModule.Commands
 {
    public class CommandFactory : ICommandFactory
    {
-      private const string kFileSwapTaskType = "FILE_SWAP";
+      private const string kFileRedirectionCommandType = "FILE_REDIRECTION_COMMAND";
 
-      public ICommand CreateFileSwapTask(string replacedFile, string replacementPath)
+      public ICommand CreateFileRedirectionCommand(string replacedFile, string replacementPath)
       {
          using (var ms = new MemoryStream()) {
             using (var writer = new BinaryWriter(ms)) {
@@ -20,7 +20,7 @@ namespace Dargon.InjectedModule.Commands
                }
                writer.WriteLongText(replacementPath);
             }
-            return new Command(kFileSwapTaskType, ms.ToArray());
+            return new Command(kFileRedirectionCommandType, ms.ToArray());
          }
       }
 

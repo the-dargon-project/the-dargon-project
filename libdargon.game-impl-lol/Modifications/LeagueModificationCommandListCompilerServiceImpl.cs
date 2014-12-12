@@ -48,7 +48,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                      continue;
 
                   if (resolutionValue.Target.HasFlag(ModificationTargetType.Client)) {
-                     result.Add(commandFactory.CreateFileSwapTask(resolutionValue.ResolvedPath, repository.GetAbsolutePath(internalPath)));
+                     result.Add(commandFactory.CreateFileRedirectionCommand(resolutionValue.ResolvedPath, repository.GetAbsolutePath(internalPath)));
                   }
                }
             }

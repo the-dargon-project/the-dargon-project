@@ -11,7 +11,7 @@
 
 #include "Application.hpp"
 #include "Configuration.hpp"
-#include "Commands/FileSwapCommandHandler.hpp"
+#include "Commands/FileRedirectionCommandHandler.hpp"
 #include "Subsystems/FileSubsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
 #include "vfm/vfm_reader.hpp"
@@ -90,15 +90,13 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    kernel_subsystem->Initialize();
 
    // initialize command handlers
-   auto file_swap_command_handler = std::make_shared<FileSwapCommandHandler>(command_manager, file_subsystem);
+   auto file_swap_command_handler = std::make_shared<FileRedirectionCommandHandler>(command_manager, file_subsystem);
    file_swap_command_handler->Initialize();
    
    // initialize command manager
    command_manager->Initialize();
 
-   // Suspend count can be >! due to LAUNCH_SUSPENDED override by another instance.
-   while (ResumeThread(main_thread_handle) > 0);
-
+   // Suspend count can be >1 due to LAUNCH_SUSPENDED override by another instance.
    std::cout << "Application::Initialize resuming main thread." << std::endl;
-
+   while (ResumeThread(main_thread_handle) > 0);
 }

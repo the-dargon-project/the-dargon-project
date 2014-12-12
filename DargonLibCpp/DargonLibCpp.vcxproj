@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp" />
+    <ClCompile Include="guid.cpp" />
     <ClCompile Include="util.cpp" />
     <ClInclude Include="base.hpp" />
     <ClInclude Include="concurrent_dictionary.hpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="binary_reader.hpp" />
     <ClInclude Include="memory_stream.hpp" />
     <ClInclude Include="util.hpp" />
+    <ClInclude Include="guid.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dlc_pch.hpp" />

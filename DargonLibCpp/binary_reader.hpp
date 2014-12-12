@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream> // cout for debugging
 #include "base.hpp"
+#include "guid.hpp"
 #include "noncopyable.hpp"
 #include "memory_stream.hpp"
 
@@ -48,6 +49,16 @@ namespace dargon {
       simple_read_impl(uint16)
       simple_read_impl(uint32)
       simple_read_impl(uint64)
+
+      void read_guid(dargon::guid* value) {
+         read_bytes(value, dargon::GUID_LENGTH);
+      }
+
+      dargon::guid read_guid() {
+         dargon::guid result;
+         read_bytes(&result, dargon::GUID_LENGTH);
+         return result;
+      }
 
       void read_null_terminated_string(std::string* result) {
          *result = read_null_terminated_string();

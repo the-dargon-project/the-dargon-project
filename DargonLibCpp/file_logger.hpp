@@ -6,7 +6,6 @@
 #include <mutex>
 #include "dargon.hpp"
 #include "logger.hpp"
-#include "logger_levels.hpp"
 #include "noncopyable.hpp"
 
 namespace dargon {

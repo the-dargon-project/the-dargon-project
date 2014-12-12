@@ -1,3 +1,4 @@
+#pragma once
 #include "file_logger.hpp"
 void dargon::file_logger::L(UINT32 file_loggerLevel, LoggingFunction file_logger)
 {

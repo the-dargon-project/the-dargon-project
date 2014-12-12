@@ -50,9 +50,6 @@
     <ClInclude Include="file_logger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="logger_levels.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="file_logger.inl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

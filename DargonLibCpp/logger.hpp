@@ -3,7 +3,6 @@
 #include <ostream>
 #include <functional>
 #include "dargon.hpp"
-#include "logger_levels.hpp"
 
 // Verbose file_logger Level - for things that happen every single frame
 #define LL_VERBOSE  0x00000001UL

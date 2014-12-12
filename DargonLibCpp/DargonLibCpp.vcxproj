@@ -114,7 +114,6 @@
     <ClInclude Include="countdown_event.hpp" />
     <ClInclude Include="file_logger.hpp" />
     <ClInclude Include="file_logger.inl.hpp" />
-    <ClInclude Include="logger_levels.hpp" />
     <ClInclude Include="noncopyable.hpp" />
     <ClInclude Include="unique_id_set.hpp" />
   </ItemGroup>

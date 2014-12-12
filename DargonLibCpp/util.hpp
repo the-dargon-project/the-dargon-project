@@ -1,3 +1,5 @@
+#pragma once
+
 #include "dlc_pch.hpp"
 
 #include <WinBase.h>

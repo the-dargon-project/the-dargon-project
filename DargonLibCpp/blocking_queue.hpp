@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <queue>
 #include <condition_variable>
 

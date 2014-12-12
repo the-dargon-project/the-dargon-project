@@ -36,6 +36,12 @@
     <ClCompile Include="guid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vfm\vfm_file_sector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vfm\vfm_sector_factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dlc_pch.hpp">
@@ -86,7 +92,19 @@
     <ClInclude Include="memory_stream.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vfm\vfm_reader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="guid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vfm\vfm_sector_factory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vfm\vfm_sector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vfm\vfm_file_sector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,6 +14,7 @@
 #include "feature_toggles.hpp"
 #include "Subsystems/FileSubsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
+#include "vfm/vfm_reader.hpp"
 
 using namespace dargon;
 using namespace dargon::Init;
@@ -57,6 +58,22 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto dtp_node = context->dtp_node;
    auto dtp_session = context->dtp_session;
    auto logger = context->logger;
+
+   // initialize libvfm dependencies
+   auto sector_factory = std::make_shared<vfm_sector_factory>();
+   std::cout << "vfm constructing reader" << std::endl;
+   auto vfm_reader = std::make_shared<dargon::vfm_reader>(sector_factory);
+   std::cout << "vfm constructing fs" << std::endl;
+   auto vfm_fs = std::make_shared<std::fstream>();
+   vfm_fs->open("C:\\Users\\ItzWarty\\.dargon\\temp\\de87afe80b6e2b49a190818a1a4151ce\\0.0.0.235\\Archive_3.raf.dat.vfm", std::fstream::in | std::fstream::binary);
+   binary_reader vfm_fs_reader(vfm_fs);
+   std::cout << "vfm load" << std::endl;
+   auto vfm = vfm_reader->load(vfm_fs_reader);
+   std::cout << "vfm begin" << std::endl;
+   for (auto it = vfm->sectors_begin(); it != vfm->sectors_end(); it++) {
+      std::cout << ": " << (*it)->to_string() << std::endl;
+   }
+   std::cout << "vfm end" << std::endl;
 
    // load configuration
    auto configuration = Configuration::Parse(flags, properties);

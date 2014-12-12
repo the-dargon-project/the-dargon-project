@@ -4,12 +4,12 @@
 #include <string>
 #include <thread>
 #include <unordered_set>
-#include <Collections/ConcurrentDictionary.hpp>
-#include <Util/CountdownEvent.hpp>
+#include <concurrent_dictionary.hpp>
+#include <countdown_event.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace Dargon { namespace Collections {
+namespace dargon { 
    TEST_CLASS(ConcurrentDictionaryTests)
    {
       typedef unsigned int TKey;
@@ -50,13 +50,13 @@ namespace Dargon { namespace Collections {
 
          std::vector<std::thread> threads;
          std::vector<std::vector<std::pair<TKey, TValue>>> pairsByThreadId;
-         Dargon::Util::CountdownEvent beginAddSignal(1);
-         Dargon::Util::CountdownEvent endAddSignal(threadCount);
-         Dargon::Util::CountdownEvent beginRemoveSignal(1);
-         Dargon::Util::CountdownEvent endRemoveSignal(threadCount);
-         Dargon::Util::CountdownEvent beginAddAndRemoveSignal(1);
-         Dargon::Util::CountdownEvent endAddAndRemoveSignal(1);
-         Dargon::Util::CountdownEvent cleanedUpSignal(threadCount);
+         countdown_event beginAddSignal(1);
+         countdown_event endAddSignal(threadCount);
+         countdown_event beginRemoveSignal(1);
+         countdown_event endRemoveSignal(threadCount);
+         countdown_event beginAddAndRemoveSignal(1);
+         countdown_event endAddAndRemoveSignal(1);
+         countdown_event cleanedUpSignal(threadCount);
          for (auto t = 0U; t < threadCount; t++) {
             auto lowerInclusive = t * skip;
             std::vector<std::pair<TKey, TValue>> pairs;
@@ -70,13 +70,13 @@ namespace Dargon { namespace Collections {
                std::bind(&ConcurrentDictionaryTests::AddRemoveThread, this, pairsByThreadId[t], &beginAddSignal, &endAddSignal, &beginRemoveSignal, &endRemoveSignal, &beginAddAndRemoveSignal, &endAddAndRemoveSignal, &cleanedUpSignal)
             ));
          }
-         beginAddSignal.Signal();
-         endAddSignal.Wait();
+         beginAddSignal.signal();
+         endAddSignal.wait();
          Assert::AreEqual(keysPerThread * threadCount, dict.size());
          Assert::AreEqual((ptrdiff_t)(keysPerThread * threadCount), std::distance(dict.begin(), dict.end()));
 
-         beginRemoveSignal.Signal();
-         endRemoveSignal.Wait();
+         beginRemoveSignal.signal();
+         endRemoveSignal.wait();
          Assert::AreEqual(0U, dict.size());
          Assert::AreEqual(0, std::distance(dict.begin(), dict.end()));
 
@@ -88,7 +88,7 @@ namespace Dargon { namespace Collections {
             items.insert(encoded);
          }
 
-         beginAddAndRemoveSignal.Signal();
+         beginAddAndRemoveSignal.signal();
          auto now = std::chrono::system_clock::now();
          auto duration = std::chrono::seconds(5);
          auto end = now + duration;
@@ -111,12 +111,12 @@ namespace Dargon { namespace Collections {
             }
             Assert::AreEqual(items.size(), matchCount);
          }
-         endAddAndRemoveSignal.Signal();
+         endAddAndRemoveSignal.signal();
 
          for (auto item : items) {
             Assert::IsTrue(dict.remove(item));
          }
-         cleanedUpSignal.Wait();
+         cleanedUpSignal.wait();
 
          Assert::AreEqual(0U, dict.size());
 
@@ -126,25 +126,25 @@ namespace Dargon { namespace Collections {
       }
 
    private:
-      void AddRemoveThread(std::vector<std::pair<TKey, TValue>>& values, const Dargon::Util::CountdownEvent* beginAddSignal, Dargon::Util::CountdownEvent* endAddSignal, const Dargon::Util::CountdownEvent* beginRemoveSignal, Dargon::Util::CountdownEvent* endRemoveSignal, const Dargon::Util::CountdownEvent* beginAddAndRemoveSignal, const Dargon::Util::CountdownEvent* endAddAndRemoveSignal, Dargon::Util::CountdownEvent* cleanedUpSignal) {
-         beginAddSignal->Wait();
+      void AddRemoveThread(std::vector<std::pair<TKey, TValue>>& values, const countdown_event* beginAddSignal, countdown_event* endAddSignal, const countdown_event* beginRemoveSignal, countdown_event* endRemoveSignal, const countdown_event* beginAddAndRemoveSignal, const countdown_event* endAddAndRemoveSignal, countdown_event* cleanedUpSignal) {
+         beginAddSignal->wait();
          for (auto value : values) {
             dict.insert(value.first, value.second);
          }
-         endAddSignal->Signal();
+         endAddSignal->signal();
 
-         beginRemoveSignal->Wait();   
+         beginRemoveSignal->wait();   
          for (auto value : values) {
             Assert::IsTrue(dict.remove(value.first));
          }
-         endRemoveSignal->Signal();
+         endRemoveSignal->signal();
 
-         beginAddAndRemoveSignal->Wait();
+         beginAddAndRemoveSignal->wait();
          std::unordered_set<TKey> added;
          std::random_device rd;
          std::mt19937 mt(rd());
          std::uniform_int_distribution<TKey> dist(0, values.size() - 1);
-         while (!endAddAndRemoveSignal->Wait(0)) {
+         while (!endAddAndRemoveSignal->wait(0)) {
             for (auto i = 0; i < values.size(); i++) {
                auto value = values[dist(mt)];
                if (added.find(value.first) == added.end()) {
@@ -159,7 +159,7 @@ namespace Dargon { namespace Collections {
          for (auto key : added) {
             dict.remove(key);
          }
-         cleanedUpSignal->Signal();
+         cleanedUpSignal->signal();
       }
    };
-} }
+}

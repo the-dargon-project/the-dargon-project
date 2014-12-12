@@ -93,6 +93,8 @@
     <ClCompile Include="base.cpp" />
     <ClCompile Include="guid.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="vfm\vfm_file_sector.cpp" />
+    <ClCompile Include="vfm\vfm_sector_factory.cpp" />
     <ClInclude Include="base.hpp" />
     <ClInclude Include="concurrent_dictionary.hpp" />
     <ClInclude Include="concurrent_set.hpp" />
@@ -105,6 +107,10 @@
     <ClInclude Include="memory_stream.hpp" />
     <ClInclude Include="util.hpp" />
     <ClInclude Include="guid.hpp" />
+    <ClInclude Include="vfm\vfm_file_sector.hpp" />
+    <ClInclude Include="vfm\vfm_reader.hpp" />
+    <ClInclude Include="vfm\vfm_sector.hpp" />
+    <ClInclude Include="vfm\vfm_sector_factory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dlc_pch.hpp" />

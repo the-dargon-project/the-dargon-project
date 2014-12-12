@@ -42,15 +42,6 @@
     <ClInclude Include="ThirdParty\guicon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Subsystems\FileOverrideTaskHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subsystems\FileOverrideTree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subsystems\FileOverride.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Subsystems\D3D9SubsystemTypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -171,6 +162,24 @@
     <ClInclude Include="Commands\FileRedirectionCommandHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Subsystems\FileOperationProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\DefaultFileOperationProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\FileOperationProxyFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -192,9 +201,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThirdParty\guicon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Subsystems\FileOverrideTaskHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -258,6 +264,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\FileRedirectionCommandHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\DefaultFileOperationProxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

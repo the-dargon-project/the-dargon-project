@@ -2,28 +2,28 @@
 
 #include "stdafx.h"
 #include <unordered_map>
-#include <concurrent_set.hpp>
+#include <concurrent_dictionary.hpp>
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "FileSubsystemTypedefs.hpp"
-#include "FileOverride.hpp"
+#include "FileOperationProxy.hpp"
+#include "FileOperationProxyFactory.hpp"
 
 namespace dargon { namespace Subsystems {
    class FileSubsystem : public dargon::Subsystem
    {
+      static dargon::concurrent_dictionary<FileIdentifier, std::shared_ptr<FileOperationProxyFactory>, FileIdentifierHash> proxyFactoriesByFileIdentifier;
+      static dargon::concurrent_dictionary<HANDLE, std::shared_ptr<FileOperationProxy>> fileOperationProxiesByHandle;
+
    public:
       FileSubsystem();
       bool Initialize() override;
       bool Uninitialize() override;
 
-      void AddFileOverride(FileOverrideTargetDescriptor descriptor, FileOverride fileOverride);
+      void AddFileOverride(FileIdentifier fileIdentifier, std::shared_ptr<FileOperationProxyFactory> proxyFactory);
       
       // - static ---------------------------------------------------------------------------------
    private:
-      static FileOverrideMap s_fileOverridesMap;
-      static AdvancedOverrideMap s_advancedOverridesMap;
-      static dargon::concurrent_set<HANDLE> mitmHandles;
-
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CreateFileA, FunctionCreateFileA, "CreateFileA", MyCreateFileA);
@@ -41,5 +41,7 @@ namespace dargon { namespace Subsystems {
       static BOOL WINAPI MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
       static BOOL WINAPI MyCloseHandle(HANDLE hObject);
       static DWORD WINAPI MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
+
+      static FileIdentifier GetFileIdentifier(LPCWSTR file_path);
    };
 } }

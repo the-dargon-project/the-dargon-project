@@ -156,9 +156,12 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClCompile Include="IO\DSP\DSPExNodeSession.cpp" />
     <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp" />
     <ClCompile Include="IO\IPCObject.cpp" />
-    <ClCompile Include="Subsystems\FileOverrideTaskHandler.cpp" />
     <ClCompile Include="Commands\FileRedirectionCommandHandler.cpp" />
+    <ClCompile Include="Subsystems\DefaultFileOperationProxy.cpp" />
     <ClCompile Include="Subsystems\KernelSubsystem.cpp" />
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxy.cpp" />
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactory.cpp" />
+    <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.cpp" />
     <ClCompile Include="ThirdParty\guicon.cpp" />
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="Configuration.hpp" />
@@ -204,14 +207,17 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="Subsystem.hpp" />
     <ClInclude Include="Subsystem.Detours.hpp" />
     <ClInclude Include="Subsystems\D3D9SubsystemTypedefs.h" />
-    <ClInclude Include="Subsystems\FileOverride.hpp" />
-    <ClInclude Include="Subsystems\FileOverrideTaskHandler.hpp" />
-    <ClInclude Include="Subsystems\FileOverrideTree.hpp" />
+    <ClInclude Include="Subsystems\DefaultFileOperationProxy.hpp" />
+    <ClInclude Include="Subsystems\FileOperationProxy.hpp" />
+    <ClInclude Include="Subsystems\FileOperationProxyFactory.hpp" />
     <ClInclude Include="Subsystems\FileSubsystem.hpp" />
     <ClInclude Include="Subsystems\FileSubsystemTypedefs.hpp" />
     <ClInclude Include="Commands\FileRedirectionCommandHandler.hpp" />
     <ClInclude Include="Subsystems\KernelSubsystem.hpp" />
     <ClInclude Include="Subsystems\KernelSubsystemTypedefs.hpp" />
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxy.hpp" />
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactory.hpp" />
+    <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.hpp" />
     <ClInclude Include="ThirdParty\guicon.h" />
   </ItemGroup>
   <ItemGroup>

@@ -36,6 +36,17 @@ namespace dargon {
       concurrent_dictionary_bucket(const my_t* next) : count(0), next(next) { }
       ~concurrent_dictionary_bucket() { }
 
+      TValue get_value_or_default(const TKey key) {
+         LockType lock(mutex);
+         auto it = dict.find(key);
+         if (it == dict.end()) {
+            TValue value = {};
+            return value;
+         } else {
+            return it->second;
+         }
+      }
+
       bool insert(const TKey key, TValue value) {
          LockType lock(mutex);
          if (dict.insert(PairType(key, value)).second) {
@@ -162,17 +173,21 @@ namespace dargon {
          }
       }
 
+      TValue get_value_or_default(const TKey& key) {
+         return GetBucket(key)->get_value_or_default(key);
+      }
+
       bool insert(const TKey key, TValue value) {
          return GetBucket(key)->insert(key, value);
       }
 
-      bool remove(const TKey key) {
+      bool remove(const TKey& key) {
          return GetBucket(key)->remove(key);
       }
 
-      inline bool erase(const TKey key) { return remove(key); }
+      inline bool erase(const TKey& key) { return remove(key); }
 
-      bool contains(const TKey key) const {
+      bool contains(const TKey& key) const {
          return GetBucket(key)->contains(key);
       }
 

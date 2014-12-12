@@ -6,37 +6,26 @@
 #include <unordered_map>
 #include <Windows.h>
 
-#include "FileOverrideTree.hpp"
+namespace dargon { namespace Subsystems {
+   struct FileIdentifier {
+      DWORD targetVolumeSerialNumber;
+      DWORD targetFileIndexHigh;
+      DWORD targetFileIndexLow;
 
-struct FileOverrideInstanceDescription {
-   HANDLE hReplacementFile;
-   dargon::Subsystems::FileOverrideTree* pOverrideTree;
+      bool operator==(const FileIdentifier& rhs) const {
+         return this->targetVolumeSerialNumber == rhs.targetVolumeSerialNumber&&
+            this->targetFileIndexHigh == rhs.targetFileIndexHigh &&
+            this->targetFileIndexLow == rhs.targetFileIndexLow;
+      }
+   };
 
-   FileOverrideInstanceDescription(HANDLE handle, dargon::Subsystems::FileOverrideTree* overrideTree)
-      : hReplacementFile(handle), pOverrideTree(overrideTree)
-   {
-   }
-};
-
-typedef std::unordered_map<HANDLE, FileOverrideInstanceDescription> AdvancedOverrideMap;
-
-#if FALSE
-struct DIMOverriddenFileDescriptor
-{
-   DWORD originalVolumeSerialNumber;
-   DWORD originalFileIndexHigh;
-   DWORD originalFileIndexLow;
-
-   bool operator==(const DIMOverriddenFileDescriptor& rhs) const
-   {
-      return this->originalVolumeSerialNumber == rhs.originalVolumeSerialNumber &&
-             this->originalFileIndexHigh == rhs.originalFileIndexHigh &&
-             this->originalFileIndexLow == rhs.originalFileIndexLow;
-   }
-};
-
-typedef std::pair<DIMOverriddenFileDescriptor, std::string> DIMFileOverride;
-typedef std::unordered_map<DIMOverriddenFileDescriptor, std::string, DIMOverriddenFileDescriptorHash> DIMFileOverrideMap;
-#endif
-
-#include <IO/IoProxy.hpp>
+   struct FileIdentifierHash {
+      std::size_t operator() (const FileIdentifier& descriptor) const {
+         DWORD hash = 17;
+         hash = hash * 23 + descriptor.targetVolumeSerialNumber;
+         hash = hash * 23 + descriptor.targetFileIndexHigh;
+         hash = hash * 23 + descriptor.targetFileIndexLow;
+         return hash;
+      }
+   };
+} }

@@ -90,8 +90,9 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    kernel_subsystem->Initialize();
 
    // initialize command handlers
-   auto file_swap_command_handler = std::make_shared<FileRedirectionCommandHandler>(command_manager, file_subsystem);
-   file_swap_command_handler->Initialize();
+   auto redirected_file_operation_proxy_factory_factory = std::make_shared<RedirectedFileOperationProxyFactoryFactory>(io_proxy);
+   auto file_redirection_command_handler = std::make_shared<FileRedirectionCommandHandler>(command_manager, file_subsystem, redirected_file_operation_proxy_factory_factory);
+   file_redirection_command_handler->Initialize();
    
    // initialize command manager
    command_manager->Initialize();

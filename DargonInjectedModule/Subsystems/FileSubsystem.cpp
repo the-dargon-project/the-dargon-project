@@ -102,21 +102,21 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
 
 HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-   if (kDebugEnabled) {
-      s_logger->Log(
-         LL_VERBOSE,
-         [=](std::ostream& os){
-         os << "CreateFileW:"
-            << " lpFilePath: " << dargon::narrow(lpFilePath)
-            << " dwDesiredAccess: " << dwDesiredAccess
-            << " dwShareMode: " << dwShareMode
-            << " lpSecurityAttributes: " << lpSecurityAttributes
-            << " dwCreationDisposition: " << dwCreationDisposition
-            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
-            << " hTemplateFile: " << hTemplateFile
-            << std::endl;
-      });
-   }
+//   if (kDebugEnabled) {
+//      s_logger->Log(
+//         LL_VERBOSE,
+//         [=](std::ostream& os){
+//         os << "CreateFileW:"
+//            << " lpFilePath: " << dargon::narrow(lpFilePath)
+//            << " dwDesiredAccess: " << dwDesiredAccess
+//            << " dwShareMode: " << dwShareMode
+//            << " lpSecurityAttributes: " << lpSecurityAttributes
+//            << " dwCreationDisposition: " << dwCreationDisposition
+//            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
+//            << " hTemplateFile: " << hTemplateFile
+//            << std::endl;
+//      });
+//   }
 
    FileIdentifier fileIdentifier = GetFileIdentifier(lpFilePath);
 
@@ -138,16 +138,16 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
 
 BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
 {
-   if (kDebugEnabled) {
-      s_logger->Log(
-         LL_VERBOSE,
-         [=](std::ostream& os) {
-         os << "ReadFile: hFile: " << hFile
-            << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
-            << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
-            << " lpOverlapped: " << lpOverlapped << std::endl;
-      });
-   }
+//   if (kDebugEnabled) {
+//      s_logger->Log(
+//         LL_VERBOSE,
+//         [=](std::ostream& os) {
+//         os << "ReadFile: hFile: " << hFile
+//            << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
+//            << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
+//            << " lpOverlapped: " << lpOverlapped << std::endl;
+//      });
+//   }
 
    BOOL result;
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
@@ -182,16 +182,16 @@ BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
 }
 DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
 {
-   if (kDebugEnabled) {
-      s_logger->Log(
-         LL_VERBOSE,
-         [=](std::ostream& os) {
-         os << "SetFilePointer: hFile: " << hFile
-            << " lDistanceToMove: " << lDistanceToMove
-            << " lpDistanceToMoveHigh: " << lpDistanceToMoveHigh
-            << " dwMoveMethod: " << dwMoveMethod << std::endl;
-      });
-   }
+//   if (kDebugEnabled) {
+//      s_logger->Log(
+//         LL_VERBOSE,
+//         [=](std::ostream& os) {
+//         os << "SetFilePointer: hFile: " << hFile
+//            << " lDistanceToMove: " << lDistanceToMove
+//            << " lpDistanceToMoveHigh: " << lpDistanceToMoveHigh
+//            << " dwMoveMethod: " << dwMoveMethod << std::endl;
+//      });
+//   }
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
    if (proxy) {
       return proxy->Seek(lDistanceToMove, (int32_t*)lpDistanceToMoveHigh, dwMoveMethod);

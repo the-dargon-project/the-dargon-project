@@ -157,7 +157,7 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp" />
     <ClCompile Include="IO\IPCObject.cpp" />
     <ClCompile Include="Subsystems\FileOverrideTaskHandler.cpp" />
-    <ClCompile Include="Subsystems\FileSwapTaskHandler.cpp" />
+    <ClCompile Include="Commands\FileSwapCommandHandler.cpp" />
     <ClCompile Include="Subsystems\KernelSubsystem.cpp" />
     <ClCompile Include="ThirdParty\guicon.cpp" />
     <ClInclude Include="Application.hpp" />
@@ -210,7 +210,7 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="Subsystems\FileOverrideTree.hpp" />
     <ClInclude Include="Subsystems\FileSubsystem.hpp" />
     <ClInclude Include="Subsystems\FileSubsystemTypedefs.hpp" />
-    <ClInclude Include="Subsystems\FileSwapTaskHandler.hpp" />
+    <ClInclude Include="Commands\FileSwapCommandHandler.hpp" />
     <ClInclude Include="Subsystems\KernelSubsystem.hpp" />
     <ClInclude Include="Subsystems\KernelSubsystemTypedefs.hpp" />
     <ClInclude Include="ThirdParty\guicon.h" />

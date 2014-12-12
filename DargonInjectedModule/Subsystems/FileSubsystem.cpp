@@ -8,26 +8,19 @@
 #include "FileSubsystem.hpp"
 #include "FileSubsystemTypedefs.hpp"
 #include "FileOverrideTaskHandler.hpp"
-#include "FileSwapTaskHandler.hpp"
-#include "../IO/DIM/CommandManager.hpp"
 
 using namespace dargon::Subsystems;
 
 const bool kDebugEnabled = true;
 
-FileSubsystem::FileSubsystem(std::shared_ptr<dargon::IO::DIM::CommandManager> command_manager)
-   : command_manager(command_manager), file_swap_task_handler(std::make_shared<FileSwapTaskHandler>(this)) { }
+FileSubsystem::FileSubsystem() { }
 
 bool FileSubsystem::Initialize()
 {
    std::cout << "At FileSubsystem Init with m_initialized" << m_initialized << std::endl;
    if(m_initialized) return true;
-   else
-   {
+   else {
       Subsystem::Initialize();
-
-      // Register DIM Task Handlers
-      command_manager->RegisterTaskHandler(file_swap_task_handler.get());
 
       // Ensure we've been told to initialize
       if (!s_configuration->IsFlagSet(Configuration::EnableFileSystemHooksFlag)) {
@@ -55,9 +48,6 @@ bool FileSubsystem::Uninitialize()
    else
    {
       Subsystem::Uninitialize();
-
-      // Unregister Task Handlers
-      command_manager->UnregisterTaskHandler(file_swap_task_handler.get());
 
       // Ensure we've been told to initialize
       if (!s_configuration->IsFlagSet(Configuration::EnableFileSystemHooksFlag)) {

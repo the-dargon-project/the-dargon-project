@@ -11,6 +11,7 @@
 
 #include "Application.hpp"
 #include "Configuration.hpp"
+#include "Commands/FileSwapCommandHandler.hpp"
 #include "feature_toggles.hpp"
 #include "Subsystems/FileSubsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
@@ -78,18 +79,22 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    // load configuration
    auto configuration = Configuration::Parse(flags, properties);
    
-   // construct task manager
+   // construct command manager
    auto command_manager = std::make_shared<CommandManager>(dtp_session, configuration);
    
    // initialize subsystem dependencies
    std::cout << "Initializing Subsystems" << std::endl;
    Subsystem::Initialize(context, configuration, logger);
-   auto file_subsystem = std::make_shared<FileSubsystem>(command_manager);
+   auto file_subsystem = std::make_shared<FileSubsystem>();
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();
    kernel_subsystem->Initialize();
+
+   // initialize command handlers
+   auto file_swap_command_handler = std::make_shared<FileSwapCommandHandler>(command_manager, file_subsystem);
+   file_swap_command_handler->Initialize();
    
-   // initialize task manager.
+   // initialize task manager
    command_manager->Initialize();
 
    // Suspend count can be >! due to LAUNCH_SUSPENDED override by another instance.

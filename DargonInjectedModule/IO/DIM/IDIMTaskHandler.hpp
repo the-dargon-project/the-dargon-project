@@ -12,6 +12,7 @@ namespace dargon { namespace IO { namespace DIM {
 
    public:
       virtual ~IDIMTaskHandler() { };
+      virtual void Initialize() = 0;
       virtual bool IsTaskTypeSupported(TaskType& type) = 0;
       virtual void ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end) = 0;
    };

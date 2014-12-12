@@ -1,19 +1,24 @@
 #include "stdafx.h"
 #include "util.hpp"
 #include "binary_reader.hpp"
-#include "FileSwapTaskHandler.hpp"
-#include "FileSubsystem.hpp"
+#include "FileSwapCommandHandler.hpp"
+#include "../Subsystems/FileSubsystem.hpp"
 
+using namespace dargon::IO::DIM;
 using namespace dargon::Subsystems;
 
-FileSwapTaskHandler::FileSwapTaskHandler(FileSubsystem* fileSubsystem) 
-   : fileSubsystem(fileSubsystem)
-{
+FileSwapCommandHandler::FileSwapCommandHandler(std::shared_ptr<CommandManager> command_manager, std::shared_ptr<FileSubsystem> file_subsystem)
+   : command_manager(command_manager), file_subsystem(file_subsystem) { }
+
+void FileSwapCommandHandler::Initialize() {
+   if (file_subsystem->IsInitialized()) {
+      command_manager->RegisterTaskHandler(this);
+   }
 }
 
-bool FileSwapTaskHandler::IsTaskTypeSupported(TaskType& type) { return dargon::iequals(type, TT_FILESWAP);  }
+bool FileSwapCommandHandler::IsTaskTypeSupported(TaskType& type) { return dargon::iequals(type, TT_FILESWAP);  }
 
-void FileSwapTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end) {
+void FileSwapCommandHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end) {
    std::cout << "HANDLING FILE SWAP TASKS" << std::endl;
    for (auto it = begin; it != end; it++) {
       auto task = it->second;
@@ -36,6 +41,6 @@ void FileSwapTaskHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DI
       fileOverride.pOverrideTree = nullptr;
       fileOverride.replacementPath = replacementPath;
 
-      fileSubsystem->AddFileOverride(descriptor, fileOverride);
+      file_subsystem->AddFileOverride(descriptor, fileOverride);
    }
 }

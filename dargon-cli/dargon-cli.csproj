@@ -38,8 +38,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdsp.0.0.4\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
     <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,16 +53,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.2\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.2\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="libwarty.proxies-api">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="libwarty.proxies-impl">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">

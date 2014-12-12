@@ -49,6 +49,9 @@
     <Reference Include="Castle.Core">
       <HintPath>..\packages\libdsp.0.0.3\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\ImpromptuInterface.dll</HintPath>
+    </Reference>
     <Reference Include="libdpo">
       <HintPath>..\packages\libdpo.0.0.12\lib\net45\libdpo.dll</HintPath>
     </Reference>
@@ -56,13 +59,13 @@
       <HintPath>..\packages\libdsp.0.0.3\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.0.0.15\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\libwarty.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libdsp.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.11\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

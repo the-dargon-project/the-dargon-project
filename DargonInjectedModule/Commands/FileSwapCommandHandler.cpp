@@ -12,19 +12,19 @@ FileSwapCommandHandler::FileSwapCommandHandler(std::shared_ptr<CommandManager> c
 
 void FileSwapCommandHandler::Initialize() {
    if (file_subsystem->IsInitialized()) {
-      command_manager->RegisterTaskHandler(this);
+      command_manager->RegisterCommandHandler(this);
    }
 }
 
-bool FileSwapCommandHandler::IsTaskTypeSupported(TaskType& type) { return dargon::iequals(type, TT_FILESWAP);  }
+bool FileSwapCommandHandler::IsCommandTypeSupported(CommandType& type) { return dargon::iequals(type, CT_FILESWAP);  }
 
-void FileSwapCommandHandler::ProcessTasks(DIMHandlerToTasksMap::iterator& begin, DIMHandlerToTasksMap::iterator& end) {
-   std::cout << "HANDLING FILE SWAP TASKS" << std::endl;
+void FileSwapCommandHandler::ProcessCommands(DIMHandlerToCommandsMap::iterator& begin, DIMHandlerToCommandsMap::iterator& end) {
+   std::cout << "HANDLING FILE SWAP COMMANDS " << std::endl;
    for (auto it = begin; it != end; it++) {
-      auto task = it->second;
-      std::cout << "HANDLE FILE SWAP TASK" << std::endl;
+      auto command = it->second;
+      std::cout << "HANDLE FILE SWAP COMMAND " << std::endl;
 
-      dargon::binary_reader reader(task->data, task->length);
+      dargon::binary_reader reader(command->data, command->length);
 
       FileOverrideTargetDescriptor descriptor;
       reader.read_bytes(&descriptor.targetVolumeSerialNumber, sizeof(descriptor.targetVolumeSerialNumber));

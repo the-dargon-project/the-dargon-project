@@ -56,13 +56,13 @@ void DSPExRITDIMProcessTaskListHandler::ProcessMessage(IDSPExSession& session, D
    
    while(reader.available() > 0)
    {
-      TaskType type = reader.read_long_text();
+      CommandType type = reader.read_long_text();
 
       UINT32 dataLength = reader.read_uint32();
       UINT8* data = new UINT8[dataLength];
       reader.read_bytes(data, dataLength);
 
-      DIMTask* task = new DIMTask();
+      DIMCommand* task = new DIMCommand();
       task->type = type;
       task->length = dataLength;
       task->data = data;

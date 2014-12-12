@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include "CommandManager.hpp"
 #include "DIMInstructionSet.hpp"
-#include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
+#include "DSPExLITDIMQueryInitialCommandListHandler.hpp"
 using namespace dargon;
 using namespace dargon::IO::DIM;
 
@@ -14,68 +14,68 @@ CommandManager::CommandManager(
 }
 
 void CommandManager::Initialize() {
-   if (configuration->IsFlagSet(Configuration::EnableTaskListFlag)) {
-      std::cout << "Registering DIM Task Manager Instruction Set" << std::endl;
+   if (configuration->IsFlagSet(Configuration::EnableCommandListFlag)) {
+      std::cout << "Registering DIM Command Manager Instruction Set" << std::endl;
       session->AddInstructionSet(new DIMInstructionSet(this));
 
-      std::cout << "Querying Initial DIM Task List" << std::endl;
+      std::cout << "Querying Initial DIM Command List" << std::endl;
       auto transactionId = session->TakeLocallyInitializedTransactionId();
-      auto handler = std::make_shared<DSPExLITDIMQueryInitialTaskListHandler>(transactionId);
+      auto handler = std::make_shared<DSPExLITDIMQueryInitialCommandListHandler>(transactionId);
       session->RegisterAndInitializeLITransactionHandler(*handler.get());
 
-      std::cout << "Waiting for initial DIM Task List" << std::endl;
+      std::cout << "Waiting for initial DIM Command List" << std::endl;
       handler->CompletionLatch.wait();
 
-      std::cout << "Processing Initial DIM Task List... " << std::endl;
-      auto tasks = handler->ReleaseTasks();
-      ProcessTasks(tasks);
+      std::cout << "Processing Initial DIM Command List... " << std::endl;
+      auto commands = handler->ReleaseCommands();
+      ProcessCommands(commands);
 
-      std::cout << "Initial DIM Task List processed." << std::endl;
+      std::cout << "Initial DIM Command List processed." << std::endl;
    }
 }
 
-void CommandManager::RegisterTaskHandler(IDIMTaskHandler* handler) {
+void CommandManager::RegisterCommandHandler(IDIMCommandHandler* handler) {
    LockType lock(m_mutex);
    m_handlers.insert(handler);
 }
 
-void CommandManager::UnregisterTaskHandler(IDIMTaskHandler* handler) {
+void CommandManager::UnregisterCommandHandler(IDIMCommandHandler* handler) {
    LockType lock(m_mutex);
    m_handlers.erase(handler);
 }
 
-void CommandManager::ProcessTasks(std::vector<DIMTask*>& tasks) {
+void CommandManager::ProcessCommands(std::vector<DIMCommand*>& commands) {
    LockType lock(m_mutex);
 
-   // enumerate all task types
-   std::unordered_set<TaskType> taskTypes;
-   for (auto task : tasks)
-      taskTypes.insert(task->type);
+   // enumerate all command types
+   std::unordered_set<CommandType> CommandTypes;
+   for (auto command : commands)
+      CommandTypes.insert(command->type);
 
-   // determine what handlers handle the task types
-   std::unordered_map<TaskType, IDIMTaskHandler*> typeToHandler;
-   for (auto type : taskTypes) {
+   // determine what handlers handle the command types
+   std::unordered_map<CommandType, IDIMCommandHandler*> typeToHandler;
+   for (auto type : CommandTypes) {
       for (auto handler : m_handlers) {
-         if (handler->IsTaskTypeSupported(type)) {
-            typeToHandler.insert(std::pair<TaskType, IDIMTaskHandler*>(type, handler));
+         if (handler->IsCommandTypeSupported(type)) {
+            typeToHandler.insert(std::pair<CommandType, IDIMCommandHandler*>(type, handler));
             break;
          }
       }
    }
 
-   // determine what tasks are handled by a handler
-   DIMHandlerToTasksMap handlerToTasks;
-   std::unordered_set<DIMTask*> uncategorizedTasks;
-   for (auto task : tasks) {
-      auto handler = typeToHandler.find(task->type);
+   // determine what commands are handled by a handler
+   DIMHandlerToCommandsMap handlerToCommands;
+   std::unordered_set<DIMCommand*> uncategorizedCommands;
+   for (auto command : commands) {
+      auto handler = typeToHandler.find(command->type);
       if (handler == typeToHandler.end())
-         uncategorizedTasks.insert(task);
+         uncategorizedCommands.insert(command);
       else {
-         handlerToTasks.insert(std::pair<IDIMTaskHandler*, DIMTask*>(handler->second, task));
+         handlerToCommands.insert(std::pair<IDIMCommandHandler*, DIMCommand*>(handler->second, command));
       }
    }
 
-   // pass tasks to handler
+   // pass commands to handler
    for (auto handler : m_handlers)
-      handler->ProcessTasks(handlerToTasks.find(handler), handlerToTasks.end());
+      handler->ProcessCommands(handlerToCommands.find(handler), handlerToCommands.end());
 }

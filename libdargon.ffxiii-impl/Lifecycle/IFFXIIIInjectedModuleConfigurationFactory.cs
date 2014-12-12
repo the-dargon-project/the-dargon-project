@@ -1,5 +1,4 @@
 ﻿using Dargon.InjectedModule;
-using Dargon.InjectedModule.Tasks;
 
 namespace Dargon.FinalFantasyXIII.Lifecycle
 {

@@ -9,7 +9,7 @@
 #include "IO/DSP/DSPEx.hpp"
 #include "IO/DSP/IDSPExSession.hpp"
 #include "IO/DSP/DSPExRITransactionHandler.hpp"
-#include "IO/DIM/DIMTask.hpp"
+#include "IO/DIM/DIMCommand.hpp"
 
 namespace dargon { namespace IO { namespace DIM {
    class CommandManager;
@@ -23,7 +23,7 @@ namespace dargon { namespace IO { namespace DIM {
       // to fit overrides.
       bool m_headerReceived;
       uint32_t m_taskCount;
-      std::vector<dargon::IO::DIM::DIMTask*> m_tasks;
+      std::vector<dargon::IO::DIM::DIMCommand*> m_tasks;
 
       // Stops many threads from simultaneously filling the overrides vector
       std::mutex m_fillMutex;

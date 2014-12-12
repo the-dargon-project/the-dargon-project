@@ -17,7 +17,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       [Mock] private readonly InjectedModuleService injectedModuleService = null;
       [Mock] private readonly LeagueModificationResolutionService leagueModificationResolutionService = null;
       [Mock] private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService = null;
-      [Mock] private readonly LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService = null;
+      [Mock] private readonly LeagueModificationCommandListCompilerService leagueModificationCommandListCompilerService = null;
       [Mock] private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService = null;
       [Mock] private readonly LeagueSessionService leagueSessionService = null;
       [Mock] private readonly RadsService radsService = null;
@@ -29,7 +29,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
       public LeagueLifecycleServiceImplTests()
       {
-         testObj = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
+         testObj = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
 
          modifications = new[] { firstModification, secondModification };
          When(leagueModificationRepositoryService.EnumerateModifications()).ThenReturn(modifications);

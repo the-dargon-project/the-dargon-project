@@ -18,8 +18,8 @@
 #include "DSPExNode.hpp"
 #include "IDSPExInstructionSet.hpp"
 
-#include "IO/DIM/DIMTask.hpp"
-#include "IO/DIM/IDIMTaskHandler.hpp"
+#include "IO/DIM/DIMCommand.hpp"
+#include "IO/DIM/IDIMCommandHandler.hpp"
 
 // DSPExHandler Implementations
 #include "ClientImpl/DSPExLITEchoHandler.hpp"
@@ -192,12 +192,12 @@ namespace dargon { namespace IO { namespace DSP {
       /// <summary>
       /// Registers a task handler for Dargon Injected Module task list entries.
       /// </summary>
-      void RegisterDIMTaskHandler(dargon::IO::DIM::IDIMTaskHandler* handler);
+      void RegisterDIMCommandHandler(dargon::IO::DIM::IDIMCommandHandler* handler);
 
       /// <summary>
       /// Processes the given task list
       /// </summary>
-      //void ProcessTaskList(const std::vector<DIMTask*> & tasks);
+      //void ProcessTaskList(const std::vector<DIMCommand*> & tasks);
 
    private:      
       /// <summary>

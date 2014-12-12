@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Dargon.InjectedModule;
+using Dargon.InjectedModule.Commands;
 using Dargon.InjectedModule.Components;
-using Dargon.InjectedModule.Tasks;
 
 namespace Dargon.LeagueOfLegends.Lifecycle
 {
@@ -19,12 +19,12 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          return configurationBuilder.Build();
       }
 
-      public IInjectedModuleConfiguration GetClientConfiguration(ITasklist tasklist)
+      public IInjectedModuleConfiguration GetClientConfiguration(ICommandList commandList)
       {
          var configurationBuilder = new InjectedModuleConfigurationBuilder();
          configurationBuilder.AddComponent(new DebugConfigurationComponent());
          configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Client));
-         configurationBuilder.AddComponent(new TasklistConfigurationComponent(tasklist));
+         configurationBuilder.AddComponent(new CommandListConfigurationComponent(commandList));
          configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
          configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
          return configurationBuilder.Build();

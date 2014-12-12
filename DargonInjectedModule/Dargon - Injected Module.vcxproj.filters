@@ -54,9 +54,6 @@
     <ClInclude Include="Subsystems\D3D9SubsystemTypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="feature_toggles.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,19 +72,7 @@
     <ClInclude Include="IO\DIM\DIMInstructionSet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IO\DIM\DIMTask.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DIMTaskTypes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\DIM\IDIMTaskHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO\DSP\ClientImpl\DSPExLITBootstrapGetArgsHandler.hpp">
@@ -174,6 +159,18 @@
     <ClInclude Include="Commands\FileSwapCommandHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IO\DIM\DSPExLITDIMQueryInitialCommandListHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\DIM\DIMCommand.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\DIM\DIMCommandTypes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO\DIM\IDIMCommandHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -210,9 +207,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Init\BootloaderRemoteLogger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialTaskListHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DIM\DSPExRITDIMProcessTaskListHandler.cpp">
@@ -261,6 +255,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\FileSwapCommandHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO\DIM\DSPExLITDIMQueryInitialCommandListHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

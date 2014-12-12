@@ -12,7 +12,6 @@
 #include "Application.hpp"
 #include "Configuration.hpp"
 #include "Commands/FileSwapCommandHandler.hpp"
-#include "feature_toggles.hpp"
 #include "Subsystems/FileSubsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
 #include "vfm/vfm_reader.hpp"
@@ -94,7 +93,7 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto file_swap_command_handler = std::make_shared<FileSwapCommandHandler>(command_manager, file_subsystem);
    file_swap_command_handler->Initialize();
    
-   // initialize task manager
+   // initialize command manager
    command_manager->Initialize();
 
    // Suspend count can be >! due to LAUNCH_SUSPENDED override by another instance.

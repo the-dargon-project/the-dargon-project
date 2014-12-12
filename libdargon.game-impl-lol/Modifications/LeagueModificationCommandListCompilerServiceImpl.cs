@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using Dargon.Game;
-using Dargon.InjectedModule.Tasks;
+using Dargon.InjectedModule.Commands;
 using Dargon.Modifications;
 using Dargon.Patcher;
 using ItzWarty;
@@ -10,23 +10,23 @@ using NLog;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
-   public class LeagueModificationTasklistCompilerServiceImpl : LeagueModificationTasklistCompilerService
+   public class LeagueModificationCommandListCompilerServiceImpl : LeagueModificationCommandListCompilerService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly ITaskFactory taskFactory;
+      private readonly ICommandFactory commandFactory;
 
-      public LeagueModificationTasklistCompilerServiceImpl(ITaskFactory taskFactory) { this.taskFactory = taskFactory; }
+      public LeagueModificationCommandListCompilerServiceImpl(ICommandFactory commandFactory) { this.commandFactory = commandFactory; }
 
-      public ITasklist BuildTasklist(IModification modification, ModificationTargetType target)
+      public ICommandList BuildCommandList(IModification modification, ModificationTargetType target)
       {
          if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
-            throw new InvalidOperationException("League Modification Compilation Service can only build tasklist for League of Legends modifications!");
+            throw new InvalidOperationException("League Modification Compilation Service can only build command list for League of Legends modifications!");
          }
 
-         logger.Info("Building Tasklist for Modification " + modification + " for Target Type " + target);
+         logger.Info("Building Command List for Modification " + modification + " for Target Type " + target);
 
-         var result = new Tasklist();
+         var result = new CommandList();
          var repository = new LocalRepository(modification.RepositoryPath);
          using (repository.TakeLock()) {
             string compilationMetadataFilepath = repository.GetMetadataFilePath(LeagueModificationObjectCompilerServiceImpl.COMPILATION_METADATA_FILE_NAME); // HACK
@@ -48,7 +48,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                      continue;
 
                   if (resolutionValue.Target.HasFlag(ModificationTargetType.Client)) {
-                     result.Add(taskFactory.CreateFileSwapTask(resolutionValue.ResolvedPath, repository.GetAbsolutePath(internalPath)));
+                     result.Add(commandFactory.CreateFileSwapTask(resolutionValue.ResolvedPath, repository.GetAbsolutePath(internalPath)));
                   }
                }
             }

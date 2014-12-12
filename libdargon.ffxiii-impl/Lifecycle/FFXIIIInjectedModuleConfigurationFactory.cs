@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Dargon.FinalFantasyXIII.Lifecycle;
 using Dargon.InjectedModule;
 using Dargon.InjectedModule.Components;
-using Dargon.InjectedModule.Tasks;
 
 namespace Dargon.LeagueOfLegends.Lifecycle
 {

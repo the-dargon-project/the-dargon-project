@@ -3,7 +3,6 @@ using System.Threading;
 using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
-using Dargon.InjectedModule.Tasks;
 using Dargon.IO.RADS;
 using Dargon.LeagueOfLegends.FileSystem;
 using Dargon.LeagueOfLegends.Lifecycle;
@@ -20,6 +19,7 @@ using ItzWarty.Threading;
 using NLog;
 using System.IO;
 using System.Linq;
+using Dargon.InjectedModule.Commands;
 
 namespace Dargon.LeagueOfLegends
 {
@@ -35,11 +35,11 @@ namespace Dargon.LeagueOfLegends
       private readonly ProcessWatcherService processWatcherService;
       private readonly ModificationRepositoryService modificationRepositoryService;
       private readonly RadsServiceImpl radsService;
-      private readonly ITaskFactory taskFactory;
+      private readonly ICommandFactory commandFactory;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
       private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
-      private readonly LeagueModificationTasklistCompilerService leagueModificationTasklistCompilerService;
+      private readonly LeagueModificationCommandListCompilerService leagueModificationCommandListCompilerService;
       private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
       private readonly LeagueSessionServiceImpl leagueSessionService;
@@ -58,17 +58,17 @@ namespace Dargon.LeagueOfLegends
          this.modificationRepositoryService = modificationRepositoryService;
 
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
-         this.taskFactory = new TaskFactory();
+         this.commandFactory = new CommandFactory();
          this.leagueModificationRepositoryService = new LeagueModificationRepositoryServiceImpl(modificationRepositoryService);
          this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(threadingProxy, daemonService, radsService);
          this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(threadingProxy, daemonService);
-         this.leagueModificationTasklistCompilerService = new LeagueModificationTasklistCompilerServiceImpl(taskFactory);
+         this.leagueModificationCommandListCompilerService = new LeagueModificationCommandListCompilerServiceImpl(commandFactory);
          this.leagueGameModificationLinkerService = new LeagueGameModificationLinkerServiceImpl(temporaryFileService, radsService, leagueModificationRepositoryService);
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
          this.leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          this.leagueInjectedModuleConfigurationFactory = new LeagueInjectedModuleConfigurationFactory();
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationTasklistCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
+         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
 
          RunDebugActions();
       }

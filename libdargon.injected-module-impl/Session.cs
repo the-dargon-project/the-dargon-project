@@ -68,8 +68,8 @@ namespace Dargon.InjectedModule
                case DTP_DIM.C2S_GET_BOOTSTRAP_ARGS:
                   handler = new RITGetBootstrapArgsHandler(transactionId, session);
                   break;
-               case DTP_DIM.C2S_GET_INITIAL_TASKLIST:
-                  handler = new RITGetInitialTasklistHandler(transactionId, session);
+               case DTP_DIM.C2S_GET_INITIAL_COMMAND_LIST:
+                  handler = new RITGetInitialCommandListHandler(transactionId, session);
                   break;
                case DTP_DIM.C2S_REMOTE_LOG:
                   handler = new RITRemoteLogHandler(transactionId);
@@ -136,34 +136,34 @@ namespace Dargon.InjectedModule
          }
       }
 
-      private class RITGetInitialTasklistHandler : RemotelyInitializedTransactionHandler
+      private class RITGetInitialCommandListHandler : RemotelyInitializedTransactionHandler
       {
          private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
          private readonly Session dimSession;
 
-         public RITGetInitialTasklistHandler(uint transactionId, Session dimSession) : base(transactionId) { this.dimSession = dimSession; }
+         public RITGetInitialCommandListHandler(uint transactionId, Session dimSession) : base(transactionId) { this.dimSession = dimSession; }
 
          public override void ProcessInitialMessage(IDSPExSession session, TransactionInitialMessage message)
          {
             logger.Info("Processing Initial Message");
 
-            var tasklistConfigurationComponent = dimSession.Configuration.GetComponentOrNull<TasklistConfigurationComponent>();
-            var tasklist = tasklistConfigurationComponent.Tasklist;
+            var commandListConfigurationComponent = dimSession.Configuration.GetComponentOrNull<CommandListConfigurationComponent>();
+            var commandList = commandListConfigurationComponent.CommandList;
             using (var ms = new MemoryStream()) {
                using (var writer = new BinaryWriter(ms)) {
-                  writer.Write((uint)tasklist.Count);
-                  foreach (var task in tasklist) {
-                     writer.WriteLongText(task.Type);
-                     writer.Write(task.Data.Length);
-                     writer.Write(task.Data, 0, task.Data.Length);
+                  writer.Write((uint)commandList.Count);
+                  foreach (var command in commandList) {
+                     writer.WriteLongText(command.Type);
+                     writer.Write(command.Data.Length);
+                     writer.Write(command.Data, 0, command.Data.Length);
                   }
                }
 
                var data = ms.ToArray();
                session.SendMessage(new TransactionMessage(message.TransactionId, data, 0, data.Length));
                session.DeregisterRITransactionHandler(this);
-               logger.Info("Sent Initial Tasklist");
+               logger.Info("Sent Initial Command List");
             }
          }
 

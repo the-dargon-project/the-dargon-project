@@ -12,7 +12,7 @@ namespace dargon {
       typedef std::vector<std::pair<std::string, std::string>> property_pairs_t;
 
    public:
-      static const std::string EnableTaskListFlag;
+      static const std::string EnableCommandListFlag;
       static const std::string EnableFileSystemHooksFlag;
       static const std::string LaunchSuspendedKey;
 

@@ -78,7 +78,7 @@
     <Compile Include="Modifications\LeagueModificationObjectCompilerService.cs" />
     <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
     <Compile Include="Modifications\LeagueModificationResolutionService.cs" />
-    <Compile Include="Modifications\LeagueModificationTasklistCompilerService.cs" />
+    <Compile Include="Modifications\LeagueModificationCommandListCompilerService.cs" />
     <Compile Include="Modifications\ModificationTargetType.cs" />
     <Compile Include="Modifications\Status.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />

@@ -9,7 +9,7 @@
 
 #include "Configuration.hpp"
 #include "Init/bootstrap_context.hpp"
-#include "IO/DIM/IDIMTaskHandler.hpp"
+#include "IO/DIM/IDIMCommandHandler.hpp"
 
 namespace dargon {
    // Base Interface for a subsystem (formally Hooker in Dargon r1).
@@ -54,9 +54,6 @@ namespace dargon {
       static const std::unordered_set<Subsystem*>& Subsystems;
 
       // - Instance -------------------------------------------------------------------------------
-   private:
-      std::unordered_set<dargon::IO::DIM::IDIMTaskHandler*> m_taskHandlers;
-
    protected:
       bool m_initialized;
 
@@ -65,21 +62,19 @@ namespace dargon {
       Subsystem();
       ~Subsystem();
 
-      void AddTaskHandler(dargon::IO::DIM::IDIMTaskHandler* handler);
-
    public:
       // Initializes the Dargon Injected Module subsystem.  
-      // Superclasses must invoke this method on initialization for DIM Tasks to work
+      // Superclasses must invoke this method on initialization for DIM Commands to work
       // returns: true if the object is now initialized
       virtual bool Initialize();
 
       // Uninitializes the Dargon Injected Module subsystem.
       // For the Dargon Alpha build, this is not required to be implemented.
-      // Superclasses must invoke this method on initialization for DIM Tasks to work
+      // Superclasses must invoke this method on initialization for DIM Commands to work
       // returns: true if the object is now uninitialized
       virtual bool Uninitialize();
       
-      // Superclasses must invoke this method on initialization for DIM Tasks to work
+      // Superclasses must invoke this method on initialization for DIM Commands to work
       // returns: Whether or not the subsystem is currently initialized. 
       //          This should be FALSE on object construction.
       virtual bool IsInitialized();

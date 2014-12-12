@@ -49,11 +49,6 @@ Subsystem::~Subsystem()
    s_subsystems.erase(this);
 }
 
-void Subsystem::AddTaskHandler(IDIMTaskHandler* handler)
-{
-   m_taskHandlers.insert(handler);
-}
-
 bool Subsystem::Initialize()
 {
    m_initialized = true;

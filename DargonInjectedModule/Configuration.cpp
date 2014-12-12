@@ -7,7 +7,7 @@
 #include "Configuration.hpp"
 using namespace dargon;
 
-const std::string Configuration::EnableTaskListFlag = "--enable-dim-tasklist";
+const std::string Configuration::EnableCommandListFlag = "--enable-dim-command-list";
 const std::string Configuration::EnableFileSystemHooksFlag = "--enable-filesystem-hooks";
 const std::string Configuration::LaunchSuspendedKey = "launchsuspended";
 

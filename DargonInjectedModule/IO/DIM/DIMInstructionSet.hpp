@@ -1,14 +1,14 @@
 #pragma once
 
-#include "DIMTask.hpp"
-#include "IDIMTaskHandler.hpp"
-#include "DIMTaskTypes.hpp"
+#include "DIMCommand.hpp"
+#include "IDIMCommandHandler.hpp"
+#include "DIMCommandTypes.hpp"
 #include "../DSP/DSPEx.hpp"
 #include "../DSP/IDSPExInstructionSet.hpp"
 #include "../DSP/DSPExLITransactionHandler.hpp"
 #include "../DSP/DSPExRITransactionHandler.hpp"
 #include "DSPExRITDIMProcessTaskListHandler.hpp"
-#include "DSPExLITDIMQueryInitialTaskListHandler.hpp";
+#include "DSPExLITDIMQueryInitialCommandListHandler.hpp";
 
 namespace dargon { namespace IO { namespace DIM {
    class CommandManager;
@@ -16,7 +16,7 @@ namespace dargon { namespace IO { namespace DIM {
    class DIMInstructionSet : public dargon::IO::DSP::IDSPExInstructionSet {
    private:
       CommandManager* m_owner;
-      DSPExLITDIMQueryInitialTaskListHandler* m_completeOnCompletion;
+      DSPExLITDIMQueryInitialCommandListHandler* m_completeOnCompletion;
 
    public:
       DIMInstructionSet(CommandManager* owner) : m_owner(owner), m_completeOnCompletion(nullptr) { }
@@ -34,7 +34,7 @@ namespace dargon { namespace IO { namespace DIM {
          return *ppResult == nullptr;
       }
 
-      void SetCompleteOnCompletion(DSPExLITDIMQueryInitialTaskListHandler* completeOnCompletion)
+      void SetCompleteOnCompletion(DSPExLITDIMQueryInitialCommandListHandler* completeOnCompletion)
       {
          m_completeOnCompletion = completeOnCompletion;
       }

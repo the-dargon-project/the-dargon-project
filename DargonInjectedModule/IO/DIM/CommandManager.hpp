@@ -12,11 +12,11 @@
 #include "../DSP/DSPExRITransactionHandler.hpp"
 #include "../DSP/DSPExNodeSession.hpp";
 
-#include "DIMTask.hpp"
-#include "IDIMTaskHandler.hpp"
-#include "DIMTaskTypes.hpp"
+#include "DIMCommand.hpp"
+#include "IDIMCommandHandler.hpp"
+#include "DIMCommandTypes.hpp"
 #include "DIMInstructionSet.hpp"
-#include "DSPExLITDIMQueryInitialTaskListHandler.hpp"
+#include "DSPExLITDIMQueryInitialCommandListHandler.hpp"
 
 namespace dargon { namespace IO { namespace DIM {
    class CommandManager {
@@ -26,17 +26,18 @@ namespace dargon { namespace IO { namespace DIM {
    private:
       std::shared_ptr<dargon::IO::DSP::DSPExNodeSession> session;
       std::shared_ptr<dargon::Configuration> configuration;
-      std::unordered_set<IDIMTaskHandler*> m_handlers;
+      std::unordered_set<IDIMCommandHandler*> m_handlers;
       MutexType m_mutex;
       
    public:
       CommandManager(std::shared_ptr<dargon::IO::DSP::DSPExNodeSession> session, std::shared_ptr<dargon::Configuration>);
       void Initialize();
-      void RegisterTaskHandler(IDIMTaskHandler* handler);
-      void UnregisterTaskHandler(IDIMTaskHandler* handler);
-      void ProcessTasks(std::vector<DIMTask*>& tasks);
+      void RegisterCommandHandler(IDIMCommandHandler* handler);
+      void UnregisterCommandHandler(IDIMCommandHandler* handler);
+      void ProcessCommands(std::vector<DIMCommand*>& 
+         s);
 
    private:
-      DSPExLITDIMQueryInitialTaskListHandler* ConstructInitialTaskListQueryHandler(UINT32 transactionId);
+      DSPExLITDIMQueryInitialCommandListHandler* ConstructInitialCommandListQueryHandler(UINT32 transactionId);
    };
 } } }

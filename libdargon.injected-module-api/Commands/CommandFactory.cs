@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using ItzWarty;
 
-namespace Dargon.InjectedModule.Tasks
+namespace Dargon.InjectedModule.Commands
 {
-   public class TaskFactory : ITaskFactory
+   public class CommandFactory : ICommandFactory
    {
       private const string kFileSwapTaskType = "FILE_SWAP";
 
-      public ITask CreateFileSwapTask(string replacedFile, string replacementPath)
+      public ICommand CreateFileSwapTask(string replacedFile, string replacementPath)
       {
          using (var ms = new MemoryStream()) {
             using (var writer = new BinaryWriter(ms)) {
@@ -25,16 +20,16 @@ namespace Dargon.InjectedModule.Tasks
                }
                writer.WriteLongText(replacementPath);
             }
-            return new Task(kFileSwapTaskType, ms.ToArray());
+            return new Command(kFileSwapTaskType, ms.ToArray());
          }
       }
 
-      private class Task : ITask
+      private class Command : ICommand
       {
          private readonly string type;
          private readonly byte[] data;
 
-         public Task(string type, byte[] data)
+         public Command(string type, byte[] data)
          {
             this.type = type;
             this.data = data;

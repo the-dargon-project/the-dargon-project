@@ -101,6 +101,7 @@
     <ClCompile Include="countdown_event.cpp" />
     <ClCompile Include="file_logger.cpp" />
     <ClInclude Include="binary_reader.hpp" />
+    <ClInclude Include="memory_stream.hpp" />
     <ClInclude Include="util.hpp" />
   </ItemGroup>
   <ItemGroup>

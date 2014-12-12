@@ -3,45 +3,41 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <iostream> // cout for debugging
 #include "base.hpp"
 #include "noncopyable.hpp"
+#include "memory_stream.hpp"
 
 namespace dargon {
 #define simple_read_impl(integer_type) \
    void read_##integer_type(integer_type##_t* dest) { \
-      auto next = current + sizeof(integer_type##_t); \
-      if (next > origin + length) { \
-         throw_read_past_eof(); \
-      } else { \
-         *dest = *(integer_type##_t*)current; \
-         current = next; \
-      } \
+      read_bytes(dest, sizeof(integer_type##_t)); \
    } \
    integer_type##_t read_##integer_type() { \
-      auto next = current + sizeof(integer_type##_t); \
-      if (next > origin + length) { \
-         throw_read_past_eof(); \
-         return 0; \
-      } else { \
-         auto result = *(integer_type##_t*)current; \
-         current = next; \
-         return result; \
-      } \
+      integer_type##_t result; \
+      read_bytes(&result, sizeof(result)); \
+      return result; \
    }
          
-
    class binary_reader : dargon::noncopyable {
-      const uint8_t* origin;
-      const uint8_t* current;
-      int32_t length;
+      std::shared_ptr<std::istream> stream;
 
    private:
       inline void throw_read_past_eof() {
-         throw "attempted to read past end of stream";
+         throw std::exception("attempted to read past end of stream");
       }
 
    public:
-      binary_reader(const void* buffer, int32_t length) : origin((const uint8_t*)buffer), current((const uint8_t*)buffer), length(length) { };
+      binary_reader(const void* buffer, std::size_t length) : binary_reader(std::make_shared<memory_stream>((char*)buffer, length)) { }
+      binary_reader(std::shared_ptr<std::istream> stream) : stream(stream) { }
+
+      void read_bytes(void* buffer, int32_t count) {
+         stream->read((char*)buffer, count);
+
+         if (stream->eof()) {
+            throw_read_past_eof();
+         }
+      }
 
       simple_read_impl(int8)
       simple_read_impl(int16)
@@ -53,14 +49,6 @@ namespace dargon {
       simple_read_impl(uint32)
       simple_read_impl(uint64)
 
-      void read_bytes(void* buffer, int32_t count) {
-         if (current + count > origin + length) {
-            throw_read_past_eof();
-         }
-         memcpy(buffer, current, count);
-         current += count;
-      }
-
       void read_null_terminated_string(std::string* result) {
          *result = read_null_terminated_string();
       }
@@ -68,11 +56,8 @@ namespace dargon {
       std::string read_null_terminated_string() {
          std::vector<char> chars;
          char c;
-         while ((c = *(current++)) != 0) {
+         while ((c = read_int8()) != 0) {
             chars.push_back(c);
-            if (current > origin + length) {
-               throw_read_past_eof();
-            }
          }
          return std::string(chars.begin(), chars.end());
       }
@@ -102,7 +87,11 @@ namespace dargon {
       }
 
       size_t available() {
-         return (origin + length) - current;
+         if (stream->peek() == EOF) {
+            return 0;
+         } else {
+            return 1;
+         }
       }
    };
 }

@@ -83,5 +83,8 @@
     <ClInclude Include="dargon.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="memory_stream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

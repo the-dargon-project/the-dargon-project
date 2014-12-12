@@ -42,6 +42,9 @@
     <ClCompile Include="vfm\vfm_sector_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vfm\vfm_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dlc_pch.hpp">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vfm\vfm_file_sector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vfm\vfm_file.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

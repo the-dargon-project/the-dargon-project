@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RedirectedFileOperationProxyFactory.hpp"
 #include "RedirectedFileOperationProxy.hpp"
+#include "RemappedFileOperationProxyFactory.hpp"
 
 using namespace dargon::IO;
 using namespace dargon::Subsystems;

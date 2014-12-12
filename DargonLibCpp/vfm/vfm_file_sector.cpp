@@ -25,6 +25,7 @@ void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * b
    fs.open(path, std::fstream::in | std::fstream::binary);
    fs.seekg(read_offset);
    fs.read((char*)buffer + buffer_offset, read_length);
+   fs.close();
 }
 
 void vfm_file_sector::deserialize(dargon::binary_reader & reader) {

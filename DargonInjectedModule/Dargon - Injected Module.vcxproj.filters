@@ -180,6 +180,18 @@
     <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Subsystems\RemappedFileOperationProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\RemappedFileOperationProxyFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\RemappedFileOperationProxyFactoryFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\FileRemappingCommandHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -276,6 +288,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RemappedFileOperationProxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RemappedFileOperationProxyFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\RemappedFileOperationProxyFactoryFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\FileRemappingCommandHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

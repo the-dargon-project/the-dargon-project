@@ -12,8 +12,11 @@
 #include "Application.hpp"
 #include "Configuration.hpp"
 #include "Commands/FileRedirectionCommandHandler.hpp"
+#include "Commands/FileRemappingCommandHandler.hpp"
 #include "Subsystems/FileSubsystem.hpp"
 #include "Subsystems/KernelSubsystem.hpp"
+#include "Subsystems/RedirectedFileOperationProxyFactoryFactory.hpp"
+#include "Subsystems/RemappedFileOperationProxyFactoryFactory.hpp"
 #include "vfm/vfm_reader.hpp"
 
 using namespace dargon;
@@ -61,19 +64,7 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
 
    // initialize libvfm dependencies
    auto sector_factory = std::make_shared<vfm_sector_factory>();
-   std::cout << "vfm constructing reader" << std::endl;
    auto vfm_reader = std::make_shared<dargon::vfm_reader>(sector_factory);
-   std::cout << "vfm constructing fs" << std::endl;
-   auto vfm_fs = std::make_shared<std::fstream>();
-   vfm_fs->open("C:\\Users\\ItzWarty\\.dargon\\temp\\de87afe80b6e2b49a190818a1a4151ce\\0.0.0.235\\Archive_3.raf.dat.vfm", std::fstream::in | std::fstream::binary);
-   binary_reader vfm_fs_reader(vfm_fs);
-   std::cout << "vfm load" << std::endl;
-   auto vfm = vfm_reader->load(vfm_fs_reader);
-   std::cout << "vfm begin" << std::endl;
-   for (auto it = vfm->sectors_begin(); it != vfm->sectors_end(); it++) {
-      std::cout << ": " << (*it)->to_string() << std::endl;
-   }
-   std::cout << "vfm end" << std::endl;
 
    // load configuration
    auto configuration = Configuration::Parse(flags, properties);
@@ -93,7 +84,11 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto redirected_file_operation_proxy_factory_factory = std::make_shared<RedirectedFileOperationProxyFactoryFactory>(io_proxy);
    auto file_redirection_command_handler = std::make_shared<FileRedirectionCommandHandler>(command_manager, file_subsystem, redirected_file_operation_proxy_factory_factory);
    file_redirection_command_handler->Initialize();
-   
+
+   auto remapped_file_operation_proxy_factory_factory = std::make_shared<RemappedFileOperationProxyFactoryFactory>(io_proxy, vfm_reader);
+   auto file_remapping_command_handler = std::make_shared<FileRemappingCommandHandler>(command_manager, file_subsystem, remapped_file_operation_proxy_factory_factory);
+   file_remapping_command_handler->Initialize();
+
    // initialize command manager
    command_manager->Initialize();
 

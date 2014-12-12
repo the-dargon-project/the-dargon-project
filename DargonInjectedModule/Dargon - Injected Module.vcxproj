@@ -137,6 +137,7 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Commands\FileRemappingCommandHandler.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Init\Bootloader.cpp" />
     <ClCompile Include="Init\BootloaderRemoteLogger.cpp" />
@@ -162,8 +163,12 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClCompile Include="Subsystems\RedirectedFileOperationProxy.cpp" />
     <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactory.cpp" />
     <ClCompile Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.cpp" />
+    <ClCompile Include="Subsystems\RemappedFileOperationProxy.cpp" />
+    <ClCompile Include="Subsystems\RemappedFileOperationProxyFactory.cpp" />
+    <ClCompile Include="Subsystems\RemappedFileOperationProxyFactoryFactory.cpp" />
     <ClCompile Include="ThirdParty\guicon.cpp" />
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="Commands\FileRemappingCommandHandler.hpp" />
     <ClInclude Include="Configuration.hpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClInclude Include="DSPExHandlers\DSPExLol.hpp" />
@@ -218,6 +223,9 @@ IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
     <ClInclude Include="Subsystems\RedirectedFileOperationProxy.hpp" />
     <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactory.hpp" />
     <ClInclude Include="Subsystems\RedirectedFileOperationProxyFactoryFactory.hpp" />
+    <ClInclude Include="Subsystems\RemappedFileOperationProxy.hpp" />
+    <ClInclude Include="Subsystems\RemappedFileOperationProxyFactory.hpp" />
+    <ClInclude Include="Subsystems\RemappedFileOperationProxyFactoryFactory.hpp" />
     <ClInclude Include="ThirdParty\guicon.h" />
   </ItemGroup>
   <ItemGroup>

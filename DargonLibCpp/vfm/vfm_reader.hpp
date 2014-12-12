@@ -6,21 +6,11 @@
 #include "base.hpp"
 #include "binary_reader.hpp"
 
+#include "vfm_file.hpp"
 #include "vfm_sector.hpp"
 #include "vfm_sector_factory.hpp"
 
 namespace dargon {
-   class vfm_file : dargon::noncopyable {
-      typedef std::vector<std::shared_ptr<vfm_sector>> sector_collection;
-
-      sector_collection sectors;
-
-   public:
-      void assign_sector(std::shared_ptr<vfm_sector> sector) { sectors.emplace_back(sector); }
-      sector_collection::iterator sectors_begin() { return sectors.begin(); }
-      sector_collection::iterator sectors_end() { return sectors.end(); }
-   };
-
    const uint32_t vfm_sector_collection_magic = 0x534D4656U;
 
    class vfm_reader {

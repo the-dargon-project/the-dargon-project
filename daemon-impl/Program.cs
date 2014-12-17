@@ -24,6 +24,7 @@ using ItzWarty.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using NLog.Targets.Wrappers;
 
 namespace Dargon.Daemon
 {
@@ -132,13 +133,20 @@ namespace Dargon.Daemon
       private static void InitializeLogging()
       {
          var config = new LoggingConfiguration();
-         var debuggerTarget = new DebuggerTarget();
+         Target debuggerTarget = new DebuggerTarget();
+         Target consoleTarget = new ColoredConsoleTarget();
+
+#if !DEBUG
+         debuggerTarget = new AsyncTargetWrapper(debuggerTarget);
+         consoleTarget = new AsyncTargetWrapper(consoleTarget);
+#endif
+
          config.AddTarget("debugger", debuggerTarget);
+         config.AddTarget("console", consoleTarget);
+
          var debuggerRule = new LoggingRule("*", LogLevel.Trace, debuggerTarget);
          config.LoggingRules.Add(debuggerRule);
 
-         var consoleTarget = new ColoredConsoleTarget();
-         config.AddTarget("console", consoleTarget);
          var consoleRule = new LoggingRule("*", LogLevel.Trace, consoleTarget);
          config.LoggingRules.Add(consoleRule);
 

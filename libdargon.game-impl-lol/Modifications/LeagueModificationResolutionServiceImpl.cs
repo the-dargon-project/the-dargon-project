@@ -31,7 +31,6 @@ namespace Dargon.LeagueOfLegends.Modifications
 
          logger.Info("Resolving Modification " + modification + " for Target Type " + target);
 
-
          var newTask = new ResolutionTask(modification);
          AddTask(modification.RepositoryName, newTask, target);
          return newTask;

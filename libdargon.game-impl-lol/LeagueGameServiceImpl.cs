@@ -20,6 +20,7 @@ using NLog;
 using System.IO;
 using System.Linq;
 using Dargon.InjectedModule.Commands;
+using Dargon.Management.Server;
 
 namespace Dargon.LeagueOfLegends
 {
@@ -28,6 +29,7 @@ namespace Dargon.LeagueOfLegends
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
+      private readonly ILocalManagementRegistry localManagementRegistry;
       private readonly DaemonService daemonService;
       private readonly TemporaryFileService temporaryFileService;
       private readonly IProcessProxy processProxy;
@@ -47,9 +49,10 @@ namespace Dargon.LeagueOfLegends
       private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
+      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, ILocalManagementRegistry localManagementRegistry, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
          logger.Info("Initializing League Game Service");
+         this.localManagementRegistry = localManagementRegistry;
          this.daemonService = daemonService;
          this.temporaryFileService = temporaryFileService;
          this.processProxy = processProxy;
@@ -69,20 +72,20 @@ namespace Dargon.LeagueOfLegends
          this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          this.leagueInjectedModuleConfigurationFactory = new LeagueInjectedModuleConfigurationFactory();
          this.leagueLifecycleService = new LeagueLifecycleServiceImpl(injectedModuleService, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory).With(x => x.Initialize());
-
+         this.localManagementRegistry.RegisterInstance(new LeagueModificationsMob(leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueGameModificationLinkerService));
          RunDebugActions();
       }
 
       private void RunDebugActions() {
-         foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.Any)) {
-            modificationRepositoryService.DeleteModification(mod);
-         }
-
-         modificationRepositoryService.ImportLegacyModification(
-            "tencent-art-pack",
-            @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
-            GameType.LeagueOfLegends);
+         //foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.Any)) {
+         //   modificationRepositoryService.DeleteModification(mod);
+         //}
+         //
+         //modificationRepositoryService.ImportLegacyModification(
+         //   "tencent-art-pack",
+         //   @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
+         //   Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
+         //   GameType.LeagueOfLegends);
 
          // foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
          //    logger.Info(mod.RepositoryName);

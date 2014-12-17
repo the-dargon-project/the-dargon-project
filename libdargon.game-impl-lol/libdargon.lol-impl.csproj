@@ -38,6 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdargon.filesystem-api.0.0.2\lib\net45\libdargon.filesystem-api.dll</HintPath>
     </Reference>
+    <Reference Include="libdargon.management-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdargon.management-api.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    </Reference>
     <Reference Include="libdargon.utilities">
       <HintPath>..\packages\librads.0.0.1\lib\net45\libdargon.utilities.dll</HintPath>
     </Reference>
@@ -83,6 +87,7 @@
     <Compile Include="Lifecycle\LeagueInjectedModuleConfigurationFactory.cs" />
     <Compile Include="Modifications\LeagueGameModificationLinkerServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationCommandListCompilerServiceImpl.cs" />
+    <Compile Include="Modifications\LeagueModificationsMob.cs" />
     <Compile Include="Modifications\ModificationCompilationTable.cs" />
     <Compile Include="Modifications\LeagueModificationObjectCompilerServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationOperationServiceBase.cs" />

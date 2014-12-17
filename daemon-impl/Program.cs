@@ -124,7 +124,7 @@ namespace Dargon.Daemon
          localServiceNode.RegisterService(processInjectionService, typeof(ProcessInjectionService));
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, localManagementServerRegistry, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
          core.Run();
       }

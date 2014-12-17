@@ -41,9 +41,8 @@
     <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
-    <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.2\lib\net45\libdnode.dll</HintPath>
+    <Reference Include="libdnode">
+      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libdnode.dll</HintPath>
     </Reference>
     <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,18 +53,16 @@
       <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-impl.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.2\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\packages\libdnode.0.0.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

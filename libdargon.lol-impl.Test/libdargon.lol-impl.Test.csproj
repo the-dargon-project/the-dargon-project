@@ -72,7 +72,6 @@
     </Reference>
     <Reference Include="libwarty.proxies-api">
       <HintPath>..\packages\libdnode.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

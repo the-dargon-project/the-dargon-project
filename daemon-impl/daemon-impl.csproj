@@ -78,13 +78,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libwarty.dll</HintPath>
-    </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="libwarty">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

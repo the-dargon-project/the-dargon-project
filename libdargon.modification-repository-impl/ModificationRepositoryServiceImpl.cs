@@ -46,6 +46,27 @@ namespace Dargon.ModificationRepositories
          fileSystemProxy.PrepareDirectory(repositorySubdirectoryPath);
       }
 
+      public IModification GetModificationOrNull(string repositoryName) {
+         try {
+            var directoryInfo = fileSystemProxy.GetDirectoryInfo(Path.Combine(repositorySubdirectoryPath, repositoryName));
+            if (!directoryInfo.Exists) {
+               logger.Warn("Tried to get modification \"" + repositoryName + "\" but directory did not exist.");
+               return null;
+            }
+            return modificationLoader.Load(directoryInfo.Name, directoryInfo.FullName);
+         } catch (Exception e) {
+            logger.Warn("Unable to load modification \"" + repositoryName + "\".");
+            logger.Warn(e.ToString());
+            return null;
+         }
+      }
+
+      public void DeleteModification(IModification modification)
+      {
+         logger.Info("Removing Modification " + modification + " at " + modification.RepositoryPath);
+         fileSystemProxy.DeleteDirectory(modification.RepositoryPath, true);
+      }
+
       public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
       {
          gameType = gameType ?? GameType.Any;
@@ -78,12 +99,6 @@ namespace Dargon.ModificationRepositories
             gitRepository.Commit("Initial Commit");
          }
          return modificationLoader.Load(repositoryName, repositoryPath);
-      }
-
-      public void DeleteModification(IModification modification)
-      {
-         logger.Info("Removing Modification " + modification + " at " + modification.RepositoryPath);
-         fileSystemProxy.DeleteDirectory(modification.RepositoryPath, true);
       }
 
       public IEnumerable<IModification> EnumerateModifications(GameType gameType)

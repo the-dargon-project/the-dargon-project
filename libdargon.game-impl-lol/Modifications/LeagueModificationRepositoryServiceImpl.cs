@@ -16,21 +16,12 @@ namespace Dargon.LeagueOfLegends.Modifications
          this.modificationRepositoryService = modificationRepositoryService; 
       }
 
-      public void ClearModifications() 
-      {
-         foreach (var mod in EnumerateModifications().ToList()) {
-            DeleteModification(mod);
+      public IModification GetModificationOrNull(string repositoryName) {
+         var mod = modificationRepositoryService.GetModificationOrNull(repositoryName);
+         if (mod == null || !mod.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
+            return null;
          }
-      }
-
-      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths) { return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, null); }
-
-      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
-      {
-         if (gameType != null && !gameType.Equals(GameType.LeagueOfLegends)) {
-            throw new ArgumentException("Expected League of Legends modification");
-         }
-         return modificationRepositoryService.ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, GameType.LeagueOfLegends);
+         return mod;
       }
 
       public void DeleteModification(IModification modification)
@@ -49,6 +40,23 @@ namespace Dargon.LeagueOfLegends.Modifications
          return modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends);
       }
 
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths) { return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, null); }
+
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
+      {
+         if (gameType != null && !gameType.Equals(GameType.LeagueOfLegends)) {
+            throw new ArgumentException("Expected League of Legends modification");
+         }
+         return modificationRepositoryService.ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, GameType.LeagueOfLegends);
+      }
+
       public IEnumerable<IModification> EnumerateModifications() { return EnumerateModifications(GameType.LeagueOfLegends); }
+
+      public void ClearModifications() 
+      {
+         foreach (var mod in EnumerateModifications().ToList()) {
+            DeleteModification(mod);
+         }
+      }
    }
 }

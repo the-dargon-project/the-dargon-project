@@ -32,25 +32,29 @@ namespace Dargon.LeagueOfLegends.RADS
          }
       }
 
-      public IReadOnlyList<IRadsArchiveReference> GetArchiveReferences(uint version)
-      {
-         IReadOnlyList<RiotArchive> archives;
-         if (!archivesById.TryGetValue(version, out archives)) {
-            if (archiveLoader == null) {
-               archiveLoader = new RiotArchiveLoader(solutionPath);
+      public IReadOnlyList<IRadsArchiveReference> GetArchiveReferences(uint version) {
+         lock (synchronization) {
+            IReadOnlyList<RiotArchive> archives;
+            if (!archivesById.TryGetValue(version, out archives)) {
+               if (archiveLoader == null) {
+                  archiveLoader = new RiotArchiveLoader(solutionPath);
+               }
+               if (!archiveLoader.TryLoadArchives(version, out archives)) {
+                  throw new ArchiveNotFoundException(version);
+               }
             }
-            if (!archiveLoader.TryLoadArchives(version, out archives)) {
-               throw new ArchiveNotFoundException(version);
-            }
+            return Util.Generate(archives.Count, i => new RadsArchiveReference(archives[i]));
          }
-         return Util.Generate(archives.Count, i => new RadsArchiveReference(archives[i]));
       }
 
       public IReadOnlyList<RiotArchive> GetArchivesUnsafe(uint version)
       {
          lock (synchronization) {
             IReadOnlyList<RiotArchive> archive;
-            new RiotArchiveLoader(solutionPath).TryLoadArchives(version, out archive);
+            if (archiveLoader == null) {
+               archiveLoader = new RiotArchiveLoader(solutionPath);
+            }
+            archiveLoader.TryLoadArchives(version, out archive);
             return archive;
          }
       }
@@ -85,6 +89,9 @@ namespace Dargon.LeagueOfLegends.RADS
 
       public void Resume() {
          lock (synchronization) {
+            archivesById.Clear();
+            archiveLoader = null;
+
             OnResumed();
          }
       }

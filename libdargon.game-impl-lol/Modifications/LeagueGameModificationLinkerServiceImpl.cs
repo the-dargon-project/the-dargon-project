@@ -88,6 +88,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                      // Get RAF Archive Data for the given archive id
                      var archiveDatas = archiveDataById.GetValueOrDefault(manifestEntry.ArchiveId);
                      if (archiveDatas == null) {
+                        logger.Warn("Loading archive {0}.".F(manifestEntry.ArchiveId));
                         archiveDataById.Add(manifestEntry.ArchiveId, archiveDatas = LoadArchiveDatas(manifestEntry));
                      }
 
@@ -127,6 +128,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
          var versionStringUtilities = new VersionStringUtilities();
          var tempDir = temporaryFileService.AllocateTemporaryDirectory(DateTime.Now + TimeSpan.FromHours(24));
+         logger.Info("Allocated temporary directory " + tempDir);
          foreach (var archiveDataKvp in archiveDataById) {
             string versionString = versionStringUtilities.GetVersionString(archiveDataKvp.Key);
 

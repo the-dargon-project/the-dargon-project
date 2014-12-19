@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dargon.InjectedModule.Commands;
 using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
    public interface LeagueGameModificationLinkerService
    {
-      void LinkModificationObjects();
+      ICommandList LinkModificationObjects();
    }
 
    public interface LeagueGameModificationLinkerResult

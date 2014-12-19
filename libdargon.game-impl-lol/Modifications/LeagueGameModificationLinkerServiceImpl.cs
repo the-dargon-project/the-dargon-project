@@ -11,6 +11,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Dargon.InjectedModule.Commands;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
@@ -21,15 +22,17 @@ namespace Dargon.LeagueOfLegends.Modifications
       private readonly TemporaryFileService temporaryFileService;
       private readonly RadsService radsService;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
+      private readonly ICommandFactory commandFactory;
 
-      public LeagueGameModificationLinkerServiceImpl(TemporaryFileService temporaryFileService, RadsService radsService, LeagueModificationRepositoryService leagueModificationRepositoryService)
+      public LeagueGameModificationLinkerServiceImpl(TemporaryFileService temporaryFileService, RadsService radsService, LeagueModificationRepositoryService leagueModificationRepositoryService, ICommandFactory commandFactory)
       {
          this.temporaryFileService = temporaryFileService;
          this.radsService = radsService;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
+         this.commandFactory = commandFactory;
       }
 
-      public void LinkModificationObjects() 
+      public ICommandList LinkModificationObjects() 
       {
          var manifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
          var archiveDataById = new Dictionary<uint, List<ArchiveData>>();
@@ -126,6 +129,7 @@ namespace Dargon.LeagueOfLegends.Modifications
             }
          }
 
+         var commandList = new CommandList();
          var versionStringUtilities = new VersionStringUtilities();
          var tempDir = temporaryFileService.AllocateTemporaryDirectory(DateTime.Now + TimeSpan.FromHours(24));
          logger.Info("Allocated temporary directory " + tempDir);
@@ -142,6 +146,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
                using (var writer = new BinaryWriter(vfmFileStream)) {
                   vfmSerializer.Serialize(archiveData.Sectors, writer);
+                  commandList.Add(commandFactory.CreateFileRemappingCommand(archiveData.Archive.DatFilePath, vfmFileStream.Name));
                }
                logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
 
@@ -150,6 +155,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                using (var rafFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, rafFileName))
                using (var writer = new BinaryWriter(rafFileStream)) {
                   writer.Write(archiveData.Archive.GetDirectoryFile().GetBytes());
+                  commandList.Add(commandFactory.CreateFileRedirectionCommand(archiveData.Archive.RAFFilePath, rafFileStream.Name));
                }
                logger.Info("Wrote RAF " + rafFileName + " to " + tempDir);
             }
@@ -158,9 +164,11 @@ namespace Dargon.LeagueOfLegends.Modifications
          // Serialize the Release Manifest
          using (var manifestFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, "releasemanifest")) 
          using (var writer = new BinaryWriter(manifestFileStream)) {
-            new ReleaseManifestWriter(manifest).Save(writer);  
+            new ReleaseManifestWriter(manifest).Save(writer);
+            commandList.Add(commandFactory.CreateFileRedirectionCommand(manifest.Path, manifestFileStream.Name));
          }
          logger.Info("Wrote release manifest to " + tempDir);
+         return commandList;
       }
 
       private List<ArchiveData> LoadArchiveDatas(ReleaseManifestFileEntry manifestEntry) {

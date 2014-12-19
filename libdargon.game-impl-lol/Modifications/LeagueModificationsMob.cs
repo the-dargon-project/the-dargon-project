@@ -74,8 +74,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
       public string LinkModifications() {
          var stopwatch = new Stopwatch();
          stopwatch.Start();
-         leagueGameModificationLinkerService.LinkModificationObjects();
-         return "Completed in {0} milliseconds".F(stopwatch.ElapsedMilliseconds);
+         var changes = leagueGameModificationLinkerService.LinkModificationObjects();
+         var sb = new StringBuilder();
+         sb.AppendLine("Completed in {0} milliseconds".F(stopwatch.ElapsedMilliseconds));
+         foreach (var change in changes) {
+            var data = change.Data;
+            sb.AppendLine(change.Type + ": " + Util.Generate(data.Length, i => data[i] >= 32 && data[i] <= 126 ? (char)data[i] : '?').Join(""));
+         }
+         return sb.ToString();
       }
    }
 }

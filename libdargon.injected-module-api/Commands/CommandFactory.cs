@@ -34,7 +34,7 @@ namespace Dargon.InjectedModule.Commands {
                }
                writer.WriteLongText(vfmPath);
             }
-            return new Command(kFileRedirectionCommandType, ms.ToArray());
+            return new Command(kFileRemappingCommandType, ms.ToArray());
          }
       }
 

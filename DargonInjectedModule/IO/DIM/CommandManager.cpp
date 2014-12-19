@@ -76,6 +76,8 @@ void CommandManager::ProcessCommands(std::vector<DIMCommand*>& commands) {
    }
 
    // pass commands to handler
-   for (auto handler : m_handlers)
-      handler->ProcessCommands(handlerToCommands.find(handler), handlerToCommands.end());
+   for (auto handler : m_handlers) {
+      auto range = handlerToCommands.equal_range(handler);
+      handler->ProcessCommands(range.first, range.second);
+   }
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <Windows.h>
+#include "io/IoProxy.hpp"
 #include "DefaultFileOperationProxy.hpp"
-#include "../IO/IoProxy.hpp"
 
 using namespace dargon::IO;
 using namespace dargon::Subsystems;

@@ -92,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="base.cpp" />
     <ClCompile Include="guid.cpp" />
+    <ClCompile Include="io\IPCObject.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="vfm\vfm_file.cpp" />
     <ClCompile Include="vfm\vfm_file_sector.cpp" />
@@ -105,6 +106,9 @@
     <ClCompile Include="countdown_event.cpp" />
     <ClCompile Include="file_logger.cpp" />
     <ClInclude Include="binary_reader.hpp" />
+    <ClInclude Include="io\IoProxy.hpp" />
+    <ClInclude Include="io\IOTypedefs.hpp" />
+    <ClInclude Include="io\IPCObject.hpp" />
     <ClInclude Include="memory_stream.hpp" />
     <ClInclude Include="util.hpp" />
     <ClInclude Include="guid.hpp" />

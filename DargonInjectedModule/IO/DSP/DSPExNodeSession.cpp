@@ -4,7 +4,7 @@
 #include <process.h>
 #include "../../Init/bootstrap_context.hpp"
 #include "util.hpp"
-#include "../IPCObject.hpp"
+#include "io/IPCObject.hpp"
 #include "DSP.hpp"
 #include "DSPConstants.hpp"
 #include "DSPExFrameTransmitter.hpp"

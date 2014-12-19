@@ -6,7 +6,7 @@
 #include <condition_variable>
 
 #include "dargon.hpp"
-#include "../IPCObject.hpp"
+#include "io/IPCObject.hpp"
 #include "countdown_event.hpp"
 #include "DSPExNodeSession.hpp"
 

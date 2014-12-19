@@ -45,6 +45,9 @@
     <ClCompile Include="vfm\vfm_file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="io\IPCObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dlc_pch.hpp">
@@ -111,6 +114,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vfm\vfm_file.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\IPCObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\IOTypedefs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\IoProxy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

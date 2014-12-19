@@ -132,15 +132,6 @@
     <ClInclude Include="IO\DSP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IO\IoProxy.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\IOTypedefs.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IO\IPCObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IO\DIM\CommandManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -261,9 +252,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DSP\DSPExRITransactionHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO\IPCObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IO\DIM\CommandManager.cpp">

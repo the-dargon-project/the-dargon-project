@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "dlc_pch.hpp"
 #include <Windows.h>
 #include "util.hpp"
 

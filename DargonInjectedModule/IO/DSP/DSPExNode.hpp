@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "noncopyable.hpp"
-#include "../IoProxy.hpp"
+#include "io/IoProxy.hpp"
 #include "DSPExTypeDefs.hpp"
 #include "IDSPExSession.hpp"
 #include "IDSPExInstructionSet.hpp"

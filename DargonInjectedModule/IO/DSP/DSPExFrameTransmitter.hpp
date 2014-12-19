@@ -4,7 +4,7 @@
 #include <thread>
 #include <functional>
 #include <mutex>
-#include "../IPCObject.hpp"
+#include "io/IPCObject.hpp"
 #include "IDSPExFrameTransmitter.hpp"
 
 namespace dargon { namespace IO { namespace DSP {

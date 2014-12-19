@@ -4,7 +4,7 @@
 #include <memory>
 #include "noncopyable.hpp"
 #include "FileOperationProxy.hpp"
-#include "../IO/IoProxy.hpp"
+#include "io/IoProxy.hpp"
 
 namespace dargon { namespace Subsystems {
    class DefaultFileOperationProxy : public FileOperationProxy, dargon::noncopyable {

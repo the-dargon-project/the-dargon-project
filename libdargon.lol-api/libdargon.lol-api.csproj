@@ -34,11 +34,11 @@
   <ItemGroup>
     <Reference Include="libdargon.utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\libdargon.utilities.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
     </Reference>
     <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\libdnode.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\libdnode.dll</HintPath>
     </Reference>
     <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -46,25 +46,25 @@
     </Reference>
     <Reference Include="librads, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\librads.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\librads.dll</HintPath>
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\librads.0.0.2\lib\net45\zlib.net.dll</HintPath>
+      <HintPath>..\packages\librads.0.0.3\lib\net45\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ using ItzWarty;
 using ItzWarty.Collections;
 using NLog;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Dargon.InjectedModule.Commands;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
@@ -47,7 +48,8 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
          phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
             new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
-            new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition
+            new PhaseChange(LeagueSessionPhase.Preclient, LeagueSessionPhase.Client), HandlePreclientToClientPhaseTransition,
+            new PhaseChange(LeagueSessionPhase.Client, LeagueSessionPhase.Game), HandleClientToGamePhaseTransition
          );
          processLaunchedHandlers = ImmutableDictionary.Of<LeagueProcessType, LeagueSessionProcessLaunchedHandler>(
             LeagueProcessType.RadsUserKernel, (s, e) => HandlePreclientProcessLaunched(e.Process.Id),
@@ -109,41 +111,47 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          logger.Info("Handling Preclient to Client Phase Transition!");
          radsService.Resume();
 
-         var commandList = new LateInitializationCommandListProxy();
+         var commandList = new CommandList();
          injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, leagueInjectedModuleConfigurationFactory.GetClientConfiguration(commandList));
 
-         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
-         var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
-         clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
-
-         var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
-         clientCompilationTasks.ForEach(task => task.WaitForChainCompletion());
-
-         commandList.SetImplementation(mods.Aggregate(new CommandList(), (tl, mod) => tl.AddRange(leagueModificationCommandListCompilerService.BuildCommandList(mod, ModificationTargetType.Client))));
-
-         // optimization: compile game data here, so that we don't have to compile when game starts
-         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
-         gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
-
-         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
-         gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
-
-         leagueGameModificationLinkerService.LinkModificationObjects();
+         // var commandList = new LateInitializationCommandListProxy();
+         // injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, leagueInjectedModuleConfigurationFactory.GetClientConfiguration(commandList));
+         // 
+         // var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         // var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
+         // clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
+         // 
+         // var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
+         // clientCompilationTasks.ForEach(task => task.WaitForChainCompletion());
+         // 
+         // commandList.SetImplementation(mods.Aggregate(new CommandList(), (tl, mod) => tl.AddRange(leagueModificationCommandListCompilerService.BuildCommandList(mod, ModificationTargetType.Client))));
+         // 
+         // // optimization: compile game data here, so that we don't have to compile when game starts
+         // var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
+         // gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
+         // 
+         // var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
+         // gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
+         // 
+         // leagueGameModificationLinkerService.LinkModificationObjects();
       }
 
       internal void HandleClientToGamePhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Client to Game Phase Transition!");
 
-         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var commandList = new LateInitializationCommandListProxy();
+         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.GameClient).Id, leagueInjectedModuleConfigurationFactory.GetGameConfiguration(commandList));
 
+         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
          var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
          gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 
          var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
          gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
 
-         leagueGameModificationLinkerService.LinkModificationObjects();
+         var commands = leagueGameModificationLinkerService.LinkModificationObjects();
+         commandList.SetImplementation(commands);
       }
    }
 }

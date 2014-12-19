@@ -10,6 +10,6 @@ namespace Dargon.LeagueOfLegends.Lifecycle
    {
       IInjectedModuleConfiguration GetPreclientConfiguration();
       IInjectedModuleConfiguration GetClientConfiguration(ICommandList commandList);
-      IInjectedModuleConfiguration GetGameConfiguration();
+      IInjectedModuleConfiguration GetGameConfiguration(ICommandList commandList);
    }
 }

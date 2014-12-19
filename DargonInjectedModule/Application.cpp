@@ -63,7 +63,7 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto logger = context->logger;
 
    // initialize libvfm dependencies
-   auto sector_factory = std::make_shared<vfm_sector_factory>();
+   auto sector_factory = std::make_shared<vfm_sector_factory>(io_proxy);
    auto vfm_reader = std::make_shared<dargon::vfm_reader>(sector_factory);
 
    // load configuration

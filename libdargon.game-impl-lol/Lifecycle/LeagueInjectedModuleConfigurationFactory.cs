@@ -30,6 +30,14 @@ namespace Dargon.LeagueOfLegends.Lifecycle
          return configurationBuilder.Build();
       }
 
-      public IInjectedModuleConfiguration GetGameConfiguration() { throw new NotImplementedException(); }
+      public IInjectedModuleConfiguration GetGameConfiguration(ICommandList commandList) {
+         var configurationBuilder = new InjectedModuleConfigurationBuilder();
+         configurationBuilder.AddComponent(new DebugConfigurationComponent());
+         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Game));
+         configurationBuilder.AddComponent(new CommandListConfigurationComponent(commandList));
+         configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
+         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
+         return configurationBuilder.Build();
+      }
    }
 }

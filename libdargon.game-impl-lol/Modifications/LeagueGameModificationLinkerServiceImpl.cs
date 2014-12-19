@@ -109,6 +109,8 @@ namespace Dargon.LeagueOfLegends.Modifications
                         logger.Warn("RAF Entry for " + resolutionEntry.ResolvedPath + " in archive " + manifestEntry.ArchiveId + " not found!?");
                         continue;
                      }
+                     
+                     continue;
 
                      // Update Release Manifest:
                      manifestEntry.CompressedSize = (uint)objectLength;
@@ -141,14 +143,14 @@ namespace Dargon.LeagueOfLegends.Modifications
                string archiveFileName = archiveData.Archive.RAFFilePath.With(x => x.Substring(x.LastIndexOfAny(new[] { '/', '\\' }) + 1));
 
                // Serialize the VFM
-               var vfmSerializer = new SectorCollectionSerializer();
-               var vfmFileName = versionString + "/" + archiveFileName + ".dat.vfm";
-               using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
-               using (var writer = new BinaryWriter(vfmFileStream)) {
-                  vfmSerializer.Serialize(archiveData.Sectors, writer);
-                  commandList.Add(commandFactory.CreateFileRemappingCommand(archiveData.Archive.DatFilePath, vfmFileStream.Name));
-               }
-               logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
+               // var vfmSerializer = new SectorCollectionSerializer();
+               // var vfmFileName = versionString + "/" + archiveFileName + ".dat.vfm";
+               // using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
+               // using (var writer = new BinaryWriter(vfmFileStream)) {
+               //    vfmSerializer.Serialize(archiveData.Sectors, writer);
+               //    commandList.Add(commandFactory.CreateFileRemappingCommand(archiveData.Archive.DatFilePath, vfmFileStream.Name));
+               // }
+               // logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
 
                // Serialize the RAF
                var rafFileName = versionString + "/" + archiveFileName;

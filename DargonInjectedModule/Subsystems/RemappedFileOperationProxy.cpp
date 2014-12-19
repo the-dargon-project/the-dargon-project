@@ -6,12 +6,14 @@ using namespace dargon::Subsystems;
 RemappedFileOperationProxy::RemappedFileOperationProxy(
    std::shared_ptr<dargon::IO::IoProxy> io_proxy,
    std::shared_ptr<dargon::vfm_file> virtual_file_map
-) : io_proxy(io_proxy), virtual_file_map(virtual_file_map), position(0LL) {
+) : io_proxy(io_proxy), virtual_file_map(virtual_file_map), position(0LL), name(L"") {
+   // __debugbreak();
 }
 
 HANDLE RemappedFileOperationProxy::Create(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
    // we open an (unused) handle so that we have an identifier + can lock the file.
    handle = io_proxy->CreateFileW(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   name.assign(lpFilePath);
    return handle;
 }
 
@@ -19,6 +21,12 @@ BOOL RemappedFileOperationProxy::Read(void* buffer, uint32_t byte_count, OUT uin
    virtual_file_map->read(position, byte_count, (uint8_t*)buffer, 0);
    position += byte_count;
    *bytes_read = byte_count;
+
+   if (lpOverlapped != nullptr) {
+      SetLastError(ERROR_IO_PENDING);
+      SetEvent(lpOverlapped->hEvent);
+      return false;
+   }
    return true;
 }
 
@@ -26,29 +34,27 @@ BOOL RemappedFileOperationProxy::Write(const void* lpBuffer, uint32_t byte_count
    return false;
 }
 
-DWORD RemappedFileOperationProxy::Seek(int32_t distance_to_move, int32_t* distance_to_move_high, DWORD dwMoveMethod) {
-   int64_t value = distance_to_move;
-   if (distance_to_move_high) {
-      value |= (*distance_to_move_high) << 32;
-   }
-
+DWORD RemappedFileOperationProxy::Seek(int64_t distance_to_move, int64_t* new_file_pointer, DWORD dwMoveMethod) {
    int64_t next_position;
    if (dwMoveMethod == FILE_BEGIN) {
-      next_position = value;
+      next_position = distance_to_move;
    } else if (dwMoveMethod == FILE_CURRENT) {
-      next_position = position + value;
+      next_position = position + distance_to_move;
    } else if (dwMoveMethod == FILE_END) {
-      next_position = virtual_file_map->size() - value;
+      next_position = virtual_file_map->size() - distance_to_move;
    }
 
-   if (next_position < 0) {
-      return ERROR_NEGATIVE_SEEK;
-   } 
-   if (distance_to_move_high == nullptr && next_position > UINT32_MAX) {
+   if (next_position < 0LL) {
+      SetLastError(ERROR_NEGATIVE_SEEK);
       return INVALID_SET_FILE_POINTER;
    }
    position = next_position;
-   return next_position & 0xFFFFFFFFUL;
+
+   if (new_file_pointer != nullptr) {
+      *new_file_pointer = position;
+   }
+
+   return (int32_t)(next_position & 0xFFFFFFFF);
 }
 
 BOOL RemappedFileOperationProxy::Close() {

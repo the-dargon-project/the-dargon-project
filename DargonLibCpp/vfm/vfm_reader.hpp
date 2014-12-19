@@ -23,6 +23,7 @@ namespace dargon {
       std::shared_ptr<vfm_file> load(dargon::binary_reader& reader) {
          auto magic = reader.read_uint32();
          if (magic != vfm_sector_collection_magic) {
+            std::cout << "sector collection magic mismatch. got " << std::hex << magic << " but expected " << vfm_sector_collection_magic << std::endl;
             throw std::exception("sector collection magic mismatch.");
          }
          auto result = std::make_shared<vfm_file>();

@@ -68,6 +68,14 @@ typedef FunctionSetFilePointer* PFunctionSetFilePointer;
 typedef void (FunctionSetFilePointerNoCC)(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
 typedef FunctionSetFilePointerNoCC* PFunctionSetFilePointerNoCC;
 
+//-------------------------------------------------------------------------------------------------
+// ::SetFilePointerEx
+//-------------------------------------------------------------------------------------------------
+typedef DWORD(WINAPI FunctionSetFilePointerEx)(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod);
+typedef FunctionSetFilePointerEx* PFunctionSetFilePointerEx;
+typedef void (FunctionSetFilePointerExNoCC)(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod);
+typedef FunctionSetFilePointerExNoCC* PFunctionSetFilePointerExNoCC;
+
 namespace dargon { namespace IO { 
    class IoProxy
    {
@@ -79,9 +87,10 @@ namespace dargon { namespace IO {
       PFunctionWriteFile _writeFile;
       PFunctionCloseHandle _closeHandle;
       PFunctionSetFilePointer _setFilePointer;
+      PFunctionSetFilePointerEx _setFilePointerEx;
 
    public:
-      IoProxy() : _createEventA(nullptr), _createEventW(nullptr), _createFileA(nullptr), _createFileW(nullptr), _readFile(nullptr), _writeFile(nullptr), _closeHandle(nullptr), _setFilePointer(nullptr) {}
+      IoProxy() : _createEventA(nullptr), _createEventW(nullptr), _createFileA(nullptr), _createFileW(nullptr), _readFile(nullptr), _writeFile(nullptr), _closeHandle(nullptr), _setFilePointer(nullptr), _setFilePointerEx(nullptr) {}
 
       void Initialize() {
          auto hKernel32 = ::WaitForModuleHandle("Kernel32.dll");
@@ -93,6 +102,7 @@ namespace dargon { namespace IO {
          _writeFile = (PFunctionWriteFile)::GetProcAddress(hKernel32, "WriteFile");
          _closeHandle = (PFunctionCloseHandle)::GetProcAddress(hKernel32, "CloseHandle");
          _setFilePointer = (PFunctionSetFilePointer)::GetProcAddress(hKernel32, "SetFilePointer");
+         _setFilePointerEx = (PFunctionSetFilePointerEx)::GetProcAddress(hKernel32, "SetFilePointerEx");
       }
 
       inline HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR lpName) {
@@ -122,16 +132,21 @@ namespace dargon { namespace IO {
       inline BOOL WINAPI CloseHandle(HANDLE hObject) {
          return _closeHandle(hObject);
       }
-      
+
       inline DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod) {
          return _setFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+      }
+
+      inline DWORD WINAPI SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod) {
+         return _setFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
       }
 
       inline void __Override(PFunctionCreateEventA createEventA, PFunctionCreateEventW createEventW,
                              PFunctionCreateFileA createFileA, PFunctionCreateFileW createFileW,
                              PFunctionReadFile readFile, PFunctionWriteFile writeFile,
                              PFunctionCloseHandle closeHandle,
-                             PFunctionSetFilePointer setFilePointer) {
+                             PFunctionSetFilePointer setFilePointer,
+                             PFunctionSetFilePointerEx setFilePointerEx) {
          _createEventA = createEventA;
          _createEventW = createEventW;
          _createFileA = createFileA;
@@ -140,6 +155,7 @@ namespace dargon { namespace IO {
          _writeFile = writeFile;
          _closeHandle = closeHandle;
          _setFilePointer = setFilePointer;
+         _setFilePointerEx = setFilePointerEx;
       }
    };
 } }

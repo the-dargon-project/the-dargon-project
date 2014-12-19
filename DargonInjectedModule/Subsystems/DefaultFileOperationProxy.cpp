@@ -25,8 +25,10 @@ BOOL DefaultFileOperationProxy::Write(const void * lpBuffer, uint32_t byte_count
    return io_proxy->WriteFile(handle, lpBuffer, byte_count, (unsigned long*)bytes_written, lpOverlapped);
 }
 
-DWORD DefaultFileOperationProxy::Seek(int32_t distance_to_move, int32_t * distance_to_move_high, DWORD dwMoveMethod) {
-   return io_proxy->SetFilePointer(handle, distance_to_move, (long*)distance_to_move_high, dwMoveMethod);
+DWORD DefaultFileOperationProxy::Seek(int64_t distance_to_move, int64_t* new_file_pointer, DWORD dwMoveMethod) {
+   LARGE_INTEGER li_distance_to_move;
+   li_distance_to_move.QuadPart = distance_to_move;
+   return io_proxy->SetFilePointerEx(handle, li_distance_to_move, (PLARGE_INTEGER)new_file_pointer, dwMoveMethod);
 }
 
 BOOL DefaultFileOperationProxy::Close() {

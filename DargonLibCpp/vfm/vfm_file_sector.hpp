@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include "vfm_sector.hpp"
+#include "io/IoProxy.hpp"
 
 namespace dargon {
    class vfm_file_sector : public vfm_sector {
@@ -10,9 +12,10 @@ namespace dargon {
    private:
       std::string path;
       vfm_sector_range sector_range;
+      std::shared_ptr<dargon::IO::IoProxy> io_proxy;
 
    public:
-      vfm_file_sector();
+      vfm_file_sector(std::shared_ptr<dargon::IO::IoProxy> io_proxy);
 
       virtual vfm_sector_range range() override;
       virtual int64_t size() override;

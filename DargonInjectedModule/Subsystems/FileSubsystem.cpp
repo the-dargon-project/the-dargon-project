@@ -40,7 +40,8 @@ bool FileSubsystem::Initialize()
       InstallWriteFileDetour(hModuleKernel32);
       InstallCloseHandleDetour(hModuleKernel32);
       InstallSetFilePointerDetour(hModuleKernel32);
-      s_bootstrap_context->io_proxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer);
+      InstallSetFilePointerExDetour(hModuleKernel32);
+      s_bootstrap_context->io_proxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer, m_trampSetFilePointerEx);
       return true;
    }
 }
@@ -66,6 +67,7 @@ bool FileSubsystem::Uninitialize()
       UninstallWriteFileDetour();
       UninstallCloseHandleDetour();
       UninstallSetFilePointerDetour();
+      UninstallSetFilePointerExDetour();
       return true;
    }
 }
@@ -86,6 +88,7 @@ DIM_IMPL_STATIC_DETOUR(FileSubsystem, ReadFile, FunctionReadFile, "ReadFile", My
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, WriteFile, FunctionWriteFile, "WriteFile", MyWriteFile);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CloseHandle, FunctionCloseHandle, "CloseHandle", MyCloseHandle);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, SetFilePointer, FunctionSetFilePointer, "SetFilePointer", MySetFilePointer);
+DIM_IMPL_STATIC_DETOUR(FileSubsystem, SetFilePointerEx, FunctionSetFilePointerEx, "SetFilePointerEx", MySetFilePointerEx);
 
 HANDLE WINAPI FileSubsystem::MyCreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR lpName) {
    return m_trampCreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
@@ -102,30 +105,44 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
 
 HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-//   if (kDebugEnabled) {
-//      s_logger->Log(
-//         LL_VERBOSE,
-//         [=](std::ostream& os){
-//         os << "CreateFileW:"
-//            << " lpFilePath: " << dargon::narrow(lpFilePath)
-//            << " dwDesiredAccess: " << dwDesiredAccess
-//            << " dwShareMode: " << dwShareMode
-//            << " lpSecurityAttributes: " << lpSecurityAttributes
-//            << " dwCreationDisposition: " << dwCreationDisposition
-//            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
-//            << " hTemplateFile: " << hTemplateFile
-//            << std::endl;
-//      });
-//   }
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os){
+         os << "CreateFileW:"
+            << " lpFilePath: " << dargon::narrow(lpFilePath)
+            << " dwDesiredAccess: " << dwDesiredAccess
+            << " dwShareMode: " << dwShareMode
+            << " lpSecurityAttributes: " << lpSecurityAttributes
+            << " dwCreationDisposition: " << dwCreationDisposition
+            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
+            << " hTemplateFile: " << hTemplateFile
+            << std::endl;
+      });
+   }
 
    FileIdentifier fileIdentifier = GetFileIdentifier(lpFilePath);
 
    auto proxyFactory = proxyFactoriesByFileIdentifier.get_value_or_default(fileIdentifier);
    std::shared_ptr<FileOperationProxy> fileOperationProxy;
    if (proxyFactory != nullptr) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << " => custom proxy factory" << std::endl;
+         });
+      }
       fileOperationProxy = proxyFactory->create();
    }
    if (fileOperationProxy == nullptr) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << " => default proxy factory" << std::endl;
+         });
+      }
       fileOperationProxy = std::shared_ptr<FileOperationProxy>(new DefaultFileOperationProxy(s_bootstrap_context->io_proxy));
    }
    
@@ -133,21 +150,28 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
    if (fileHandle != INVALID_HANDLE_VALUE) {
       fileOperationProxiesByHandle.insert(fileHandle, fileOperationProxy);
    }
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << " => handle " << fileHandle << std::endl;
+      });
+   }
    return fileHandle;
 }
 
 BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
 {
-//   if (kDebugEnabled) {
-//      s_logger->Log(
-//         LL_VERBOSE,
-//         [=](std::ostream& os) {
-//         os << "ReadFile: hFile: " << hFile
-//            << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
-//            << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
-//            << " lpOverlapped: " << lpOverlapped << std::endl;
-//      });
-//   }
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << "ReadFile: hFile: " << hFile
+            << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
+            << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
+            << " lpOverlapped: " << lpOverlapped << std::endl;
+      });
+   }
 
    BOOL result;
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
@@ -180,23 +204,66 @@ BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
       return m_trampCloseHandle(hObject);
    }
 }
+
 DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
 {
-//   if (kDebugEnabled) {
-//      s_logger->Log(
-//         LL_VERBOSE,
-//         [=](std::ostream& os) {
-//         os << "SetFilePointer: hFile: " << hFile
-//            << " lDistanceToMove: " << lDistanceToMove
-//            << " lpDistanceToMoveHigh: " << lpDistanceToMoveHigh
-//            << " dwMoveMethod: " << dwMoveMethod << std::endl;
-//      });
-//   }
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << "SetFilePointer:"
+            << " hFile: " << hFile
+            << " lDistanceToMove: " << lDistanceToMove
+            << " lpDistanceToMoveHigh: " << lpDistanceToMoveHigh
+            << " dwMoveMethod: " << dwMoveMethod
+            << std::endl;
+      });
+   }
+
+   LARGE_INTEGER distance;
+   distance.LowPart = lDistanceToMove;
+   distance.HighPart = lpDistanceToMoveHigh == nullptr ? 0 : *lpDistanceToMoveHigh;
+
+   LARGE_INTEGER final_position;
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
    if (proxy) {
-      return proxy->Seek(lDistanceToMove, (int32_t*)lpDistanceToMoveHigh, dwMoveMethod);
+      auto result = proxy->Seek(distance.QuadPart, (int64_t*)&final_position, dwMoveMethod);
+
+      if (lpDistanceToMoveHigh != nullptr) {
+         *lpDistanceToMoveHigh = final_position.HighPart;
+      }
+
+      if (result == INVALID_SET_FILE_POINTER) {
+         return INVALID_SET_FILE_POINTER;
+      } else {
+         return final_position.LowPart;
+      }
    } else {
       return m_trampSetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod);
+   }
+}
+
+DWORD WINAPI FileSubsystem::MySetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod) {
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << "SetFilePointerEx: hFile: " << hFile
+            << " liDistanceToMove: " << liDistanceToMove.QuadPart
+            << " lpDistanceToMoveHigh: " << lpNewFilePointer
+            << " dwMoveMethod: " << dwMoveMethod << std::endl;
+      });
+   }
+   auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
+   if (proxy) {
+      auto result = proxy->Seek(liDistanceToMove.QuadPart, &lpNewFilePointer->QuadPart, dwMoveMethod);
+      if (result == INVALID_SET_FILE_POINTER) {
+         return FALSE;
+      } else {
+         return TRUE;
+      }
+   } else {
+      return m_trampSetFilePointerEx(hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
    }
 }
 

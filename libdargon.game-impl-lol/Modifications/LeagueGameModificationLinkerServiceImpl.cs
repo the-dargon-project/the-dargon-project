@@ -110,6 +110,7 @@ namespace Dargon.LeagueOfLegends.Modifications
                         continue;
                      }
 
+                     continue;
                      // Update Release Manifest:
                      manifestEntry.CompressedSize = (uint)objectLength;
                      manifestEntry.DecompressedSize = (uint)sourceLength;

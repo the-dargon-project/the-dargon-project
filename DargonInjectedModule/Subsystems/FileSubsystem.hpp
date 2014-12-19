@@ -32,6 +32,7 @@ namespace dargon { namespace Subsystems {
       DIM_DECL_STATIC_DETOUR(FileSubsystem, WriteFile, FunctionWriteFile, "WriteFile", MyWriteFile);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, CloseHandle, FunctionCloseHandle, "CloseHandle", MyCloseHandle);
       DIM_DECL_STATIC_DETOUR(FileSubsystem, SetFilePointer, FunctionSetFilePointer, "SetFilePointer", MySetFilePointer);
+      DIM_DECL_STATIC_DETOUR(FileSubsystem, SetFilePointerEx, FunctionSetFilePointerEx, "SetFilePointerEx", MySetFilePointerEx);
       
       static HANDLE WINAPI MyCreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCSTR lpName);
       static HANDLE WINAPI MyCreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCWSTR lpName);
@@ -41,6 +42,7 @@ namespace dargon { namespace Subsystems {
       static BOOL WINAPI MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
       static BOOL WINAPI MyCloseHandle(HANDLE hObject);
       static DWORD WINAPI MySetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
+      static DWORD WINAPI MySetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod);
 
       static FileIdentifier GetFileIdentifier(LPCWSTR file_path);
    };

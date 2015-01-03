@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <mutex>
 #include "dargon.hpp"
 #include "logger.hpp"
@@ -13,6 +14,7 @@ namespace dargon {
    {
    public:
       static void initialize(std::string fileName);
+      static std::shared_ptr<file_logger> instance();
       static inline void L(UINT32 file_loggerLevel, LoggingFunction file_logger);
       // System-level logging.  Stuff that only Core Implementors care about.
       static inline void SL(UINT32 file_loggerLevel, LoggingFunction file_logger);
@@ -20,7 +22,7 @@ namespace dargon {
       static inline void SNL(UINT32 file_loggerLevel, LoggingFunction file_logger);
 
    private:
-      static file_logger* s_instance;
+      static std::shared_ptr<file_logger> s_instance;
 
    private:
       /// <summary>

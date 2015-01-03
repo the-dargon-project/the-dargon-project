@@ -20,7 +20,7 @@ FileSubsystem::FileSubsystem() { }
 
 bool FileSubsystem::Initialize()
 {
-   std::cout << "At FileSubsystem Init with m_initialized" << m_initialized << std::endl;
+   std::cout << "At FileSubsystem Init with m_initialized=" << m_initialized << std::endl;
    if(m_initialized) return true;
    else {
       Subsystem::Initialize();

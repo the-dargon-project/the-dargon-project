@@ -5,7 +5,7 @@
 #include "base.hpp"
 
 namespace dargon { namespace Init {
-   class bootstrap_context;
+   struct bootstrap_context;
 } }
 
 namespace dargon {

@@ -9,10 +9,14 @@
 #endif
 
 using namespace dargon;
-file_logger* file_logger::s_instance = nullptr;
+std::shared_ptr<file_logger> file_logger::s_instance = nullptr;
 void file_logger::initialize(std::string fileName)
 {
-   s_instance = new file_logger(fileName);
+   s_instance = std::shared_ptr<file_logger>(new file_logger(fileName));
+}
+
+std::shared_ptr<file_logger> file_logger::instance() {
+   return s_instance;
 }
 
 /// <summary>

@@ -24,8 +24,8 @@ using namespace dargon::Init;
 using namespace dargon::IO::DIM;
 using namespace dargon::Subsystems;
 
-HMODULE Application::module_handle;
-HANDLE Application::main_thread_handle;
+HMODULE Application::module_handle = 0;
+HANDLE Application::main_thread_handle = INVALID_HANDLE_VALUE;
 
 void Application::HandleDllEntry(HMODULE hModule) {
    module_handle = hModule;
@@ -93,6 +93,8 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    command_manager->Initialize();
 
    // Suspend count can be >1 due to LAUNCH_SUSPENDED override by another instance.
-   std::cout << "Application::Initialize resuming main thread." << std::endl;
-   while (ResumeThread(main_thread_handle) > 0);
+   if (main_thread_handle != INVALID_HANDLE_VALUE) {
+      std::cout << "Application::Initialize resuming main thread." << std::endl;
+      while (ResumeThread(main_thread_handle) > 0);
+   }
 }

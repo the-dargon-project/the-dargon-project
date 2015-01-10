@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Dargon.Daemon;
 using Dargon.Game;
@@ -20,7 +21,11 @@ using NLog;
 using System.IO;
 using System.Linq;
 using Dargon.InjectedModule.Commands;
+using Dargon.IO;
+using Dargon.IO.RADS.Archives;
+using Dargon.IO.RADS.Manifest;
 using Dargon.Management.Server;
+using ItzWarty.IO;
 
 namespace Dargon.LeagueOfLegends
 {
@@ -29,6 +34,8 @@ namespace Dargon.LeagueOfLegends
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
+      private readonly IThreadingProxy threadingProxy;
+      private readonly IFileSystemProxy fileSystemProxy;
       private readonly ILocalManagementRegistry localManagementRegistry;
       private readonly DaemonService daemonService;
       private readonly TemporaryFileService temporaryFileService;
@@ -49,9 +56,11 @@ namespace Dargon.LeagueOfLegends
       private readonly ILeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, ILocalManagementRegistry localManagementRegistry, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
+      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, InjectedModuleService injectedModuleService, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService)
       {
          logger.Info("Initializing League Game Service");
+         this.threadingProxy = threadingProxy;
+         this.fileSystemProxy = fileSystemProxy;
          this.localManagementRegistry = localManagementRegistry;
          this.daemonService = daemonService;
          this.temporaryFileService = temporaryFileService;
@@ -77,6 +86,8 @@ namespace Dargon.LeagueOfLegends
       }
 
       private void RunDebugActions() {
+         //Dump("LEVELS", "C:/DargonDumpNew");
+
          //foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.Any)) {
          //   modificationRepositoryService.DeleteModification(mod);
          //}
@@ -97,19 +108,59 @@ namespace Dargon.LeagueOfLegends
          //    leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client | ModificationTargetType.Game).WaitForChainCompletion();
          //    leagueGameModificationLinkerService.LinkModificationObjects();
          // }
-          // for (var mod in modificationRepositoryService)
-          // modificationRepositoryService.ClearModifications();
-          //         var mod = modificationImportService.ImportLegacyModification(
-          //            GameType.LeagueOfLegends,
-          //            @"C:\lolmodprojects\Tencent Art Pack 8.74",
-          //            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74\ArtPack\Client\Assets", "*", SearchOption.AllDirectories));
-          //         modificationRepositoryService.AddModification(mod);
-          //
-          // var mod = modificationImportService.ImportLegacyModification(
-          //    GameType.LeagueOfLegends,
-          //    @"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style",
-          //    Directory.GetFiles(@"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style", "*", SearchOption.AllDirectories));
-          // modificationRepositoryService.AddModification(mod);
+         // for (var mod in modificationRepositoryService)
+         // modificationRepositoryService.ClearModifications();
+         //         var mod = modificationImportService.ImportLegacyModification(
+         //            GameType.LeagueOfLegends,
+         //            @"C:\lolmodprojects\Tencent Art Pack 8.74",
+         //            Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74\ArtPack\Client\Assets", "*", SearchOption.AllDirectories));
+         //         modificationRepositoryService.AddModification(mod);
+         //
+         // var mod = modificationImportService.ImportLegacyModification(
+         //    GameType.LeagueOfLegends,
+         //    @"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style",
+         //    Directory.GetFiles(@"C:\lolmodprojects\Alm1ghty UI 4.4 Foxe Style", "*", SearchOption.AllDirectories));
+         // modificationRepositoryService.AddModification(mod);
+      }
+
+      private void Dump(string sourcePath, string outputDirectory) {
+         var gameClientManifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
+         var levels = ((IReadableDargonNode)gameClientManifest.Root).GetChildOrNull(sourcePath);
+         var archiveLoader = new RiotArchiveLoader(configuration.RadsPath);
+         var archiveIds = new HashSet<uint>(gameClientManifest.Files.Select(x => x.ArchiveId));
+         var archivesById = new Dictionary<uint, IReadOnlyList<RiotArchive>>();
+         foreach (var archiveId in archiveIds) {
+            IReadOnlyList<RiotArchive> archives;
+            if (archiveLoader.TryLoadArchives(archiveId, out archives)) {
+               archivesById.Add(archiveId, archives);
+            }
+         }
+
+         var stack = new Stack<IReadableDargonNode>();
+         stack.Push(levels);
+         while (stack.Any()) {
+            var node = stack.Pop();
+            if (node.Children.Any()) {
+               node.Children.ForEach(stack.Push);
+            } else {
+               var archives = archivesById[((ReleaseManifestFileEntry)node).ArchiveId];
+               foreach (var archive in archives) {
+                  var entry = archive.GetDirectoryFile().GetFileList().GetFileEntryOrNull(node.GetPath());
+                  if (entry != null) {
+                     var outputPath = outputDirectory + "/" + node.GetPath();
+                     var outputData = entry.GetContent();
+                     
+                     fileSystemProxy.PrepareParentDirectory(outputPath);
+                     File.WriteAllBytes(outputPath, outputData);
+                     Console.WriteLine("Happily dumped " + node.GetPath());
+                     goto yeehaw;
+                  }
+               }
+               Console.WriteLine("Couldn't dump " + node.GetPath());
+            }
+            yeehaw:
+            if (true) { }
+         }
       }
    }
 

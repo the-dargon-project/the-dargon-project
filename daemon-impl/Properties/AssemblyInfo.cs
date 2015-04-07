@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("the-dargon-project")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Dargon Core Daemon")]
+[assembly: AssemblyDescription("Core Daemon for The Dargon Project")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("the-dargon-project")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCompany("The Dargon Project")]
+[assembly: AssemblyProduct("Dargon Core Daemon")]
+[assembly: AssemblyCopyright("Copyright © The Dargon Project 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -61,6 +61,9 @@ dlldata.c
 # Chutzpah Test files
 _Chutzpah*
 
+# Visual Studio 2015 Files
+.vs/
+
 # Visual C++ cache files
 ipch/
 *.aps

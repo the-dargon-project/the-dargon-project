@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.InjectedModule;
-using Dargon.IO.RADS;
+using Dargon.InjectedModule.Commands;
+using Dargon.IO;
 using Dargon.LeagueOfLegends.FileSystem;
 using Dargon.LeagueOfLegends.Lifecycle;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
+using Dargon.Management.Server;
 using Dargon.ModificationRepositories;
-using Dargon.Processes;
 using Dargon.Processes.Watching;
+using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using ItzWarty;
+using ItzWarty.IO;
 using ItzWarty.Processes;
 using ItzWarty.Threading;
 using NLog;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Dargon.InjectedModule.Commands;
-using Dargon.IO;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
-using Dargon.Management.Server;
-using ItzWarty.IO;
 
-namespace Dargon.LeagueOfLegends
-{
+namespace Dargon.LeagueOfLegends {
    public class LeagueGameServiceImpl : IGameHandler
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();

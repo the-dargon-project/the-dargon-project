@@ -1,9 +1,10 @@
-﻿using Dargon.IO;
-using Dargon.IO.RADS;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
+﻿using Dargon.InjectedModule.Commands;
+using Dargon.IO;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.Patcher;
+using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using Dargon.VirtualFileMapping;
 using ItzWarty;
 using LibGit2Sharp;
@@ -11,10 +12,8 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Dargon.InjectedModule.Commands;
 
-namespace Dargon.LeagueOfLegends.Modifications
-{
+namespace Dargon.LeagueOfLegends.Modifications {
    public class LeagueGameModificationLinkerServiceImpl : LeagueGameModificationLinkerService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();

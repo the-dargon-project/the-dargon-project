@@ -1,11 +1,8 @@
 ﻿using Dargon.ModificationRepositories;
-using Dargon.Services.Client;
+using Dargon.Services;
 using ItzWarty;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dargon.CLI {
    public class ModCommand : DispatcherCommand {

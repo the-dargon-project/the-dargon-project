@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C84A78B6-859D-45C8-9F50-90E6CEF690C5}</ProjectGuid>
+    <ProjectGuid>{E874816B-560A-4851-B187-651694EECDD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Processes</RootNamespace>
-    <AssemblyName>libdargon.process-api.Test</AssemblyName>
+    <RootNamespace>Dargon.LeagueOfLegends</RootNamespace>
+    <AssemblyName>libdargon.lol-impl.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,26 +36,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\NMockito.0.0.6\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NMockito, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-api.0.0.16\lib\net45\libwarty.proxies-api.dll</HintPath>
-    </Reference>
-    <Reference Include="NMockito">
-      <HintPath>..\packages\NMockito.0.0.6\lib\net45\NMockito.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\NMockito.0.1.0\lib\net45\NMockito.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="xunit">
-      <HintPath>..\packages\NMockito.0.0.6\lib\net45\xunit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -67,13 +59,33 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="CreatedProcessDescriptorTest.cs" />
+    <Compile Include="Lifecycle\LeagueLifecycleServiceImplTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
-      <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
-      <Name>libdargon.process-api</Name>
+    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
+      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
+      <Name>Dargon.InjectedModule.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj">
+      <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>
+      <Name>Dargon.LeagueOfLegends.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
+      <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
+      <Name>Dargon.LeagueOfLegends.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
+      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
+      <Name>Dargon.ModificationRepositories.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.service-base\Dargon.ServiceBase.csproj">
+      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
+      <Name>Dargon.ServiceBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,19 +1,18 @@
 ﻿using Dargon.Daemon;
 using Dargon.Game;
 using Dargon.IO;
-using Dargon.IO.RADS;
 using Dargon.IO.Resolution;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.Modifications;
 using Dargon.Patcher;
-using System;
-using System.Linq;
+using Dargon.RADS;
 using ItzWarty;
 using ItzWarty.Threading;
 using LibGit2Sharp;
+using System;
+using System.Linq;
 
-namespace Dargon.LeagueOfLegends.Modifications
-{
+namespace Dargon.LeagueOfLegends.Modifications {
    public class LeagueModificationResolutionServiceImpl : LeagueModificationOperationServiceBase<IResolutionTask, ResolutionTask, LeagueModificationResolutionServiceImpl.ResolutionContext>, LeagueModificationResolutionService
    {
       public const string RESOLUTION_METADATA_FILE_NAME = "RESOLUTION";

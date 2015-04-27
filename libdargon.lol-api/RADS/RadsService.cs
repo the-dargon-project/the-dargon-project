@@ -1,11 +1,10 @@
-using Dargon.IO.RADS;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
+using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using System;
 using System.Collections.Generic;
 
-namespace Dargon.LeagueOfLegends.RADS
-{
+namespace Dargon.LeagueOfLegends.RADS {
    public interface RadsService
    {
       event EventHandler Suspending;

@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}</ProjectGuid>
+    <ProjectGuid>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.ModificationRepositories</RootNamespace>
-    <AssemblyName>libdargon.modification-repository-impl</AssemblyName>
+    <RootNamespace>Dargon.FinalFantasyXIII</RootNamespace>
+    <AssemblyName>libdargon.ffxiii-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>cd0a1312</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,21 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.14\lib\net45\libdpo.dll</HintPath>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
     </Reference>
-    <Reference Include="LibGit2Sharp, Version=0.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\LibGit2Sharp.0.20.0.0\lib\net40\LibGit2Sharp.dll</HintPath>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.14\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.14\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Impl">
+      <HintPath>..\packages\ItzWarty.Proxies.Impl.0.1.0\lib\net45\ItzWarty.Proxies.Impl.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,35 +49,44 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModificationRepositoryServiceImpl.cs" />
+    <Compile Include="FFXIIIGameServiceImpl.cs" />
+    <Compile Include="Lifecycle\FFXIIILifecycleServiceImpl.cs" />
+    <Compile Include="Lifecycle\IFFXIIIInjectedModuleConfigurationFactory.cs" />
+    <Compile Include="Lifecycle\FFXIIIInjectedModuleConfigurationFactory.cs" />
+    <Compile Include="Processes\FFXIIIProcessWatcherServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\client-common\client-common.csproj">
-      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
-      <Name>client-common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
+    <ProjectReference Include="..\libdargon.ffxiii-api\Dargon.FinalFantasyXIII.Api.csproj">
+      <Project>{21E35146-35DC-41D6-80EC-54497C0BF52E}</Project>
+      <Name>Dargon.FinalFantasyXIII.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
-      <Name>libdargon.game-api</Name>
+      <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>libdargon.modification-api</Name>
+    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
+      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
+      <Name>Dargon.InjectedModule.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
-      <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
-      <Name>libdargon.modification-repository-api</Name>
+    <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
+      <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
+      <Name>Dargon.Processes.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdpatch\libdpm.csproj">
-      <Project>{9699E719-25FA-41DF-B966-B43CF50F9B00}</Project>
-      <Name>libdpm</Name>
+    <ProjectReference Include="..\libdargon.service-base\Dargon.ServiceBase.csproj">
+      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
+      <Name>Dargon.ServiceBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

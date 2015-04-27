@@ -1,8 +1,7 @@
-﻿using System;
-using Dargon.IO.RADS.Archives;
+﻿using Dargon.RADS.Archives;
+using System;
 
-namespace Dargon.LeagueOfLegends.RADS
-{
+namespace Dargon.LeagueOfLegends.RADS {
    public interface IRadsArchiveReference : IDisposable
    {
       RiotArchive Value { get; }

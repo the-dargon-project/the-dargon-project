@@ -1,10 +1,10 @@
 ﻿using Dargon.Processes.Injection;
+using ItzWarty;
 using NLog;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ItzWarty;
 
 namespace Dargon.InjectedModule {
    public class InjectedModuleServiceImpl : InjectedModuleService

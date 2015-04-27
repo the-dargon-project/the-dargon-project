@@ -1,23 +1,17 @@
-﻿using System;
-using Dargon.InjectedModule;
-using Dargon.IO.RADS;
+﻿using Dargon.InjectedModule;
+using Dargon.InjectedModule.Commands;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
-using Dargon.Modifications;
-using ItzWarty;
 using ItzWarty.Collections;
 using NLog;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Dargon.InjectedModule.Commands;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
 using PhaseChangeHandler = System.Action<Dargon.LeagueOfLegends.Session.ILeagueSession, Dargon.LeagueOfLegends.Session.LeagueSessionPhaseChangedArgs>;
 
-namespace Dargon.LeagueOfLegends.Lifecycle
-{
+namespace Dargon.LeagueOfLegends.Lifecycle {
    public class LeagueLifecycleServiceImpl : LeagueLifecycleService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();

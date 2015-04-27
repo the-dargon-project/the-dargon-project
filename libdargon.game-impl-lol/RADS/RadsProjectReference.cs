@@ -1,7 +1,6 @@
-﻿using Dargon.IO.RADS;
+﻿using Dargon.RADS;
 
-namespace Dargon.LeagueOfLegends.RADS
-{
+namespace Dargon.LeagueOfLegends.RADS {
    public class RadsProjectReference : IRadsProjectReference
    {
       private RiotProject value;

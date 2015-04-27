@@ -1,13 +1,12 @@
-﻿using Dargon.IO.RADS;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
+﻿using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using ItzWarty;
 using NLog;
 using System;
 using System.Collections.Generic;
 
-namespace Dargon.LeagueOfLegends.RADS
-{
+namespace Dargon.LeagueOfLegends.RADS {
    public class RadsServiceImpl : RadsService
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();

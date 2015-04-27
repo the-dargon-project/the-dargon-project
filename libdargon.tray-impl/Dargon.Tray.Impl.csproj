@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</ProjectGuid>
+    <ProjectGuid>{6D00D055-8C83-4616-B56E-357665DCC73F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.InjectedModule</RootNamespace>
-    <AssemblyName>libdargon.injected-module-api</AssemblyName>
+    <RootNamespace>Dargon.Tray</RootNamespace>
+    <AssemblyName>libdargon.tray-impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,49 +32,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libdargon.utilities">
-      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootstrapConfiguration.cs" />
-    <Compile Include="BootstrapConfigurationBuilder.cs" />
-    <Compile Include="Components\DebugConfigurationComponent.cs" />
-    <Compile Include="Components\FilesystemConfigurationComponent.cs" />
-    <Compile Include="Components\IConfigurationComponent.cs" />
-    <Compile Include="IInjectedModuleServiceConfiguration.cs" />
-    <Compile Include="ISession.cs" />
-    <Compile Include="ISessionFactory.cs" />
-    <Compile Include="SessionEndedEventArgs.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\ICommandFactory.cs" />
-    <Compile Include="Commands\ICommandList.cs" />
-    <Compile Include="InjectedModuleConfiguration.cs" />
-    <Compile Include="InjectedModuleRole.cs" />
-    <Compile Include="InjectedModuleService.cs" />
-    <Compile Include="Components\ProcessSuspensionConfigurationComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Components\RoleConfigurationComponent.cs" />
-    <Compile Include="Components\CommandListConfigurationComponent.cs" />
-    <Compile Include="Components\VerboseLoggerConfigurationComponent.cs" />
-    <Compile Include="Commands\LateInitializationCommandListProxy.cs" />
-    <Compile Include="Commands\CommandFactory.cs" />
-    <Compile Include="Commands\CommandList.cs" />
+    <Compile Include="TrayServiceImpl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
-      <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
-      <Name>libdargon.service-base</Name>
+    <ProjectReference Include="..\common-resources\common-resources.csproj">
+      <Project>{240FD585-1142-4395-A88F-7B9497A9B828}</Project>
+      <Name>common-resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
+      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Name>daemon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.tray-api\Dargon.Tray.Api.csproj">
+      <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
+      <Name>Dargon.Tray.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,63 +39,63 @@
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.Nest.Egg.Api">
-      <HintPath>..\packages\Dargon.Nest.Egg.Api.0.0.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
+    <Reference Include="Dargon.Management.Api">
+      <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.SystemState.Api">
-      <HintPath>..\packages\Dargon.SystemState.Api.0.0.0\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+    <Reference Include="Dargon.Management.Impl">
+      <HintPath>..\packages\Dargon.Management.Impl.0.1.3\lib\net45\Dargon.Management.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.PortableObjects">
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.PortableObjects.Streams">
+      <HintPath>..\packages\Dargon.PortableObjects.Streams.0.1.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Services">
+      <HintPath>..\packages\Dargon.Services.0.1.0\lib\net45\Dargon.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.SystemState.Api.0.1.0\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Transport">
+      <HintPath>..\packages\Dargon.Transport.0.1.0\lib\net45\Dargon.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\ImpromptuInterface.dll</HintPath>
+      <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
     </Reference>
-    <Reference Include="libdargon.filesystem-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdargon.filesystem-impl.0.0.1\lib\net45\libdargon.filesystem-api.dll</HintPath>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="libdargon.filesystem-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdargon.filesystem-impl.0.0.1\lib\net45\libdargon.filesystem-impl.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
-    <Reference Include="libdargon.management-api">
-      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-api.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Impl">
+      <HintPath>..\packages\ItzWarty.Proxies.Impl.0.1.0\lib\net45\ItzWarty.Proxies.Impl.dll</HintPath>
     </Reference>
-    <Reference Include="libdargon.management-impl">
-      <HintPath>..\packages\libdargon.management-impl.0.0.0\lib\net45\libdargon.management-impl.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
     </Reference>
-    <Reference Include="libdargon.utilities">
-      <HintPath>..\packages\libdargon.utilities.0.0.3\lib\net45\libdargon.utilities.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
     </Reference>
-    <Reference Include="libdnode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.3\lib\net45\libdnode.dll</HintPath>
-    </Reference>
-    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.14\lib\net45\libdpo.dll</HintPath>
-    </Reference>
-    <Reference Include="libdsp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
-    </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
-    </Reference>
-    <Reference Include="libwarty.proxies-impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.13\lib\net45\libwarty.proxies-impl.dll</HintPath>
+    <Reference Include="Nito.AsyncEx.Enlightenment">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdnode.0.0.3\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -109,15 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libdtp\libdtp.csproj">
-      <Project>{c9f92566-1f94-4235-944c-19364459f9a6}</Project>
-      <Name>libdtp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\client-common\client-common.csproj">
       <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
       <Name>client-common</Name>
@@ -130,73 +124,73 @@
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.ffxiii-impl\libdargon.ffxiii-impl.csproj">
+    <ProjectReference Include="..\libdargon.ffxiii-impl\Dargon.FinalFantasyXIII.Impl.csproj">
       <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>
-      <Name>libdargon.ffxiii-impl</Name>
+      <Name>Dargon.FinalFantasyXIII.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-api\libdargon.injected-module-api.csproj">
+    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
-      <Name>libdargon.injected-module-api</Name>
+      <Name>Dargon.InjectedModule.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.game-impl-lol\libdargon.lol-impl.csproj">
+    <ProjectReference Include="..\libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj">
       <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>
-      <Name>libdargon.lol-impl</Name>
+      <Name>Dargon.LeagueOfLegends.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.game-api\libdargon.game-api.csproj">
+    <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
-      <Name>libdargon.game-api</Name>
+      <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-impl.Test\libdargon.injected-module-impl.Test.csproj">
+    <ProjectReference Include="..\libdargon.injected-module-impl.Test\Dargon.InjectedModule.Impl.Tests.csproj">
       <Project>{CE788C59-661C-41CE-8D50-4C9B57181EF9}</Project>
-      <Name>libdargon.injected-module-impl.Test</Name>
+      <Name>Dargon.InjectedModule.Impl.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-impl\libdargon.injected-module-impl.csproj">
+    <ProjectReference Include="..\libdargon.injected-module-impl\Dargon.InjectedModule.Impl.csproj">
       <Project>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</Project>
-      <Name>libdargon.injected-module-impl</Name>
+      <Name>Dargon.InjectedModule.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.process-impl\libdargon.process-impl.csproj">
+    <ProjectReference Include="..\libdargon.process-impl\Dargon.Processes.Impl.csproj">
       <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>
-      <Name>libdargon.process-impl</Name>
+      <Name>Dargon.Processes.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\libdargon.modification-api.csproj">
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>libdargon.modification-api</Name>
+      <Name>Dargon.Modifications.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\libdargon.modification-impl.csproj">
+    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl.csproj">
       <Project>{65054C16-4C56-4F57-A8C1-F325B9320803}</Project>
-      <Name>libdargon.modification-impl</Name>
+      <Name>Dargon.Modifications.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\libdargon.modification-repository-api.csproj">
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
       <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>libdargon.modification-repository-api</Name>
+      <Name>Dargon.ModificationRepositories.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-impl\libdargon.modification-repository-impl.csproj">
+    <ProjectReference Include="..\libdargon.modification-repository-impl\Dargon.ModificationRepositories.Impl.csproj">
       <Project>{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}</Project>
-      <Name>libdargon.modification-repository-impl</Name>
+      <Name>Dargon.ModificationRepositories.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.process-api\libdargon.process-api.csproj">
+    <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
-      <Name>libdargon.process-api</Name>
+      <Name>Dargon.Processes.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.service-base\libdargon.service-base.csproj">
+    <ProjectReference Include="..\libdargon.service-base\Dargon.ServiceBase.csproj">
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
-      <Name>libdargon.service-base</Name>
+      <Name>Dargon.ServiceBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.temporary-file-api\libdargon.temporary-file-api.csproj">
+    <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
-      <Name>libdargon.temporary-file-api</Name>
+      <Name>Dargon.TemporaryFiles.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.temporary-file-impl\libdargon.temporary-file-impl.csproj">
+    <ProjectReference Include="..\libdargon.temporary-file-impl\Dargon.TemporaryFiles.Impl.csproj">
       <Project>{844EB06D-3F31-4322-8B57-DC6DAE28FF08}</Project>
-      <Name>libdargon.temporary-file-impl</Name>
+      <Name>Dargon.TemporaryFiles.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.tray-api\libdargon.tray-api.csproj">
+    <ProjectReference Include="..\libdargon.tray-api\Dargon.Tray.Api.csproj">
       <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
-      <Name>libdargon.tray-api</Name>
+      <Name>Dargon.Tray.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.tray-impl\libdargon.tray-impl.csproj">
+    <ProjectReference Include="..\libdargon.tray-impl\Dargon.Tray.Impl.csproj">
       <Project>{6D00D055-8C83-4616-B56E-357665DCC73F}</Project>
-      <Name>libdargon.tray-impl</Name>
+      <Name>Dargon.Tray.Impl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

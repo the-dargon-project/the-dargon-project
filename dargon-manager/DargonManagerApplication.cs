@@ -1,9 +1,8 @@
-﻿using System.Windows.Forms.Integration;
-using Dargon.Daemon;
+﻿using Dargon.Daemon;
 using Dargon.Manager.Controllers;
 using Dargon.ModificationRepositories;
-using Dargon.Services.Client;
-using DargonManager;
+using Dargon.Services;
+using System.Windows.Forms.Integration;
 
 namespace Dargon.Manager {
    public class DargonManagerApplication {

@@ -1,9 +1,9 @@
-﻿using Dargon.FileSystem;
+﻿using Dargon.FileSystems;
 using Dargon.IO;
-using Dargon.IO.RADS;
-using Dargon.IO.RADS.Archives;
-using Dargon.IO.RADS.Manifest;
 using Dargon.LeagueOfLegends.RADS;
+using Dargon.RADS;
+using Dargon.RADS.Archives;
+using Dargon.RADS.Manifest;
 using ItzWarty;
 using NLog;
 using System;
@@ -12,8 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Dargon.LeagueOfLegends.FileSystem
-{
+namespace Dargon.LeagueOfLegends.FileSystem {
    public class RiotFileSystem : IFileSystem
    {
       private static Logger logger = LogManager.GetCurrentClassLogger();

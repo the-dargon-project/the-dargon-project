@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D00D055-8C83-4616-B56E-357665DCC73F}</ProjectGuid>
+    <ProjectGuid>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Tray</RootNamespace>
-    <AssemblyName>libdargon.tray-impl</AssemblyName>
+    <RootNamespace>Dargon.ModificationRepositories</RootNamespace>
+    <AssemblyName>libdargon.modification-repository-api</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -34,25 +34,19 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModificationRepositoryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrayServiceImpl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\common-resources\common-resources.csproj">
-      <Project>{240FD585-1142-4395-A88F-7B9497A9B828}</Project>
-      <Name>common-resources</Name>
+    <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
+      <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
+      <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
-      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
-      <Name>daemon-api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.tray-api\libdargon.tray-api.csproj">
-      <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
-      <Name>libdargon.tray-api</Name>
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
+      <Name>Dargon.Modifications.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

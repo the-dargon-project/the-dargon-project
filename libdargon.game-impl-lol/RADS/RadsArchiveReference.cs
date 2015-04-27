@@ -1,7 +1,6 @@
-﻿using Dargon.IO.RADS.Archives;
+﻿using Dargon.RADS.Archives;
 
-namespace Dargon.LeagueOfLegends.RADS
-{
+namespace Dargon.LeagueOfLegends.RADS {
    public class RadsArchiveReference : IRadsArchiveReference
    {
       private RiotArchive value;

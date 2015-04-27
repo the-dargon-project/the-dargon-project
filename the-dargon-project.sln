@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.game-api", "libdargon.game-api\libdargon.game-api.csproj", "{3008DB66-80D6-4CF3-BF89-2534530E1C83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Game.Api", "libdargon.game-api\Dargon.Game.Api.csproj", "{3008DB66-80D6-4CF3-BF89-2534530E1C83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "daemon-impl", "daemon-impl\daemon-impl.csproj", "{AB5F3378-D1FB-4397-B337-E440837CD185}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,40 +17,40 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "daemon-impl", "daemon-impl\
 		{747797D1-8A0B-4644-96B0-78D484EBC8B6} = {747797D1-8A0B-4644-96B0-78D484EBC8B6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdpm", "libdpatch\libdpm.csproj", "{9699E719-25FA-41DF-B966-B43CF50F9B00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Patcher", "libdpatch\Dargon.Patcher.csproj", "{9699E719-25FA-41DF-B966-B43CF50F9B00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "daemon-api", "daemon-api\daemon-api.csproj", "{EA2EFC04-2ADC-4B82-AB97-424A043A590F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-impl", "libdargon.process-impl\libdargon.process-impl.csproj", "{747797D1-8A0B-4644-96B0-78D484EBC8B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Impl", "libdargon.process-impl\Dargon.Processes.Impl.csproj", "{747797D1-8A0B-4644-96B0-78D484EBC8B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.lol-impl", "libdargon.game-impl-lol\libdargon.lol-impl.csproj", "{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.LeagueOfLegends.Impl", "libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj", "{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.modification-repository-api", "libdargon.modification-repository-api\libdargon.modification-repository-api.csproj", "{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Api", "libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj", "{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.modification-repository-impl", "libdargon.modification-repository-impl\libdargon.modification-repository-impl.csproj", "{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Impl", "libdargon.modification-repository-impl\Dargon.ModificationRepositories.Impl.csproj", "{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-api", "libdargon.process-api\libdargon.process-api.csproj", "{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Api", "libdargon.process-api\Dargon.Processes.Api.csproj", "{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "common-resources", "common-resources\common-resources.csproj", "{240FD585-1142-4395-A88F-7B9497A9B828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.tray-api", "libdargon.tray-api\libdargon.tray-api.csproj", "{0759F916-00B7-4A23-847A-A12E19DD2777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Tray.Api", "libdargon.tray-api\Dargon.Tray.Api.csproj", "{0759F916-00B7-4A23-847A-A12E19DD2777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.tray-impl", "libdargon.tray-impl\libdargon.tray-impl.csproj", "{6D00D055-8C83-4616-B56E-357665DCC73F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Tray.Impl", "libdargon.tray-impl\Dargon.Tray.Impl.csproj", "{6D00D055-8C83-4616-B56E-357665DCC73F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.lol-api", "libdargon.lol-api\libdargon.lol-api.csproj", "{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.LeagueOfLegends.Api", "libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj", "{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-api", "libdargon.injected-module-api\libdargon.injected-module-api.csproj", "{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.InjectedModule.Api", "libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj", "{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-impl", "libdargon.injected-module-impl\libdargon.injected-module-impl.csproj", "{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.InjectedModule.Impl", "libdargon.injected-module-impl\Dargon.InjectedModule.Impl.csproj", "{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Brainstorming", "Brainstorming", "{EA4B3934-A113-4835-AFAC-F265D3B3A05D}"
 	ProjectSection(SolutionItems) = preProject
 		Brainstorming\22 September 2014 - Resolution and Compilation.txt = Brainstorming\22 September 2014 - Resolution and Compilation.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.modification-api", "libdargon.modification-api\libdargon.modification-api.csproj", "{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Api", "libdargon.modification-api\Dargon.Modifications.Api.csproj", "{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.modification-impl", "libdargon.modification-impl\libdargon.modification-impl.csproj", "{65054C16-4C56-4F57-A8C1-F325B9320803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Impl", "libdargon.modification-impl\Dargon.Modifications.Impl.csproj", "{65054C16-4C56-4F57-A8C1-F325B9320803}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InjectedModule", "InjectedModule", "{1FA9A3C3-F366-4FD2-B5AA-ADC7107230CF}"
 EndProject
@@ -63,31 +63,29 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dargon - Injected Module", 
 		{4728635F-5B34-4A40-A6C8-70AEE5074DC8} = {4728635F-5B34-4A40-A6C8-70AEE5074DC8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-impl.Test", "libdargon.process-impl.Test\libdargon.process-impl.Test.csproj", "{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Impl.Tests", "libdargon.process-impl.Test\Dargon.Processes.Impl.Tests.csproj", "{7FFD8C6D-97C1-424A-9154-FFA09CC9AB79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.injected-module-impl.Test", "libdargon.injected-module-impl.Test\libdargon.injected-module-impl.Test.csproj", "{CE788C59-661C-41CE-8D50-4C9B57181EF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.InjectedModule.Impl.Tests", "libdargon.injected-module-impl.Test\Dargon.InjectedModule.Impl.Tests.csproj", "{CE788C59-661C-41CE-8D50-4C9B57181EF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.process-api.Test", "libdargon.process-api.Test\libdargon.process-api.Test.csproj", "{C84A78B6-859D-45C8-9F50-90E6CEF690C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Api.Test", "libdargon.process-api.Test\Dargon.Processes.Api.Test.csproj", "{C84A78B6-859D-45C8-9F50-90E6CEF690C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.lol-impl.Test", "libdargon.lol-impl.Test\libdargon.lol-impl.Test.csproj", "{E874816B-560A-4851-B187-651694EECDD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.LeagueOfLegends.Impl.Tests", "libdargon.lol-impl.Test\Dargon.LeagueOfLegends.Impl.Tests.csproj", "{E874816B-560A-4851-B187-651694EECDD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.ffxiii-impl", "libdargon.ffxiii-impl\libdargon.ffxiii-impl.csproj", "{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.FinalFantasyXIII.Impl", "libdargon.ffxiii-impl\Dargon.FinalFantasyXIII.Impl.csproj", "{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.ffxiii-api", "libdargon.ffxiii-api\libdargon.ffxiii-api.csproj", "{21E35146-35DC-41D6-80EC-54497C0BF52E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.FinalFantasyXIII.Api", "libdargon.ffxiii-api\Dargon.FinalFantasyXIII.Api.csproj", "{21E35146-35DC-41D6-80EC-54497C0BF52E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DargonLibCpp.Tests", "DargonLibCpp\Tests\DargonLibCpp.Tests.vcxproj", "{1C37A42B-65CC-4892-8936-BDA39FD31699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.temporary-file-api", "libdargon.temporary-file-api\libdargon.temporary-file-api.csproj", "{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.TemporaryFiles.Api", "libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj", "{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.temporary-file-impl", "libdargon.temporary-file-impl\libdargon.temporary-file-impl.csproj", "{844EB06D-3F31-4322-8B57-DC6DAE28FF08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.TemporaryFiles.Impl", "libdargon.temporary-file-impl\Dargon.TemporaryFiles.Impl.csproj", "{844EB06D-3F31-4322-8B57-DC6DAE28FF08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dargon-cli", "dargon-cli\dargon-cli.csproj", "{19EA6AC1-D48F-469B-AAA5-09FD28091199}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdtp", "..\libdtp\libdtp.csproj", "{C9F92566-1F94-4235-944C-19364459F9A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.VirtualFileMaps", "..\libvfm\Dargon.VirtualFileMaps.csproj", "{042537A3-62A7-4A9B-98D5-D425B001D86B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libvfm", "..\libvfm\libvfm.csproj", "{042537A3-62A7-4A9B-98D5-D425B001D86B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.service-base", "libdargon.service-base\libdargon.service-base.csproj", "{9CFA80EE-76DC-498C-9C4E-52891851944A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ServiceBase", "libdargon.service-base\Dargon.ServiceBase.csproj", "{9CFA80EE-76DC-498C-9C4E-52891851944A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.ui-wpf", "libdargon.ui-wpf\libdargon.ui-wpf.csproj", "{01A4A8DE-41DB-4944-8D52-39FA519E00A6}"
 EndProject
@@ -648,30 +646,6 @@ Global
 		{19EA6AC1-D48F-469B-AAA5-09FD28091199}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{19EA6AC1-D48F-469B-AAA5-09FD28091199}.Release|Win32.ActiveCfg = Release|Any CPU
 		{19EA6AC1-D48F-469B-AAA5-09FD28091199}.Release|x86.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Any CPU.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Any CPU.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Mixed Platforms.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Win32.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|Win32.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|x86.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Console|x86.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|Win32.Build.0 = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Debug|x86.Build.0 = Debug|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Win32.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|Win32.Build.0 = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|x86.ActiveCfg = Release|Any CPU
-		{C9F92566-1F94-4235-944C-19364459F9A6}.Release|x86.Build.0 = Release|Any CPU
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Console|Any CPU.ActiveCfg = Release|Any CPU
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Console|Any CPU.Build.0 = Release|Any CPU
 		{042537A3-62A7-4A9B-98D5-D425B001D86B}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU

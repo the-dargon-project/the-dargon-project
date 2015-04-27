@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.CLI.Generic;
+﻿using Dargon.CLI.Generic;
 using Dargon.CLI.Interface;
 using Dargon.InjectedModule;
 using Dargon.Processes.Injection;
-using Dargon.Services.Client;
+using Dargon.Services;
 using ItzWarty;
+using System;
+using System.Linq;
 
 namespace Dargon.CLI {
    public class ServiceCommand : DispatcherCommand {

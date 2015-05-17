@@ -14,11 +14,12 @@ namespace Dargon {
          MergeContext(new ManagementPofContext());
 
          // Hydar 2000-2999
-         
+
          // Nest Exeggutor 3000-3999
-         
-         // Modification-Impl 10000-10999
-         MergeContext(new ModificationPofContext());
+
+         // Modification-Api and Impl 10000-10999
+         MergeContext(new ModificationsApiPofContext());
+         MergeContext(new ModificationsImplPofContext());
 
          // Process-API and Impl 11000-11999
          MergeContext(new ProcessImplPofContext());

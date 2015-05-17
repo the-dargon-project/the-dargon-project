@@ -87,6 +87,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+      <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl.csproj">
       <Project>{65054c16-4c56-4f57-a8c1-f325b9320803}</Project>
       <Name>Dargon.Modifications.Impl</Name>

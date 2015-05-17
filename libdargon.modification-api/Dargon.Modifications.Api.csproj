@@ -57,6 +57,7 @@
     <Compile Include="IModificationMetadataSerializer.cs" />
     <Compile Include="ModificationConstants.cs" />
     <Compile Include="ModificationFlags.cs" />
+    <Compile Include="ModificationsApiPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

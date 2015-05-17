@@ -61,7 +61,7 @@
     <Compile Include="BuildConfigurationLoader.cs" />
     <Compile Include="ModificationMetadataFactory.cs" />
     <Compile Include="ModificationMetadataSerializer.cs" />
-    <Compile Include="ModificationPofContext.cs" />
+    <Compile Include="ModificationsImplPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

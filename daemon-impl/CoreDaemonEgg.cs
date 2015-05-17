@@ -1,4 +1,5 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using Castle.DynamicProxy;
 using Dargon.FinalFantasyXIII;
 using Dargon.Game;
 using Dargon.InjectedModule;
@@ -48,7 +49,8 @@ namespace Dargon.Daemon {
          daemonService = CreateDaemonCore();
          mainThread = new Thread(() => {
             daemonService.Run();
-         }).With(t => t.Start());
+            GC.KeepAlive(parameters);
+         }) { IsBackground = false }.With(t => t.Start());
 
          return NestResult.Success;
       }

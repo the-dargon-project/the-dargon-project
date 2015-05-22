@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Dargon.FinalFantasyXIII;
 using Dargon.Game;
@@ -28,6 +29,7 @@ using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.Threading;
+using System.Windows.Forms;
 using Dargon.Services.Server;
 
 namespace Dargon.Daemon {
@@ -46,10 +48,11 @@ namespace Dargon.Daemon {
          logger.Error("COMPILED IN DEBUG MODE");
 #endif
 
-         daemonService = CreateDaemonCore();
+         List<object> keepalive;
+         daemonService = CreateDaemonCore(parameters, out keepalive);
          mainThread = new Thread(() => {
             daemonService.Run();
-            GC.KeepAlive(parameters);
+            GC.KeepAlive(keepalive);
          }) { IsBackground = false }.With(t => t.Start());
 
          return NestResult.Success;
@@ -86,7 +89,10 @@ namespace Dargon.Daemon {
          LogManager.Configuration = config;
       }
 
-      private static DaemonServiceImpl CreateDaemonCore() {
+      private static DaemonServiceImpl CreateDaemonCore(IEggParameters parameters, out List<object> keepalive) {
+         keepalive = new List<object>();
+         keepalive.Add(parameters);
+
          // construct libwarty dependencies
          ICollectionFactory collectionFactory = new CollectionFactory();
 
@@ -114,7 +120,8 @@ namespace Dargon.Daemon {
          ITcpEndPoint managementServerEndpoint = networkingProxy.CreateAnyEndPoint(kDaemonManagementPort);
          var managementFactory = new ManagementFactoryImpl(collectionFactory, threadingProxy, networkingProxy, pofContext, pofSerializer);
          var localManagementServer = managementFactory.CreateServer(new ManagementServerConfiguration(managementServerEndpoint));
-         
+         keepalive.Add(localManagementServer);
+
          // construct root Dargon dependencies.
          var configuration = new ClientConfiguration();
 
@@ -129,6 +136,7 @@ namespace Dargon.Daemon {
          // construct libdsp local service node
          IClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
          IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+         keepalive.Add(localServiceClient);
 
          // construct Dargon Daemon dependencies
          var core = new DaemonServiceImpl(configuration);

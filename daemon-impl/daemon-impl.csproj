@@ -44,21 +44,25 @@
     <Reference Include="Dargon.Management.Api">
       <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.Management.Impl">
+    <Reference Include="Dargon.Management.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Management.Impl.0.1.3\lib\net45\Dargon.Management.Impl.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.PortableObjects">
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.PortableObjects.Streams">
+    <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.1.2\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.Services">
-      <HintPath>..\packages\Dargon.Services.0.1.3\lib\net45\Dargon.Services.dll</HintPath>
+    <Reference Include="Dargon.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Services.0.2.0\lib\net45\Dargon.Services.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,8 +84,9 @@
     <Reference Include="ItzWarty.Proxies.Api">
       <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
-    <Reference Include="ItzWarty.Proxies.Impl">
-      <HintPath>..\packages\ItzWarty.Proxies.Impl.0.1.0\lib\net45\ItzWarty.Proxies.Impl.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ItzWarty.Proxies.Impl.0.1.1\lib\net45\ItzWarty.Proxies.Impl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Nito.AsyncEx">
@@ -99,6 +104,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreDaemonEgg.cs" />
@@ -109,7 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\client-common\client-common.csproj">

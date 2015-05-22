@@ -3,16 +3,16 @@ using Dargon.Nest.Egg;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
-using Dargon.Services.Clustering.Host;
-using Dargon.Services.Server;
 using ItzWarty.Collections;
 using ItzWarty.IO;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Dargon.Daemon;
 
 namespace Dargon.Manager {
    public class DargonManagerApplicationEgg : INestApplicationEgg {
@@ -34,51 +34,32 @@ namespace Dargon.Manager {
 
          var clusteringConfiguration = new ClientClusteringConfiguration();
          var serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         var reconnectAttempts = 10;
-         var reconnectDelay = 1000;
-         var serviceClient = TryConnectToEndpoint(reconnectAttempts, reconnectDelay, serviceClientFactory, clusteringConfiguration);
-         if (serviceClient == null) {
-            Console.Error.WriteLine("Failed to connect to endpoint.");
-            return NestResult.Failure;
-         } else {
-            new Thread(
-               () => {
-                  if (Application.Current == null)
-                     new Application();
+         var serviceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+         Thread.Sleep(1000);
+         Console.WriteLine("!A");
+         var daemonService = serviceClient.GetService<DaemonService>();
+         Console.WriteLine("!B");
+         daemonService.Shutdown();
+         //Console.WriteLine(daemonService.Configuration.AppDataDirectoryPath);
+         Console.WriteLine("!C");
 
-                  Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
-                     new DargonManagerApplication(serviceClient).Run();
-                  }));
+         new Thread(
+            () => {
+               if (Application.Current == null)
+                  new Application();
 
-                  Dispatcher.Run();
-               }).Start();
-            return NestResult.Success;
-         }
+               Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                  new DargonManagerApplication(serviceClient).Run();
+               }));
+
+               Dispatcher.Run();
+               GC.KeepAlive(parameters);
+            }).Start();
+         return NestResult.Success;
       }
 
       public NestResult Shutdown() {
          throw new NotImplementedException();
-      }
-
-      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactory serviceClientFactory, ClientClusteringConfiguration clusteringConfiguration) {
-         IServiceClient serviceClient = null;
-         for (var i = 0; i < reconnectAttempts && serviceClient == null; i++) {
-            try {
-               serviceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
-            } catch (Exception e) {
-               Console.WriteLine(e);
-               if (i == 0) {
-                  Console.Write("Connecting to local endpoint on port " + clusteringConfiguration.Port + ".");
-               } else if (i > 0) {
-                  Console.Write(".");
-               }
-               Thread.Sleep(reconnectDelay);
-            }
-            if (serviceClient != null && i > 0) {
-               Console.WriteLine();
-            }
-         }
-         return serviceClient;
       }
    }
 }

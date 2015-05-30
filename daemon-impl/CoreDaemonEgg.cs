@@ -53,6 +53,7 @@ namespace Dargon.Daemon {
          mainThread = new Thread(() => {
             daemonService.Run();
             GC.KeepAlive(keepalive);
+            parameters.Host.Shutdown();
          }) { IsBackground = false }.With(t => t.Start());
 
          return NestResult.Success;

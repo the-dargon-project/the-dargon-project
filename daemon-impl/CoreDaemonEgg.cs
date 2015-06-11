@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Dargon.FinalFantasyXIII;
 using Dargon.Game;
 using Dargon.InjectedModule;
@@ -12,10 +10,8 @@ using Dargon.Modifications;
 using Dargon.Nest.Egg;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
-using Dargon.Processes.Injection;
 using Dargon.Processes.Watching;
 using Dargon.Services;
-using Dargon.Services.Clustering.Host;
 using Dargon.Transport;
 using Dargon.Tray;
 using ItzWarty;
@@ -28,9 +24,9 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
+using System;
+using System.Collections.Generic;
 using System.Threading;
-using System.Windows.Forms;
-using Dargon.Services.Server;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {

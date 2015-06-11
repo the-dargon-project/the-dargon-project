@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dargon.InjectedModule;
+using Dargon.ManageableServices;
 using Dargon.Services;
 using Dargon.Services.Client;
 

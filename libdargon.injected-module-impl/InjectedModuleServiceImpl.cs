@@ -1,5 +1,4 @@
-﻿using Dargon.Processes.Injection;
-using ItzWarty;
+﻿using ItzWarty;
 using NLog;
 using System.Collections.Concurrent;
 using System.IO;

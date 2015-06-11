@@ -83,8 +83,8 @@
       <AdditionalDependencies>d3dx9.lib;ws2_32.lib;fmodex_vc.lib;fmod_event.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>ROBOCOPY "$(TargetDir)\" "$(SolutionDir)/Release/" /S /XF DargonLib*
-IF errorlevel == 1 EXIT 0 ELSE EXIT %errorlevel%</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

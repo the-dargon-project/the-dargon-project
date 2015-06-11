@@ -85,9 +85,9 @@
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>Dargon.Processes.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.service-base\Dargon.ServiceBase.csproj">
+    <ProjectReference Include="..\libdargon.service-base\Dargon.ManageableServices.csproj">
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
-      <Name>Dargon.ServiceBase</Name>
+      <Name>Dargon.ManageableServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2AEE9ECF-CF69-469E-8443-24C9962153BA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dargon.Trinkets</RootNamespace>
+    <AssemblyName>Dargon.Trinkets.Impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dargon.PortableObjects">
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Transport">
+      <HintPath>..\packages\Dargon.Transport.0.1.0\lib\net45\Dargon.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\packages\ItzWarty.Commons.0.3.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BootstrapConfigurationGeneratorImpl.cs" />
+    <Compile Include="BootstrapConfigurationImpl.cs" />
+    <Compile Include="DimInstanceContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transport\DTP_DIM.cs" />
+    <Compile Include="Transport\Helpers\DictionaryInstructionSet.cs" />
+    <Compile Include="Transport\Helpers\LimitedDSPExSession.cs" />
+    <Compile Include="Transport\Helpers\StatelessRithFactory.cs" />
+    <Compile Include="Transport\Helpers\StatelessRithFactoryImpl.cs" />
+    <Compile Include="Transport\TrinketDtpServer.cs" />
+    <Compile Include="Transport\TrinketDtpServerFactory.cs" />
+    <Compile Include="TrinketBridgeImpl.cs" />
+    <Compile Include="TrinketInternalUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Processes.Injection.Api\Dargon.Processes.Injection.Api.csproj">
+      <Project>{E5A704E7-B9FD-4911-ADB6-8762491234D5}</Project>
+      <Name>Dargon.Processes.Injection.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.service-base\Dargon.ManageableServices.csproj">
+      <Project>{9CFA80EE-76DC-498C-9C4E-52891851944A}</Project>
+      <Name>Dargon.ManageableServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

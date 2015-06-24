@@ -40,6 +40,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
+    </Reference>
     <Reference Include="NMockito, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NMockito.0.1.0\lib\net45\NMockito.dll</HintPath>
@@ -63,6 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>Dargon.InjectedModule.Api</Name>

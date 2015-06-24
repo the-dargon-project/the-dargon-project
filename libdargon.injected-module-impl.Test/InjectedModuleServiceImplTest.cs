@@ -31,7 +31,7 @@ namespace Dargon.InjectedModule
       {
          const int processId = 193;
          const string dllPath = "H:/erp/Derp";
-         var configuration = CreateMock<IInjectedModuleConfiguration>();
+         var configuration = CreateMock<DimInstanceContext>();
          var session = CreateMock<ISession>();
 
          When(sessionFactory.CreateSession(processId, configuration)).ThenReturn(session);

@@ -49,14 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StartupConfigurationComponents\CommandListConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\DebugConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\FilesystemConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\IConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\ProcessSuspensionConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\RoleConfigurationComponent.cs" />
-    <Compile Include="StartupConfigurationComponents\VerboseLoggerConfigurationComponent.cs" />
+    <Compile Include="ManageableBootstrapConfiguration.cs" />
+    <Compile Include="ReadableBootstrapConfiguration.cs" />
+    <Compile Include="BootstrapConfigurationGenerator.cs" />
+    <Compile Include="Components\CommandListComponent.cs" />
+    <Compile Include="Components\TrinketComponent.cs" />
+    <Compile Include="Components\DebugComponent.cs" />
+    <Compile Include="Components\FilesystemComponent.cs" />
+    <Compile Include="Components\NameComponent.cs" />
+    <Compile Include="Components\ProcessSuspensionComponent.cs" />
+    <Compile Include="Components\VerboseLoggerComponent.cs" />
     <Compile Include="TrinketsApiPofContext.cs" />
+    <Compile Include="TrinketBridge.cs" />
     <Compile Include="TrinketStartupConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

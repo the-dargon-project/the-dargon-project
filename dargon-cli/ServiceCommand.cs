@@ -1,7 +1,5 @@
 ﻿using Dargon.CLI.Generic;
 using Dargon.CLI.Interface;
-using Dargon.InjectedModule;
-using Dargon.Processes.Injection;
 using Dargon.Services;
 using ItzWarty;
 using System;
@@ -44,7 +42,8 @@ namespace Dargon.CLI {
          private const string kCommandName = "injected-module";
 
          public InjectedModuleServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
-            RegisterCommand(new StatusCommand<InjectedModuleService>(serviceClient));
+            //TODO: Dead code
+//            RegisterCommand(new StatusCommand<InjectedModuleService>(serviceClient));
          }
       }
 
@@ -52,7 +51,7 @@ namespace Dargon.CLI {
          private const string kCommandName = "process-injection";
 
          public ProcessInjectionServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
-            RegisterCommand(new StatusCommand<ProcessInjectionService>(serviceClient));
+//            RegisterCommand(new StatusCommand<ProcessInjectionService>(serviceClient));
          }
       }
    }

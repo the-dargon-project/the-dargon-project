@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Nest.Eggxecutor.Api">
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.1.1\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
@@ -132,6 +135,10 @@
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.ffxiii-impl\Dargon.FinalFantasyXIII.Impl.csproj">
       <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>
       <Name>Dargon.FinalFantasyXIII.Impl</Name>
@@ -147,14 +154,6 @@
     <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>Dargon.Game.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-impl.Test\Dargon.InjectedModule.Impl.Tests.csproj">
-      <Project>{CE788C59-661C-41CE-8D50-4C9B57181EF9}</Project>
-      <Name>Dargon.InjectedModule.Impl.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-impl\Dargon.InjectedModule.Impl.csproj">
-      <Project>{0EEFC1AB-19DD-4A3A-A5E7-12C566D3761B}</Project>
-      <Name>Dargon.InjectedModule.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-impl\Dargon.Processes.Impl.csproj">
       <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>

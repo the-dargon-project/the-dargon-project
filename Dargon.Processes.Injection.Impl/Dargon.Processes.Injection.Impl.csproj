@@ -33,6 +33,10 @@
     <Reference Include="Dargon.PortableObjects">
       <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Utilities.0.1.1\lib\net45\Dargon.Utilities.dll</HintPath>
+    </Reference>
     <Reference Include="ItzWarty.Commons">
       <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
@@ -53,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProcessInjectionConfigurationImpl.cs" />
-    <Compile Include="ProcessInjectionResult.cs" />
     <Compile Include="ProcessInjectionServiceImpl.cs" />
     <Compile Include="ProcessInjectorImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

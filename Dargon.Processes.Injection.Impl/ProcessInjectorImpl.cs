@@ -22,6 +22,7 @@ namespace Dargon.Processes.Injection {
          using (var hProcess = SafeProcessHandle.OpenOrThrow(targetProcessId))
          using (var hDllPathBuffer = SafeRemoteBufferHandle.AllocateOrThrow(hProcess, dllPath))
          using (var hRemoteThread = SafeRemoteThreadHandle.StartRemoteDllThreadOrThrow(hProcess, hDllPathBuffer, 10)) {
+            logger.Info("Our dll is running in a remote thread.");
             if (hRemoteThread.TryWaitForTermination(kDllCompletionTimeoutMilliseconds)) {
                return ProcessInjectionResult.Success;
             } else {

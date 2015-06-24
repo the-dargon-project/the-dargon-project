@@ -50,11 +50,6 @@
     <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Kernel\AllocationType.cs" />
-    <Compile Include="Kernel\FreeType.cs" />
-    <Compile Include="Kernel\Kernel32.cs" />
-    <Compile Include="Kernel\MemoryProtection.cs" />
-    <Compile Include="Kernel\ProcessAccessRights.cs" />
     <Compile Include="ProcessImplPofContext.cs" />
     <Compile Include="Watching\IProcessDiscoveryMethod.cs" />
     <Compile Include="Watching\IProcessWatcher.cs" />
@@ -63,7 +58,6 @@
     <Compile Include="Watching\ProcessFoundEventArgs.cs" />
     <Compile Include="Watching\ProcessWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Kernel\WaitForSingleObjectResult.cs" />
     <Compile Include="Watching\ProcessWatcherServiceImpl.cs" />
     <Compile Include="Watching\WmiProcessDiscoveryMethod.cs" />
   </ItemGroup>

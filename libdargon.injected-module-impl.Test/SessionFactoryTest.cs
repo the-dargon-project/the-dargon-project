@@ -21,7 +21,7 @@ namespace Dargon.InjectedModule
       public void TestCreateSession()
       {
          const int processId = 10;
-         var configuration = CreateMock<IInjectedModuleConfiguration>();
+         var configuration = CreateMock<DimInstanceContext>();
          var dtpNode = CreateUntrackedMock<IDtpNode>();
          When(dtpNodeFactory.CreateNode(Eq(NodeRole.Server), Any<string>(), Any<IEnumerable<IInstructionSet>>())).ThenReturn(dtpNode);
 

@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Dargon.Processes.Kernel;
 
 namespace Dargon.Processes.Injection {
    public abstract class SafeHandleZeroIsInvalid : SafeHandle {

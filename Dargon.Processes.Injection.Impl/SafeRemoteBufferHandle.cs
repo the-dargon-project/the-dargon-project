@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using NLog;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using Dargon.Processes.Kernel;
-using NLog;
 
 namespace Dargon.Processes.Injection {
    public class SafeRemoteBufferHandle : SafeHandleZeroIsInvalid {
@@ -22,7 +18,7 @@ namespace Dargon.Processes.Injection {
       }
 
       protected override bool ReleaseValidHandleInternal(IntPtr pRemoteBufferCapture) {
-         return Kernel32.VirtualFreeEx(
+         return WinAPI.VirtualFreeEx(
             hProcess,
             pRemoteBufferCapture,
             0,
@@ -33,10 +29,10 @@ namespace Dargon.Processes.Injection {
       public static SafeRemoteBufferHandle AllocateOrThrow(SafeProcessHandle hProcessSafe, string text) {
          var hProcessUnsafe = hProcessSafe.DangerousGetHandle();
 
-         logger.Info("Allocating remote string buffer.");
+         logger.Info($"Allocating remote string buffer for text {text}.");
          uint szText = (uint)(text.Length + 1); // +1 for null string terminator
 
-         IntPtr pRemoteStringBuffer = Kernel32.VirtualAllocEx(
+         IntPtr pRemoteStringBuffer = WinAPI.VirtualAllocEx(
             hProcessUnsafe,
             IntPtr.Zero,
             szText,
@@ -54,7 +50,7 @@ namespace Dargon.Processes.Injection {
 
          logger.Info("Write string in remote process");
          int bytesWritten;
-         bool writeSuccessful = Kernel32.WriteProcessMemory(
+         bool writeSuccessful = WinAPI.WriteProcessMemory(
             hProcessUnsafe,
             pRemoteStringBuffer,
             Encoding.ASCII.GetBytes(text),

@@ -1,32 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Dargon.FinalFantasyXIII.Lifecycle;
-using Dargon.InjectedModule;
-using Dargon.InjectedModule.Components;
+﻿using Dargon.Trinkets.Components;
+using SCG = System.Collections.Generic;
 
-namespace Dargon.LeagueOfLegends.Lifecycle
-{
-   public class FFXIIIInjectedModuleConfigurationFactory : IFFXIIIInjectedModuleConfigurationFactory
+namespace Dargon.FinalFantasyXIII.Lifecycle {
+   public interface FFXIIIInjectedModuleConfigurationFactory 
    {
-      public IInjectedModuleConfiguration GetLauncherConfiguration()
-      {
-         var suspendedProcessNames = new HashSet<string> { "ffxiiiimg.exe" };
-         var configurationBuilder = new InjectedModuleConfigurationBuilder();
-         configurationBuilder.AddComponent(new DebugConfigurationComponent());
-         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Launcher));
-         configurationBuilder.AddComponent(new ProcessSuspensionConfigurationComponent(suspendedProcessNames));
-         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
-         return configurationBuilder.Build();
-      }
-
-      public IInjectedModuleConfiguration GetGameConfiguration()
-      {
-         var configurationBuilder = new InjectedModuleConfigurationBuilder();
-         configurationBuilder.AddComponent(new DebugConfigurationComponent());
-         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Game));
-         configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
-         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
-         return configurationBuilder.Build();
-      }
+      SCG.IReadOnlyCollection<TrinketComponent> GetLauncherConfigurationComponents();
+      SCG.IReadOnlyCollection<TrinketComponent> GetGameConfigurationComponents();
    }
 }

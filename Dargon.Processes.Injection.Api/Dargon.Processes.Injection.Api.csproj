@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProcessInjectionConfiguration.cs" />
+    <Compile Include="ProcessInjectionConfiguration.cs" />
+    <Compile Include="ProcessInjectionResult.cs" />
     <Compile Include="ProcessInjectionService.cs" />
     <Compile Include="ProcessInjector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

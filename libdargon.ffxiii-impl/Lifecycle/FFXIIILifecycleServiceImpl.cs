@@ -1,19 +1,16 @@
 ﻿using System;
 using Dargon.FinalFantasyXIII.Processes;
 using Dargon.InjectedModule;
-using Dargon.LeagueOfLegends.Lifecycle;
 
 namespace Dargon.FinalFantasyXIII.Lifecycle
 {
    public class FFXIIILifecycleServiceImpl
    {
-      private readonly InjectedModuleService injectedModuleService;
       private readonly FFXIIIProcessWatcherServiceImpl ffxiiiProcessWatcherService;
-      private readonly FFXIIIInjectedModuleConfigurationFactory ffxiiiInjectedModuleConfigurationFactory;
+      private readonly FFXIIIInjectedModuleConfigurationFactoryImpl ffxiiiInjectedModuleConfigurationFactory;
 
-      public FFXIIILifecycleServiceImpl(InjectedModuleService injectedModuleService, FFXIIIProcessWatcherServiceImpl ffxiiiProcessWatcherService, FFXIIIInjectedModuleConfigurationFactory ffxiiiInjectedModuleConfigurationFactory)
+      public FFXIIILifecycleServiceImpl(FFXIIIProcessWatcherServiceImpl ffxiiiProcessWatcherService, FFXIIIInjectedModuleConfigurationFactoryImpl ffxiiiInjectedModuleConfigurationFactory)
       {
-         this.injectedModuleService = injectedModuleService;
          this.ffxiiiProcessWatcherService = ffxiiiProcessWatcherService;
          this.ffxiiiInjectedModuleConfigurationFactory = ffxiiiInjectedModuleConfigurationFactory;
       }
@@ -26,14 +23,16 @@ namespace Dargon.FinalFantasyXIII.Lifecycle
 
       private void HandleLauncherLaunched(FFXIIIProcessDetectedArgs e)
       {
-         var configuration = ffxiiiInjectedModuleConfigurationFactory.GetLauncherConfiguration();
-         injectedModuleService.InjectToProcess(e.ProcessDescriptor.ProcessId, configuration);
+         var configuration = ffxiiiInjectedModuleConfigurationFactory.GetLauncherConfigurationComponents();
+         throw new NotImplementedException();
+//         injectedModuleService.InjectToProcess(e.ProcessDescriptor.ProcessId, configuration);
       }
 
       private void HandleGameLaunched(FFXIIIProcessDetectedArgs e)
       {
-         var configuration = ffxiiiInjectedModuleConfigurationFactory.GetGameConfiguration();
-         injectedModuleService.InjectToProcess(e.ProcessDescriptor.ProcessId, configuration);
+         var configuration = ffxiiiInjectedModuleConfigurationFactory.GetGameConfigurationComponents();
+         throw new NotImplementedException();
+         //         injectedModuleService.InjectToProcess(e.ProcessDescriptor.ProcessId, configuration);
       }
    }
 }

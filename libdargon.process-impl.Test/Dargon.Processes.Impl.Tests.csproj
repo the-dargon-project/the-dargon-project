@@ -73,8 +73,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Injection\ProcessInjectionConfigurationTest.cs" />
-    <Compile Include="Injection\ProcessInjectionServiceImplTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Watching\ProcessWatcherServiceImplTest.cs" />
   </ItemGroup>

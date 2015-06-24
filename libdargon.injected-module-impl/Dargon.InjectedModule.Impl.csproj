@@ -50,12 +50,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTP_DIM.cs" />
     <Compile Include="InjectedModuleServiceConfiguration.cs" />
     <Compile Include="InjectedModuleServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Session.cs" />
-    <Compile Include="SessionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">

@@ -1,5 +1,6 @@
 ﻿using Dargon.Management;
 using Dargon.Modifications;
+using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.Processes;
 using Dargon.Services.Messaging;
@@ -16,6 +17,7 @@ namespace Dargon {
          // Hydar 2000-2999
 
          // Nest Exeggutor 3000-3999
+         MergeContext(new ExeggutorPofContext(3000));
 
          // Modification-Api and Impl 10000-10999
          MergeContext(new ModificationsApiPofContext());
@@ -23,7 +25,6 @@ namespace Dargon {
 
          // Process-API and Impl 11000-11999
          MergeContext(new ProcessImplPofContext());
-
          // Wyvern Account-API 1000000-1000999
       }
    }

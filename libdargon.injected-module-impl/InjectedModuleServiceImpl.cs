@@ -32,11 +32,11 @@ namespace Dargon.InjectedModule {
          }
       }
 
-      public ISession InjectToProcess(int processId, IInjectedModuleConfiguration configuration) 
+      public ISession InjectToProcess(int processId, DimInstanceContext instanceContext) 
       {
          logger.Info("Injecting to process " + processId);
 
-         var session = sessionFactory.CreateSession(processId, configuration);
+         var session = sessionFactory.CreateSession(processId, instanceContext);
          processInjectionService.InjectToProcess(processId, injectedModuleServiceConfiguration.GetInjectedDllPath());
          sessionsByProcessId.AddOrUpdate(processId, session, (a, b) => session);
          session.Ended += HandleSessionEnded;

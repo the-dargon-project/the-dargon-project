@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NLog;
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Processes.Kernel;
-using NLog;
 
 namespace Dargon.Processes.Injection {
    public class SafeRemoteThreadHandle : SafeHandleZeroIsInvalid {
@@ -14,20 +9,25 @@ namespace Dargon.Processes.Injection {
       private readonly static UIntPtr pLoadLibraryA;
 
       static SafeRemoteThreadHandle() {
-
+         var hKernel32 = WinAPI.GetModuleHandle("kernel32.dll");
+         pLoadLibraryA = WinAPI.GetProcAddress(hKernel32, "LoadLibraryA");
       }
 
       public SafeRemoteThreadHandle(IntPtr handle, bool ownsHandle = true) : base(handle, ownsHandle) {}
 
       protected override bool ReleaseValidHandleInternal(IntPtr hThread) {
-         return Kernel32.CloseHandle(hThread);
+         return WinAPI.CloseHandle(hThread);
       }
 
       public bool TryWaitForTermination(int timeoutMilliseconds) {
-         var waitResult = Kernel32.WaitForSingleObject(handle, timeoutMilliseconds);
+         var waitResult = WinAPI.WaitForSingleObject(handle, timeoutMilliseconds);
+         logger.Info($"The wait result is: {waitResult}");
          if (waitResult == WaitForSingleObjectResult.WAIT_OBJECT_0) {
             return true;
          } else {
+            if (waitResult == WaitForSingleObjectResult.WAIT_FAILED) {
+               logger.Error($"Errno: {Marshal.GetLastWin32Error()} for handle {handle}.");
+            }
             return false;
          }
       }
@@ -55,7 +55,7 @@ namespace Dargon.Processes.Injection {
 
          try {
             uint remoteThreadId;
-            var hRemoteThread = Kernel32.CreateRemoteThread(
+            var hRemoteThread = WinAPI.CreateRemoteThread(
                hProcessUnsafe,
                IntPtr.Zero,
                0,
@@ -64,14 +64,19 @@ namespace Dargon.Processes.Injection {
                0,
                out remoteThreadId
             );
-            hRemoteThreadOut = new SafeRemoteThreadHandle(hRemoteThread);
+            if (hRemoteThread == IntPtr.Zero) {
+               logger.Warn($"CreateRemoteThread failed with errno {Marshal.GetLastWin32Error()}.");
+               hRemoteThreadOut = null;
+            } else {
+               hRemoteThreadOut = new SafeRemoteThreadHandle(hRemoteThread);
+            }
          } catch (Win32Exception e) {
             var errno = Marshal.GetLastWin32Error();
             logger.Warn("Win32Exception thrown when creating remote thread. Errno: " + errno + ".", e);
             hRemoteThreadOut = null;
          }
 
-         return hRemoteThreadOut == null;
+         return hRemoteThreadOut != null;
       }
    }
 }

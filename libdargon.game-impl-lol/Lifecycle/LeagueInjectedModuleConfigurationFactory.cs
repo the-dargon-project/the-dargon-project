@@ -1,43 +1,12 @@
-using System;
-using System.Collections.Generic;
-using Dargon.InjectedModule;
-using Dargon.InjectedModule.Commands;
-using Dargon.InjectedModule.Components;
+﻿using Dargon.InjectedModule.Commands;
+using Dargon.Trinkets.Components;
+using SCG = System.Collections.Generic;
 
-namespace Dargon.LeagueOfLegends.Lifecycle
-{
-   public class LeagueInjectedModuleConfigurationFactory : ILeagueInjectedModuleConfigurationFactory
+namespace Dargon.LeagueOfLegends.Lifecycle {
+   public interface LeagueInjectedModuleConfigurationFactory
    {
-      public IInjectedModuleConfiguration GetPreclientConfiguration()
-      {
-         var suspendedProcessNames = new HashSet<string> { "LolClient.exe", "League of Legends.exe" };
-         var configurationBuilder = new InjectedModuleConfigurationBuilder();
-         configurationBuilder.AddComponent(new DebugConfigurationComponent());
-         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Launcher));
-         configurationBuilder.AddComponent(new ProcessSuspensionConfigurationComponent(suspendedProcessNames));
-         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
-         return configurationBuilder.Build();
-      }
-
-      public IInjectedModuleConfiguration GetClientConfiguration(ICommandList commandList)
-      {
-         var configurationBuilder = new InjectedModuleConfigurationBuilder();
-         configurationBuilder.AddComponent(new DebugConfigurationComponent());
-         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Client));
-         configurationBuilder.AddComponent(new CommandListConfigurationComponent(commandList));
-         configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
-         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
-         return configurationBuilder.Build();
-      }
-
-      public IInjectedModuleConfiguration GetGameConfiguration(ICommandList commandList) {
-         var configurationBuilder = new InjectedModuleConfigurationBuilder();
-         configurationBuilder.AddComponent(new DebugConfigurationComponent());
-         configurationBuilder.AddComponent(new RoleConfigurationComponent(DimRole.Game));
-         configurationBuilder.AddComponent(new CommandListConfigurationComponent(commandList));
-         configurationBuilder.AddComponent(new FilesystemConfigurationComponent(true));
-         configurationBuilder.AddComponent(new VerboseLoggerConfigurationComponent());
-         return configurationBuilder.Build();
-      }
+      SCG.IReadOnlyCollection<TrinketComponent> GetPreclientConfigurationComponents();
+      SCG.IReadOnlyCollection<TrinketComponent> GetClientConfigurationComponents(ICommandList commandList);
+      SCG.IReadOnlyCollection<TrinketComponent> GetGameConfigurationComponents(ICommandList commandList);
    }
 }

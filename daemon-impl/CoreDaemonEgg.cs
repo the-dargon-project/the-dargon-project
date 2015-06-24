@@ -1,13 +1,13 @@
 ﻿using Castle.DynamicProxy;
 using Dargon.FinalFantasyXIII;
 using Dargon.Game;
-using Dargon.InjectedModule;
 using Dargon.LeagueOfLegends;
 using Dargon.Management;
 using Dargon.Management.Server;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using Dargon.Nest.Egg;
+using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Processes.Watching;
@@ -26,7 +26,10 @@ using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using Dargon.Trinkets;
+using Dargon.Trinkets.Components;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
@@ -145,6 +148,9 @@ namespace Dargon.Daemon {
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
 
+         // get the exeggutor service
+         ExeggutorService exeggutorService = localServiceClient.GetService<ExeggutorService>();
+
          // construct modification and repository dependencies
          IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
          IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
@@ -154,23 +160,49 @@ namespace Dargon.Daemon {
          localServiceClient.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
 
          // construct process watching/injection dependencies
-         IProcessInjector processInjector = new ProcessInjector();
+//         IProcessInjector processInjector = new ProcessInjector();
          IProcessDiscoveryMethodFactory processDiscoveryMethodFactory = new ProcessDiscoveryMethodFactory();
          IProcessDiscoveryMethod processDiscoveryMethod = processDiscoveryMethodFactory.CreateOptimalProcessDiscoveryMethod();
          IProcessWatcher processWatcher = new ProcessWatcher(processProxy, processDiscoveryMethod);
          TrayService trayService = new TrayServiceImpl(daemonService);
-         IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
-         ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(processInjector, processInjectionConfiguration);
+//         IProcessInjectionConfiguration processInjectionConfiguration = new ProcessInjectionConfiguration(100, 200);
+//         ProcessInjectionService processInjectionService = new ProcessInjectionServiceImpl(processInjector, processInjectionConfiguration);
          ProcessWatcherService processWatcherService = new ProcessWatcherServiceImpl(processProxy, processWatcher).With(s => s.Initialize());
-         ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
-         IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
-         InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
-         localServiceClient.RegisterService(injectedModuleService, typeof(InjectedModuleService));
-         localServiceClient.RegisterService(processInjectionService, typeof(ProcessInjectionService));
+         //         ISessionFactory sessionFactory = new SessionFactory(dtpNodeFactory);
+         //         IInjectedModuleServiceConfiguration injectedModuleServiceConfiguration = new InjectedModuleServiceConfiguration();
+         //         InjectedModuleService injectedModuleService = new InjectedModuleServiceImpl(processInjectionService, sessionFactory, injectedModuleServiceConfiguration).With(x => x.Initialize());
+         //         localServiceClient.RegisterService(injectedModuleService, typeof(InjectedModuleService));
+         //         localServiceClient.RegisterService(processInjectionService, typeof(ProcessInjectionService));
+
+         var targetPid = processWatcher.FindProcess(x => x.ProcessName.Contains("notepad++")).First().Id;
+         using (var ms = streamFactory.CreateMemoryStream()) {
+            new PofSerializer(
+               new PofContext().With(x => {
+                  x.MergeContext(new TrinketsApiPofContext());
+                  x.MergeContext(new ExeggutorPofContext(3000));
+               })).Serialize(
+               ms.Writer,
+               new TrinketStartupConfigurationImpl(
+                  targetPid,
+                  new TrinketComponent[] {
+                     new DebugComponent(),
+                     new FilesystemComponent(true),
+                     new NameComponent("npp"),
+                     new VerboseLoggerComponent()
+                  }
+               )
+            );
+
+            exeggutorService.SpawnHatchling("trinket", new SpawnConfiguration {
+               Arguments = ms.ToArray(),
+               InstanceName = "trinket"
+            });
+         }
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, daemonService, temporaryFileService, processProxy, injectedModuleService, processWatcherService, modificationRepositoryService);
-         IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, injectedModuleService, processWatcherService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService);
+         IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
+
          return core;
       }
    }

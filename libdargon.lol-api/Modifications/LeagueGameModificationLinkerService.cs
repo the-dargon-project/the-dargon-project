@@ -1,16 +1,11 @@
-﻿using System;
+﻿using Dargon.Trinkets.Commands;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.InjectedModule.Commands;
-using Dargon.Modifications;
 
-namespace Dargon.LeagueOfLegends.Modifications
-{
+namespace Dargon.LeagueOfLegends.Modifications {
    public interface LeagueGameModificationLinkerService
    {
-      ICommandList LinkModificationObjects();
+      CommandList LinkModificationObjects();
    }
 
    public interface LeagueGameModificationLinkerResult

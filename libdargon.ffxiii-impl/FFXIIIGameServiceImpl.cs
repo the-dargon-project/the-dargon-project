@@ -2,14 +2,12 @@
 using Dargon.FinalFantasyXIII.Lifecycle;
 using Dargon.FinalFantasyXIII.Processes;
 using Dargon.Game;
-using Dargon.InjectedModule;
 using Dargon.Processes.Watching;
 using ItzWarty;
 using ItzWarty.Processes;
 using NLog;
 
-namespace Dargon.FinalFantasyXIII
-{
+namespace Dargon.FinalFantasyXIII {
    public class FFXIIIGameServiceImpl : IGameHandler
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();

@@ -7,11 +7,11 @@ RemappedFileOperationProxy::RemappedFileOperationProxy(
    std::shared_ptr<dargon::IO::IoProxy> io_proxy,
    std::shared_ptr<dargon::vfm_file> virtual_file_map
 ) : io_proxy(io_proxy), virtual_file_map(virtual_file_map), position(0LL), name(L"") {
-   static bool first = true;
-   if (first) {
-      __debugbreak();
-      first = false;
-   }
+//   static bool first = true;
+//   if (first) {
+//      __debugbreak();
+//      first = false;
+//   }
 }
 
 HANDLE RemappedFileOperationProxy::Create(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
@@ -24,11 +24,13 @@ HANDLE RemappedFileOperationProxy::Create(LPCWSTR lpFilePath, DWORD dwDesiredAcc
 BOOL RemappedFileOperationProxy::Read(void* buffer, uint32_t byte_count, OUT uint32_t* bytes_read, LPOVERLAPPED lpOverlapped) {
    auto isAsyncRead = lpOverlapped != nullptr;
    auto positionToRead = isAsyncRead ? ((lpOverlapped->OffsetHigh << 32) | lpOverlapped->Offset) : position;
-   virtual_file_map->read(positionToRead, byte_count, (uint8_t*)buffer, 0);
-   *bytes_read = byte_count;
+   auto readBytes = virtual_file_map->read(positionToRead, byte_count, (uint8_t*)buffer, 0);
+   if (bytes_read != nullptr) {
+      *bytes_read = readBytes;
+   }
 
    if (!isAsyncRead) {
-      position += byte_count;
+      position += readBytes;
       return true;
    } else {
       ResetEvent(lpOverlapped->hEvent);

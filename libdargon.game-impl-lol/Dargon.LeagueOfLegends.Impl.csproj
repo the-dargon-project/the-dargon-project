@@ -55,6 +55,10 @@
     <Reference Include="Dargon.Utilities">
       <HintPath>..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.VirtualFileMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.VirtualFileMaps.0.0.1\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -82,8 +86,8 @@
   <ItemGroup>
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
-    <Compile Include="Lifecycle\LeagueInjectedModuleConfigurationFactory.cs" />
-    <Compile Include="Lifecycle\LeagueInjectedModuleConfigurationFactoryImpl.cs" />
+    <Compile Include="Lifecycle\LeagueTrinketSpawnConfigurationFactory.cs" />
+    <Compile Include="Lifecycle\LeagueTrinketSpawnConfigurationFactoryImpl.cs" />
     <Compile Include="Modifications\LeagueGameModificationLinkerServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationCommandListCompilerServiceImpl.cs" />
     <Compile Include="Modifications\LeagueModificationsMob.cs" />
@@ -114,10 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libvfm\Dargon.VirtualFileMaps.csproj">
-      <Project>{042537a3-62a7-4a9b-98d5-d425b001d86b}</Project>
-      <Name>Dargon.VirtualFileMaps</Name>
-    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
@@ -125,6 +125,14 @@
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Impl\Dargon.Trinkets.Impl.csproj">
+      <Project>{2AEE9ECF-CF69-469E-8443-24C9962153BA}</Project>
+      <Name>Dargon.Trinkets.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj">
+      <Project>{44A785B4-87A2-4616-99EF-638206D4A685}</Project>
+      <Name>Dargon.Trinkets.Spawner.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>

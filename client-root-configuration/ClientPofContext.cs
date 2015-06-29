@@ -4,6 +4,7 @@ using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.Processes;
 using Dargon.Services.Messaging;
+using Dargon.Trinkets;
 
 namespace Dargon {
    public class ClientPofContext : PofContext {
@@ -18,6 +19,10 @@ namespace Dargon {
 
          // Nest Exeggutor 3000-3999
          MergeContext(new ExeggutorPofContext(3000));
+
+         // Trinket 11000-11999
+         MergeContext(new TrinketsApiPofContext());
+         MergeContext(new TrinketsImplPofContext());
 
          // Modification-Api and Impl 10000-10999
          MergeContext(new ModificationsApiPofContext());

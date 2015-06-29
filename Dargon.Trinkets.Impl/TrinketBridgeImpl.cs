@@ -26,7 +26,7 @@ namespace Dargon.Trinkets {
          logger.Info($"Dim Path: {dimPath}");
 
          var injectionSuccessful = processInjectionService.InjectToProcess(configuration.TargetProcessId, dimPath);
-         logger.Info($"Injection Successful: {injectionSuccessful}");
+         logger.Info($"Injection Successful?: {injectionSuccessful}");
 
          return injectionSuccessful;
       }

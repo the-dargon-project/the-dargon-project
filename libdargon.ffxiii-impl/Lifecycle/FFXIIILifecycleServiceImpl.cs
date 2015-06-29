@@ -1,9 +1,7 @@
-﻿using System;
-using Dargon.FinalFantasyXIII.Processes;
-using Dargon.InjectedModule;
+﻿using Dargon.FinalFantasyXIII.Processes;
+using System;
 
-namespace Dargon.FinalFantasyXIII.Lifecycle
-{
+namespace Dargon.FinalFantasyXIII.Lifecycle {
    public class FFXIIILifecycleServiceImpl
    {
       private readonly FFXIIIProcessWatcherServiceImpl ffxiiiProcessWatcherService;

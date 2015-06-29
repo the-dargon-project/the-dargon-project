@@ -35,6 +35,10 @@
     <Reference Include="Dargon.IO">
       <HintPath>..\packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.RADS">
       <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
     </Reference>
@@ -90,6 +94,10 @@
     <Compile Include="Session\LeagueSessionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>Dargon.InjectedModule.Api</Name>

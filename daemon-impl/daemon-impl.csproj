@@ -77,6 +77,10 @@
     <Reference Include="Dargon.Utilities">
       <HintPath>..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.VirtualFileMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.VirtualFileMaps.0.0.1\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
+    </Reference>
     <Reference Include="ImpromptuInterface, Version=6.2.2.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
@@ -138,6 +142,18 @@
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Exeggutor\Dargon.Trinkets.Spawner.Impl.csproj">
+      <Project>{EE656D9B-7327-40C5-AAAD-62051D0A6813}</Project>
+      <Name>Dargon.Trinkets.Spawner.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Impl\Dargon.Trinkets.Impl.csproj">
+      <Project>{2AEE9ECF-CF69-469E-8443-24C9962153BA}</Project>
+      <Name>Dargon.Trinkets.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj">
+      <Project>{44A785B4-87A2-4616-99EF-638206D4A685}</Project>
+      <Name>Dargon.Trinkets.Spawner.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.ffxiii-impl\Dargon.FinalFantasyXIII.Impl.csproj">
       <Project>{C078A6C9-C587-4EDC-9E26-AF29F07B51B6}</Project>

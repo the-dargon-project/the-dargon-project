@@ -90,6 +90,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Impl\Dargon.Trinkets.Impl.csproj">
+      <Project>{2AEE9ECF-CF69-469E-8443-24C9962153BA}</Project>
+      <Name>Dargon.Trinkets.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
       <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
       <Name>Dargon.Modifications.Api</Name>

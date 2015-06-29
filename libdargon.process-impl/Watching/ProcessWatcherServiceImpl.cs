@@ -33,11 +33,17 @@ namespace Dargon.Processes.Watching
       internal void HandleProcessWatcherNewProcessFound(object sender, ProcessFoundEventArgs e)
       {
          var lowerProcessName = e.ProcessName.ToLower();
+//         logger.Info("$$$$$$$$$$");
 //         logger.Info(lowerProcessName);
+//         logger.Info("$$$$$$$$$$");
          var handlers = processSpawnedHandlersByProcessName.GetValueOrDefault(lowerProcessName);
          if (handlers != null) {
             foreach (var handler in handlers) {
-               handler(new CreatedProcessDescriptor(e.ProcessName, e.ProcessID, e.ParentProcessID));
+               try {
+                  handler(new CreatedProcessDescriptor(e.ProcessName, e.ProcessID, e.ParentProcessID));
+               } catch (Exception ex) {
+                  logger.Error("Process watcher handler threw", ex);
+               }
             }
          }
       }

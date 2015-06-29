@@ -96,24 +96,22 @@ namespace Dargon.Trinkets.Transport {
       private void HandleGetInitialCommandList(LimitedDSPExSession session, TransactionInitialMessage message) {
          logger.Info("Processing Initial Message");
 
-         throw new NotImplementedException();
-         //var commandListConfigurationComponent = startupConfiguration.GetComponentOrNull<CommandListComponent>();
-         //var commandList = commandListConfigurationComponent.CommandList;
-         //using (var ms = new MemoryStream()) {
-         //   using (var writer = new BinaryWriter(ms)) {
-         //      writer.Write((uint)commandList.Count);
-         //      foreach (var command in commandList) {
-         //         writer.WriteLongText(command.Type);
-         //         writer.Write(command.Data.Length);
-         //         writer.Write(command.Data, 0, command.Data.Length);
-         //      }
-         //   }
-         //
-         //   var data = ms.ToArray();
-         //   session.SendMessage(new TransactionMessage(message.TransactionId, data, 0, data.Length));
-         //   session.DeregisterRITransactionHandler(this);
-         //   logger.Info("Sent Initial Command List");
-         //}
+         var commandListComponent = startupConfiguration.GetComponentOrNull<CommandListComponent>();
+         var commandList = commandListComponent.CommandList;
+         using (var ms = new MemoryStream()) {
+            using (var writer = new BinaryWriter(ms)) {
+               writer.Write((uint)commandList.Count);
+               foreach (var command in commandList) {
+                  writer.WriteLongText(command.Type);
+                  writer.Write(command.Data.Length);
+                  writer.Write(command.Data, 0, command.Data.Length);
+               }
+            }
+         
+            var data = ms.ToArray();
+            session.SendMessage(new TransactionMessage(message.TransactionId, data, 0, data.Length));
+            logger.Info("Sent Initial Command List");
+         }
       }
 
       private void HandleRemoteLog(LimitedDSPExSession session, TransactionInitialMessage message) {

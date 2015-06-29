@@ -60,6 +60,9 @@
   <ItemGroup>
     <Compile Include="BootstrapConfigurationGeneratorImpl.cs" />
     <Compile Include="BootstrapConfigurationImpl.cs" />
+    <Compile Include="Commands\CommandFactoryImpl.cs" />
+    <Compile Include="Commands\CommandListProxy.cs" />
+    <Compile Include="Commands\DefaultCommandList.cs" />
     <Compile Include="DimInstanceContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transport\DTP_DIM.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Transport\TrinketDtpServerFactory.cs" />
     <Compile Include="TrinketBridgeImpl.cs" />
     <Compile Include="TrinketInternalUtilities.cs" />
+    <Compile Include="TrinketsImplPofContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

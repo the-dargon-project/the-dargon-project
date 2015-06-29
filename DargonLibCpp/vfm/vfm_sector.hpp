@@ -19,8 +19,6 @@ namespace dargon {
 
    class vfm_sector : dargon::noncopyable {
    public:
-      virtual vfm_sector_range range() = 0;
-
       virtual int64_t size() = 0;
       virtual void read(int64_t read_offset, int64_t read_length, uint8_t* buffer, int32_t bufferOffset) = 0;
       virtual void deserialize(dargon::binary_reader& reader) = 0;

@@ -14,7 +14,7 @@ namespace Dargon.LeagueOfLegends.Processes
       public const string kRadsUserKernelProcessNameLower = "rads_user_kernel.exe";
 
       public event LeagueProcessDetectedHandler LauncherLaunched;
-      public const string kLauncherProcessNameLower = "lollauncher";
+      public const string kLauncherProcessNameLower = "lollauncher.exe";
 
       public event LeagueProcessDetectedHandler PatcherLaunched;
       public const string kPatcherProcessNameLower = "lolpatcher.exe";
@@ -97,14 +97,15 @@ namespace Dargon.LeagueOfLegends.Processes
             processType = LeagueProcessType.BugSplat;
          }
 
+         logger.Info("###########");
          logger.Info((@event == null) + " " + lowerProcessName + " " + processType);
+         logger.Info("###########");
 
          if (processType != LeagueProcessType.Invalid) {
             logger.Info(lowerProcessName);
             var capture = @event;
             if (capture != null && processType != LeagueProcessType.Invalid)
                capture(new LeagueProcessDetectedArgs(processType, desc));
-            ;
          }
       }
    }

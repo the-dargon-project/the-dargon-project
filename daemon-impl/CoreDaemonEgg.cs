@@ -14,6 +14,10 @@ using Dargon.Processes.Watching;
 using Dargon.Services;
 using Dargon.Transport;
 using Dargon.Tray;
+using Dargon.Trinkets;
+using Dargon.Trinkets.Commands;
+using Dargon.Trinkets.Components;
+using Dargon.VirtualFileMaps;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
@@ -26,10 +30,10 @@ using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
-using Dargon.Trinkets;
-using Dargon.Trinkets.Components;
+using Dargon.Trinkets.Spawner;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
@@ -174,33 +178,39 @@ namespace Dargon.Daemon {
          //         localServiceClient.RegisterService(injectedModuleService, typeof(InjectedModuleService));
          //         localServiceClient.RegisterService(processInjectionService, typeof(ProcessInjectionService));
 
-         var targetPid = processWatcher.FindProcess(x => x.ProcessName.Contains("notepad++")).First().Id;
-         using (var ms = streamFactory.CreateMemoryStream()) {
-            new PofSerializer(
-               new PofContext().With(x => {
-                  x.MergeContext(new TrinketsApiPofContext());
-                  x.MergeContext(new ExeggutorPofContext(3000));
-               })).Serialize(
-               ms.Writer,
-               new TrinketStartupConfigurationImpl(
-                  targetPid,
-                  new TrinketComponent[] {
-                     new DebugComponent(),
-                     new FilesystemComponent(true),
-                     new NameComponent("npp"),
-                     new VerboseLoggerComponent()
-                  }
-               )
-            );
+         CommandFactory commandFactory = new CommandFactoryImpl();
+         TrinketSpawner trinketSpawner = new TrinketSpawnerImpl(streamFactory, pofSerializer, exeggutorService);
 
-            exeggutorService.SpawnHatchling("trinket", new SpawnConfiguration {
-               Arguments = ms.ToArray(),
-               InstanceName = "trinket"
-            });
-         }
+//         var sectors = new SectorCollection();
+//         sectors.AssignSector(new SectorRange(0, 26), new FileSector("C:/dummy-files/lowercase.txt", 0, 26));
+//         sectors.AssignSector(new SectorRange(28, 54), new FileSector("C:/dummy-files/uppercase.txt", 0, 26));
+//         sectors.AssignSector(new SectorRange(54, 64), new FileSector("C:/dummy-files/digits.txt", 0, 10));
+//         sectors.AssignSector(new SectorRange(65, 68), new FileSector("C:/dummy-files/digits.txt", 3, 6));
+//         var vfm = new VirtualFile(sectors);
+//         var vfmSerializer = new SectorCollectionSerializer();
+//         using (var fs = fileSystemProxy.OpenFile("C:/dummy-files/z.vfm", FileMode.Create, FileAccess.Write))
+//         using (var writer = fs.Writer) {
+//            vfmSerializer.Serialize(sectors, writer.__Writer);
+//         }
+//
+//         var targetProcess = processWatcher.FindProcess(x => x.ProcessName.Contains("notepad++")).First();
+//         logger.Info("TARGET PID " + targetProcess.Id);
+//         trinketSpawner.SpawnTrinket(
+//            targetProcess, 
+//            new TrinketSpawnConfigurationImpl {
+//               Name = "npp",
+//               IsFileSystemOverridingEnabled = true,
+//               IsFileSystemHookingEnabled = true,
+//               IsCommandingEnabled = true,
+//               CommandList = new DefaultCommandList(new [] {
+//                  commandFactory.CreateFileRemappingCommand("C:/dummy-files/a.txt", "C:/dummy-files/z.vfm")
+//               })
+//            }
+//         );
+//         logger.Info("######################################");
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService, trinketSpawner);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
 
          return core;

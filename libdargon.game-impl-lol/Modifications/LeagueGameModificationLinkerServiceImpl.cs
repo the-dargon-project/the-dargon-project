@@ -1,11 +1,11 @@
-﻿using Dargon.InjectedModule.Commands;
-using Dargon.IO;
+﻿using Dargon.IO;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.Patcher;
 using Dargon.RADS;
 using Dargon.RADS.Archives;
 using Dargon.RADS.Manifest;
-using Dargon.VirtualFileMapping;
+using Dargon.Trinkets.Commands;
+using Dargon.VirtualFileMaps;
 using ItzWarty;
 using LibGit2Sharp;
 using NLog;
@@ -21,9 +21,9 @@ namespace Dargon.LeagueOfLegends.Modifications {
       private readonly TemporaryFileService temporaryFileService;
       private readonly RadsService radsService;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
-      private readonly ICommandFactory commandFactory;
+      private readonly CommandFactory commandFactory;
 
-      public LeagueGameModificationLinkerServiceImpl(TemporaryFileService temporaryFileService, RadsService radsService, LeagueModificationRepositoryService leagueModificationRepositoryService, ICommandFactory commandFactory)
+      public LeagueGameModificationLinkerServiceImpl(TemporaryFileService temporaryFileService, RadsService radsService, LeagueModificationRepositoryService leagueModificationRepositoryService, CommandFactory commandFactory)
       {
          this.temporaryFileService = temporaryFileService;
          this.radsService = radsService;
@@ -31,7 +31,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          this.commandFactory = commandFactory;
       }
 
-      public ICommandList LinkModificationObjects() 
+      public CommandList LinkModificationObjects() 
       {
          var manifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
          var archiveDataById = new Dictionary<uint, List<ArchiveData>>();
@@ -110,14 +110,15 @@ namespace Dargon.LeagueOfLegends.Modifications {
                      }
 
                      continue;
+
                      // Update Release Manifest:
-                     manifestEntry.CompressedSize = (uint)objectLength;
+                     manifestEntry.CompressedSize = (uint)objectLength - 8;
                      manifestEntry.DecompressedSize = (uint)sourceLength;
                      
                      // Update RAF Data File's Virtual File Map
                      var dataStartInclusive = archiveData.NextOffset;
-                     var dataEndExclusive = dataStartInclusive + objectLength;
-                     archiveData.Sectors.AssignSector(new SectorRange(dataStartInclusive, dataEndExclusive), new FileSector(objectPath, 0, objectLength));
+                     var dataEndExclusive = dataStartInclusive + objectLength - 8;
+                     archiveData.Sectors.AssignSector(new SectorRange(dataStartInclusive, dataEndExclusive), new FileSector(objectPath, 8, objectLength-8));
                      archiveData.NextOffset = dataEndExclusive;
                      
                      // Update RAF File
@@ -129,7 +130,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
             }
          }
 
-         var commandList = new CommandList();
+         var commandList = new DefaultCommandList();
          var versionStringUtilities = new VersionStringUtilities();
          var tempDir = temporaryFileService.AllocateTemporaryDirectory(DateTime.Now + TimeSpan.FromHours(24));
          logger.Info("Allocated temporary directory " + tempDir);

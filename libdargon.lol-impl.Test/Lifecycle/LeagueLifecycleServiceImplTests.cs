@@ -1,19 +1,20 @@
-﻿using Dargon.InjectedModule;
-using Dargon.LeagueOfLegends.Modifications;
+﻿using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.Modifications;
+using Dargon.Trinkets.Components;
 using NMockito;
 using System.Collections.Generic;
-using Dargon.Trinkets.Components;
+using Dargon.Trinkets.Spawner;
+using ItzWarty.Processes;
 using Xunit;
 
-namespace Dargon.LeagueOfLegends.Lifecycle
-{
+namespace Dargon.LeagueOfLegends.Lifecycle {
    public class LeagueLifecycleServiceImplTests : NMockitoInstance
    {
       private LeagueLifecycleServiceImpl testObj;
 
+      [Mock] private readonly TrinketSpawner trinketSpawner = null;
       [Mock] private readonly LeagueModificationRepositoryService leagueModificationRepositoryService = null;
       [Mock] private readonly LeagueModificationResolutionService leagueModificationResolutionService = null;
       [Mock] private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService = null;
@@ -21,7 +22,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       [Mock] private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService = null;
       [Mock] private readonly LeagueSessionService leagueSessionService = null;
       [Mock] private readonly RadsService radsService = null;
-      [Mock] private readonly LeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory = null;
+      [Mock] private readonly LeagueTrinketSpawnConfigurationFactory leagueTrinketSpawnConfigurationFactory = null;
       
       [Mock] private readonly IModification firstModification = null;
       [Mock] private readonly IModification secondModification = null;
@@ -29,7 +30,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle
 
       public LeagueLifecycleServiceImplTests()
       {
-         testObj = new LeagueLifecycleServiceImpl(leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueInjectedModuleConfigurationFactory);
+         testObj = new LeagueLifecycleServiceImpl(trinketSpawner, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueTrinketSpawnConfigurationFactory);
 
          modifications = new[] { firstModification, secondModification };
          When(leagueModificationRepositoryService.EnumerateModifications()).ThenReturn(modifications);
@@ -48,13 +49,15 @@ namespace Dargon.LeagueOfLegends.Lifecycle
       {
          const int processId = 13337;
 
-         var preclientConfiguration = CreateUntrackedMock<IReadOnlyCollection<TrinketComponent>>();
-         When(leagueInjectedModuleConfigurationFactory.GetPreclientConfigurationComponents()).ThenReturn(preclientConfiguration);
+         var process = CreateUntrackedMock<IProcess>();
+         var preclientConfiguration = CreateUntrackedMock<TrinketSpawnConfiguration>();
+         When(process.Id).ThenReturn(processId);
+         When(leagueTrinketSpawnConfigurationFactory.GetPreclientConfiguration()).ThenReturn(preclientConfiguration);
 
-         testObj.HandlePreclientProcessLaunched(processId);
+         testObj.HandlePreclientProcessLaunched(process);
 
-         Verify(leagueInjectedModuleConfigurationFactory).GetPreclientConfigurationComponents();
-//         Verify(injectedModuleService).InjectToProcess(processId, preclientConfiguration);
+         Verify(leagueTrinketSpawnConfigurationFactory).GetPreclientConfiguration();
+         Verify(trinketSpawner).SpawnTrinket(process, preclientConfiguration);
          VerifyNoMoreInteractions();
       }
 

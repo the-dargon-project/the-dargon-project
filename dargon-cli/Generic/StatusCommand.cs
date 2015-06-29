@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.InjectedModule;
-using Dargon.ManageableServices;
+﻿using Dargon.ManageableServices;
 using Dargon.Services;
-using Dargon.Services.Client;
+using System;
 
 namespace Dargon.CLI.Generic {
    public class StatusCommand<TService> : ICommand

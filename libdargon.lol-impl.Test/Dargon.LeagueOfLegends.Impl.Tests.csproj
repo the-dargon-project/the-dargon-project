@@ -79,6 +79,14 @@
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Exeggutor\Dargon.Trinkets.Spawner.Impl.csproj">
+      <Project>{EE656D9B-7327-40C5-AAAD-62051D0A6813}</Project>
+      <Name>Dargon.Trinkets.Spawner.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj">
+      <Project>{44A785B4-87A2-4616-99EF-638206D4A685}</Project>
+      <Name>Dargon.Trinkets.Spawner.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>Dargon.InjectedModule.Api</Name>

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using Dargon.Game;
-using Dargon.InjectedModule.Commands;
 using Dargon.Modifications;
 using Dargon.Patcher;
+using Dargon.Trinkets.Commands;
 using ItzWarty;
 using NLog;
 
@@ -14,11 +14,11 @@ namespace Dargon.LeagueOfLegends.Modifications
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly ICommandFactory commandFactory;
+      private readonly CommandFactory commandFactory;
 
-      public LeagueModificationCommandListCompilerServiceImpl(ICommandFactory commandFactory) { this.commandFactory = commandFactory; }
+      public LeagueModificationCommandListCompilerServiceImpl(CommandFactory commandFactory) { this.commandFactory = commandFactory; }
 
-      public ICommandList BuildCommandList(IModification modification, ModificationTargetType target)
+      public CommandList BuildCommandList(IModification modification, ModificationTargetType target)
       {
          if (!modification.Metadata.Targets.Contains(GameType.LeagueOfLegends)) {
             throw new InvalidOperationException("League Modification Compilation Service can only build command list for League of Legends modifications!");
@@ -26,7 +26,7 @@ namespace Dargon.LeagueOfLegends.Modifications
 
          logger.Info("Building Command List for Modification " + modification + " for Target Type " + target);
 
-         var result = new CommandList();
+         var result = new DefaultCommandList();
          var repository = new LocalRepository(modification.RepositoryPath);
          using (repository.TakeLock()) {
             string compilationMetadataFilepath = repository.GetMetadataFilePath(LeagueModificationObjectCompilerServiceImpl.COMPILATION_METADATA_FILE_NAME); // HACK

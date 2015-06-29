@@ -1,14 +1,16 @@
-﻿using System;
-using Dargon.InjectedModule;
-using Dargon.InjectedModule.Commands;
-using Dargon.LeagueOfLegends.Modifications;
+﻿using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
+using Dargon.Trinkets.Commands;
 using ItzWarty.Collections;
 using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dargon.Trinkets.Spawner;
+using ItzWarty;
+using ItzWarty.Processes;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
 using PhaseChangeHandler = System.Action<Dargon.LeagueOfLegends.Session.ILeagueSession, Dargon.LeagueOfLegends.Session.LeagueSessionPhaseChangedArgs>;
 
@@ -17,6 +19,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly TrinketSpawner trinketSpawner;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly LeagueModificationResolutionService leagueModificationResolutionService;
       private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
@@ -24,12 +27,13 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
       private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService;
       private readonly LeagueSessionService leagueSessionService;
       private readonly RadsService radsService;
-      private readonly LeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory;
+      private readonly LeagueTrinketSpawnConfigurationFactory leagueTrinketSpawnConfigurationFactory;
       private readonly IReadOnlyDictionary<PhaseChange, PhaseChangeHandler> phaseChangeHandlers;
       private readonly IReadOnlyDictionary<LeagueProcessType, LeagueSessionProcessLaunchedHandler> processLaunchedHandlers;
 
-      public LeagueLifecycleServiceImpl(LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationObjectCompilerService leagueModificationObjectCompilerService, LeagueModificationCommandListCompilerService leagueModificationCommandListCompilerService, LeagueGameModificationLinkerService leagueGameModificationLinkerService, LeagueSessionService leagueSessionService, RadsService radsService, LeagueInjectedModuleConfigurationFactory leagueInjectedModuleConfigurationFactory)
+      public LeagueLifecycleServiceImpl(TrinketSpawner trinketSpawner, LeagueModificationRepositoryService leagueModificationRepositoryService, LeagueModificationResolutionService leagueModificationResolutionService, LeagueModificationObjectCompilerService leagueModificationObjectCompilerService, LeagueModificationCommandListCompilerService leagueModificationCommandListCompilerService, LeagueGameModificationLinkerService leagueGameModificationLinkerService, LeagueSessionService leagueSessionService, RadsService radsService, LeagueTrinketSpawnConfigurationFactory leagueTrinketSpawnConfigurationFactory)
       {
+         this.trinketSpawner = trinketSpawner;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.leagueModificationResolutionService = leagueModificationResolutionService;
          this.leagueModificationObjectCompilerService = leagueModificationObjectCompilerService;
@@ -37,7 +41,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          this.leagueGameModificationLinkerService = leagueGameModificationLinkerService;
          this.leagueSessionService = leagueSessionService;
          this.radsService = radsService;
-         this.leagueInjectedModuleConfigurationFactory = leagueInjectedModuleConfigurationFactory;
+         this.leagueTrinketSpawnConfigurationFactory = leagueTrinketSpawnConfigurationFactory;
 
          phaseChangeHandlers = ImmutableDictionary.Of<PhaseChange, PhaseChangeHandler>(
             new PhaseChange(LeagueSessionPhase.Uninitialized, LeagueSessionPhase.Preclient), HandleUninitializedToPreclientPhaseTransition,
@@ -45,9 +49,9 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
             new PhaseChange(LeagueSessionPhase.Client, LeagueSessionPhase.Game), HandleClientToGamePhaseTransition
          );
          processLaunchedHandlers = ImmutableDictionary.Of<LeagueProcessType, LeagueSessionProcessLaunchedHandler>(
-            LeagueProcessType.RadsUserKernel, (s, e) => HandlePreclientProcessLaunched(e.Process.Id),
-            LeagueProcessType.Launcher, (s, e) => HandlePreclientProcessLaunched(e.Process.Id),
-            LeagueProcessType.Patcher, (s, e) => HandlePreclientProcessLaunched(e.Process.Id)
+            LeagueProcessType.RadsUserKernel, (s, e) => HandlePreclientProcessLaunched(e.Process),
+            LeagueProcessType.Launcher, (s, e) => HandlePreclientProcessLaunched(e.Process),
+            LeagueProcessType.Patcher, (s, e) => HandlePreclientProcessLaunched(e.Process)
          );
       }
 
@@ -72,10 +76,12 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          }
       }
 
-      internal void HandlePreclientProcessLaunched(int processId)
+      internal void HandlePreclientProcessLaunched(IProcess process)
       {
-         throw new NotImplementedException();
-//         injectedModuleService.InjectToProcess(processId, leagueInjectedModuleConfigurationFactory.GetPreclientConfiguration());
+         trinketSpawner.SpawnTrinket(
+            process,
+            leagueTrinketSpawnConfigurationFactory.GetPreclientConfiguration()
+         );
       }
 
       internal void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 
@@ -100,43 +106,39 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          compilationTasks.ForEach(task => task.WaitForChainCompletion());
       }
 
-      internal void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
-      {
+      internal void HandlePreclientToClientPhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e) {
          logger.Info("Handling Preclient to Client Phase Transition!");
          radsService.Resume();
 
-         var commandList = new CommandList();
-         throw new NotImplementedException();
-         //         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, leagueInjectedModuleConfigurationFactory.GetClientConfiguration(commandList));
+         
+         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
+         clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 
-         // var commandList = new LateInitializationCommandListProxy();
-         // injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.PvpNetClient).Id, leagueInjectedModuleConfigurationFactory.GetClientConfiguration(commandList));
-         // 
-         // var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
-         // var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
-         // clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
-         // 
-         // var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
-         // clientCompilationTasks.ForEach(task => task.WaitForChainCompletion());
-         // 
-         // commandList.SetImplementation(mods.Aggregate(new CommandList(), (tl, mod) => tl.AddRange(leagueModificationCommandListCompilerService.BuildCommandList(mod, ModificationTargetType.Client))));
-         // 
-         // // optimization: compile game data here, so that we don't have to compile when game starts
-         // var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
-         // gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
-         // 
-         // var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
-         // gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
-         // 
-         // leagueGameModificationLinkerService.LinkModificationObjects();
+         var clientCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Client)).ToList();
+         clientCompilationTasks.ForEach(task => task.WaitForChainCompletion());
+
+         var commandList = mods.Aggregate(new DefaultCommandList(), (l, mod) => l.With(x => x.AddRange(leagueModificationCommandListCompilerService.BuildCommandList(mod, ModificationTargetType.Client))));
+
+         trinketSpawner.SpawnTrinket(
+            session.GetProcessOrNull(LeagueProcessType.PvpNetClient),
+            leagueTrinketSpawnConfigurationFactory.GetClientConfiguration(commandList)
+         );
+
+         // optimization: compile game data here, so that we don't have to compile when game starts
+         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
+         gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
+
+         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
+         gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
+
+         leagueGameModificationLinkerService.LinkModificationObjects();
       }
 
       internal void HandleClientToGamePhaseTransition(ILeagueSession session, LeagueSessionPhaseChangedArgs e)
       {
          logger.Info("Handling Client to Game Phase Transition!");
 
-         var commandList = new LateInitializationCommandListProxy();
-         throw new NotImplementedException();
          //         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.GameClient).Id, leagueInjectedModuleConfigurationFactory.GetGameConfiguration(commandList));
 
          var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
@@ -147,7 +149,11 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
 
          var commands = leagueGameModificationLinkerService.LinkModificationObjects();
-         commandList.SetImplementation(commands);
+
+         trinketSpawner.SpawnTrinket(
+            session.GetProcessOrNull(LeagueProcessType.GameClient),
+            leagueTrinketSpawnConfigurationFactory.GetGameConfiguration(commands)
+         );
       }
    }
 }

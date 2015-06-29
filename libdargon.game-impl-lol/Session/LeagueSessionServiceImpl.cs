@@ -2,6 +2,7 @@
 using Dargon.LeagueOfLegends.Processes;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Dargon.Processes;
 using ItzWarty;
 using ItzWarty.Processes;
@@ -38,14 +39,15 @@ namespace Dargon.LeagueOfLegends.Session
       private void HandleLeagueProcessLaunched(LeagueProcessDetectedArgs e)
       {
          lock (synchronization) {
-            var process = processProxy.GetProcessOrNull(e.ProcessDescriptor.ProcessId);
+            var processId = e.ProcessDescriptor.ProcessId;
+            var process = processProxy.GetProcessOrNull(processId);
 
             if (process == null) {
-               logger.Error("League process " + e.ProcessDescriptor.ProcessId + " of type " + e.ProcessType + " quit too quickly!");
+               logger.Error("League process " + processId + " of type " + e.ProcessType + " quit too quickly!");
                return;
             }
 
-            logger.Info("Handling process " + process.Id + " launch");
+            logger.Info("Handling process " + processId + " launch");
 
             process.EnableRaisingEvents = true;
             process.Exited += (a, b) => HandleLeagueProcessQuit(process, e.ProcessType);
@@ -57,14 +59,17 @@ namespace Dargon.LeagueOfLegends.Session
             bool processKilled = false; // todo: event for process detected allowing for duplicate RUK kill
             if (!processKilled) {
                LeagueSession session;
-               if (!sessionsByProcessId.TryGetValue(e.ProcessDescriptor.ParentProcessId, out session)) {
-                  logger.Info("Creating new session for " + process.Id + " as parent process not found " + e.ProcessDescriptor.ParentProcessId);
+               var parentProcessId = e.ProcessDescriptor.ParentProcessId;
+               if (!sessionsByProcessId.TryGetValue(parentProcessId, out session)) {
+                  logger.Info("Creating new session for " + processId + " as parent process not found " + parentProcessId);
                   session = new LeagueSession();
                   OnSessionCreated(new LeagueSessionCreatedArgs(session));
                }
-               logger.Info("Adding process " + process.Id + " to session " + session);
+               logger.Info("Adding process " + processId + " to session " + session);
+               logger.Info("!");
                session.HandleProcessLaunched(process, e.ProcessType);
-               sessionsByProcessId.Add(e.ProcessDescriptor.ProcessId, session);
+               sessionsByProcessId.Add(processId, session);
+               logger.Info("==> " + sessionsByProcessId.Count);
             }
          }
       }

@@ -189,3 +189,7 @@ FakesAssemblies/
 
 # Nuget Executables and configuration
 NuGet.exe
+
+# vs2015
+*.idb
+*.tlog

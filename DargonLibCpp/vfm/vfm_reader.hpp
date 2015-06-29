@@ -30,11 +30,12 @@ namespace dargon {
          auto sector_count = reader.read_uint32();
          for (auto i = 0; i < sector_count; i++) {
             auto guid = reader.read_guid();
-            auto startInclusive = reader.read_int64();
-            auto endExclusive = reader.read_int64();
+            auto range_start_inclusive = reader.read_int64();
+            auto range_end_exclusive = reader.read_int64();
+            vfm_sector_range sector_range(range_start_inclusive, range_end_exclusive);
             auto sector = sector_factory->create(guid);
             sector->deserialize(reader);
-            result->assign_sector(sector);
+            result->assign_sector(sector_range, sector);
          }
          return result;
       }

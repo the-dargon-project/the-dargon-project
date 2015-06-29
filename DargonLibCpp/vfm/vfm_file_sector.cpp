@@ -8,16 +8,12 @@ using namespace dargon;
 
 const dargon::guid vfm_file_sector::kGuid(guid::parse("5DB2B4C239AE4629988ACFFFCE89F230"));
 
-vfm_file_sector::vfm_file_sector(std::shared_ptr<dargon::IO::IoProxy> io_proxy) : io_proxy(io_proxy) {
+vfm_file_sector::vfm_file_sector(std::shared_ptr<dargon::IO::IoProxy> io_proxy) : io_proxy(io_proxy), offset(0), length(0) {
 
-}
-
-vfm_sector_range vfm_file_sector::range() {
-   return sector_range;
 }
 
 int64_t vfm_file_sector::size() {
-   return sector_range.size();
+   return length;
 }
 
 void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * buffer, int32_t buffer_offset) {
@@ -28,7 +24,7 @@ void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * b
    }
 
    LARGE_INTEGER li_read_offset;
-   li_read_offset.QuadPart = read_offset;
+   li_read_offset.QuadPart = read_offset + offset;
    io_proxy->SetFilePointerEx(file, li_read_offset, nullptr, SEEK_SET);
 
    DWORD bytes_to_read = read_length;
@@ -46,13 +42,12 @@ void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * b
 void vfm_file_sector::deserialize(dargon::binary_reader & reader) {
    path = reader.read_null_terminated_string();
    
-   auto offset = reader.read_int64();
-   auto length = reader.read_int64();
-   sector_range = vfm_sector_range(offset, length);
+   offset = reader.read_int64();
+   length = reader.read_int64();
 }
 
 std::string vfm_file_sector::to_string() {
    std::stringstream ss;
-   ss << "[vfm_file_sector " << path << " : [" + std::to_string(sector_range.start_inclusive) << ", " << std::to_string(sector_range.end_exclusive) << ") ]";
+   ss << "[vfm_file_sector " << path << " off = " + std::to_string(offset) << ", len = " << std::to_string(length) << " ]";
    return ss.str();
 }

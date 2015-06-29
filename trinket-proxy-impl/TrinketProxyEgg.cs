@@ -20,6 +20,7 @@ namespace Dargon.Trinkets.Proxy {
          streamFactory = new StreamFactory();
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new TrinketsApiPofContext());
+            x.MergeContext(new TrinketsImplPofContext());
          });
          IFileSystemProxy fileSystemProxy = new FileSystemProxy(streamFactory);
          pofSerializer = new PofSerializer(pofContext);

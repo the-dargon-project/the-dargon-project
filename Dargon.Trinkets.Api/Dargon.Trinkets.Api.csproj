@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
+    <Compile Include="Commands\CommandList.cs" />
     <Compile Include="ManageableBootstrapConfiguration.cs" />
     <Compile Include="ReadableBootstrapConfiguration.cs" />
     <Compile Include="BootstrapConfigurationGenerator.cs" />

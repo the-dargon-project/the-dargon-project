@@ -14,6 +14,7 @@
     <ProjectGuid>{4728635F-5B34-4A40-A6C8-70AEE5074DC8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DargonLibCpp</RootNamespace>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

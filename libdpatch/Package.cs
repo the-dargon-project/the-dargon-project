@@ -5,11 +5,10 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-
+using Ionic.Zlib;
 
 namespace Dargon.Patcher
 {
@@ -113,7 +112,7 @@ namespace Dargon.Patcher
       public Hash160 AddFileObject(byte[] contents)
       {
          var fileRevision = new FileRevision(Hash160.Zero, contents);
-         logger.Info("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Length);
+         logger.Info("FILE REVISION HAS DATA LENGTH " + fileRevision.Data.Count);
          return objectStore.Put(serializer.SerializeFileRevision(fileRevision));
       }
 
@@ -332,11 +331,11 @@ namespace Dargon.Patcher
                   if (GetTrueLastModified(realEntry.Path) != indexEntry.LastModified) {
                      var fileRevision = serializer.DeserializeFileRevision(indexEntry.RevisionHash, objectStore.Get(indexEntry.RevisionHash));
                      var fileRevisionData = fileRevision.Data;
-                     if (fileRevisionData.Length != new FileInfo(realEntry.Path).Length) {
+                     if (fileRevisionData.Count != new FileInfo(realEntry.Path).Length) {
                         result.Add(new KeyValuePair<string, ChangeType>(fileName, ChangeType.Modified | ChangeType.Unstaged));
                      } else {
                         var diskContent = File.ReadAllBytes(realEntry.Path);
-                        bool equal = Util.ByteArraysEqual(diskContent, fileRevisionData);
+                        bool equal = Util.ByteArraysEqual(diskContent, 0, diskContent.Length, fileRevisionData.Array, fileRevisionData.Offset, fileRevisionData.Count);
                         if (equal) {
                            indexEntry.LastModified = GetTrueLastModified(realEntry.Path);
                            index.Set(indexEntries[fileName].Path, indexEntry);
@@ -480,7 +479,9 @@ namespace Dargon.Patcher
             var lastModified = GetTrueLastModifiedInternal(internalPath);
             var entry = index.GetValueOrNull(internalPath);
             if (lastModified != entry.LastModified || revision.Hash != entry.RevisionHash) {
-               File.WriteAllBytes(GetAbsolutePath(internalPath), revision.Data);
+               using (var output = File.Open(GetAbsolutePath(internalPath), FileMode.Create, FileAccess.Write, FileShare.None)) {
+                  output.Write(revision.Data.Array, revision.Data.Offset, revision.Data.Count);
+               }
                entry.LastModified = GetTrueLastModifiedInternal(internalPath);
                index.Set(internalPath, entry);
             }
@@ -896,28 +897,33 @@ namespace Dargon.Patcher
 
                var bodyLength = reader.ReadUInt32();
                var body = reader.ReadBytes((int)bodyLength);
-               var deflateStream = new DeflateStream(new MemoryStream(body), CompressionMode.Decompress);
-               var decompressedStream = new MemoryStream();
-               deflateStream.CopyTo(decompressedStream);
-               return new FileRevision(fileHash, decompressedStream.ToArray());
+               using (var decompressedStream = new MemoryStream()) {
+                  using (var compressedStream = new MemoryStream(body))
+                  using (var decompresser = new ZlibStream(decompressedStream, CompressionMode.Decompress)) {
+                     compressedStream.CopyTo(decompresser);
+                  }
+                  return new FileRevision(fileHash, new ArraySegment<byte>(decompressedStream.GetBuffer(), 0, (int)decompressedStream.Length));
+               }
             }
          }
 
          public byte[] SerializeFileRevision(FileRevision fileRevision)
          {
-            using (var ms = new MemoryStream()) {
-               using (var writer = new BinaryWriter(ms, Encoding.UTF8, true)) {
+            using (var output = new MemoryStream()) {
+               using (var writer = new BinaryWriter(output, Encoding.UTF8, true)) {
                   writer.Write(FILE_REVISION_MAGIC);
-                  var compressedStream = new MemoryStream();
-                  using (var compressionStream = new DeflateStream(compressedStream, CompressionLevel.Optimal))
-                  using (var dataStream = new MemoryStream(fileRevision.Data)) {
-                     dataStream.CopyTo(compressionStream);
+
+                  using (var compressedStream = new MemoryStream()) {
+                     using (var uncompressedStream = new MemoryStream(fileRevision.Data.Array, fileRevision.Data.Offset, fileRevision.Data.Count))
+                     using (var compressor = new ZlibStream(compressedStream, CompressionMode.Compress)) {
+                        uncompressedStream.CopyTo(compressor);
+                     }
+
+                     writer.Write((uint)compressedStream.Length);
+                     writer.Write(compressedStream.GetBuffer(), 0, (int)compressedStream.Length);
                   }
-                  var data = compressedStream.ToArray();
-                  writer.Write((uint)data.Length);
-                  writer.Write(data);
                }
-               return ms.ToArray();
+               return output.ToArray();
             }
          }
 
@@ -981,16 +987,19 @@ namespace Dargon.Patcher
       public class FileRevision
       {
          private readonly Hash160 hash;
-         private readonly byte[] data;
+         private readonly ArraySegment<byte> data;
 
-         public FileRevision(Hash160 hash, byte[] data)
+         public FileRevision(Hash160 hash, byte[] data) 
+            : this(hash, new ArraySegment<byte>(data)) {}
+
+         public FileRevision(Hash160 hash, ArraySegment<byte> data)
          {
             this.hash = hash;
             this.data = data;
          }
 
          public Hash160 Hash { get { return hash; } }
-         public byte[] Data { get { return data; } }
+         public ArraySegment<byte> Data { get { return data; } }
       }
 
       public class CommitObject

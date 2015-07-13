@@ -899,7 +899,7 @@ namespace Dargon.Patcher
                var body = reader.ReadBytes((int)bodyLength);
                using (var decompressedStream = new MemoryStream()) {
                   using (var compressedStream = new MemoryStream(body))
-                  using (var decompresser = new ZlibStream(decompressedStream, CompressionMode.Decompress)) {
+                  using (var decompresser = new ZlibStream(decompressedStream, CompressionMode.Decompress, true)) {
                      compressedStream.CopyTo(decompresser);
                   }
                   return new FileRevision(fileHash, new ArraySegment<byte>(decompressedStream.GetBuffer(), 0, (int)decompressedStream.Length));
@@ -915,7 +915,7 @@ namespace Dargon.Patcher
 
                   using (var compressedStream = new MemoryStream()) {
                      using (var uncompressedStream = new MemoryStream(fileRevision.Data.Array, fileRevision.Data.Offset, fileRevision.Data.Count))
-                     using (var compressor = new ZlibStream(compressedStream, CompressionMode.Compress)) {
+                     using (var compressor = new ZlibStream(compressedStream, CompressionMode.Compress, true)) {
                         uncompressedStream.CopyTo(compressor);
                      }
 

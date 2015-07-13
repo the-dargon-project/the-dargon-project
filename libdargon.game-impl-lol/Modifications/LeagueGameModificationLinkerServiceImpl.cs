@@ -11,6 +11,7 @@ using LibGit2Sharp;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Dargon.LeagueOfLegends.Modifications {
@@ -109,12 +110,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
                         continue;
                      }
 
-                     continue;
+//                     continue;
+
+                     Trace.Assert(objectLength > 8);
 
                      // Update Release Manifest:
                      manifestEntry.CompressedSize = (uint)objectLength - 8;
                      manifestEntry.DecompressedSize = (uint)sourceLength;
-                     
+
                      // Update RAF Data File's Virtual File Map
                      var dataStartInclusive = archiveData.NextOffset;
                      var dataEndExclusive = dataStartInclusive + objectLength - 8;
@@ -123,7 +126,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                      
                      // Update RAF File
                      rafEntry.FileOffset = (uint)dataStartInclusive;
-                     rafEntry.FileSize = (uint)objectLength;
+                     rafEntry.FileSize = (uint)objectLength - 8;
                      logger.Warn("Successfully linked RAF Entry for " + resolutionEntry.ResolvedPath + " in archive " + manifestEntry.ArchiveId + ".");
                   }
                }

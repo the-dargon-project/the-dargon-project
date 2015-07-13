@@ -203,7 +203,7 @@ namespace Dargon.Daemon {
 //               IsFileSystemHookingEnabled = true,
 //               IsCommandingEnabled = true,
 //               CommandList = new DefaultCommandList(new [] {
-//                  commandFactory.CreateFileRemappingCommand("C:/dummy-files/a.txt", "C:/dummy-files/z.vfm")
+//                  commandFactory.CreateFileRemappingCommand("C:/dummy-files/a.txt", "C:/Users/ItzWarty/.dargon/temp/9b2e6d0cbf57024d96ff646476398f26/0.0.0.235/Archive_3.raf.dat.vfm")
 //               })
 //            }
 //         );

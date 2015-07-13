@@ -22,12 +22,15 @@ using ItzWarty.Threading;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Dargon.IO.Resolution;
 using Dargon.VirtualFileMaps;
+using Ionic.Zlib;
 using zlib;
+using CompressionMode = Ionic.Zlib.CompressionMode;
 
 namespace Dargon.LeagueOfLegends {
    public class LeagueGameServiceImpl : IGameHandler
@@ -87,14 +90,14 @@ namespace Dargon.LeagueOfLegends {
       }
 
       private void RunDebugActions() {
-         //         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
-         //         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
-         //         gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
-         //
-         //         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
-         //         gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
-         //
-         //         var commands = leagueGameModificationLinkerService.LinkModificationObjects();
+//         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+//         var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
+//         gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
+//
+//         var gameCompilationTasks = mods.Select(mod => leagueModificationObjectCompilerService.CompileObjects(mod, ModificationTargetType.Game)).ToList();
+//         gameCompilationTasks.ForEach(task => task.WaitForChainCompletion());
+//
+//         var commands = leagueGameModificationLinkerService.LinkModificationObjects();
 
 //         var dpmf = @"C:\Users\ItzWarty\.dargon\repositories\tencent-art-pack\.dpm\objects\1c\f1bb96b12ce58bf10ae57e2988abc61c2517a068";
 //         var dpmfBytes = File.ReadAllBytes(dpmf);
@@ -117,43 +120,51 @@ namespace Dargon.LeagueOfLegends {
 //            //            File.WriteAllBytes("C:/DargonDump/out.dds", memoryStream.ToArray());
 //         }
 
-                  var loader = new ReleaseManifestLoader();
-                  var manifest = loader.LoadFile(@"C:\Users\ItzWarty\.dargon\temp\a7dbb43105128f43b0b3d6d317f83ddf\releasemanifest");
-                  var resolver = new Resolver(manifest.Root);
-                  var annieSquare = (ReleaseManifestFileEntry)resolver.Resolve("Annie_Square.dds").First();
-                  
-                  var raf = new RiotArchive(@"C:\Users\ItzWarty\.dargon\temp\a7dbb43105128f43b0b3d6d317f83ddf\0.0.0.235\Archive_3.raf", "");
-                  var annieSquareRafEntry = raf.GetDirectoryFile().GetFileList().SearchFileEntries("Annie_Square.dds").First();
-                  SectorCollectionSerializer scs = new SectorCollectionSerializer();
-                  var vfmSectors = scs.Deserialize(fileSystemProxy.OpenFile(@"C:\Users\ItzWarty\.dargon\temp\a7dbb43105128f43b0b3d6d317f83ddf\0.0.0.235\Archive_3.raf.dat.vfm").Reader.__Reader);
-                  var vfmFile = new VirtualFile(vfmSectors);
-                  var data = vfmFile.Read(annieSquareRafEntry.FileOffset, annieSquareRafEntry.FileSize);
-         //         File.WriteAllBytes("C:/DargonDump/out.dds", data);
-         for (var offset = 0; offset < 128; offset++) {
-            bool k = false;
-            for (var cut = 0; cut < 128; cut++) {
-               try {
-                  var ms = new MemoryStream(data, offset, data.Length - offset - cut);
+//         var loader = new ReleaseManifestLoader();
+//         var manifest = loader.LoadFile(@"C:\Users\ItzWarty\.dargon\temp\5d957b6fb5d9dd4c9a8127ba7c0e31bc\releasemanifest");
+//         var resolver = new Resolver(manifest.Root);
+//         var annieSquare = (ReleaseManifestFileEntry)resolver.Resolve("Annie_Square.dds").First();
+//
+//         var raf = new RiotArchive(@"C:\Users\ItzWarty\.dargon\temp\5d957b6fb5d9dd4c9a8127ba7c0e31bc\0.0.0.235\Archive_3.raf", "");
+//         var annieSquareRafEntry = raf.GetDirectoryFile().GetFileList().SearchFileEntries("Annie_Square.dds").First();
+//         SectorCollectionSerializer scs = new SectorCollectionSerializer();
+//         var vfmSectors = scs.Deserialize(fileSystemProxy.OpenFile(@"C:\Users\ItzWarty\.dargon\temp\5d957b6fb5d9dd4c9a8127ba7c0e31bc\0.0.0.235\Archive_3.raf.dat.vfm").Reader.__Reader);
+//         var vfmFile = new VirtualFile(vfmSectors);
+//         var data = vfmFile.Read(annieSquareRafEntry.FileOffset, annieSquareRafEntry.FileSize);
+//         using (var decompressedStream = new FileStream("C:/DargonDump/out.dds", FileMode.Create, FileAccess.Write)) {
+//            using (var compressedStream = new MemoryStream(data))
+//            using (var decompressor = new ZlibStream(decompressedStream, CompressionMode.Decompress)) {
+//               compressedStream.CopyTo(decompressor);
+//            }
+//         }
+//            File.WriteAllBytes("C:/DargonDump/out.dds", data);
 
-                  //                  ZInputStream zinputStream = new ZInputStream(ms);
-                  //                  MemoryStream memoryStream = new MemoryStream();
-                  //                  int num;
-                  //                  while ((num = zinputStream.Read()) != -1)
-                  //                     memoryStream.WriteByte((byte)num);
 
-                  var decompressedStream = new MemoryStream();
-                  using (var deflateStream = new DeflateStream(ms, CompressionMode.Decompress)) {
-                     deflateStream.CopyTo(decompressedStream);
-                  }
-                  Console.WriteLine(offset + ": " + cut + " succeeded");
-                  k = true;
-               } catch (Exception e) {
-                  Console.WriteLine(offset + ": " + cut + " failed");
-               }
-            }
-            if (k)
-               while (true) ;
-         }
+//         for (var offset = 0; offset < 128; offset++) {
+//            bool k = false;
+//            for (var cut = 0; cut < 128; cut++) {
+//               try {
+//                  var ms = new MemoryStream(data, offset, data.Length - offset - cut);
+//
+//                  //                  ZInputStream zinputStream = new ZInputStream(ms);
+//                  //                  MemoryStream memoryStream = new MemoryStream();
+//                  //                  int num;
+//                  //                  while ((num = zinputStream.Read()) != -1)
+//                  //                     memoryStream.WriteByte((byte)num);
+//
+//                  var decompressedStream = new MemoryStream();
+//                  using (var deflateStream = new DeflateStream(ms, CompressionMode.Decompress)) {
+//                     deflateStream.CopyTo(decompressedStream);
+//                  }
+//                  Console.WriteLine(offset + ": " + cut + " succeeded");
+//                  k = true;
+//               } catch (Exception e) {
+//                  Console.WriteLine(offset + ": " + cut + " failed");
+//               }
+//            }
+//            if (k)
+//               while (true) ;
+//         }
          //            File.WriteAllBytes("C:/DargonDump/out.dds", memoryStream.ToArray());
                    
 
@@ -177,11 +188,11 @@ namespace Dargon.LeagueOfLegends {
             //   modificationRepositoryService.DeleteModification(mod);
             //}
             //
-            //modificationRepositoryService.ImportLegacyModification(
-            //   "tencent-art-pack",
-            //   @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-            //   Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
-            //   GameType.LeagueOfLegends);
+//            modificationRepositoryService.ImportLegacyModification(
+//               "tencent-art-pack",
+//               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
+//               Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
+//               GameType.LeagueOfLegends);
 
             // foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {
             //    logger.Info(mod.RepositoryName);

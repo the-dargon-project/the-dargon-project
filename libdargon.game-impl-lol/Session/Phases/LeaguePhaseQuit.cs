@@ -19,10 +19,10 @@ namespace Dargon.LeagueOfLegends.Session.Phases
          logger.Info("Reached Terminal (Quit) League Phase");
       }
 
-      public override void HandleRadsUserKernelLaunched(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandleRadsUserKernelLaunched(IProcess process) { /* Occurs because ruk/patcher death order doesn't matter */ }
       public override void HandleLauncherLaunched(IProcess process) { throw new InvalidOperationException(); }
       public override void HandlePatcherLaunched(IProcess process) { throw new InvalidOperationException(); }
-      public override void HandleLauncherQuit(IProcess process) { throw new InvalidOperationException(); }
+      public override void HandleLauncherQuit(IProcess process) { /* Occurs because of more than one launcher/patcher process */ }
       public override void HandleClientLaunched(IProcess process) { throw new InvalidOperationException(); }
       public override void HandleClientQuit(IProcess process) { throw new InvalidOperationException(); }
       public override void HandleGameLaunched(IProcess process) { throw new InvalidOperationException(); }

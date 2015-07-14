@@ -221,13 +221,17 @@ DWORD WINAPI FileSubsystem::MySetFilePointer(HANDLE hFile, LONG lDistanceToMove,
    }
 
    LARGE_INTEGER distance;
-   distance.LowPart = lDistanceToMove;
-   distance.HighPart = lpDistanceToMoveHigh == nullptr ? 0 : *lpDistanceToMoveHigh;
+   if (lpDistanceToMoveHigh == nullptr) {
+      distance.QuadPart = lDistanceToMove;
+   } else {
+      distance.LowPart = lDistanceToMove;
+      distance.HighPart = *lpDistanceToMoveHigh;
+   }
 
    LARGE_INTEGER final_position;
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
    if (proxy) {
-      auto result = proxy->Seek(distance.QuadPart, (int64_t*)&final_position, dwMoveMethod);
+      auto result = proxy->Seek(distance.QuadPart, &final_position.QuadPart, dwMoveMethod);
 
       if (lpDistanceToMoveHigh != nullptr) {
          *lpDistanceToMoveHigh = final_position.HighPart;

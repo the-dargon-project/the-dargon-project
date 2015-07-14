@@ -52,7 +52,7 @@ DWORD RemappedFileOperationProxy::Seek(int64_t distance_to_move, int64_t* new_fi
    } else if (dwMoveMethod == FILE_CURRENT) {
       next_position = position + distance_to_move;
    } else if (dwMoveMethod == FILE_END) {
-      next_position = virtual_file_map->size() - distance_to_move;
+      next_position = virtual_file_map->size() + distance_to_move;
    }
 
    if (next_position < 0LL) {
@@ -65,7 +65,7 @@ DWORD RemappedFileOperationProxy::Seek(int64_t distance_to_move, int64_t* new_fi
       *new_file_pointer = position;
    }
 
-   return (int32_t)(next_position & 0xFFFFFFFF);
+   return (int32_t)(next_position & 0xFFFFFFFFU);
 }
 
 BOOL RemappedFileOperationProxy::Close() {

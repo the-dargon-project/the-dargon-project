@@ -147,7 +147,8 @@ namespace Dargon.LeagueOfLegends.Modifications {
                // Serialize the VFM
                var vfmSerializer = new SectorCollectionSerializer();
                var vfmFileName = versionString + "/" + archiveFileName + ".dat.vfm";
-               using (var vfmFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName))
+               var vfmPath = temporaryFileService.AllocateTemporaryFile(tempDir, vfmFileName);
+               using (var vfmFileStream = File.Open(vfmPath, FileMode.Create, FileAccess.Write, FileShare.None))
                using (var writer = new BinaryWriter(vfmFileStream)) {
                   vfmSerializer.Serialize(archiveData.Sectors, writer);
                   commandList.Add(commandFactory.CreateFileRemappingCommand(archiveData.Archive.DatFilePath, vfmFileStream.Name));
@@ -156,7 +157,8 @@ namespace Dargon.LeagueOfLegends.Modifications {
 
                // Serialize the RAF
                var rafFileName = versionString + "/" + archiveFileName;
-               using (var rafFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, rafFileName))
+               var rafPath = temporaryFileService.AllocateTemporaryFile(tempDir, rafFileName);
+               using (var rafFileStream = File.Open(rafPath, FileMode.Create, FileAccess.Write, FileShare.None))
                using (var writer = new BinaryWriter(rafFileStream)) {
                   writer.Write(archiveData.Archive.GetDirectoryFile().GetBytes());
                   commandList.Add(commandFactory.CreateFileRedirectionCommand(archiveData.Archive.RAFFilePath, rafFileStream.Name));
@@ -166,7 +168,8 @@ namespace Dargon.LeagueOfLegends.Modifications {
          }
 
          // Serialize the Release Manifest
-         using (var manifestFileStream = temporaryFileService.AllocateTemporaryFile(tempDir, "releasemanifest")) 
+         var manifestPath = temporaryFileService.AllocateTemporaryFile(tempDir, "releasemanifest");
+         using (var manifestFileStream = File.Open(manifestPath, FileMode.Create, FileAccess.Write, FileShare.None)) 
          using (var writer = new BinaryWriter(manifestFileStream)) {
             new ReleaseManifestWriter(manifest).Save(writer);
             commandList.Add(commandFactory.CreateFileRedirectionCommand(manifest.Path, manifestFileStream.Name));

@@ -1,6 +1,7 @@
 ﻿using ItzWarty;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Dargon {
    public class TemporaryFileServiceImpl : TemporaryFileService
@@ -19,7 +20,7 @@ namespace Dargon {
          Directory.CreateDirectory(temporaryDirectoryPath);
       }
 
-      public IDisposable TakeLock() { return temporaryFilesLock.Take(); }
+      private IDisposable TakeLock() { return temporaryFilesLock.Take(); }
       
       public string AllocateTemporaryDirectory(DateTime expires) {
          using (TakeLock()) {
@@ -30,13 +31,14 @@ namespace Dargon {
          }
       }
 
-      public FileStream AllocateTemporaryFile(string temporaryDirectory, string fileName) 
+      public string AllocateTemporaryFile(string temporaryDirectory, string fileName) 
       {
          using (TakeLock()) {
             var path = Path.Combine(temporaryDirectory, fileName);
             var parentDirectory = path.Substring(0, path.LastIndexOfAny(new[]{ '/', '\\'}));
             Directory.CreateDirectory(parentDirectory);
-            return new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
+            File.WriteAllBytes(path, new byte[0]);
+            return path;
          }
       }
    }

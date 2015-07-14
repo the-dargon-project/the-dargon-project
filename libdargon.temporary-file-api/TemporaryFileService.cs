@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
+using System.Runtime.InteropServices;
 
-namespace Dargon
-{
-    public interface TemporaryFileService
-    {
-       IDisposable TakeLock();
-       string AllocateTemporaryDirectory(DateTime expires);
-       FileStream AllocateTemporaryFile(string temporaryDirectory, string name);
-    }
+namespace Dargon {
+   [Guid("380AECFF-6459-4D55-81B9-1A1CDEEFA39A")]
+   public interface TemporaryFileService {
+      string AllocateTemporaryDirectory(DateTime expires);
+      string AllocateTemporaryFile(string temporaryDirectory, string name);
+   }
 }

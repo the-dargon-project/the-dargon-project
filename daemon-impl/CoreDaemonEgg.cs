@@ -150,6 +150,7 @@ namespace Dargon.Daemon {
 
          // construct miscellanious common Dargon dependencies
          TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+         localServiceClient.RegisterService(temporaryFileService, typeof(TemporaryFileService));
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
 
          // get the exeggutor service

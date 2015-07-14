@@ -113,20 +113,48 @@ namespace Dargon.LeagueOfLegends.Modifications {
 //                     continue;
 
                      Trace.Assert(objectLength > 8);
+//                     archiveData.Sectors.AssignSector(
+//                        new SectorRange(rafEntry.FileOffset, rafEntry.FileOffset + rafEntry.FileSize), 
+//                        new FileSector(Path.GetFullPath(archiveData.Archive.DatFilePath), rafEntry.FileOffset, rafEntry.FileSize)
+//                     );
 
-                     // Update Release Manifest:
-                     manifestEntry.CompressedSize = (uint)objectLength - 8;
-                     manifestEntry.DecompressedSize = (uint)sourceLength;
+//                     continue;
+                     if (rafEntry.FileSize >= objectLength - 8) {
+                        // Zero out the original sector
+                        archiveData.Sectors.DeleteRange(rafEntry.FileOffset, rafEntry.FileOffset + rafEntry.FileSize);
 
-                     // Update RAF Data File's Virtual File Map
-                     var dataStartInclusive = archiveData.NextOffset;
-                     var dataEndExclusive = dataStartInclusive + objectLength - 8;
-                     archiveData.Sectors.AssignSector(new SectorRange(dataStartInclusive, dataEndExclusive), new FileSector(objectPath, 8, objectLength-8));
-                     archiveData.NextOffset = dataEndExclusive;
-                     
-                     // Update RAF File
-                     rafEntry.FileOffset = (uint)dataStartInclusive;
-                     rafEntry.FileSize = (uint)objectLength - 8;
+                        int predataHeaderLength = 8;
+                        int dataLength = (int)objectLength - predataHeaderLength;
+                        manifestEntry.CompressedSize = (uint)dataLength;
+                        manifestEntry.DecompressedSize = (uint)sourceLength;
+                        archiveData.Sectors.AssignSector(new SectorRange(rafEntry.FileOffset, rafEntry.FileOffset + rafEntry.FileSize), new FileSector(objectPath, predataHeaderLength, dataLength));
+                        rafEntry.FileSize = (uint)objectLength - 8;
+                     } else {
+
+                        // All the annie stuff falls into this category
+//                        MessageBox.Show("NOT LINKING " + file.Path);
+//                        continue;
+
+                        // Zero out the original sector
+                        archiveData.Sectors.DeleteRange(rafEntry.FileOffset, rafEntry.FileOffset + rafEntry.FileSize);
+
+                        var zlibBlockOffset = 8;
+                        var zlibBlockLength = objectLength - zlibBlockOffset;
+
+                        // Update Release Manifest:
+                        manifestEntry.CompressedSize = (uint)zlibBlockLength;
+                        manifestEntry.DecompressedSize = (uint)sourceLength;
+
+                        // Update RAF Data File's Virtual File Map
+                        var dataStartInclusive = archiveData.NextOffset;
+                        var dataEndExclusive = dataStartInclusive + zlibBlockLength;
+                        archiveData.NextOffset = dataEndExclusive + 1024;
+                        archiveData.Sectors.AssignSector(new SectorRange(dataStartInclusive, dataEndExclusive), new FileSector(objectPath, zlibBlockOffset, zlibBlockLength));
+
+                        // Update RAF File
+                        rafEntry.FileOffset = (uint)dataStartInclusive;
+                        rafEntry.FileSize = (uint)zlibBlockLength;
+                     }
                      logger.Warn("Successfully linked RAF Entry for " + resolutionEntry.ResolvedPath + " in archive " + manifestEntry.ArchiveId + ".");
                   }
                }

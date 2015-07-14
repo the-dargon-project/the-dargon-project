@@ -18,19 +18,35 @@ vfm_file::sector_collection::iterator vfm_file::sectors_end() {
 }
 
 int64_t vfm_file::read(int64_t offset, int64_t length, uint8_t * buffer, int64_t buffer_offset) {
+   if (buffer_offset != 0) {
+      return this->read(offset, length, buffer + buffer_offset, 0);
+   }
    auto bytesRead = std::min(size() - offset, length);
-   ZeroMemory(buffer + buffer_offset, bytesRead);
+//   std::cout << "I am size " << std::dec << size() << " and we are reading offset " << offset << " length " << length << " yielding br " << bytesRead << std::endl;
+   ZeroMemory(buffer, bytesRead);
 
-   auto sectors_to_read = get_sectors_for_range(vfm_sector_range(offset, offset + length));
+   auto sectors_to_read = get_sectors_for_range(vfm_sector_range(offset, offset + bytesRead));
+   if (sectors_to_read->size() >= 2) {
+      __debugbreak();
+   }
+
    for (auto i = 0; i < sectors_to_read->size(); i++) {
       auto sector_range = sectors_to_read->at(i).first;
       auto sector = sectors_to_read->at(i).second;
 
       int64_t sector_read_offset = i == 0 ? std::max(0LL, offset - sector_range.start_inclusive) : 0;
       int64_t buffer_write_offset = sector_range.start_inclusive - offset + sector_read_offset;
-      int64_t copy_length = i != sectors_to_read->size() - 1 ? sector_range.size() - sector_read_offset : std::min(sector_range.size() - sector_read_offset, length - buffer_write_offset);
+      int64_t copy_length = i != sectors_to_read->size() - 1 ? sector_range.size() - sector_read_offset : std::min(sector_range.size() - sector_read_offset, length);
 
-      sector->read(sector_read_offset, copy_length, buffer, buffer_offset + buffer_write_offset);
+//      std::cout << "   sector " << i << " has range [" << sector_range.start_inclusive << ", " << sector_range.end_exclusive << ") " << std::endl;
+//      std::cout << "      read offset: " << sector_read_offset << " length " << copy_length << " buffer_offset " << buffer_write_offset << std::endl;
+
+      if (copy_length + buffer_write_offset > bytesRead) {
+         std::cout << std::dec << copy_length << " + " << buffer_write_offset << " > " << bytesRead << " =(" << std::endl;
+         __debugbreak();
+      }
+
+      sector->read(sector_read_offset, copy_length, buffer, buffer_write_offset);
    }
    return bytesRead;
 }

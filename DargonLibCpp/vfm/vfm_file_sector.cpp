@@ -17,23 +17,28 @@ int64_t vfm_file_sector::size() {
 }
 
 void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * buffer, int32_t buffer_offset) {
+   if (buffer_offset > 0) {
+      return read(read_offset, read_length, buffer + buffer_offset, 0);
+   }
+
    auto file = io_proxy->CreateFileA(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
    if (file == INVALID_HANDLE_VALUE) {
+      std::cout << "VFM FAILED TO OPEN FILE " << path.c_str() << ":(" << std::endl;
       MessageBoxA(NULL, ("VFM Failed to open file " + path).c_str(), "", MB_OK);
    }
 
    LARGE_INTEGER li_read_offset;
    li_read_offset.QuadPart = read_offset + offset;
-   io_proxy->SetFilePointerEx(file, li_read_offset, nullptr, SEEK_SET);
+   io_proxy->SetFilePointerEx(file, li_read_offset, nullptr, FILE_BEGIN);
 
-   DWORD bytes_to_read = read_length;
-   uint8_t* currentBufferPointer = buffer + buffer_offset;
-   while (bytes_to_read > 0) {
+   int64_t bytes_remaining = read_length;
+   int64_t total_bytes_read = 0;
+   while (bytes_remaining > 0) {
       DWORD bytes_read = 0;
-      io_proxy->ReadFile(file, currentBufferPointer, bytes_to_read, &bytes_read, nullptr);
-      bytes_to_read -= bytes_read;
-      currentBufferPointer += bytes_read;
+      io_proxy->ReadFile(file, buffer + total_bytes_read, bytes_remaining, &bytes_read, nullptr);
+      bytes_remaining -= bytes_read;
+      total_bytes_read += bytes_read;
    }
 
    io_proxy->CloseHandle(file);

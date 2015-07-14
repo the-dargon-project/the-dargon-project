@@ -190,8 +190,8 @@ namespace Dargon.LeagueOfLegends {
             //
 //            modificationRepositoryService.ImportLegacyModification(
 //               "tencent-art-pack",
-//               @"C:\lolmodprojects\Tencent Art Pack 8.74 Mini",
-//               Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Mini\ArtPack", "*", SearchOption.AllDirectories),
+//               @"C:\lolmodprojects\Tencent Art Pack 8.74 Minier",
+//               Directory.GetFiles(@"C:\lolmodprojects\Tencent Art Pack 8.74 Minier\ArtPack", "*", SearchOption.AllDirectories),
 //               GameType.LeagueOfLegends);
 
             // foreach (var mod in modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends)) {

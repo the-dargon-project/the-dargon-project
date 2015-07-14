@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5A16EF83-A8BA-44AD-8CCE-2923BD55E1A4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Manager</RootNamespace>
     <AssemblyName>nest-main</AssemblyName>
@@ -109,9 +109,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -123,6 +123,7 @@
     <Compile Include="Models\ImportValidityModel.cs" />
     <Compile Include="Models\ImportValidityModelImpl.cs" />
     <Compile Include="Models\StatusModelImpl.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="ViewModels\ModificationViewModel.cs" />
     <Compile Include="Controllers\RootController.cs" />
     <Compile Include="DargonManagerApplication.cs" />
@@ -252,10 +253,6 @@
     <Resource Include="Resources\Assets\import_ok.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.csproj">
-      <Project>{9e41dc5d-e409-45e5-ae89-191db4252ee0}</Project>
-      <Name>Dargon.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\client-common\client-common.csproj">
       <Project>{ec9c64e2-4caa-421d-b71b-e85493a1c961}</Project>
       <Name>client-common</Name>

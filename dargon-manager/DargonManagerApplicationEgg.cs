@@ -9,10 +9,15 @@ using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Forms.Integration;
 using System.Windows.Threading;
 using Dargon.Daemon;
+using Dargon.Manager.Controllers;
+using Dargon.ModificationRepositories;
+using ItzWarty;
 
 namespace Dargon.Manager {
    public class DargonManagerApplicationEgg : INestApplicationEgg {
@@ -35,25 +40,35 @@ namespace Dargon.Manager {
          var clusteringConfiguration = new ClientClusteringConfiguration();
          var serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var serviceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
-         Thread.Sleep(1000);
+//         Thread.Sleep(2000);
          Console.WriteLine("!A");
-         var daemonService = serviceClient.GetService<DaemonService>();
+         var repositoryService = serviceClient.GetService<ModificationRepositoryService>();
          Console.WriteLine("!B");
-         daemonService.Shutdown();
+         Console.WriteLine(repositoryService.EnumerateModifications().ToArray());
          //Console.WriteLine(daemonService.Configuration.AppDataDirectoryPath);
          Console.WriteLine("!C");
 
+         var daemonService = serviceClient.GetService<DaemonService>();
+         var modificationRepositoryService = serviceClient.GetService<ModificationRepositoryService>();
+         var rootController = new RootController(daemonService, modificationRepositoryService);
          new Thread(
             () => {
                if (Application.Current == null)
                   new Application();
 
+               Console.WriteLine("BeginInvoking: ");
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
-                  new DargonManagerApplication(serviceClient).Run();
+                  Console.WriteLine("BeginInvoked!");
+                  var window = new MainWindow(rootController);
+                  ElementHost.EnableModelessKeyboardInterop(window);
+                  window.Show();
+                  //                  new DargonManagerApplication(serviceClient).Run();
                }));
 
                Dispatcher.Run();
                GC.KeepAlive(parameters);
+            }).With(t => {
+               t.SetApartmentState(ApartmentState.STA);
             }).Start();
          return NestResult.Success;
       }

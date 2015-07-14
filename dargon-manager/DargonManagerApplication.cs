@@ -1,4 +1,5 @@
-﻿using Dargon.Daemon;
+﻿using System;
+using Dargon.Daemon;
 using Dargon.Manager.Controllers;
 using Dargon.ModificationRepositories;
 using Dargon.Services;
@@ -15,11 +16,10 @@ namespace Dargon.Manager {
       }
 
       public void Run() {
-         var rootController = new RootController(daemonService, modificationRepositoryService);
-
-         var mainWindow = new MainWindow(rootController);
-         ElementHost.EnableModelessKeyboardInterop(mainWindow); // Makes it so that we can type in textboxes...
-         mainWindow.Show();
+         Console.WriteLine("Construct Main Window");
+//         var mainWindow = new MainWindow(rootController);
+//         ElementHost.EnableModelessKeyboardInterop(mainWindow); // Makes it so that we can type in textboxes...
+//         mainWindow.Show();
       }
    }
 }

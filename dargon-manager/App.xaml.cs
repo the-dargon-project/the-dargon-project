@@ -22,6 +22,6 @@ namespace Dargon.Manager {
       private void Application_Startup(object sender, StartupEventArgs e) {
          Console.WriteLine("Entered Application_Startup");
          new DargonManagerApplicationEgg().Start(null);
-      }
+      } 
    }
 }

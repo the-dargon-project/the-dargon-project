@@ -14,7 +14,7 @@
    mc:Ignorable="d"
    DataContext="{Binding RelativeSource={RelativeSource Self}}"
    d:DataContext="{d:DesignData /SampleData/mods.xaml}"
-   Icon="/DargonManager;component/Resources/icon.ico">
+   Icon="Resources/icon.ico">
    <!--
    MinWidth="700" MinHeight="340"
    Width="760" Height="460"-->

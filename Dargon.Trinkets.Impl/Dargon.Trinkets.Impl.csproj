@@ -92,6 +92,10 @@
       <Project>{9CFA80EE-76DC-498C-9C4E-52891851944A}</Project>
       <Name>Dargon.ManageableServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
+      <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
+      <Name>Dargon.TemporaryFiles.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest.Egg.Api">
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
@@ -38,6 +41,9 @@
     </Reference>
     <Reference Include="Dargon.PortableObjects.Streams">
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.1.2\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Services">
+      <HintPath>..\packages\Dargon.Services.0.2.0\lib\net45\Dargon.Services.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Transport">
       <HintPath>..\packages\Dargon.Transport.0.1.0\lib\net45\Dargon.Transport.dll</HintPath>
@@ -49,8 +55,9 @@
     <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ItzWarty.Commons">
-      <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ItzWarty.Commons.0.3.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
     <Reference Include="ItzWarty.Proxies.Api">
       <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
@@ -88,6 +95,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>client-root-configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Processes.Injection.Api\Dargon.Processes.Injection.Api.csproj">
       <Project>{E5A704E7-B9FD-4911-ADB6-8762491234D5}</Project>
       <Name>Dargon.Processes.Injection.Api</Name>
@@ -107,6 +118,10 @@
     <ProjectReference Include="..\libdargon.service-base\Dargon.ManageableServices.csproj">
       <Project>{9CFA80EE-76DC-498C-9C4E-52891851944A}</Project>
       <Name>Dargon.ManageableServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
+      <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
+      <Name>Dargon.TemporaryFiles.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

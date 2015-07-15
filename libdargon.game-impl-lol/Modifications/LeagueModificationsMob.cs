@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Dargon.Management;
 using System.Text;
 using Dargon.Game;
@@ -18,6 +20,33 @@ namespace Dargon.LeagueOfLegends.Modifications {
          this.leagueGameModificationLinkerService = leagueGameModificationLinkerService;
       }
 
+      [ManagedOperation]
+      public string ImportModification(string modificationName, string sourcePath) {
+         try {
+            if (!Directory.Exists(sourcePath)) {
+               return "Error! The specified path either does not exist or is not a directory!";
+            } else {
+               sourcePath = Path.GetFullPath(sourcePath);
+               var mod = leagueModificationRepositoryService.ImportLegacyModification(
+                  modificationName,
+                  sourcePath,
+                  Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories)
+               );
+               return $"Imported mod {mod.RepositoryName} to {mod.RepositoryPath}!";
+            }
+         } catch (Exception e) {
+            return "Error! " + e;
+         }
+      }
+      [ManagedOperation]
+      public string DeleteModification(string modificationName) {
+         try {
+            leagueModificationRepositoryService.DeleteModification(leagueModificationRepositoryService.GetModificationOrNull(modificationName));
+            return "Success!";
+         } catch (Exception e) {
+            return "Error! " + e;
+         }
+      }
       [ManagedOperation]
       public string EnumerateModifications() {
          var sb = new StringBuilder();

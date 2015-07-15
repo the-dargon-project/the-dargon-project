@@ -21,6 +21,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
          RedirectIOToConsole();
          Application::HandleDllEntry(hModule);
       }
+      case DLL_PROCESS_DETACH:
+      {
+         std::cout << "ENTERED DLL PROCESS DETACH!" << std::endl;
+         Application::HandleDllUnload();
+      }
    }
    return true; //We're all winners; false would denote a failed initialization.
 }

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <algorithm>
 #include "Subsystem.hpp"
 #include "Init/bootstrap_context.hpp"
 #include "logger.hpp"
@@ -10,8 +11,6 @@ using namespace dargon::IO::DIM;
 std::shared_ptr<dargon::logger> Subsystem::s_logger;
 std::shared_ptr<const dargon::Init::bootstrap_context> Subsystem::s_bootstrap_context;
 std::shared_ptr<Configuration> Subsystem::s_configuration;
-std::unordered_set<Subsystem*> Subsystem::s_subsystems;
-const std::unordered_set<Subsystem*>& Subsystem::Subsystems(Subsystem::s_subsystems);
 
 void Subsystem::Initialize(
    std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context,
@@ -38,16 +37,9 @@ HMODULE Subsystem::WaitForModuleHandle(const char* moduleName)
 }
 
 // - Instance Methods -----------------------------------------------------------------------------
-Subsystem::Subsystem()
-   : m_initialized(false)
-{
-   s_subsystems.insert(this);
-}
+Subsystem::Subsystem() : m_initialized(false) { }
 
-Subsystem::~Subsystem()
-{
-   s_subsystems.erase(this);
-}
+Subsystem::~Subsystem() { }
 
 bool Subsystem::Initialize()
 {

@@ -16,7 +16,7 @@ using namespace dargon::Subsystems;
 
 const bool kDebugEnabled = true;
 
-FileSubsystem::FileSubsystem() { }
+FileSubsystem::FileSubsystem() : Subsystem() { }
 
 bool FileSubsystem::Initialize()
 {
@@ -48,6 +48,7 @@ bool FileSubsystem::Initialize()
 
 bool FileSubsystem::Uninitialize()
 {
+   std::cout << "At FileSubsystem Uninit with m_initialized=" << m_initialized << std::endl;
    if(!m_initialized) return true;
    else
    {

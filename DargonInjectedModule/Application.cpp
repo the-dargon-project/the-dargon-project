@@ -26,6 +26,7 @@ using namespace dargon::Subsystems;
 
 HMODULE Application::module_handle = 0;
 HANDLE Application::main_thread_handle = INVALID_HANDLE_VALUE;
+std::list<std::shared_ptr<Subsystem>> subsystems;
 
 void Application::HandleDllEntry(HMODULE hModule) {
    module_handle = hModule;
@@ -79,6 +80,8 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();
    kernel_subsystem->Initialize();
+   subsystems.push_back(file_subsystem);
+   subsystems.push_back(kernel_subsystem);
 
    // initialize command handlers
    auto redirected_file_operation_proxy_factory_factory = std::make_shared<RedirectedFileOperationProxyFactoryFactory>(io_proxy);
@@ -96,5 +99,11 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    if (main_thread_handle != INVALID_HANDLE_VALUE) {
       std::cout << "Application::Initialize resuming main thread." << std::endl;
       while (ResumeThread(main_thread_handle) > 0);
+   }
+}
+
+void Application::HandleDllUnload() {
+   for (auto subsystem : subsystems) {
+      subsystem->Uninitialize();
    }
 }

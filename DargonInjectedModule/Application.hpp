@@ -17,7 +17,7 @@ namespace dargon {
       static void HandleDllEntry(HMODULE hModule);
       static uint32_t WINAPI BootstrappingThreadStart(void* throwaway);
       static void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> context);
-
+      static void HandleDllUnload();
    private:
    };
 }

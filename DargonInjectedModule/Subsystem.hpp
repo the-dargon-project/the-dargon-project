@@ -32,9 +32,6 @@ namespace dargon {
 
       static std::shared_ptr<Configuration> Subsystem::s_configuration;
 
-      // list of instantiated subsystems
-      static std::unordered_set<Subsystem*> s_subsystems;
-
       // Gets the pointer to the given object's virtual method table.
       // pObject: Object whose virtual method table pointer we are getting
       // returns: Pointer to the object's virtual method table (an array of 32-bit addresses)
@@ -49,9 +46,6 @@ namespace dargon {
       // class essentially serves as a globally accessible way for subsystem implementations to 
       // access the bootstrap context.
       static void Initialize(std::shared_ptr<const dargon::Init::bootstrap_context> bootstrap_context, std::shared_ptr<Configuration> configuration, std::shared_ptr<dargon::logger> logger);
-
-      // Subsystems
-      static const std::unordered_set<Subsystem*>& Subsystems;
 
       // - Instance -------------------------------------------------------------------------------
    protected:

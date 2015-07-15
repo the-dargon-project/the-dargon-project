@@ -90,6 +90,7 @@
          { \
             if(m_tramp##FriendlyFunctionName != NULL) \
             { \
-               DetourRemove((BYTE*)m_tramp##FriendlyFunctionName, (BYTE*)m_real##FriendlyFunctionName); \
+               std::cout << "Attempt undetour: " << m_real##FriendlyFunctionName << "  " << m_tramp##FriendlyFunctionName << std::endl; \
+               DetourRemove((BYTE*)m_tramp##FriendlyFunctionName, (BYTE*)&TrampolineName); \
             } \
          }

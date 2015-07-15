@@ -33,20 +33,20 @@ void DSPExLITDIMQueryInitialCommandListHandler::ProcessMessage(dargon::IO::DSP::
    dargon::binary_reader reader(message.DataBuffer, message.DataLength);
 
    UINT32 commandCount = reader.read_uint32();
-   std::cout << "Got command count " << commandCount << std::endl;
+   std::cout << "Processing " << commandCount << " commands... " << std::endl;
 
    for (UINT32 i = 0; i < commandCount; i++) {
       std::string type = reader.read_long_text();
-      std::cout << "Read command type " << type << std::endl;
+//      std::cout << "Read command type " << type << std::endl;
 
       UINT32 dataLength = reader.read_uint32();
-      std::cout << "Read command data length " << dataLength << std::endl;
-      std::cout << "BYTES ALLOCATED FOR COMMAND: " << sizeof(DIMCommand) + dataLength << std::endl;
+//      std::cout << "Read command data length " << dataLength << std::endl;
+//      std::cout << "BYTES ALLOCATED FOR COMMAND: " << sizeof(DIMCommand) + dataLength << std::endl;
 
-      std::cout << "Reading command contents" << std::endl;
+//      std::cout << "Reading command contents" << std::endl;
       UINT8* commandData = new UINT8[dataLength];
       reader.read_bytes(commandData, dataLength);
-      std::cout << "Read command of type " << type << " and data length " << dataLength << std::endl;
+//      std::cout << "Read command of type " << type << " and data length " << dataLength << std::endl;
 
       DIMCommand* command = new DIMCommand();
       command->type = type;

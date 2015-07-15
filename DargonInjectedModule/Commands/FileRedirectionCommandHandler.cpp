@@ -27,7 +27,7 @@ void FileRedirectionCommandHandler::ProcessCommands(DIMHandlerToCommandsMap::ite
    std::cout << "HANDLING FILE REDIRECTION COMMANDS " << std::endl;
    for (auto it = begin; it != end; it++) {
       auto command = it->second;
-      std::cout << "HANDLE FILE REDIRECTION COMMAND " << std::endl;
+//      std::cout << "HANDLE FILE REDIRECTION COMMAND " << std::endl;
 
       dargon::binary_reader reader(command->data, command->length);
 

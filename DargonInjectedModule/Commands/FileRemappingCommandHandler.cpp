@@ -26,7 +26,7 @@ void FileRemappingCommandHandler::ProcessCommands(DIMHandlerToCommandsMap::itera
    std::cout << "HANDLING FILE REMAPPING COMMANDS " << std::endl;
    for (auto it = begin; it != end; it++) {
       auto command = it->second;
-      std::cout << "HANDLE FILE REMAPPING COMMAND " << std::endl;
+//      std::cout << "HANDLE FILE REMAPPING COMMAND " << std::endl;
 
       dargon::binary_reader reader(command->data, command->length);
 

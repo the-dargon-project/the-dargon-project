@@ -23,7 +23,7 @@ using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
 using namespace dargon;
 
-bool DSPExNodeSession::kDebugEnabled = true;
+bool DSPExNodeSession::kDebugEnabled = false;
 int DSPExNodeSession::kFrameProcessorCount = 2;
 int DSPExNodeSession::kFrameProcessorLimit = 16;
 

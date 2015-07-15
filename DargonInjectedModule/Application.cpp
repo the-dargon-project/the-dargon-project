@@ -26,6 +26,7 @@ using namespace dargon::Subsystems;
 
 HMODULE Application::module_handle = 0;
 HANDLE Application::main_thread_handle = INVALID_HANDLE_VALUE;
+int Application::times_to_unsuspend = 0;
 std::list<std::shared_ptr<Subsystem>> subsystems;
 
 void Application::HandleDllEntry(HMODULE hModule) {
@@ -37,8 +38,9 @@ void Application::HandleDllEntry(HMODULE hModule) {
 
    // suspend host application's main thread while we init
    main_thread_handle = OpenMainThread();
-   SuspendThread(main_thread_handle);
-   std::cout << "Suspended main thread." << std::endl;
+   auto previous_suspend_count = SuspendThread(main_thread_handle);
+   std::cout << "Suspended main thread. Previous suspend count: " << previous_suspend_count << std::endl;
+   times_to_unsuspend = previous_suspend_count + 1;
 
    // begin bootstrapping process in new thread to free injector
    _beginthreadex(nullptr, 0, BootstrappingThreadStart, nullptr, 0, nullptr);
@@ -98,7 +100,10 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    // Suspend count can be >1 due to LAUNCH_SUSPENDED override by another instance.
    if (main_thread_handle != INVALID_HANDLE_VALUE) {
       std::cout << "Application::Initialize resuming main thread." << std::endl;
-      while (ResumeThread(main_thread_handle) > 0);
+      while (times_to_unsuspend > 0) {
+         ResumeThread(main_thread_handle);
+         times_to_unsuspend--;
+      }
    }
 }
 

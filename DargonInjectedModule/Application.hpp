@@ -12,6 +12,7 @@ namespace dargon {
    class Application {
       static HMODULE module_handle;
       static HANDLE main_thread_handle;
+      static int times_to_unsuspend;
 
    public:
       static void HandleDllEntry(HMODULE hModule);

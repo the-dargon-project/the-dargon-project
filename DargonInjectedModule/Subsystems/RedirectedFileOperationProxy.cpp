@@ -7,5 +7,5 @@ RedirectedFileOperationProxy::RedirectedFileOperationProxy(std::shared_ptr<dargo
    : DefaultFileOperationProxy(io_proxy), path(path) { }
 
 HANDLE RedirectedFileOperationProxy::Create(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
-   return io_proxy->CreateFileA(path.c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   return DefaultFileOperationProxy::Create(dargon::wide(path).c_str(), dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }

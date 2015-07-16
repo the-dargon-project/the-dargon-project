@@ -47,6 +47,30 @@ namespace dargon {
          }
       }
 
+      void add_or_update(const TKey& key, std::function<TValue(const TKey&)> add, std::function<TValue(const TKey&, TValue)> update) {
+         LockType lock(mutex);
+         auto it = dict.find(key);
+         if (it == dict.end()) {
+            dict.insert(PairType(key, add(key)));
+         } else {
+            it->second = update(key, it->second);
+         }
+      }
+
+      bool conditional_remove(const TKey& key, std::function<bool(const TKey&, const TValue&)> remove_if) {
+         LockType lock(mutex);
+         auto it = dict.find(key);
+         if (it == dict.end()) {
+            return false;
+         } else {
+            bool remove = remove_if(it->first, it->second);
+            if (remove) {
+               dict.erase(it);
+            }
+            return remove;
+         }
+      }
+
       bool insert(const TKey key, TValue value) {
          LockType lock(mutex);
          if (dict.insert(PairType(key, value)).second) {
@@ -175,6 +199,14 @@ namespace dargon {
 
       TValue get_value_or_default(const TKey& key) {
          return GetBucket(key)->get_value_or_default(key);
+      }
+
+      void add_or_update(const TKey& key, std::function<TValue(const TKey&)> add, std::function<TValue(const TKey&, TValue)> update) {
+         return GetBucket(key)->add_or_update(key, add, update);
+      }
+
+      bool conditional_remove(const TKey& key, std::function<bool(const TKey&, const TValue&)> remove_if) {
+         return GetBucket(key)->conditional_remove(key, remove_if);
       }
 
       bool insert(const TKey key, TValue value) {

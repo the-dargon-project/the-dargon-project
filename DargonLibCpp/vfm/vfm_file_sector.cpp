@@ -21,7 +21,7 @@ void vfm_file_sector::read(int64_t read_offset, int64_t read_length, uint8_t * b
       return read(read_offset, read_length, buffer + buffer_offset, 0);
    }
 
-   auto file = io_proxy->CreateFileA(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+   auto file = io_proxy->CreateFileW(dargon::wide(path).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
    if (file == INVALID_HANDLE_VALUE) {
       std::cout << "VFM FAILED TO OPEN FILE " << path.c_str() << ":(" << std::endl;

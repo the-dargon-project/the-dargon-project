@@ -10,6 +10,7 @@ namespace dargon { namespace Subsystems {
    class DefaultFileOperationProxy : public FileOperationProxy, dargon::noncopyable {
    protected:
       HANDLE handle;
+      std::string name;
       std::shared_ptr<dargon::IO::IoProxy> io_proxy;
 
    public:
@@ -19,5 +20,6 @@ namespace dargon { namespace Subsystems {
       BOOL Write(const void* lpBuffer, uint32_t byte_count, OUT uint32_t* bytes_written, LPOVERLAPPED lpOverlapped) override;
       DWORD Seek(int64_t distance_to_move, int64_t* new_file_pointer, DWORD dwMoveMethod) override;
       BOOL Close() override;
+      std::string ToString() override;
    };
 } }

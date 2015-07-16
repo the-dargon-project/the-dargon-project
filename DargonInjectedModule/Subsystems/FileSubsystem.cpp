@@ -106,59 +106,17 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
 
 HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
-   if (kDebugEnabled) {
-      s_logger->Log(
-         LL_VERBOSE,
-         [=](std::ostream& os){
-         os << "CreateFileW:"
-            << " lpFilePath: " << dargon::narrow(lpFilePath)
-            << " dwDesiredAccess: " << dwDesiredAccess
-            << " dwShareMode: " << dwShareMode
-            << " lpSecurityAttributes: " << lpSecurityAttributes
-            << " dwCreationDisposition: " << dwCreationDisposition
-            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
-            << " hTemplateFile: " << hTemplateFile
-            << std::endl;
-      });
+   // MountPointManager
+   if (dargon::narrow(lpFilePath).find("windows") != -1 || 
+       dargon::narrow(lpFilePath).find("Windows") != -1 ||
+       dargon::narrow(lpFilePath).find("MountPointManager") != -1 ||
+       dargon::narrow(lpFilePath).find("microsoft") != -1 ||
+       dargon::narrow(lpFilePath).find("Microsoft") != -1) {
+//      std::cout << std::dec << "SKIP " << dargon::narrow(lpFilePath) << std::endl;
+      return m_trampCreateFileW(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
    }
 
-   FileIdentifier fileIdentifier = GetFileIdentifier(lpFilePath);
-
-   auto proxyFactory = proxyFactoriesByFileIdentifier.get_value_or_default(fileIdentifier);
-   std::shared_ptr<FileOperationProxy> fileOperationProxy;
-   if (proxyFactory != nullptr) {
-      if (kDebugEnabled) {
-         s_logger->Log(
-            LL_VERBOSE,
-            [=](std::ostream& os) {
-            os << " => custom proxy factory" << std::endl;
-         });
-      }
-      fileOperationProxy = proxyFactory->create();
-   }
-   if (fileOperationProxy == nullptr) {
-      if (kDebugEnabled) {
-         s_logger->Log(
-            LL_VERBOSE,
-            [=](std::ostream& os) {
-            os << " => default proxy factory" << std::endl;
-         });
-      }
-      fileOperationProxy = std::shared_ptr<FileOperationProxy>(new DefaultFileOperationProxy(s_bootstrap_context->io_proxy));
-   }
-   
-   auto fileHandle = fileOperationProxy->Create(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-   if (fileHandle != INVALID_HANDLE_VALUE) {
-      fileOperationProxiesByHandle.insert(fileHandle, fileOperationProxy);
-   }
-   if (kDebugEnabled) {
-      s_logger->Log(
-         LL_VERBOSE,
-         [=](std::ostream& os) {
-         os << " => handle " << fileHandle << std::endl;
-      });
-   }
-   return fileHandle;
+   return InternalCreateFileW(false, lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
 BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
@@ -197,10 +155,24 @@ BOOL WINAPI FileSubsystem::MyWriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNu
 
 BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
 {
-   auto proxy = fileOperationProxiesByHandle.get_value_or_default(hObject);
-   if (proxy) {
-      fileOperationProxiesByHandle.remove(hObject);
-      return proxy->Close();
+   auto proxy_ref_dummy = fileOperationProxiesByHandle.get_value_or_default(hObject);
+   if (proxy_ref_dummy) {
+//      std::cout << std::dec << hObject << " CLOSE " << proxy_ref_dummy->ToString() << " " << std::endl;
+      BOOL result = FALSE;
+      fileOperationProxiesByHandle.conditional_remove(
+         hObject,
+         [&result](HANDLE existing, std::shared_ptr<FileOperationProxy> proxy) {
+            int remaining_reference_count = proxy->__DecrementReferenceCount();
+            if (remaining_reference_count == 0) {
+               result = proxy->Close();
+               return true;
+            } else {
+               result = TRUE;
+               return false;
+            }
+         }
+      );
+      return result;
    } else {
       return m_trampCloseHandle(hObject);
    }
@@ -287,4 +259,102 @@ FileIdentifier FileSubsystem::GetFileIdentifier(LPCWSTR file_path) {
       m_trampCloseHandle(fileHandle);
    }
    return fileIdentifier;
+}
+
+__declspec(thread) int tls_cfw_recursive_count = 0;
+
+HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
+   tls_cfw_recursive_count++;
+   if (tls_cfw_recursive_count != 1 && !isPermittedRecursion) {
+      __debugbreak();
+   }
+
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << "CreateFileW:"
+            << " lpFilePath: " << dargon::narrow(lpFilePath)
+            << " dwDesiredAccess: " << dwDesiredAccess
+            << " dwShareMode: " << dwShareMode
+            << " lpSecurityAttributes: " << lpSecurityAttributes
+            << " dwCreationDisposition: " << dwCreationDisposition
+            << " dwFlagsAndAttributes: " << dwFlagsAndAttributes
+            << " hTemplateFile: " << hTemplateFile
+            << std::endl;
+      });
+   }
+
+   FileIdentifier fileIdentifier = GetFileIdentifier(lpFilePath);
+
+   auto proxyFactory = proxyFactoriesByFileIdentifier.get_value_or_default(fileIdentifier);
+   std::shared_ptr<FileOperationProxy> fileOperationProxy;
+   if (proxyFactory != nullptr) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << " => custom proxy factory" << std::endl;
+         });
+      }
+      fileOperationProxy = proxyFactory->create();
+   }
+   if (fileOperationProxy == nullptr) {
+      if (kDebugEnabled) {
+         s_logger->Log(
+            LL_VERBOSE,
+            [=](std::ostream& os) {
+            os << " => default proxy factory" << std::endl;
+         });
+      }
+      fileOperationProxy = std::shared_ptr<FileOperationProxy>(new DefaultFileOperationProxy(s_bootstrap_context->io_proxy));
+   }
+
+   auto fileHandle = fileOperationProxy->Create(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+//   std::cout << std::dec << fileHandle << " CREATE " << dargon::narrow(lpFilePath) << " " << std::endl;
+   //   auto collision_proxy = fileOperationProxiesByHandle.get_value_or_default(fileHandle);
+   //   if (collision_proxy != nullptr) {
+   //      std::cout << "FILE HANDLE COLLISION! " 
+   //                << "Exists: " << collision_proxy->ToString()
+   //                << "New: " << fileOperationProxy->ToString() << std::endl;
+   //      __debugbreak();
+   //   }
+   if (fileHandle != INVALID_HANDLE_VALUE) {
+      bool isBorked = false;
+      fileOperationProxiesByHandle.add_or_update(
+         fileHandle,
+         [=](HANDLE add) {
+         auto next_count = fileOperationProxy->__IncrementReferenceCount();
+         assert(next_count == 1);
+         return fileOperationProxy;
+      },
+         [&](HANDLE update, std::shared_ptr<FileOperationProxy> existing) {
+         if (!dargon::iequals(existing->ToString(), fileOperationProxy->ToString())) {
+            std::cout << "BORKED FILE HANDLE COLLISION!"
+               << "Exists: " << existing->ToString()
+               << "New: " << fileOperationProxy->ToString() << std::endl;
+            //               __debugbreak();
+            isBorked = true;
+            return existing;
+         } else {
+            auto next_count = existing->__IncrementReferenceCount();
+            assert(next_count != 1);
+            isBorked = false;
+            return existing;
+         }
+      }
+      );
+      if (isBorked) {
+         fileHandle = InternalCreateFileW(true, lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+      }
+   }
+   if (kDebugEnabled) {
+      s_logger->Log(
+         LL_VERBOSE,
+         [=](std::ostream& os) {
+         os << " => handle " << fileHandle << std::endl;
+      });
+   }
+   tls_cfw_recursive_count--;
+   return fileHandle;
 }

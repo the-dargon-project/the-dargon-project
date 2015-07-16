@@ -10,10 +10,15 @@ static_assert(sizeof(DWORD) == sizeof(uint32_t), "Size of DWORD must equal size 
 static_assert(sizeof(LONG) == sizeof(uint32_t), "Size of LONG must equal size of uint32_t.");
 
 DefaultFileOperationProxy::DefaultFileOperationProxy(std::shared_ptr<IoProxy> io_proxy)
-   : handle(NULL), io_proxy(io_proxy) { }
+   : handle(INVALID_HANDLE_VALUE), io_proxy(io_proxy), name("") { }
 
 HANDLE DefaultFileOperationProxy::Create(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) {
+   if (name.size() != 0) {
+      std::cout << "Create called again!?" << std::endl;
+      __debugbreak();
+   }
    handle = io_proxy->CreateFileW(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   name.assign(dargon::narrow(lpFilePath));
    return handle;
 }
 
@@ -34,3 +39,5 @@ DWORD DefaultFileOperationProxy::Seek(int64_t distance_to_move, int64_t* new_fil
 BOOL DefaultFileOperationProxy::Close() {
    return io_proxy->CloseHandle(handle);
 }
+
+std::string DefaultFileOperationProxy::ToString() { return name; }

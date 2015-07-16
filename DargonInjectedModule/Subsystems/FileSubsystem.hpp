@@ -45,5 +45,6 @@ namespace dargon { namespace Subsystems {
       static DWORD WINAPI MySetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod);
 
       static FileIdentifier GetFileIdentifier(LPCWSTR file_path);
+      static HANDLE WINAPI InternalCreateFileW(bool isPermittedRecursion, LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
    };
 } }

@@ -9,11 +9,10 @@
 
 namespace dargon { namespace Subsystems {
    class RemappedFileOperationProxy : public FileOperationProxy, public noncopyable {
-      std::wstring name;
+      std::string name;
       std::shared_ptr<dargon::IO::IoProxy> io_proxy;
       std::shared_ptr<dargon::vfm_file> virtual_file_map;
       HANDLE handle;
-      int64_t position;
 
    public:
       RemappedFileOperationProxy(std::shared_ptr<dargon::IO::IoProxy> io_proxy, std::shared_ptr<dargon::vfm_file> virtual_file_map);
@@ -22,5 +21,6 @@ namespace dargon { namespace Subsystems {
       BOOL Write(const void* lpBuffer, uint32_t byte_count, OUT uint32_t* bytes_written, LPOVERLAPPED lpOverlapped) override;
       DWORD Seek(int64_t distance_to_move, int64_t* new_file_pointer, DWORD dwMoveMethod) override;
       BOOL Close() override;
+      std::string ToString() override;
    };
 } }

@@ -27,7 +27,7 @@ namespace Dargon.Trinkets {
          logger.Info("Initializing Trinket Bridge");
          var originalDimPath = trinketInternalUtilities.GetInjectedModulePath();
          logger.Info($"Original Dim Path: {originalDimPath}");
-         var temporaryDirectory = temporaryFileService.AllocateTemporaryDirectory(DateTime.Today + TimeSpan.FromDays(1));
+         var temporaryDirectory = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromHours(2));
          foreach (var file in new FileInfo(originalDimPath).Directory.EnumerateFiles("*", SearchOption.TopDirectoryOnly)) {
             file.CopyTo(Path.Combine(temporaryDirectory, file.Name));
          }

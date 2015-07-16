@@ -22,11 +22,11 @@ namespace Dargon {
 
       private IDisposable TakeLock() { return temporaryFilesLock.Take(); }
       
-      public string AllocateTemporaryDirectory(DateTime expires) {
+      public string AllocateTemporaryDirectory(TimeSpan expiresIn) {
          using (TakeLock()) {
-            var directoryPath = Path.Combine(temporaryDirectoryPath, Guid.NewGuid().ToByteArray().ToHex());
+            var directoryPath = Path.Combine(temporaryDirectoryRoot, Guid.NewGuid().ToByteArray().ToHex());
             Directory.CreateDirectory(directoryPath);
-            File.WriteAllBytes(Path.Combine(directoryPath, EXPIRATION_FILE_NAME), BitConverter.GetBytes(expires.GetUnixTimeMilliseconds()));
+            File.WriteAllBytes(Path.Combine(directoryPath, EXPIRATION_FILE_NAME), BitConverter.GetBytes((DateTime.Now + expiresIn).GetUnixTimeMilliseconds()));
             return directoryPath;
          }
       }

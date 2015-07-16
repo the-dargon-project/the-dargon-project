@@ -149,7 +149,7 @@ namespace Dargon.Daemon {
          localManagementServer.RegisterInstance(new DaemonServiceMob(core));
 
          // construct miscellanious common Dargon dependencies
-         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration);
+         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration, fileSystemProxy).With(x => x.Initialize());
          localServiceClient.RegisterService(temporaryFileService, typeof(TemporaryFileService));
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
 

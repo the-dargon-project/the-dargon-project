@@ -4,11 +4,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Dargon.Patcher;
 using ItzWarty;
+using NLog;
 
 namespace Dargon.LeagueOfLegends.Modifications
 {
    public class ModificationResolutionTable : IDisposable
    {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private const uint MAGIC = 0x524d4446U;
 
       private readonly string path;
@@ -33,23 +36,27 @@ namespace Dargon.LeagueOfLegends.Modifications
             Save();
          }
 
-         using (var ms = new MemoryStream(File.ReadAllBytes(path)))
-         using (var reader = new BinaryReader(ms)) {
-            var magic = reader.ReadUInt32();
-            if (magic != MAGIC) {
-               throw new InvalidOperationException("RMDF Magic Mismatch - Expected " + MAGIC + " but found " + magic);
-            }
+         try {
+            using (var ms = new MemoryStream(File.ReadAllBytes(path)))
+            using (var reader = new BinaryReader(ms)) {
+               var magic = reader.ReadUInt32();
+               if (magic != MAGIC) {
+                  throw new InvalidOperationException("RMDF Magic Mismatch - Expected " + MAGIC + " but found " + magic);
+               }
 
-            var count = reader.ReadUInt32();
-            for (uint i = 0; i < count; i++) {
-               var internalPath = reader.ReadNullTerminatedString();
-               var resolvedPath = reader.ReadNullTerminatedString();
-               if (string.IsNullOrEmpty(resolvedPath))
-                  resolvedPath = null;
-               var fileRevision = reader.ReadHash160();
-               var targetType = (ModificationTargetType)reader.ReadUInt32();
-               valuesByInternalPath.Add(internalPath, new ResolutionMetadataValue(resolvedPath, fileRevision, targetType));
+               var count = reader.ReadUInt32();
+               for (uint i = 0; i < count; i++) {
+                  var internalPath = reader.ReadNullTerminatedString();
+                  var resolvedPath = reader.ReadNullTerminatedString();
+                  if (string.IsNullOrEmpty(resolvedPath))
+                     resolvedPath = null;
+                  var fileRevision = reader.ReadHash160();
+                  var targetType = (ModificationTargetType)reader.ReadUInt32();
+                  valuesByInternalPath.Add(internalPath, new ResolutionMetadataValue(resolvedPath, fileRevision, targetType));
+               }
             }
+         } catch (Exception e) {
+            logger.Error("Nonfatal error: Modification Resolution Table likely corrupt.", e);
          }
       }
 

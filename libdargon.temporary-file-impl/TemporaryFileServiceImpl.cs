@@ -29,7 +29,7 @@ namespace Dargon {
 
       public void Initialize() {
          fileSystemProxy.PrepareDirectory(temporaryDirectoryRoot);
-         var now = DateTime.Now.GetUnixTimeMilliseconds();
+         var now = DateTime.UtcNow.GetUnixTimeMilliseconds();
          var temporaryDirectories = fileSystemProxy.EnumerateDirectories(temporaryDirectoryRoot);
          foreach (var temporaryDirectory in temporaryDirectories) {
             var temporaryDirectoryInfo = fileSystemProxy.GetDirectoryInfo(temporaryDirectory);
@@ -88,7 +88,7 @@ namespace Dargon {
          using (TakeLock()) {
             var directoryPath = Path.Combine(temporaryDirectoryRoot, Guid.NewGuid().ToByteArray().ToHex());
             Directory.CreateDirectory(directoryPath);
-            File.WriteAllBytes(Path.Combine(directoryPath, EXPIRATION_FILE_NAME), BitConverter.GetBytes((DateTime.Now + expiresIn).GetUnixTimeMilliseconds()));
+            File.WriteAllBytes(Path.Combine(directoryPath, EXPIRATION_FILE_NAME), BitConverter.GetBytes((DateTime.UtcNow + expiresIn).GetUnixTimeMilliseconds()));
             return directoryPath;
          }
       }

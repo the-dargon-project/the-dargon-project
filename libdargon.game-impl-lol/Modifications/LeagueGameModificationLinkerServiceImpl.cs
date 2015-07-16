@@ -138,7 +138,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
 
          var commandList = new DefaultCommandList();
          var versionStringUtilities = new VersionStringUtilities();
-         var tempDir = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromHours(2));
+         var tempDir = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromMinutes(1));
          logger.Info("Allocated temporary directory " + tempDir);
          foreach (var archiveDataKvp in archiveDataById) {
             string versionString = versionStringUtilities.GetVersionString(archiveDataKvp.Key);

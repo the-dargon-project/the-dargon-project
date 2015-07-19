@@ -9,7 +9,7 @@ using ItzWarty.IO;
 using NLog;
 
 namespace Dargon.Trinkets.Transport {
-   public interface TrinketDtpServer {
+   public interface TrinketDtpServer : IDisposable {
       /// <summary>
       /// Signals the end of a trinket dtp session. As trinket expects only
       /// one connection per dtp endpoint, this also indicates that the
@@ -122,6 +122,10 @@ namespace Dargon.Trinkets.Transport {
             var messageContent = reader.ReadStringOfLength((int)messageLength);
             logger.Debug("REMOTE MESSAGE: L" + loggerLevel + ": " + messageContent.Trim());
          }
+      }
+
+      public void Dispose() {
+         transportNode.Shutdown();
       }
    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Castle.DynamicProxy;
 using Dargon.Nest.Egg;
@@ -13,11 +14,13 @@ using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
 using ItzWarty.Networking;
+using ItzWarty.Processes;
 using ItzWarty.Threading;
 
 namespace Dargon.Trinkets.Proxy {
    public class TrinketProxyEgg : INestApplicationEgg {
       private readonly StreamFactory streamFactory;
+      private readonly IProcessProxy processProxy;
       private readonly PofSerializer pofSerializer;
       private readonly TemporaryFileService temporaryFileService;
       private readonly ProcessInjectionService processInjectionService;
@@ -27,6 +30,7 @@ namespace Dargon.Trinkets.Proxy {
 
       public TrinketProxyEgg() {
          streamFactory = new StreamFactory();
+         processProxy = new ProcessProxy();
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());
             x.MergeContext(new TrinketsApiPofContext());
@@ -64,8 +68,17 @@ namespace Dargon.Trinkets.Proxy {
          var trinketDtpServer = trinketDtpServerFactory.Create(configuration);
          var trinketBridge = new TrinketBridgeImpl(temporaryFileService, processInjectionService, trinketInternalUtilities, configuration, trinketDtpServer);
          keepaliveObjects.Add(trinketBridge);
-         var success = trinketBridge.Initialize();
-         return success ? NestResult.Success : NestResult.Failure;
+         var injectionSuccessful = trinketBridge.Initialize();
+         if (injectionSuccessful) {
+            var process = processProxy.GetProcessById(configuration.TargetProcessId);
+            process.Exited += (o, s) => {
+               trinketDtpServer.Dispose();
+               Shutdown();
+            };
+            process.EnableRaisingEvents = true;
+         }
+
+         return injectionSuccessful ? NestResult.Success : NestResult.Failure;
       }
 
       public NestResult Shutdown() {

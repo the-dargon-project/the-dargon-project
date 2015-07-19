@@ -50,7 +50,7 @@ namespace Dargon {
                try {
                   using (var expiresFileStream = expiresFile.Open(FileMode.Open, FileAccess.Read, FileShare.Delete)) {
                      var expirationTime = expiresFileStream.Reader.ReadInt64();
-                     if (expirationTime < now) {
+                     if (expirationTime > now) {
                         logger.Info($"{temporaryDirectoryInfo.Name} expires at {expirationTime}, now is {now} so doing nothing.");
                      } else {
                         logger.Info($"{temporaryDirectoryInfo.Name} expired at {expirationTime}, now is {now} attempting to remove.");

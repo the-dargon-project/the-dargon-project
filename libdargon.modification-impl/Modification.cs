@@ -26,6 +26,7 @@ namespace Dargon.Modifications
       public string RepositoryPath { get { return repositoryPath; } }
       public IModificationMetadata Metadata { get { return data.Metadata; } }
       public IBuildConfiguration BuildConfiguration { get { return data.BuildConfiguration; } }
+      public bool IsEnabled => !File.Exists(Path.Combine(repositoryPath, ".dpm/metadata/DISABLED"));
 
       public void Serialize(IPofWriter writer) {
          writer.WriteString(0, repositoryName);

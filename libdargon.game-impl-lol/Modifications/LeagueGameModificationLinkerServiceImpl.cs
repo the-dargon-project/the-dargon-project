@@ -37,6 +37,10 @@ namespace Dargon.LeagueOfLegends.Modifications {
          var manifest = radsService.GetReleaseManifestUnsafe(RiotProjectType.GameClient);
          var archiveDataById = new Dictionary<uint, List<ArchiveData>>();
          foreach (var modification in leagueModificationRepositoryService.EnumerateModifications()) {
+            if (!modification.IsEnabled) {
+               continue;
+            }
+
             var modificationMetadata = modification.Metadata;
             var contentPath = modificationMetadata.ContentPath.Trim('/', '\\');
 

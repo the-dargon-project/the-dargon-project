@@ -111,7 +111,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          radsService.Resume();
 
          
-         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var mods = leagueModificationRepositoryService.EnumerateModifications().Where(mod => mod.IsEnabled).ToList();
          var clientResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Client)).ToList();
          clientResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 
@@ -141,7 +141,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
 
          //         injectedModuleService.InjectToProcess(session.GetProcessOrNull(LeagueProcessType.GameClient).Id, leagueInjectedModuleConfigurationFactory.GetGameConfiguration(commandList));
 
-         var mods = leagueModificationRepositoryService.EnumerateModifications().ToList();
+         var mods = leagueModificationRepositoryService.EnumerateModifications().Where(mod => mod.IsEnabled).ToList();
          var gameResolutionTasks = mods.Select(mod => leagueModificationResolutionService.StartModificationResolution(mod, ModificationTargetType.Game)).ToList();
          gameResolutionTasks.ForEach(task => task.WaitForChainCompletion());
 

@@ -9,6 +9,8 @@ namespace Dargon.Modifications
       string RepositoryName { get; }
       string RepositoryPath { get; }
 
+      bool IsEnabled { get; }
+
       IModificationMetadata Metadata { get; }
       IBuildConfiguration BuildConfiguration { get; }
    }

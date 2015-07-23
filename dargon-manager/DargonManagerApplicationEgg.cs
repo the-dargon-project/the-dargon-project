@@ -24,6 +24,8 @@ using ItzWarty;
 
 namespace Dargon.Manager {
    public class DargonManagerApplicationEgg : INestApplicationEgg {
+      private Dispatcher dispatcher;
+
       public NestResult Start(IEggParameters parameters) {
          ICollectionFactory collectionFactory = new CollectionFactory();
          ProxyGenerator proxyGenerator = new ProxyGenerator();
@@ -61,10 +63,14 @@ namespace Dargon.Manager {
          ModificationListingViewModel modificationListingViewModel = new ModificationListingViewModel(new ImportValidityModelImpl(), new LocalRepositoryModificationList(fileSystemProxy, clientConfiguration, modificationLoader));
          ModificationImportController modificationImportController = new ModificationImportController(statusController, new ImportValidityModelImpl());
          var rootController = new RootController(daemonService, statusController, modificationListingViewModel, modificationImportController);
+         var dispatcherReadySignal = new ManualResetEvent(false);
          new Thread(
             () => {
                if (Application.Current == null)
                   new Application();
+
+               dispatcher = Dispatcher.CurrentDispatcher;
+               dispatcherReadySignal.Set();
 
                Console.WriteLine("BeginInvoking: ");
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
@@ -80,11 +86,14 @@ namespace Dargon.Manager {
             }).With(t => {
                t.SetApartmentState(ApartmentState.STA);
             }).Start();
+         dispatcherReadySignal.WaitOne();
          return NestResult.Success;
       }
 
       public NestResult Shutdown() {
-         throw new NotImplementedException();
+         dispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
+         dispatcher.Thread.Join();
+         return NestResult.Success;
       }
    }
 }

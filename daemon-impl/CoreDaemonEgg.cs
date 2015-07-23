@@ -66,7 +66,7 @@ namespace Dargon.Daemon {
          daemonService.Shutdown();
          mainThread.Join();
 
-         return NestResult.Failure;
+         return NestResult.Success;
       }
 
       private void InitializeLogging() {

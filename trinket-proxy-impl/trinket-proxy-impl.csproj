@@ -47,8 +47,9 @@
     <Reference Include="Dargon.Services">
       <HintPath>..\packages\Dargon.Services.0.2.0\lib\net45\Dargon.Services.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.Transport">
-      <HintPath>..\packages\Dargon.Transport.0.1.0\lib\net45\Dargon.Transport.dll</HintPath>
+    <Reference Include="Dargon.Transport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Transport.0.2.0\lib\net45\Dargon.Transport.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

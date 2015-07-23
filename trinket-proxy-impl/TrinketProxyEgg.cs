@@ -27,6 +27,7 @@ namespace Dargon.Trinkets.Proxy {
       private readonly TrinketInternalUtilities trinketInternalUtilities;
       private readonly TrinketDtpServerFactoryImpl trinketDtpServerFactory;
       private readonly List<object> keepaliveObjects = new List<object>();
+      private TrinketDtpServer trinketDtpServer;
 
       public TrinketProxyEgg() {
          streamFactory = new StreamFactory();
@@ -65,14 +66,13 @@ namespace Dargon.Trinkets.Proxy {
 
       public NestResult Start(IEggParameters parameters) {
          var configuration = pofSerializer.Deserialize<TrinketStartupConfiguration>(streamFactory.CreateMemoryStream(parameters.Arguments).Reader);
-         var trinketDtpServer = trinketDtpServerFactory.Create(configuration);
+         trinketDtpServer = trinketDtpServerFactory.Create(configuration);
          var trinketBridge = new TrinketBridgeImpl(temporaryFileService, processInjectionService, trinketInternalUtilities, configuration, trinketDtpServer);
          keepaliveObjects.Add(trinketBridge);
          var injectionSuccessful = trinketBridge.Initialize();
          if (injectionSuccessful) {
             var process = processProxy.GetProcessById(configuration.TargetProcessId);
             process.Exited += (o, s) => {
-               trinketDtpServer.Dispose();
                Shutdown();
             };
             process.EnableRaisingEvents = true;
@@ -82,6 +82,7 @@ namespace Dargon.Trinkets.Proxy {
       }
 
       public NestResult Shutdown() {
+         trinketDtpServer.Dispose();
          return NestResult.Success;
       }
    }

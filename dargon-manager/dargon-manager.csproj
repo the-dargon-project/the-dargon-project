@@ -116,8 +116,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\LocalRepositoryModificationList.cs" />
     <Compile Include="Controllers\ModificationImportController.cs" />
-    <Compile Include="Controllers\ModificationRepositoryController.cs" />
     <Compile Include="DargonManagerApplicationEgg.cs" />
     <Compile Include="Models\SynchronizedModificationList.cs" />
     <Compile Include="Models\ImportValidityModel.cs" />
@@ -272,6 +272,10 @@
     <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
       <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
       <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl.csproj">
+      <Project>{65054c16-4c56-4f57-a8c1-f325b9320803}</Project>
+      <Name>Dargon.Modifications.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>

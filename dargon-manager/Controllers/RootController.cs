@@ -5,28 +5,19 @@ using System.Threading.Tasks;
 using Dargon.Daemon;
 using Dargon.Manager.Models;
 using Dargon.Manager.ViewModels;
-using Dargon.ModificationRepositories;
 
 namespace Dargon.Manager.Controllers {
    public class RootController {
       private readonly DaemonService daemonService;
-      private readonly ModificationRepositoryController modificationRepositoryController;
-      private readonly ImportValidityModelImpl importValidityModel;
-      private readonly StatusModelImpl statusModel;
       private readonly StatusController statusController;
       private readonly ModificationListingViewModel modificationListingViewModel;
       private readonly ModificationImportController modificationImportController;
-      private readonly ModificationRepositoryService modificationRepositoryService;
 
-      public RootController(DaemonService daemonService, ModificationRepositoryService modificationRepositoryService) {
+      public RootController(DaemonService daemonService, StatusController statusController, ModificationListingViewModel modificationListingViewModel, ModificationImportController modificationImportController) {
          this.daemonService = daemonService;
-         this.modificationRepositoryService = modificationRepositoryService;
-         this.importValidityModel = new ImportValidityModelImpl();
-         this.statusModel = new StatusModelImpl();
-         this.statusController = new StatusController(statusModel);
-         this.modificationRepositoryController = new ModificationRepositoryController(modificationRepositoryService, modificationListingViewModel);
-         this.modificationListingViewModel = new ModificationListingViewModel(importValidityModel, modificationRepositoryController.GetSynchronizedLocalRepositoryModifications());
-         this.modificationImportController = new ModificationImportController(statusController, importValidityModel);
+         this.statusController = statusController;
+         this.modificationImportController = modificationImportController;
+         this.modificationListingViewModel = modificationListingViewModel;
       }
 
       public void SignalDaemonShutdown() {
@@ -34,16 +25,12 @@ namespace Dargon.Manager.Controllers {
       }
 
       public StatusModel GetStatusModel() {
-         return statusModel;
+         return statusController.Model;
       }
 
       public ModificationListingViewModel GetModificationListingViewModel() {
          return modificationListingViewModel;
       }
-
-      public ModificationRepositoryController GetModificationRepositoryController() {
-         return modificationRepositoryController;
-      } 
 
       public ModificationImportController GetModificationImportController() {
          return modificationImportController;
@@ -57,6 +44,8 @@ namespace Dargon.Manager.Controllers {
          this.statusModel = statusModel;
       }
 
+      public StatusModel Model => statusModel;
+      
       public void Update(string status) {
          statusModel.Status = status;
       }

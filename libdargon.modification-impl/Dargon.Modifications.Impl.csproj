@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildConfiguration.cs" />
+    <Compile Include="Modification2.cs" />
+    <Compile Include="Modification2Factory.cs" />
+    <Compile Include="Modification2MetadataWatcher.cs" />
     <Compile Include="ModificationMetadata.cs" />
     <Compile Include="Modification.cs" />
     <Compile Include="ModificationLoader.cs" />

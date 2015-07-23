@@ -80,8 +80,8 @@ namespace Dargon.Manager {
          dispatcherReadySignal.Set();
 
          var statusController = new StatusController(new StatusModelImpl());
-         IModificationLoader modificationLoader = new ModificationLoader(new ModificationMetadataSerializer(fileSystemProxy), new BuildConfigurationLoader());
-         var localRepositoryModificationList = new LocalRepositoryModificationList(fileSystemProxy, clientConfiguration, modificationLoader);
+         Modification2Factory modificationFactory = new Modification2Factory(fileSystemProxy, new ModificationMetadataSerializer(fileSystemProxy));
+         var localRepositoryModificationList = new LocalRepositoryModificationList(fileSystemProxy, clientConfiguration, modificationFactory);
          localRepositoryModificationList.Initialize();
          ModificationListingViewModel modificationListingViewModel = new ModificationListingViewModel(new ImportValidityModelImpl(), localRepositoryModificationList);
          ModificationImportController modificationImportController = new ModificationImportController(statusController, new ImportValidityModelImpl());
@@ -93,7 +93,6 @@ namespace Dargon.Manager {
             var window = new MainWindow(rootController);
             ElementHost.EnableModelessKeyboardInterop(window);
             window.Show();
-            //                  new DargonManagerApplication(serviceClient).Run();
          }));
 
          application.Run();

@@ -16,13 +16,13 @@ namespace Dargon.Manager.Controllers {
       private const string kRepositoryDirectoryName = "repositories";
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IClientConfiguration clientConfiguration;
-      private readonly IModificationLoader modificationLoader;
+      private readonly Modification2Factory modificationFactory;
       private FileSystemWatcher watcher;
 
-      public LocalRepositoryModificationList(IFileSystemProxy fileSystemProxy, IClientConfiguration clientConfiguration, IModificationLoader modificationLoader) {
+      public LocalRepositoryModificationList(IFileSystemProxy fileSystemProxy, IClientConfiguration clientConfiguration, Modification2Factory modificationFactory) {
          this.fileSystemProxy = fileSystemProxy;
          this.clientConfiguration = clientConfiguration;
-         this.modificationLoader = modificationLoader;
+         this.modificationFactory = modificationFactory;
       }
 
       public string RepositoriesDirectoryPath => Path.Combine(clientConfiguration.UserDataDirectoryPath, kRepositoryDirectoryName);
@@ -44,7 +44,7 @@ namespace Dargon.Manager.Controllers {
          var repositoriesDirectory = fileSystemProxy.GetDirectoryInfo(RepositoriesDirectoryPath);
          var results = new List<ModificationViewModel>();
          foreach (var repositoryDirectory in repositoriesDirectory.EnumerateDirectories()) {
-            results.Add(new ModificationViewModel(modificationLoader.Load(repositoryDirectory.Name, repositoryDirectory.FullName)));
+            results.Add(new ModificationViewModel(modificationFactory.FromLocalRepository(repositoryDirectory.FullName)));
          }
          return results;
       }

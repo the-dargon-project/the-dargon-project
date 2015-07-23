@@ -5,26 +5,16 @@ using Dargon.Modifications;
 namespace Dargon.Manager.Models {
    public class ModificationViewModel : INotifyPropertyChanged {
       public event PropertyChangedEventHandler PropertyChanged;
-      private IModification modification;
+      private Modification2 modification;
 
-      public ModificationViewModel(IModification modification) {
+      public ModificationViewModel(Modification2 modification) {
          this.modification = modification;
       }
 
-      public bool IsEnabled { get { return false; } set { } }
+      public bool IsEnabled { get { return modification.IsEnabled; } set { modification.IsEnabled = value; OnPropertyChanged(); } }
       public string RepositoryName { get { return modification.RepositoryName; } }
-      public string FriendlyName { get { return GetFriendlyName(); } set { } }
+      public string FriendlyName { get { return modification.FriendlyName; } set { modification.FriendlyName = value; OnPropertyChanged(); } }
       public string Description { get { return "This is a test!"; } set { } }
-
-      private string GetFriendlyName() {
-         var metadataName = modification.Metadata.Name;
-         var repositoryName = modification.RepositoryName;
-         if (string.IsNullOrWhiteSpace(metadataName)) {
-            return repositoryName;
-         } else {
-            return metadataName;
-         }
-      }
 
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
          var handler = PropertyChanged;

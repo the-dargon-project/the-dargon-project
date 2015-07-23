@@ -36,7 +36,7 @@
          <CheckBox IsChecked="{Binding IsEnabled}" Name="IsEnabledCheckbox" Width="21" Height="21">
             <CheckBox.Template>
                <ControlTemplate>
-                  <Image Source="Resources/Assets/button_checked.png">
+                  <Image>
                      <Image.Style>
                         <Style TargetType="{x:Type Image}">
                            <Style.Triggers>

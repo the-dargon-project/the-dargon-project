@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Blend for Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Game.Api", "libdargon.game-api\Dargon.Game.Api.csproj", "{3008DB66-80D6-4CF3-BF89-2534530E1C83}"
@@ -79,7 +79,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dargon-cli", "dargon-cli\da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ManageableServices", "libdargon.service-base\Dargon.ManageableServices.csproj", "{9CFA80EE-76DC-498C-9C4E-52891851944A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libdargon.ui-wpf", "libdargon.ui-wpf\libdargon.ui-wpf.csproj", "{01A4A8DE-41DB-4944-8D52-39FA519E00A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.UI.WPF", "libdargon.ui-wpf\Dargon.UI.WPF.csproj", "{01A4A8DE-41DB-4944-8D52-39FA519E00A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dargon-manager", "dargon-manager\dargon-manager.csproj", "{5A16EF83-A8BA-44AD-8CCE-2923BD55E1A4}"
 EndProject
@@ -108,6 +108,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Trinkets.Spawner.Api", "Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj", "{44A785B4-87A2-4616-99EF-638206D4A685}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ghetto-rads-dummy", "ghetto-rads-dummy\ghetto-rads-dummy.vcxproj", "{F32FC3C5-7363-4537-AE1F-35E0A6F75416}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dargon-client", "dargon-client\dargon-client.csproj", "{D2601FFA-E998-4801-A770-08CB4A6EC60F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -958,6 +960,30 @@ Global
 		{F32FC3C5-7363-4537-AE1F-35E0A6F75416}.Release|Win32.Build.0 = Release|Win32
 		{F32FC3C5-7363-4537-AE1F-35E0A6F75416}.Release|x86.ActiveCfg = Release|Win32
 		{F32FC3C5-7363-4537-AE1F-35E0A6F75416}.Release|x86.Build.0 = Release|Win32
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Any CPU.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Win32.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|Win32.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|x86.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Console|x86.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|Win32.Build.0 = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Debug|x86.Build.0 = Debug|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Win32.Build.0 = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

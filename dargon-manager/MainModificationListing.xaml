@@ -5,79 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dargonManager="clr-namespace:Dargon.Manager"
              mc:Ignorable="d" 
-             d:DesignHeight="280" d:DesignWidth="450">
-   <ContentControl.Resources>
-      <ResourceDictionary Source="ModListingJrStyle.xaml"/>
-   </ContentControl.Resources>
-   
-   <!-- Outer Grid: Name and body -->
-   <Border Style="{StaticResource OuterBorderStyle}">
-      <Grid Style="{StaticResource OuterGridStyle}">
-         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="1*"/>
-         </Grid.RowDefinitions>
-         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="1*"/>
-         </Grid.ColumnDefinitions>
-         
-         <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Style="{StaticResource HeaderStyle}">
-            <TextBlock Style="{StaticResource HeaderTextEnabled}" Padding="2px,0,0,0">Use?</TextBlock>
-            <Border BorderBrush="{StaticResource HACKDARGONJRWindowChromeTableBorderTiledBrush}" BorderThickness="1px,0,0,0">
-               <TextBlock Style="{StaticResource HeaderTextName}">Name</TextBlock>
-            </Border>
-         </StackPanel>
-         <Image Grid.Column="1" Grid.Row="2" Panel.ZIndex="200">
-            <Image.Style>
-               <Style TargetType="{x:Type Image}">
-                  <Style.Triggers>
-                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Valid}">
-                        <Setter Property="Source" Value="Resources/Assets/import_ok.png" />
-                     </DataTrigger>
-                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Invalid}">
-                        <Setter Property="Source" Value="Resources/Assets/import_bad.png" />
-                     </DataTrigger>
-                  </Style.Triggers>
-               </Style>
-            </Image.Style>
-         </Image>
-         <Border Panel.ZIndex="100" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="3" BorderBrush="#3A3A41" BorderThickness="1px">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{StaticResource FavsScrollViewer}">
-               <ItemsControl ItemsSource="{Binding Items}" AlternationCount="2">
-                  <ItemsControl.ItemTemplate>
-                     <DataTemplate>
-                        <dargonManager:MainModificationListingEntry x:Name="entryView"/>
-                        <DataTemplate.Triggers>
-                           <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                              <Setter Property="Background" Value="#4B4B54" TargetName="entryView"/>
-                           </Trigger>
-                           <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                              <Setter Property="Background" Value="#44444B" TargetName="entryView"/>
-                           </Trigger>
-                        </DataTemplate.Triggers>
-                     </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-               </ItemsControl>
-            </ScrollViewer>
-            <!-- -1 is hack which removes margin of last element -->
-            <!--
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{StaticResource FavsScrollViewer}">
-               <StackPanel Margin="0,0,0,-1"> 
-                  <dargonManager:ModListingJrEntryView Background="#4B4B54"/>
-                  <dargonManager:ModListingJrEntryView Background="#44444B"/>
-                  <dargonManager:ModListingJrEntryView Background="#4B4B54"/>
-                  <dargonManager:ModListingJrEntryView Background="#44444B"/>
-                  <dargonManager:ModListingJrEntryView Background="#4B4B54"/>
-                  <dargonManager:ModListingJrEntryView Background="#44444B"/>
-                  <dargonManager:ModListingJrEntryView Background="#4B4B54"/>
-               </StackPanel>
-            </ScrollViewer>
-               -->
-         </Border>
-      </Grid>
-   </Border>
+             d:DesignHeight="280" d:DesignWidth="450" MinHeight="100" MinWidth="100"  Background="Red">
+   <Grid>
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+         <ItemsControl ItemsSource="{Binding Items}" AlternationCount="2">
+            <ItemsControl.ItemTemplate>
+               <DataTemplate>
+                  <dargonManager:MainModificationListingEntry x:Name="entryView"/>
+               </DataTemplate>
+            </ItemsControl.ItemTemplate>
+         </ItemsControl>
+      </ScrollViewer>
+   </Grid>
+   <!--         <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Style="{DynamicResource HeaderStyle}">-->
+<!--            <TextBlock Style="{DynamicResource HeaderTextEnabled}" Padding="2px,0,0,0">Use?</TextBlock>-->
+<!--            <Border BorderBrush="{DynamicResource HACKDARGONJRWindowChromeTableBorderTiledBrush}" BorderThickness="1px,0,0,0">-->
+<!--               <TextBlock Style="{DynamicResource HeaderTextName}">Name</TextBlock>-->
+<!--            </Border>-->
+<!--         </StackPanel>-->
+<!--         <Image Grid.Column="1" Grid.Row="2" Panel.ZIndex="200">-->
+<!--            <Image.Style>-->
+<!--               <Style TargetType="{x:Type Image}">-->
+<!--                  <Style.Triggers>-->
+<!--                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Valid}">-->
+<!--                        <Setter Property="Source" Value="Resources/Assets/import_ok.png" />-->
+<!--                     </DataTrigger>-->
+<!--                     <DataTrigger Binding="{Binding Path=ImportValidityModel.Validity}" Value="{x:Static dargonManager:ImportValidity.Invalid}">-->
+<!--                        <Setter Property="Source" Value="Resources/Assets/import_bad.png" />-->
+<!--                     </DataTrigger>-->
+<!--                  </Style.Triggers>-->
+<!--               </Style>-->
+<!--            </Image.Style>-->
+<!--         </Image>-->
 </ContentControl>

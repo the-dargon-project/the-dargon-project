@@ -17,7 +17,7 @@ namespace Dargon.Manager {
    /// <summary>
    /// Interaction logic for MainWindow.xaml
    /// </summary>
-   public partial class MainWindow : Window
+   public partial class MainWindow : UI.WPF.MainWindow
    {
       private readonly RootController rootController;
       private readonly ModificationImportController modificationImportController;
@@ -33,19 +33,19 @@ namespace Dargon.Manager {
          this.InitializeComponent();
          SourceInitialized += ShellWindow_SourceInitialized;
 
-         // Insert code required on object creation below this point.
-         List<SampleModification> mods = new List<SampleModification>();
-         mods.Add(new SampleModification { Name = "Beauty Queen Ezreal", Author = "Warty", IsEnabled = true, Type = "Actors > Ezreal" });
-         mods.Add(new SampleModification { Name = "Naughty Nautilus", Author = "Warty", IsEnabled = true, Type = "Actors > Nautilus" });
-         mods.Add(new SampleModification { Name = "Tencent Artwork", Author = "Ququroon", IsEnabled = false, Type = "Actors" });
-         mods.Add(new SampleModification { Name = "Sunset Beach Rift", Author = "Yurixy Works", IsEnabled = true, Type = "Maps > Summoner's Rift" });
-         
-         AllowDrop = true;
-         PreviewDragEnter += MainWindow_PreviewDragEnter;
-         DragEnter += ContentControl_DragEnter;
-         DragLeave += ContentControl_DragLeave;
-         DragOver += ContentControl_DragOver;
-         Drop += ContentControl_Drop;
+//         // Insert code required on object creation below this point.
+//         List<SampleModification> mods = new List<SampleModification>();
+//         mods.Add(new SampleModification { Name = "Beauty Queen Ezreal", Author = "Warty", IsEnabled = true, Type = "Actors > Ezreal" });
+//         mods.Add(new SampleModification { Name = "Naughty Nautilus", Author = "Warty", IsEnabled = true, Type = "Actors > Nautilus" });
+//         mods.Add(new SampleModification { Name = "Tencent Artwork", Author = "Ququroon", IsEnabled = false, Type = "Actors" });
+//         mods.Add(new SampleModification { Name = "Sunset Beach Rift", Author = "Yurixy Works", IsEnabled = true, Type = "Maps > Summoner's Rift" });
+//         
+//         AllowDrop = true;
+//         PreviewDragEnter += MainWindow_PreviewDragEnter;
+//         DragEnter += ContentControl_DragEnter;
+//         DragLeave += ContentControl_DragLeave;
+//         DragOver += ContentControl_DragOver;
+//         Drop += ContentControl_Drop;
       }
 
       public MainWindow(RootController rootController) {
@@ -53,6 +53,7 @@ namespace Dargon.Manager {
          this.modificationImportController = rootController.GetModificationImportController();
          this.statusModel = rootController.GetStatusModel();
 
+//         DataContext = this;
          InitializeComponent();
          SourceInitialized += ShellWindow_SourceInitialized;
          Loaded += HandleLoad;
@@ -60,7 +61,7 @@ namespace Dargon.Manager {
 
       public StatusModel StatusModel { get { return rootController.GetStatusModel(); } }
 
-      public ModificationListingViewModel ModificationListingViewModel { get { return rootController.GetModificationListingViewModel(); } }
+      public ModificationListingViewModel ModificationListingViewModel { get { Console.WriteLine("GOT!"); return rootController.GetModificationListingViewModel(); } }
 
       private void HandleLoad(object sender, RoutedEventArgs e) {
          AllowDrop = true;
@@ -120,6 +121,14 @@ namespace Dargon.Manager {
          }
       }
 
+      /// <summary>
+      /// When overridden in a derived class, participates in rendering operations that are directed by the layout system. The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for later asynchronous use by layout and drawing. 
+      /// </summary>
+      /// <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
+      protected override void OnRender(DrawingContext drawingContext) {
+         base.OnRender(drawingContext);
+      }
+
       protected override void OnSourceInitialized(EventArgs e)
       {
          base.OnSourceInitialized(e);
@@ -132,6 +141,8 @@ namespace Dargon.Manager {
       /// </summary>
       public override void OnApplyTemplate()
       {
+         base.OnApplyTemplate();
+         return;
          Button minimizeButton = GetTemplateChild("minimizeButton") as Button;
          if (minimizeButton == null)
             Console.WriteLine("Couldn't get minimize button!");
@@ -256,6 +267,7 @@ namespace Dargon.Manager {
 
       private int GetResizeXDirection(Point relativePositionToInnerGrid)
       {
+         return 0;
          int xDirection = 0;
          if (relativePositionToInnerGrid.X < 0)
             xDirection = -1;
@@ -266,6 +278,7 @@ namespace Dargon.Manager {
 
       private int GetResizeYDirection(Point relativePositionToInnerGrid)
       {
+         return 0;
          int yDirection = 0;
          if (relativePositionToInnerGrid.Y < 0)
             yDirection = -1;

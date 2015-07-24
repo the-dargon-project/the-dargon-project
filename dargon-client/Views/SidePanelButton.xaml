@@ -1,0 +1,45 @@
+﻿<Button x:Class="Dargon.Client.Views.SidePanelButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dargon.Client.Views"
+             xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
+             mc:Ignorable="d">
+   <Button.Resources>
+      <helpers:EqualityConverter x:Key="equalityConverter" />
+   </Button.Resources>
+   <Button.Style>
+      <Style TargetType="{x:Type Button}">
+         <Setter Property="Template">
+            <Setter.Value>
+               <ControlTemplate>
+                  <TextBlock FontFamily="Lato Light" FontSize="15" Padding="10,4" Margin="0,0,0,-2"
+                             Text="{Binding Path='Content', RelativeSource={RelativeSource FindAncestor, AncestorType=local:SidePanelButton}, FallbackValue='__FILTER__'}">
+                     <TextBlock.Resources>
+                        <Style TargetType="TextBlock">
+                           <Setter Property="Foreground" Value="{DynamicResource NepalBrush}"></Setter>
+                           <Setter Property="Background" Value="{DynamicResource MidnightBlueBrush}"></Setter>
+                           <Style.Triggers>
+                              <DataTrigger Value="True">
+                                 <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource equalityConverter}">
+                                       <Binding Path="Filter" RelativeSource="{RelativeSource FindAncestor, AncestorType=local:FilterSelectionButton}" />
+                                       <Binding Path="ModificationTypeFilter" />
+                                    </MultiBinding>
+                                 </DataTrigger.Binding>
+                                 <DataTrigger.Setters>
+                                    <Setter Property="Foreground" Value="{DynamicResource CloudBrush}"></Setter>
+                                    <Setter Property="Background" Value="{DynamicResource KashmirBlueBrush}"></Setter>
+                                 </DataTrigger.Setters>
+                              </DataTrigger>
+                           </Style.Triggers>
+                        </Style>
+                     </TextBlock.Resources>
+                  </TextBlock>
+               </ControlTemplate>
+            </Setter.Value>
+         </Setter>
+      </Style>
+   </Button.Style>
+</Button>

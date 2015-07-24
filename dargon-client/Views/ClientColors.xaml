@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Dargon.Client">
+   <Color A="255" R="22" G="31" B="39" x:Key="MirageColor" />
+   <SolidColorBrush Color="{StaticResource MirageColor}" x:Key="MirageBrush" />
+
+   <Color A="255" R="44" G="62" B="80" x:Key="MidnightBlueColor" />
+   <SolidColorBrush Color="{StaticResource MidnightBlueColor}" x:Key="MidnightBlueBrush" />
+
+   <Color A="255" R="255" G="255" B="255" x:Key="WhiteColor" />
+   <SolidColorBrush Color="{StaticResource WhiteColor}" x:Key="WhiteBrush" />
+
+   <Color A="255" R="138" G="165" B="191" x:Key="NepalColor" />
+   <SolidColorBrush Color="{StaticResource NepalColor}" x:Key="NepalBrush" />
+
+   <Color A="255" R="67" G="103" B="140" x:Key="KashmirBlueColor" />
+   <SolidColorBrush Color="{StaticResource KashmirBlueColor}" x:Key="KashmirBlueBrush" />
+   
+   <Color A="255" R="85" G="121" B="158" x:Key="KashmirBlueLightColor" />
+   <SolidColorBrush Color="{StaticResource KashmirBlueLightColor}" x:Key="KashmirBlueLightBrush" />
+
+   <Color A="255" R="187" G="193" B="199" x:Key="SubmarineColor" />
+   <SolidColorBrush Color="{StaticResource SubmarineColor}" x:Key="SubmarineBrush" />
+
+   <Color A="255" R="32" G="45" B="58" x:Key="EbonyClayColor" />
+   <SolidColorBrush Color="{StaticResource EbonyClayColor}" x:Key="EbonyClayBrush" />
+
+   <Color A="255" R="108" G="214" B="91" x:Key="PastelGreenColor" />
+   <SolidColorBrush Color="{StaticResource PastelGreenColor}" x:Key="PastelGreenBrush" />
+
+   <Color A="255" R="215" G="91" B="91" x:Key="RomanColor" />
+   <SolidColorBrush Color="{StaticResource RomanColor}" x:Key="RomanBrush" />
+
+   <Color A="255" R="91" G="147" B="215" x:Key="HavelockBlueColor" />
+   <SolidColorBrush Color="{StaticResource HavelockBlueColor}" x:Key="HavelockBlueBrush" />
+
+   <Color A="255" R="153" G="153" B="153" x:Key="DustyGrayColor" />
+   <SolidColorBrush Color="{StaticResource DustyGrayColor}" x:Key="DustyGrayBrush" />
+
+   <Color A="255" R="236" G="240" B="241" x:Key="CloudColor" />
+   <SolidColorBrush Color="{StaticResource CloudColor}" x:Key="CloudBrush" />
+
+   <SolidColorBrush Color="{StaticResource RomanColor}" x:Key="ModificationBrokenBrush" />
+   <SolidColorBrush Color="{StaticResource DustyGrayColor}" x:Key="ModificationDisabledBrush" />
+   <SolidColorBrush Color="{StaticResource PastelGreenColor}" x:Key="ModificationEnabledBrush" />
+   <SolidColorBrush Color="{StaticResource HavelockBlueColor}" x:Key="ModificationUpdateAvailableBrush" />
+</ResourceDictionary>

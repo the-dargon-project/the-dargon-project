@@ -22,6 +22,7 @@ using Dargon.Manager.ViewModels;
 using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using ItzWarty;
+using Dargon.UI.WPF;
 
 namespace Dargon.Manager {
    public class DargonManagerApplicationEgg : INestApplicationEgg {

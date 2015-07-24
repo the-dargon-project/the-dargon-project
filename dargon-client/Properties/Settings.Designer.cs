@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dargon.UI.WPF.Properties {
+namespace Dargon.Client.Views.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

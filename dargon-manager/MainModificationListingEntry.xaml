@@ -7,24 +7,10 @@
              d:DesignHeight="40" d:DesignWidth="400"
              Height="40"
              Margin="0,0,0,1px">
-   <ContentControl.Resources>
-      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIColors.light.xaml"/>
-   </ContentControl.Resources>
+<!--   <ContentControl.Resources>-->
+<!--      <ResourceDictionary Source="/libdargon.ui-wpf;component/DargonUIColors.light.xaml"/>-->
+<!--   </ContentControl.Resources>-->
    <Border BorderThickness="1px">
-      <Border.Style>
-         <Style TargetType="{x:Type Border}">
-            <Style.Triggers>
-               <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="BorderBrush" Value="#007ECA" />
-                  <Setter Property="Background" Value="#47525F" />
-               </Trigger>
-               <Trigger Property="IsMouseOver" Value="False">
-                  <Setter Property="BorderBrush" Value="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}}" />
-                  <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}}" />
-               </Trigger>
-            </Style.Triggers>
-         </Style>
-      </Border.Style>
       <Grid>
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="41px"/>
@@ -53,7 +39,7 @@
                </ControlTemplate>
             </CheckBox.Template>
          </CheckBox>
-         <Rectangle Grid.Column="1" Fill="{StaticResource HACKDARGONJRWindowTableBorderTiledBrush}" />
+         <Rectangle Grid.Column="1" Fill="{DynamicResource HACKDARGONJRWindowTableBorderTiledBrush}" />
          <Grid Grid.Column="2" VerticalAlignment="Center" Margin="5px,0,0,0">
             <Grid.RowDefinitions>
                <RowDefinition Height="Auto"/>
@@ -63,12 +49,12 @@
             <TextBlock Grid.Row="0" Foreground="#CACADC" FontSize="16px" Margin="0,-6px,0,-2px"
                        Text="{Binding FriendlyName, FallbackValue='Fabulous Skin Name'}"/>
             <TextBlock Grid.Row="1" Foreground="#9F9FAF" FontSize="12px" Margin="0,-2px,0,0"
-                       Text="{Binding Description, FallbackValue='C:/Riot Games/League of Legends/Mods/ExampleMod/'}"/>
+                       Text="{Binding Description, FallbackValue='Created by __AUTHOR__ in Skins >> Annie'}"/>
          </Grid>
-         <Rectangle Grid.Column="3" Fill="{StaticResource HACKDARGONJRWindowTableBorderTiledBrush}" />
-         <Image Grid.Column="4"
-                Source="/DargonManager;component/Resources/Assets/button_delete.png" 
-                Width="13px" Height="13px"/>
+         <Rectangle Grid.Column="3" Fill="{DynamicResource HACKDARGONJRWindowTableBorderTiledBrush}" />
+<!--         <Image Grid.Column="4"-->
+<!--                Source="/DargonManager;component/Resources/Assets/button_delete.png" -->
+<!--                Width="13px" Height="13px"/>-->
       </Grid>
    </Border>
 </ContentControl>

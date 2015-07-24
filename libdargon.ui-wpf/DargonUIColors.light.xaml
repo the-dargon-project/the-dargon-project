@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+   <ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary Source="FlatColors.xaml" />
+   </ResourceDictionary.MergedDictionaries>
+   
    <!-- Resources -->
    <BitmapImage x:Key="DargonVecTilted" UriSource="/libdargon.ui-wpf;component/Resources/DargonVecTilted.png"/>
    <ImageBrush x:Key="DargonVecTiltedBrush" ImageSource="{StaticResource DargonVecTilted}" TileMode="None" Stretch="Uniform" AlignmentX="Right" AlignmentY="Bottom"/>
@@ -75,15 +79,14 @@
    <Color x:Key="PopupBackgroundColor" A="255" R="120" G="120" B="120"/>
    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource PopupBackgroundColor}"/>
 
-   <Color x:Key="WindowBackgroundColor" A="255" R="245" G="245" B="245" />
-   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
+   <Color x:Key="WindowBackgroundColor"></Color>
+   <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}" />
    
    <Color x:Key="WindowBorderColor" A="255" R="0" G="126" B="202" />
    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" />
 
    <Color x:Key="WindowChromeColor" A="255" R="0" G="126" B="202"/>
    <SolidColorBrush x:Key="WindowChromeBrush" Color="{StaticResource WindowChromeColor}" />
-
    <Color x:Key="WindowChromeBorderColor" A="255" R="0" G="94" B="151"/>
    <SolidColorBrush x:Key="WindowChromeBorderBrush" Color="{StaticResource WindowChromeBorderColor}" />
 

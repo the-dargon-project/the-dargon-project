@@ -10,19 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dargon.UI
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+namespace Dargon.UI.WPF {
+   /// <summary>
+   /// Interaction logic for Herp.xaml
+   /// </summary>
+   public partial class Herp : MainWindow {
+      public Herp() {
+         InitializeComponent();
+      }
+   }
 }

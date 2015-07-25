@@ -120,6 +120,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.csproj">
+      <Project>{9E41DC5D-E409-45E5-AE89-191DB4252EE0}</Project>
+      <Name>Dargon.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>

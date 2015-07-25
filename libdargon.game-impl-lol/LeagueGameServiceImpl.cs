@@ -27,6 +27,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Dargon.IO.Resolution;
+using Dargon.Services;
 using Dargon.VirtualFileMaps;
 using Ionic.Zlib;
 using zlib;
@@ -41,6 +42,7 @@ namespace Dargon.LeagueOfLegends {
       private readonly IThreadingProxy threadingProxy;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly ILocalManagementRegistry localManagementRegistry;
+      private readonly IServiceClient localServiceClient;
       private readonly DaemonService daemonService;
       private readonly TemporaryFileService temporaryFileService;
       private readonly IProcessProxy processProxy;
@@ -60,12 +62,13 @@ namespace Dargon.LeagueOfLegends {
       private readonly LeagueTrinketSpawnConfigurationFactory leagueTrinketSpawnConfigurationFactory;
       private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, TrinketSpawner trinketSpawner)
+      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, TrinketSpawner trinketSpawner)
       {
          logger.Info("Initializing League Game Service");
          this.threadingProxy = threadingProxy;
          this.fileSystemProxy = fileSystemProxy;
          this.localManagementRegistry = localManagementRegistry;
+         this.localServiceClient = localServiceClient;
          this.daemonService = daemonService;
          this.temporaryFileService = temporaryFileService;
          this.processProxy = processProxy;
@@ -76,6 +79,7 @@ namespace Dargon.LeagueOfLegends {
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
          this.commandFactory = new CommandFactoryImpl();
          this.leagueModificationRepositoryService = new LeagueModificationRepositoryServiceImpl(modificationRepositoryService);
+         localServiceClient.RegisterService(leagueModificationRepositoryService, typeof(LeagueModificationRepositoryService));
          this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(threadingProxy, daemonService, radsService);
          this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(threadingProxy, daemonService);
          this.leagueModificationCommandListCompilerService = new LeagueModificationCommandListCompilerServiceImpl(commandFactory);

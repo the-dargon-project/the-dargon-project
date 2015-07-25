@@ -211,7 +211,7 @@ namespace Dargon.Daemon {
 //         logger.Info("######################################");
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService, trinketSpawner);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, localServiceClient, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService, trinketSpawner);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
 
          return core;

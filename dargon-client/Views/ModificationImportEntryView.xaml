@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Dargon.Client.Views.ModificationImportEntryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dargon.Client.Views"
+             xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+   <UserControl.Resources>
+      <helpers:EqualityConverter x:Key="equalityConverter" />
+      <system:Int32 x:Key="zero">0</system:Int32>
+      <Style TargetType="{x:Type local:ModificationImportEntryView}">
+         <Setter Property="Template">
+            <Setter.Value>
+               <ControlTemplate>
+                  <local:ModificationImportDirectoryView />
+               </ControlTemplate>
+            </Setter.Value>
+         </Setter>
+         <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDirectory}" Value="False">
+               <DataTrigger.Setters>
+                  <Setter Property="Template">
+                     <Setter.Value>
+                        <ControlTemplate>
+                           <local:ModificationImportFileView />
+                        </ControlTemplate>
+                     </Setter.Value>
+                  </Setter>
+               </DataTrigger.Setters>
+            </DataTrigger>
+         </Style.Triggers>
+      </Style>
+   </UserControl.Resources>
+</UserControl>

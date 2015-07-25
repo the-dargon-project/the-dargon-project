@@ -37,11 +37,64 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.FileSystems.Api">
+      <HintPath>..\packages\Dargon.FileSystems.Api.0.1.0\lib\net45\Dargon.FileSystems.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.FileSystems.Impl">
+      <HintPath>..\packages\Dargon.FileSystems.Impl.0.1.0\lib\net45\Dargon.FileSystems.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.IO">
+      <HintPath>..\packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest.Egg.Api">
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.PortableObjects">
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.PortableObjects.Streams">
+      <HintPath>..\packages\Dargon.PortableObjects.Streams.0.1.2\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.RADS">
+      <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>..\packages\Dargon.Utilities.0.1.0\lib\net45\Dargon.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\ImpromptuInterface.6.2.2\lib\net40\ImpromptuInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\packages\ItzWarty.Commons.0.3.5\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="ItzWarty.Proxies.Impl">
+      <HintPath>..\packages\ItzWarty.Proxies.Impl.0.1.1\lib\net45\ItzWarty.Proxies.Impl.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,10 +107,35 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="zlib.net">
+      <HintPath>..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\ModificationImportEntryDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\ModificationImportEntryFileViewModel.cs" />
+    <Compile Include="ViewModels\ModificationImportEntryViewModelBase.cs" />
+    <Compile Include="ViewModels\ModificationImportViewModel.cs" />
+    <Compile Include="ViewModels\ModificationImportViewModelFactory.cs" />
+    <Compile Include="Controllers\ModificationImportController.cs" />
+    <Compile Include="Views\Helpers\GifImage.cs" />
     <Compile Include="Views\MainViewSwitch.xaml.cs">
       <DependentUpon>MainViewSwitch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModificationImportDirectoryView.xaml.cs">
+      <DependentUpon>ModificationImportDirectoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModificationImportEntryView.xaml.cs">
+      <DependentUpon>ModificationImportEntryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModificationImportFileView.xaml.cs">
+      <DependentUpon>ModificationImportFileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModificationImportStatusView.xaml.cs">
+      <DependentUpon>ModificationImportStatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ModificationImportWindow.xaml.cs">
+      <DependentUpon>ModificationImportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModificationListingView.xaml.cs">
       <DependentUpon>ModificationListingView.xaml</DependentUpon>
@@ -114,6 +192,26 @@
       <Generator>MSBuild:Compile</Generator>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
     </Page>
+    <Page Include="Views\ModificationImportDirectoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModificationImportEntryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModificationImportFileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModificationImportStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModificationImportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ModificationListingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +259,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\MockEzreal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Check.png" />
+    <Resource Include="Resources\Folder.png" />
+    <Resource Include="Resources\X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spinner.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.csproj">
+      <Project>{9e41dc5d-e409-45e5-ae89-191db4252ee0}</Project>
+      <Name>Dargon.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
+      <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
+      <Name>client-root-configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
+      <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
+      <Name>Dargon.LeagueOfLegends.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
+      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
+      <Name>Dargon.ModificationRepositories.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

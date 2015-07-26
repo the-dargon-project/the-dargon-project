@@ -29,6 +29,7 @@ namespace Dargon.Modifications {
             throw new NotImplementedException();
          } else {
             modification.FriendlyName = metadata.Name;
+            modification.Authors = metadata.Authors;
          }
          modification.IsEnabled = !File.Exists(DisabledFilePath);
          modification.PropertyChanged += HandleModificationPropertyChanged;

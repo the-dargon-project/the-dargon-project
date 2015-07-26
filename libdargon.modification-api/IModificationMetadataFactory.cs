@@ -9,6 +9,6 @@ namespace Dargon.Modifications
 {
    public interface IModificationMetadataFactory
    {
-      IModificationMetadata Create(string name, GameType gameType);
+      IModificationMetadata Create(string friendlyName, GameType gameType);
    }
 }

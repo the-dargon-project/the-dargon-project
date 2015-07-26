@@ -23,17 +23,19 @@ namespace Dargon.ModificationRepositories
 
       private readonly IClientConfiguration configuration;
       private readonly IFileSystemProxy fileSystemProxy;
+      private readonly TemporaryFileService temporaryFileService;
       private readonly IModificationLoader modificationLoader;
       private readonly IModificationMetadataSerializer modificationMetadataSerializer;
       private readonly IModificationMetadataFactory modificationMetadataFactory;
       private string repositorySubdirectoryPath;
 
-      public ModificationRepositoryServiceImpl(IClientConfiguration configuration, IFileSystemProxy fileSystemProxy, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
+      public ModificationRepositoryServiceImpl(IClientConfiguration configuration, IFileSystemProxy fileSystemProxy, TemporaryFileService temporaryFileService, IModificationLoader modificationLoader, IModificationMetadataSerializer modificationMetadataSerializer, IModificationMetadataFactory modificationMetadataFactory)
       {
          logger.Info("Constructing Modification Repository Service");
 
          this.configuration = configuration;
          this.fileSystemProxy = fileSystemProxy;
+         this.temporaryFileService = temporaryFileService;
          this.modificationLoader = modificationLoader;
          this.modificationMetadataSerializer = modificationMetadataSerializer;
          this.modificationMetadataFactory = modificationMetadataFactory;
@@ -68,23 +70,36 @@ namespace Dargon.ModificationRepositories
          fileSystemProxy.DeleteDirectory(modification.RepositoryPath, true);
       }
 
-      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType)
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType = null) {
+         return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, null, gameType);
+      }
+
+      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, string friendlyName, GameType gameType)
       {
          gameType = gameType ?? GameType.Any;
+
+         if (friendlyName == null) {
+            friendlyName = repositoryName.ToTitleCase();
+         }
+
+         var finalRepositoryPath = Path.Combine(repositorySubdirectoryPath, repositoryName);
+         if (Directory.Exists(finalRepositoryPath)) {
+            throw new InvalidOperationException("Repository of name `" + repositoryName + "` already exists! Consider renaming modification or deleting your existing modification.");
+         }
 
          logger.Info("Importing Legacy Modification \"{0}\" from {1} for {2}".F(repositoryName, sourceRoot, gameType.Name));
          sourceRoot = Path.GetFullPath(sourceRoot);
          sourceFilePaths = Util.Generate(sourceFilePaths.Length, i => Path.GetFullPath(sourceFilePaths[i]));
 
-         var repositoryPath = Path.Combine(repositorySubdirectoryPath, repositoryName);
-         fileSystemProxy.PrepareDirectory(repositoryPath);
-
-         Repository.Init(repositoryPath);
-         var gitRepository = new Repository(repositoryPath);
-         var dpmRepository = new LocalRepository(repositoryPath);
+         var temporaryDirectory = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromHours(1));
+         var workingDirectory = Path.Combine(temporaryDirectory, "importing_mod");
+         fileSystemProxy.PrepareDirectory(workingDirectory);
+         Repository.Init(workingDirectory);
+         var gitRepository = new Repository(workingDirectory);
+         var dpmRepository = new LocalRepository(workingDirectory);
          using (dpmRepository.TakeLock()) {
             dpmRepository.Initialize();
-            var metadata = modificationMetadataFactory.Create(repositoryName, gameType);
+            var metadata = modificationMetadataFactory.Create(friendlyName, gameType);
             foreach (var sourceFilePath in sourceFilePaths) {
                var internalPath = Path.Combine(metadata.ContentPath, sourceFilePath.Substring(sourceRoot.Length + PATH_DELIMITER_LENGTH));
                var absolutePath = dpmRepository.GetAbsolutePath(internalPath);
@@ -99,7 +114,10 @@ namespace Dargon.ModificationRepositories
             gitRepository.Stage(metadataFilePath);
             gitRepository.Commit("Initial Commit");
          }
-         return modificationLoader.Load(repositoryName, repositoryPath);
+
+         fileSystemProxy.MoveDirectory(workingDirectory, finalRepositoryPath);
+         fileSystemProxy.DeleteDirectory(temporaryDirectory, true);
+         return modificationLoader.Load(repositoryName, finalRepositoryPath);
       }
 
       public IEnumerable<IModification> EnumerateModifications(GameType gameType)

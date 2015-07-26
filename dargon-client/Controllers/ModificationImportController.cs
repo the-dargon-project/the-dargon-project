@@ -51,8 +51,9 @@ namespace Dargon.Client.Controllers {
          importWindow.ShowDialog();
       }
 
-      public void ImportLegacyModification(string modificationName, string modificationRoot, string[] importedFilePaths) {
-         leagueModificationRepositoryService.ImportLegacyModification(modificationName, modificationRoot, importedFilePaths);
+      public void ImportLegacyModification(string friendlyModificationName, string modificationRoot, string[] importedFilePaths) {
+         string repositoryName = Util.ExtractFileNameTokens(friendlyModificationName).Select(token => token.ToLower()).Join("-");
+         leagueModificationRepositoryService.ImportLegacyModification(repositoryName, modificationRoot, importedFilePaths, friendlyModificationName);
       }
    }
 }

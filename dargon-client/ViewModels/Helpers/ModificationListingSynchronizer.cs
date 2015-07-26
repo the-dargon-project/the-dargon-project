@@ -57,7 +57,7 @@ namespace Dargon.Client.ViewModels.Helpers {
                }));
                break;
             case WatcherChangeTypes.Deleted:
-               var removedViewModel = modificationViewModels.FirstOrDefault(x => x.Name.Equals(e.Name, StringComparison.OrdinalIgnoreCase));
+               var removedViewModel = modificationViewModels.FirstOrDefault(x => x.RepositoryName.Equals(e.Name, StringComparison.OrdinalIgnoreCase));
                if (removedViewModel == null) {
                   logger.Error("Failed to find viewmodel match for removed directory " + e.FullPath);
                } else {

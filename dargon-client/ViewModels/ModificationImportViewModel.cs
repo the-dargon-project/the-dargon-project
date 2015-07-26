@@ -32,8 +32,8 @@ namespace Dargon.Client.ViewModels {
       public bool IsEnabled { get { return isEnabled; } set { isEnabled = value; OnPropertyChanged(); } }
 
       public ICommand ImportLegacyModificationAndCloseWindow => new ActionCommand((x) => {
-         var modificationName = importWindow.ModificationNameTextBox.Text;
-         if (modificationName.Length == 0) {
+         var friendlyModificationName = importWindow.ModificationNameTextBox.Text;
+         if (friendlyModificationName.Length == 0) {
             MessageBox.Show("Modification Name must be filled in!");
             return;
          }
@@ -42,12 +42,12 @@ namespace Dargon.Client.ViewModels {
          ThreadPool.QueueUserWorkItem((y) => {
             try {
                modificationImportController.ImportLegacyModification(
-                  modificationName,
+                  friendlyModificationName,
                   rootNodeViewModel.Path,
                   rootNodeViewModel.EnumerateFileNodes().Select(node => node.Path).ToArray()
                );
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
-                  MessageBox.Show(importWindow, $"Imported Modification {modificationName}!");
+                  MessageBox.Show(importWindow, $"Imported Modification {friendlyModificationName}!");
                   importWindow.Close();
                }));
             } catch (Exception e) {

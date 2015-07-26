@@ -30,7 +30,8 @@ namespace Dargon.LeagueOfLegends.Modifications {
                var mod = leagueModificationRepositoryService.ImportLegacyModification(
                   modificationName,
                   sourcePath,
-                  Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories)
+                  Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories),
+                  modificationName.ToTitleCase()
                );
                return $"Imported mod {mod.RepositoryName} to {mod.RepositoryPath}!";
             }

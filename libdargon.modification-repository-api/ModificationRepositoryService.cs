@@ -9,7 +9,7 @@ namespace Dargon.ModificationRepositories {
    {
       IModification GetModificationOrNull(string repositoryName);
       void DeleteModification(IModification modification);
-      IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType = null);
+      IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, string friendlyName, GameType gameType);
       IEnumerable<IModification> EnumerateModifications(GameType gameType = null);
    }
 }

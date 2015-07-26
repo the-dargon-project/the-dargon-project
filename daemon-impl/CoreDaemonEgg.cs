@@ -161,7 +161,7 @@ namespace Dargon.Daemon {
          IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
          IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
          IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
-         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
+         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, temporaryFileService, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
          localServiceClient.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
 
          // construct process watching/injection dependencies

@@ -9,6 +9,6 @@ namespace Dargon.Modifications
 {
    public class ModificationMetadataFactory : IModificationMetadataFactory
    {
-      public IModificationMetadata Create(string name, GameType gameType) { return new ModificationMetadata() { Name = name, Targets = new [] { gameType } }; }
+      public IModificationMetadata Create(string friendlyName, GameType gameType) { return new ModificationMetadata() { Name = friendlyName, Targets = new [] { gameType } }; }
    }
 }

@@ -14,6 +14,7 @@ using System.Windows.Media.Animation;
 using Castle.DynamicProxy;
 using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels;
+using Dargon.Client.ViewModels.Helpers;
 using Dargon.FileSystems;
 using Dargon.IO;
 using Dargon.IO.Drive;
@@ -22,6 +23,7 @@ using ItzWarty;
 using ItzWarty.IO;
 using Dargon.IO.Resolution;
 using Dargon.LeagueOfLegends.Modifications;
+using Dargon.Modifications;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
@@ -34,8 +36,10 @@ namespace Dargon.Client {
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly DriveNodeFactory driveNodeFactory;
       private readonly RiotSolutionLoader riotSolutionLoader;
+      private readonly IClientConfiguration clientConfiguration;
+      private readonly Modification2Factory modificationFactory;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
-      private readonly List<object> keepalive = new List<object>(); 
+      private readonly List<object> keepalive = new List<object>();
 
       public DargonClientEgg() {
          IStreamFactory streamFactory = new StreamFactory();
@@ -56,6 +60,8 @@ namespace Dargon.Client {
          IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
          keepalive.Add(localServiceClient);
 
+         clientConfiguration = new ClientConfiguration();
+         modificationFactory = new Modification2Factory(fileSystemProxy, new ModificationMetadataSerializer(fileSystemProxy));
          leagueModificationRepositoryService = localServiceClient.GetService<LeagueModificationRepositoryService>();
       }
 
@@ -70,7 +76,23 @@ namespace Dargon.Client {
          var application = Application.Current ?? new Application();
          var dispatcher = application.Dispatcher;
          var window = new MainWindow();
-         ObservableCollection<ModificationViewModel> modifications = new ObservableCollection<ModificationViewModel>();
+
+         var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
+         var rootViewModelCommandFactory = new ModificationImportController(leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
+         ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
+         var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationFactory, modificationViewModels);
+         modificationListingSynchronizer.Initialize();
+         var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
+         window.DataContext = rootViewModel;
+         application.Run(window);
+      }
+
+      public NestResult Shutdown() {
+         return NestResult.Success;
+      }
+   }
+}
+/*
          modifications.Add(new ModificationViewModel {
             Name = "Something Ezreal",
             Author = "Herp",
@@ -101,15 +123,5 @@ namespace Dargon.Client {
             Status = ModificationStatus.Broken,
             Type = ModificationType.Other
          });
-         var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
-         var rootViewModelCommandFactory = new ModificationImportController(leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
-         var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modifications);
-         window.DataContext = rootViewModel;
-         application.Run(window);
-      }
 
-      public NestResult Shutdown() {
-         return NestResult.Success;
-      }
-   }
-}
+   */

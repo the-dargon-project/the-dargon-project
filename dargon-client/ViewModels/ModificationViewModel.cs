@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dargon.Client.Annotations;
+using Dargon.Modifications;
+using ItzWarty;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Dargon.Client.Annotations;
-using Dargon.Client.ViewModels.Helpers;
 
 namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
-      private string name;
-      private string author;
-      private ModificationStatus status;
-      private ModificationType type;
+      private readonly Modification2 modification;
       public event PropertyChangedEventHandler PropertyChanged;
 
-      public string Name { get { return name; } set { name = value; OnPropertyChanged(); } }
-      public string Author { get { return author; } set { author = value; OnPropertyChanged(); } }
-      public ModificationStatus Status { get { return status; } set { status = value; OnPropertyChanged(); } }
-      public ModificationType Type { get { return type; } set { type = value; OnPropertyChanged(); } }
+      public ModificationViewModel(Modification2 modification) {
+         this.modification = modification;
+      }
+
+      public string RepositoryPath => modification.RepositoryPath;
+      public string RepositoryName => modification.RepositoryName;
+      public string Name { get { return modification.FriendlyName; } set { modification.FriendlyName = value; OnPropertyChanged(); } }
+      public string[] Authors { get { return modification.Authors; } set { modification.Authors = value; OnPropertyChanged(); } }
+      public string Author => Authors.Join(", ");
+      public ModificationStatus Status { get { return ModificationStatus.Enabled; } set { throw new NotImplementedException(); } }
+      public ModificationType Type { get { return ModificationType.Champion; } set { throw new NotImplementedException(); } }
 
       [NotifyPropertyChangedInvocator]
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

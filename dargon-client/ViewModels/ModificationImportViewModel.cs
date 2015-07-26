@@ -21,6 +21,7 @@ namespace Dargon.Client.ViewModels {
       private readonly ModificationImportWindow importWindow;
       private readonly ModificationImportEntryViewModelBase rootNodeViewModel;
       private bool isEnabled = true;
+      private string modificationFriendlyName;
 
       public ModificationImportViewModel(ModificationImportController modificationImportController, ModificationImportWindow importWindow, ModificationImportEntryViewModelBase rootNodeViewModel) {
          this.modificationImportController = modificationImportController;
@@ -31,8 +32,10 @@ namespace Dargon.Client.ViewModels {
       public IEnumerable<ModificationImportEntryViewModelBase> RootNodeAsCollection => rootNodeViewModel.Wrap();
       public bool IsEnabled { get { return isEnabled; } set { isEnabled = value; OnPropertyChanged(); } }
 
+      public string ModificationFriendlyName { get { return modificationFriendlyName; } set { modificationFriendlyName = value; OnPropertyChanged(); } }
+
       public ICommand ImportLegacyModificationAndCloseWindow => new ActionCommand((x) => {
-         var friendlyModificationName = importWindow.ModificationNameTextBox.Text;
+         var friendlyModificationName = this.ModificationFriendlyName;
          if (friendlyModificationName.Length == 0) {
             MessageBox.Show("Modification Name must be filled in!");
             return;

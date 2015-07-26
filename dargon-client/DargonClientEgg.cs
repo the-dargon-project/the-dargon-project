@@ -78,7 +78,7 @@ namespace Dargon.Client {
          var window = new MainWindow();
 
          var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
-         var rootViewModelCommandFactory = new ModificationImportController(leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
+         var rootViewModelCommandFactory = new ModificationImportController(fileSystemProxy, leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
          var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationFactory, modificationViewModels);
          modificationListingSynchronizer.Initialize();

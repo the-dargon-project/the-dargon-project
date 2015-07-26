@@ -33,7 +33,7 @@
             <ColumnDefinition />
          </Grid.ColumnDefinitions>
          <TextBlock Grid.Column="0" Foreground="{DynamicResource MirageBrush}" Margin="10,10,0,10">Name:&#160;</TextBlock>
-         <TextBox Grid.Column="1" Background="Transparent" Foreground="{DynamicResource MirageBrush}" BorderBrush="{DynamicResource MirageBrush}" BorderThickness="0,0,0,1" Margin="0,0,10,-1" VerticalAlignment="Center" Name="ModificationNameTextBox" IsEnabled="{Binding IsEnabled}" />
+         <TextBox Grid.Column="1" Background="Transparent" Foreground="{DynamicResource MirageBrush}" BorderBrush="{DynamicResource MirageBrush}" BorderThickness="0,0,0,1" Margin="0,0,10,-1" VerticalAlignment="Center" IsEnabled="{Binding IsEnabled}" Text="{Binding ModificationFriendlyName}" />
       </Grid>
       <Grid Grid.Row="1" Margin="10">
          <Grid.ColumnDefinitions>

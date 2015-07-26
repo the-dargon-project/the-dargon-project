@@ -14,14 +14,17 @@ using Dargon.LeagueOfLegends.Modifications;
 using Dargon.RADS;
 using Dargon.RADS.Manifest;
 using ItzWarty;
+using ItzWarty.IO;
 
 namespace Dargon.Client.Controllers {
    public class ModificationImportController {
+      private readonly IFileSystemProxy fileSystemProxy;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly RiotSolutionLoader riotSolutionLoader;
       private readonly ModificationImportViewModelFactory modificationImportViewModelFactory;
       
-      public ModificationImportController(LeagueModificationRepositoryService leagueModificationRepositoryService, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
+      public ModificationImportController(IFileSystemProxy fileSystemProxy, LeagueModificationRepositoryService leagueModificationRepositoryService, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
+         this.fileSystemProxy = fileSystemProxy;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.riotSolutionLoader = riotSolutionLoader;
          this.modificationImportViewModelFactory = modificationImportViewModelFactory;
@@ -47,7 +50,9 @@ namespace Dargon.Client.Controllers {
             }
          }).Start();
          var importWindow = new ModificationImportWindow();
-         importWindow.DataContext = new ModificationImportViewModel(this, importWindow, rootNodeViewModel);
+         var modificationImportViewModel = new ModificationImportViewModel(this, importWindow, rootNodeViewModel);
+         modificationImportViewModel.ModificationFriendlyName = fileSystemProxy.GetDirectoryInfo(modificationPath).Name;
+         importWindow.DataContext = modificationImportViewModel;
          importWindow.ShowDialog();
       }
 

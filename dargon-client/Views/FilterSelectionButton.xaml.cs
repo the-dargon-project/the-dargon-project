@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dargon.Client.ViewModels;
+using Dargon.LeagueOfLegends.Modifications;
 
 namespace Dargon.Client.Views {
    /// <summary>
@@ -23,7 +24,7 @@ namespace Dargon.Client.Views {
          InitializeComponent();
       }
 
-      public static readonly DependencyProperty FilterProperty = DependencyProperty.Register("Filter", typeof(ModificationType), typeof(FilterSelectionButton), new FrameworkPropertyMetadata(ModificationType.All, FrameworkPropertyMetadataOptions.AffectsRender));
-      public ModificationType Filter { get { return (ModificationType)this.GetValue(FilterProperty); } set { this.SetValue(FilterProperty, value); } }
+      public static readonly DependencyProperty FilterProperty = DependencyProperty.Register("Filter", typeof(LeagueModificationCategory), typeof(FilterSelectionButton), new FrameworkPropertyMetadata(LeagueModificationCategory.All, FrameworkPropertyMetadataOptions.AffectsRender));
+      public LeagueModificationCategory Filter { get { return (LeagueModificationCategory)this.GetValue(FilterProperty); } set { this.SetValue(FilterProperty, value); } }
    }
 }

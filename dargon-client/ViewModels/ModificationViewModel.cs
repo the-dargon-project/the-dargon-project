@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dargon.LeagueOfLegends.Modifications;
 
 namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
@@ -21,7 +22,7 @@ namespace Dargon.Client.ViewModels {
       public string[] Authors { get { return modification.Authors; } set { modification.Authors = value; OnPropertyChanged(); } }
       public string Author => Authors.Join(", ");
       public ModificationStatus Status { get { return ModificationStatus.Enabled; } set { throw new NotImplementedException(); } }
-      public ModificationType Type { get { return ModificationType.Champion; } set { throw new NotImplementedException(); } }
+      public LeagueModificationCategory Type { get { return LeagueModificationCategory.Champion; } set { throw new NotImplementedException(); } }
 
       [NotifyPropertyChangedInvocator]
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
@@ -35,15 +36,5 @@ namespace Dargon.Client.ViewModels {
       Disabled = 0x02,
       Broken = 0x04,
       UpdateAvailable = 0x08
-   }
-
-   [Flags]
-   public enum ModificationType : byte {
-      Map = 0x01,
-      Champion = 0x02,
-      Ward = 0x04,
-      UI = 0x08,
-      Other = 0x10,
-      All = 0xFF
    }
 }

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dargon.LeagueOfLegends.Modifications;
 using Cursors = System.Windows.Input.Cursors;
 
 namespace Dargon.Client.ViewModels {
@@ -16,7 +17,7 @@ namespace Dargon.Client.ViewModels {
       private readonly ModificationImportController modificationImportController;
       private readonly MainWindow window;
       private readonly CollectionViewSource collectionViewSource = new CollectionViewSource();
-      private ModificationType modificationTypeFilter = ModificationType.All;
+      private LeagueModificationCategory modificationTypeFilter = LeagueModificationCategory.All;
       private ActiveView activeView = ActiveView.ModificationListing;
 
       public RootViewModel(ModificationImportController modificationImportController, MainWindow window, ObservableCollection<ModificationViewModel> modifications) {
@@ -26,7 +27,7 @@ namespace Dargon.Client.ViewModels {
 
          collectionViewSource.Source = Modifications;
          collectionViewSource.Filter += (s, e) => {
-            e.Accepted = (modificationTypeFilter & ((ModificationViewModel)e.Item).Type) != 0;
+            e.Accepted = (modificationTypeFilter.Value & ((ModificationViewModel)e.Item).Type.Value) != 0;
          };
          FilteredModifications = collectionViewSource.View;
       }
@@ -34,12 +35,12 @@ namespace Dargon.Client.ViewModels {
       public ObservableCollection<ModificationViewModel> Modifications { get; set; }
 
       public ActiveView ActiveView { get { return activeView; } set { activeView = value; OnPropertyChanged(); } }
-      public ModificationType ModificationTypeFilter { get { return modificationTypeFilter; } set { modificationTypeFilter = value; OnPropertyChanged(); } }
+      public LeagueModificationCategory ModificationTypeFilter { get { return modificationTypeFilter; } set { modificationTypeFilter = value; OnPropertyChanged(); } }
       public ICollectionView FilteredModifications { get; set; }
 
       public ICommand ShowModificationsOfType => new ActionCommand((x) => {
          ActiveView = ActiveView.ModificationListing;
-         ModificationTypeFilter = (ModificationType)x;
+         ModificationTypeFilter = (LeagueModificationCategory)x;
          collectionViewSource.View.Refresh();
       });
 

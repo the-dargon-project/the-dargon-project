@@ -40,22 +40,14 @@ namespace Dargon.LeagueOfLegends.Modifications
          return modificationRepositoryService.EnumerateModifications(GameType.LeagueOfLegends);
       }
 
-      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths) {
-         return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, null, GameType.LeagueOfLegends);
-      }
-
       public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, string friendlyName) {
          return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, friendlyName, GameType.LeagueOfLegends);
       }
 
-      public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, GameType gameType) {
-         return ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, (string)null, gameType);
-      }
-
       public IModification ImportLegacyModification(string repositoryName, string sourceRoot, string[] sourceFilePaths, string friendlyName, GameType gameType)
       {
-         if (gameType != null && !gameType.Equals(GameType.LeagueOfLegends)) {
-            throw new ArgumentException("Expected League of Legends modification");
+         if (gameType != GameType.LeagueOfLegends) {
+            throw new InvalidOperationException("League Modification Repository Service only supports League of Legends modifications");
          }
          return modificationRepositoryService.ImportLegacyModification(repositoryName, sourceRoot, sourceFilePaths, friendlyName, GameType.LeagueOfLegends);
       }

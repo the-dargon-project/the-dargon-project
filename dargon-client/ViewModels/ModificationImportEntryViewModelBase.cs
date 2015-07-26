@@ -22,6 +22,7 @@ namespace Dargon.Client.ViewModels {
       private int unresolvedDescendentsCount;
       private int resolvedDescendentsCount;
       private ResolutionState resolutionState;
+      private string resolutionPath;
       public event PropertyChangedEventHandler PropertyChanged;
 
       public string Name { get { return name; } set { name = value; OnPropertyChanged(); } }
@@ -29,6 +30,7 @@ namespace Dargon.Client.ViewModels {
       public ObservableCollection<ModificationImportEntryViewModelBase> Children { get; set; } = new ObservableCollection<ModificationImportEntryViewModelBase>();
       public int UnresolvedDescendentsCount { get { return unresolvedDescendentsCount; } set { unresolvedDescendentsCount = value; OnPropertyChanged(); } }
       public int ResolvedDescendentsCount { get { return resolvedDescendentsCount; } set { resolvedDescendentsCount = value; OnPropertyChanged(); } }
+      public string ResolutionPath { get { return resolutionPath; } set { resolutionPath = value; OnPropertyChanged(); } }
       public ResolutionState ResolutionState { get { return resolutionState; } set { SetResolutionState(value); } }
       public abstract bool IsDirectory { get; }
 

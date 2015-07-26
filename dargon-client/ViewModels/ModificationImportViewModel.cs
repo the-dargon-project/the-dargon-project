@@ -13,6 +13,7 @@ using Dargon.Client.Annotations;
 using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels.Helpers;
 using Dargon.Client.Views;
+using Dargon.LeagueOfLegends.Modifications;
 using ItzWarty;
 
 namespace Dargon.Client.ViewModels {
@@ -22,6 +23,7 @@ namespace Dargon.Client.ViewModels {
       private readonly ModificationImportEntryViewModelBase rootNodeViewModel;
       private bool isEnabled = true;
       private string modificationFriendlyName;
+      private LeagueModificationCategory modificationCategorization;
 
       public ModificationImportViewModel(ModificationImportController modificationImportController, ModificationImportWindow importWindow, ModificationImportEntryViewModelBase rootNodeViewModel) {
          this.modificationImportController = modificationImportController;
@@ -33,6 +35,7 @@ namespace Dargon.Client.ViewModels {
       public bool IsEnabled { get { return isEnabled; } set { isEnabled = value; OnPropertyChanged(); } }
 
       public string ModificationFriendlyName { get { return modificationFriendlyName; } set { modificationFriendlyName = value; OnPropertyChanged(); } }
+      public LeagueModificationCategory ModificationCategorization { get { return modificationCategorization; } set { modificationCategorization = value; OnPropertyChanged(); } }
 
       public ICommand ImportLegacyModificationAndCloseWindow => new ActionCommand((x) => {
          var friendlyModificationName = this.ModificationFriendlyName;
@@ -59,6 +62,7 @@ namespace Dargon.Client.ViewModels {
             }
          });
       });
+
 
       public event PropertyChangedEventHandler PropertyChanged;
 

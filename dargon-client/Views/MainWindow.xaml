@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dargon.Client.Views"
         xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
+        xmlns:lol="clr-namespace:Dargon.LeagueOfLegends.Modifications;assembly=Dargon.LeagueOfLegends.Api"
         mc:Ignorable="d"
         Title="Dargon Client" Width="716" Height="448">
    <Window.Resources>
@@ -36,12 +37,12 @@
       <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Background="{StaticResource MidnightBlueBrush}" MinWidth="196">
          <StackPanel Orientation="Vertical">
             <TextBlock FontFamily="Lato Black" FontSize="15" Foreground="{DynamicResource NepalBrush}" Padding="10,4" Margin="0,0,0,-2">Skins</TextBlock>
-            <local:FilterSelectionButton Filter="All" />
-            <local:FilterSelectionButton Filter="Map" />
-            <local:FilterSelectionButton Filter="Champion" />
-            <local:FilterSelectionButton Filter="Ward" />
-            <local:FilterSelectionButton Filter="UI" />
-            <local:FilterSelectionButton Filter="Other" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.All}" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.Map}" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.Champion}" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.Ward}" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.UserInterface}" />
+            <local:FilterSelectionButton Filter="{x:Static lol:LeagueModificationCategory.Other}" />
             <TextBlock FontFamily="Lato Black" FontSize="15" Foreground="{DynamicResource NepalBrush}" Padding="10,4" Margin="0,5,0,-2">Options</TextBlock>
 <!--            <local:SidePanelButton Content="Derp" CommandParameter="" />-->
             <Button FontFamily="Lato Light" FontSize="15" Foreground="{DynamicResource NepalBrush}" HorizontalContentAlignment="Left" Padding="10,4" Margin="0,0,0,-2" BorderThickness="0" Background="Transparent" Command="{Binding ShowOptions}">Blah</Button>

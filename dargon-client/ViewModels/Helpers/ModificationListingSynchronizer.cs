@@ -19,11 +19,11 @@ namespace Dargon.Client.ViewModels.Helpers {
       private const string kRepositoryDirectoryName = "repositories";
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IClientConfiguration clientConfiguration;
-      private readonly Modification2Factory modificationFactory;
+      private readonly ModificationFactory modificationFactory;
       private readonly ObservableCollection<ModificationViewModel> modificationViewModels;
       private FileSystemWatcher watcher;
 
-      public ModificationListingSynchronizer(IClientConfiguration clientConfiguration, IFileSystemProxy fileSystemProxy, Modification2Factory modificationFactory, ObservableCollection<ModificationViewModel> modificationViewModels) {
+      public ModificationListingSynchronizer(IClientConfiguration clientConfiguration, IFileSystemProxy fileSystemProxy, ModificationFactory modificationFactory, ObservableCollection<ModificationViewModel> modificationViewModels) {
          this.clientConfiguration = clientConfiguration;
          this.modificationViewModels = modificationViewModels;
          this.fileSystemProxy = fileSystemProxy;
@@ -51,7 +51,7 @@ namespace Dargon.Client.ViewModels.Helpers {
             case WatcherChangeTypes.Changed:
                break;
             case WatcherChangeTypes.Created:
-               var viewModel = new ModificationViewModel(modificationFactory.FromLocalRepository(e.FullPath));
+               var viewModel = new ModificationViewModel(modificationFactory.FromLocalDirectory(e.FullPath));
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
                   modificationViewModels.Add(viewModel);
                }));

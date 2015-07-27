@@ -1,4 +1,4 @@
-﻿namespace Dargon.Modifications.Impl {
+﻿namespace Dargon.Modifications {
    public enum ComponentOrigin {
       [Subdirectory(Name = "remote")]
       Remote = 1,

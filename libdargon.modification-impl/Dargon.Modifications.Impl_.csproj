@@ -61,12 +61,12 @@
     <Compile Include="Modification2Factory.cs" />
     <Compile Include="Modification2MetadataWatcher.cs" />
     <Compile Include="ModificationMetadata.cs" />
-    <Compile Include="Modification.cs" />
+    <Compile Include="ModificationOld.cs" />
     <Compile Include="ModificationLoader.cs" />
     <Compile Include="BuildConfigurationLoader.cs" />
     <Compile Include="ModificationMetadataFactory.cs" />
     <Compile Include="ModificationMetadataSerializer.cs" />
-    <Compile Include="ModificationsImplPofContext.cs" />
+    <Compile Include="ModificationsImplPofContextOld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

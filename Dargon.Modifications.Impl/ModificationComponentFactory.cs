@@ -3,23 +3,23 @@ using Dargon.PortableObjects;
 using ItzWarty;
 using ItzWarty.IO;
 
-namespace Dargon.Modifications.Impl {
+namespace Dargon.Modifications {
    public class ModificationComponentFactory {
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IPofContext pofContext;
       private readonly SlotSourceFactory slotSourceFactory;
       private readonly IPofSerializer serializer;
-      private readonly string metadataRootPath;
 
-      protected ModificationComponentFactory(IFileSystemProxy fileSystemProxy, IPofContext pofContext, SlotSourceFactory slotSourceFactory, IPofSerializer serializer, string metadataRootPath) {
+      public ModificationComponentFactory(IFileSystemProxy fileSystemProxy, IPofContext pofContext, SlotSourceFactory slotSourceFactory, IPofSerializer serializer) {
          this.fileSystemProxy = fileSystemProxy;
          this.pofContext = pofContext;
          this.slotSourceFactory = slotSourceFactory;
          this.serializer = serializer;
-         this.metadataRootPath = metadataRootPath;
       }
 
-      public TComponent Create<TComponent>() where TComponent : Component, new() {
+      public TComponent Create<TComponent>(string metadataRootPath) where TComponent : Component, new() {
+         fileSystemProxy.PrepareDirectory(metadataRootPath);
+
          var componentAttribute = typeof(TComponent).GetAttributeOrNull<ModificationComponentAttribute>();
          var originSubdirectoryName = componentAttribute.Origin.GetAttributeOrNull<SubdirectoryAttribute>().Name;
          var path = Path.Combine(metadataRootPath, originSubdirectoryName, componentAttribute.FileName);
@@ -34,6 +34,7 @@ namespace Dargon.Modifications.Impl {
          }
 
          component.PropertyChanged += (s, e) => {
+            fileSystemProxy.PrepareParentDirectory(path);
             using (var fs = fileSystemProxy.OpenFile(path, FileMode.Create, FileAccess.Write, FileShare.None)) {
                serializer.Serialize(fs.Writer, component);
             }

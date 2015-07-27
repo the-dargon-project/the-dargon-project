@@ -19,7 +19,7 @@ namespace Dargon.Modifications
 
       public IModification Load(string name, string path)
       {
-         return new Modification(
+         return new ModificationOld(
             modificationMetadataSerializer,
             buildConfigurationLoader,
             name,

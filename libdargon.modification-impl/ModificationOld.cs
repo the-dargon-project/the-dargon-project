@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Dargon.Modifications
 {
-   public class Modification : IModification, IPortableObject
+   public class ModificationOld : IModification, IPortableObject
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -12,11 +12,11 @@ namespace Dargon.Modifications
       private string repositoryName;
       private string repositoryPath;
 
-      public Modification() {
+      public ModificationOld() {
          data = new DataPofImpl();
       }
 
-      public Modification(IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath) {
+      public ModificationOld(IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader, string repositoryName, string repositoryPath) {
          this.data = new DataLazyImpl(this, metadataSerializer, buildConfigurationLoader);
          this.repositoryName = repositoryName;
          this.repositoryPath = repositoryPath;
@@ -50,11 +50,11 @@ namespace Dargon.Modifications
       }
 
       private class DataLazyImpl : Data {
-         private readonly Modification modification;
+         private readonly ModificationOld modification;
          private readonly IModificationMetadataSerializer metadataSerializer;
          private readonly IBuildConfigurationLoader buildConfigurationLoader;
 
-         public DataLazyImpl(Modification modification, IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader) {
+         public DataLazyImpl(ModificationOld modification, IModificationMetadataSerializer metadataSerializer, IBuildConfigurationLoader buildConfigurationLoader) {
             this.modification = modification;
             this.metadataSerializer = metadataSerializer;
             this.buildConfigurationLoader = buildConfigurationLoader;

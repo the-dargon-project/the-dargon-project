@@ -90,6 +90,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
+      <Project>{F601AB24-56FC-4ABA-A230-C3A425953B67}</Project>
+      <Name>Dargon.Modifications.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
@@ -101,14 +105,6 @@
     <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
       <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
       <Name>Dargon.LeagueOfLegends.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
-      <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
-      <Name>Dargon.Modifications.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl_.csproj">
-      <Project>{65054c16-4c56-4f57-a8c1-f325b9320803}</Project>
-      <Name>Dargon.Modifications.Impl_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-impl\Dargon.Processes.Impl.csproj">
       <Project>{747797d1-8a0b-4644-96b0-78d484ebc8b6}</Project>

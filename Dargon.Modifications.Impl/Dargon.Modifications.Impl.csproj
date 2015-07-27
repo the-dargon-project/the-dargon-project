@@ -7,7 +7,7 @@
     <ProjectGuid>{F601AB24-56FC-4ABA-A230-C3A425953B67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Modifications.Impl</RootNamespace>
+    <RootNamespace>Dargon.Modifications</RootNamespace>
     <AssemblyName>Dargon.Modifications.Impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -74,6 +74,7 @@
     <Compile Include="ModificationComponentAttribute.cs" />
     <Compile Include="ModificationComponentFactory.cs" />
     <Compile Include="ModificationServiceImpl.cs" />
+    <Compile Include="ModificationsPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubdirectoryAttribute.cs" />
   </ItemGroup>

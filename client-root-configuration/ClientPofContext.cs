@@ -22,8 +22,7 @@ namespace Dargon {
          MergeContext(new ExeggutorPofContext(3000));
 
          // Modification-Api and Impl 10000-10999
-         MergeContext(new ModificationsApiPofContext());
-         MergeContext(new ModificationsImplPofContext());
+         MergeContext(new ModificationsPofContext());
 
          // Trinket 11000-11999
          MergeContext(new TrinketsApiPofContext());

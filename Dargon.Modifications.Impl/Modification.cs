@@ -1,7 +1,8 @@
 using System;
+using System.IO;
 using ItzWarty.Collections;
 
-namespace Dargon.Modifications.Impl {
+namespace Dargon.Modifications {
    public class Modification {
       private readonly string repositoryName;
       private readonly string repositoryPath;
@@ -14,11 +15,28 @@ namespace Dargon.Modifications.Impl {
          this.modificationComponentFactory = modificationComponentFactory;
       }
 
+      public string RepositoryName => repositoryName;
+      public string RepositoryPath => repositoryPath;
+      public string MetadataPath => Path.Combine(repositoryPath, "metadata");
+
       public TComponent GetComponent<TComponent>() where TComponent : Component, new() {
          return (TComponent)componentsByType.GetOrAdd(
-            typeof(TComponent), 
-            (add) => modificationComponentFactory.Create<TComponent>()
+            typeof(TComponent),
+            (add) => modificationComponentFactory.Create<TComponent>(MetadataPath)
          );
+      }
+   }
+
+   public class ModificationFactory {
+      private readonly ModificationComponentFactory modificationComponentFactory;
+
+      public ModificationFactory(ModificationComponentFactory modificationComponentFactory) {
+         this.modificationComponentFactory = modificationComponentFactory;
+      }
+
+      public Modification FromLocalDirectory(string path) {
+         var directoryInfo = new DirectoryInfo(path);
+         return new Modification(directoryInfo.Name, directoryInfo.FullName, modificationComponentFactory);
       }
    }
 }

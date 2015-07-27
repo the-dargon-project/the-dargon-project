@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Dargon.Client.Views;
 using Dargon.Nest.Egg;
@@ -33,11 +34,16 @@ using ItzWarty.Threading;
 
 namespace Dargon.Client {
    public class DargonClientEgg : INestApplicationEgg {
+      private const string kRepositoryDirectoryName = "repositories";
+
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly DriveNodeFactory driveNodeFactory;
       private readonly RiotSolutionLoader riotSolutionLoader;
+      private readonly IPofContext pofContext;
+      private readonly IPofSerializer pofSerializer;
       private readonly IClientConfiguration clientConfiguration;
-      private readonly Modification2Factory modificationFactory;
+      private readonly ModificationFactory modificationFactory;
+      private readonly TemporaryFileService temporaryFileService;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly List<object> keepalive = new List<object>();
 
@@ -51,8 +57,8 @@ namespace Dargon.Client {
          driveNodeFactory = new DriveNodeFactory(streamFactory);
          riotSolutionLoader = new RiotSolutionLoader();
 
-         IPofContext pofContext = new ClientPofContext();
-         IPofSerializer pofSerializer = new PofSerializer(pofContext);
+         pofContext = new ClientPofContext();
+         pofSerializer = new PofSerializer(pofContext);
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
          IClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
@@ -61,7 +67,9 @@ namespace Dargon.Client {
          keepalive.Add(localServiceClient);
 
          clientConfiguration = new ClientConfiguration();
-         modificationFactory = new Modification2Factory(fileSystemProxy, new ModificationMetadataSerializer(fileSystemProxy));
+         ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
+         modificationFactory = new ModificationFactory(modificationComponentFactory);
+         temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
          leagueModificationRepositoryService = localServiceClient.GetService<LeagueModificationRepositoryService>();
       }
 
@@ -77,8 +85,11 @@ namespace Dargon.Client {
          var dispatcher = application.Dispatcher;
          var window = new MainWindow();
 
+         var repositoriesDirectory = Path.Combine(clientConfiguration.UserDataDirectoryPath, kRepositoryDirectoryName);
+
          var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
-         var rootViewModelCommandFactory = new ModificationImportController(fileSystemProxy, leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
+         ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
+         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, modificationComponentFactory, fileSystemProxy, leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
          var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationFactory, modificationViewModels);
          modificationListingSynchronizer.Initialize();

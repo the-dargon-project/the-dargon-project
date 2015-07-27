@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.PortableObjects.Streams;
+﻿using System.Collections.ObjectModel;
 
-namespace Dargon.Modifications.Impl {
+namespace Dargon.Modifications {
    public class ModificationServiceImpl {
       private readonly string repositoriesPath;
 

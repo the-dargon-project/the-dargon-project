@@ -15,16 +15,24 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Dargon.Modifications;
 using Dargon.Patcher;
+using Dargon.PortableObjects;
 
 namespace Dargon.Client.Controllers {
    public class ModificationImportController {
+      private readonly string repositoriesDirectory;
+      private readonly TemporaryFileService temporaryFileService;
+      private readonly ModificationComponentFactory modificationComponentFactory;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly RiotSolutionLoader riotSolutionLoader;
       private readonly ModificationImportViewModelFactory modificationImportViewModelFactory;
       
-      public ModificationImportController(IFileSystemProxy fileSystemProxy, LeagueModificationRepositoryService leagueModificationRepositoryService, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
+      public ModificationImportController(string repositoriesDirectory, TemporaryFileService temporaryFileService, ModificationComponentFactory modificationComponentFactory, IFileSystemProxy fileSystemProxy, LeagueModificationRepositoryService leagueModificationRepositoryService, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
+         this.repositoriesDirectory = repositoriesDirectory;
+         this.temporaryFileService = temporaryFileService;
+         this.modificationComponentFactory = modificationComponentFactory;
          this.fileSystemProxy = fileSystemProxy;
          this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.riotSolutionLoader = riotSolutionLoader;
@@ -94,10 +102,31 @@ namespace Dargon.Client.Controllers {
       }
 
       public void ImportLegacyModification(string friendlyModificationName, string modificationRoot, string[] importedFilePaths, LeagueModificationCategory category) {
+         modificationRoot = Path.GetFullPath(modificationRoot);
+         var importedRelativeFilePaths = Util.Generate(importedFilePaths.Length, i => Path.GetFullPath(importedFilePaths[i]).Substring(modificationRoot.Length + 1));
+
          string repositoryName = Util.ExtractFileNameTokens(friendlyModificationName).Select(token => token.ToLower()).Join("-");
-         var modification = leagueModificationRepositoryService.ImportLegacyModification(repositoryName, modificationRoot, importedFilePaths, friendlyModificationName);
-         var repository = new LocalRepository(modification.RepositoryPath);
-         File.WriteAllText(repository.GetMetadataFilePath("CATEGORY"), category.Name, Encoding.UTF8);
+         string finalRepositoryPath = Path.Combine(repositoriesDirectory, repositoryName);
+         var temporaryDirectory = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromHours(1));
+         var workingDirectory = Path.Combine(temporaryDirectory, "working");
+         var contentDirectory = Path.Combine(workingDirectory, "content");
+         fileSystemProxy.PrepareDirectory(contentDirectory);
+
+         foreach (var relativeFilePath in importedRelativeFilePaths) {
+            var importedFile = Path.Combine(modificationRoot, relativeFilePath);
+            var contentFile = Path.Combine(contentDirectory, relativeFilePath);
+            fileSystemProxy.PrepareParentDirectory(contentFile);
+            fileSystemProxy.CopyFile(importedFile, contentFile);
+         }
+
+         var workingDirectoryInfo = fileSystemProxy.GetDirectoryInfo(workingDirectory);
+         var modification = new Modification(workingDirectoryInfo.Name, workingDirectoryInfo.FullName, modificationComponentFactory);
+         var info = modification.GetComponent<InfoComponent>();
+         info.Id = Guid.NewGuid();
+         info.Name = friendlyModificationName;
+
+         fileSystemProxy.MoveDirectory(workingDirectory, finalRepositoryPath);
+         fileSystemProxy.DeleteDirectory(temporaryDirectory, true);
       }
    }
 }

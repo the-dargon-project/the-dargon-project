@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dargon.Modifications.Impl {
+namespace Dargon.Modifications {
    public class ModificationComponentAttribute : Attribute {
       private readonly ComponentOrigin origin;
       private readonly string fileName;

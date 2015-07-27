@@ -7,10 +7,10 @@ using Dargon.PortableObjects;
 
 namespace Dargon.Modifications {
    // POF Range 10000 - 10999
-   public class ModificationsImplPofContext : PofContext {
+   public class ModificationsImplPofContextOld : PofContext {
       private const int kPofIdBase = 10500;
-      public ModificationsImplPofContext() {
-         RegisterPortableObjectType(kPofIdBase + 0, typeof(Modification));
+      public ModificationsImplPofContextOld() {
+         RegisterPortableObjectType(kPofIdBase + 0, typeof(ModificationOld));
          RegisterPortableObjectType(kPofIdBase + 1, typeof(ModificationMetadata));
          RegisterPortableObjectType(kPofIdBase + 2, typeof(BuildConfiguration));
       }

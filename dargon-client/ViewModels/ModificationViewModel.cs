@@ -12,20 +12,23 @@ using Dargon.Patcher;
 
 namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
-      private readonly Modification2 modification;
+      private readonly Modification modification;
+      private readonly InfoComponent info;
       public event PropertyChangedEventHandler PropertyChanged;
 
-      public ModificationViewModel(Modification2 modification) {
+      public ModificationViewModel(Modification modification) {
          this.modification = modification;
+         this.info = modification.GetComponent<InfoComponent>();
+         info.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
       }
 
       public string RepositoryPath => modification.RepositoryPath;
       public string RepositoryName => modification.RepositoryName;
-      public string Name { get { return modification.FriendlyName; } set { modification.FriendlyName = value; OnPropertyChanged(); } }
-      public string[] Authors { get { return modification.Authors; } set { modification.Authors = value; OnPropertyChanged(); } }
+      public string Name { get { return info.Name; } set { info.Name = value; OnPropertyChanged(); } }
+      public string[] Authors { get { return info.Authors; } set { info.Authors = value; OnPropertyChanged(); } }
       public string Author => Authors.Join(", ");
       public ModificationStatus Status { get { return ModificationStatus.Enabled; } set { throw new NotImplementedException(); } }
-      public LeagueModificationCategory Category => LeagueModificationCategory.FromString(File.ReadAllText(new LocalRepository(RepositoryPath).GetMetadataFilePath("CATEGORY"), Encoding.UTF8));
+      public LeagueModificationCategory Category => LeagueModificationCategory.Champion; // LeagueModificationCategory.FromString(File.ReadAllText(new LocalRepository(RepositoryPath).GetMetadataFilePath("CATEGORY"), Encoding.UTF8));
 
       [NotifyPropertyChangedInvocator]
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

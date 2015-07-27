@@ -1,8 +1,0 @@
-﻿<dmSamples:SampleViewModel xmlns:dmSamples="clr-namespace:DargonManager.SampleData">
-   <dmSamples:SampleViewModel.ListedEntities>
-      <dmSamples:SampleModification Name="Beauty Queen Ezreal" Author="Warty" IsEnabled="True" Type="Actors > Ezreal"/>
-      <dmSamples:SampleModification Name="Naughty Nautilus" Author="Warty" IsEnabled="True" Type="Actors > Nautilus"/>
-      <dmSamples:SampleModification Name="Tencent Artwork" Author="Ququroon" IsEnabled="False" Type="Actors"/>
-      <dmSamples:SampleModification Name="Sunset Beach Rift" Author="Yurixy Works" IsEnabled="True" Type="Maps > Summoner's Rift"/>
-   </dmSamples:SampleViewModel.ListedEntities>
-</dmSamples:SampleViewModel>

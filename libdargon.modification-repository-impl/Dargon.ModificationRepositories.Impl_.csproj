@@ -73,13 +73,13 @@
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api</Name>
+      <Name>Dargon.Modifications.Api_</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
-      <Name>Dargon.ModificationRepositories.Api</Name>
+      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
       <Project>{b782ad94-b3f1-483b-ba92-da0c4c8548e3}</Project>

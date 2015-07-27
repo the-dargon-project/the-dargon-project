@@ -271,17 +271,17 @@
       <Project>{3008db66-80d6-4cf3-bf89-2534530e1c83}</Project>
       <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
       <Project>{9c5cfadb-05a2-4bcd-9490-e5deb1cf0490}</Project>
-      <Name>Dargon.Modifications.Api</Name>
+      <Name>Dargon.Modifications.Api_</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl.csproj">
+    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl_.csproj">
       <Project>{65054c16-4c56-4f57-a8c1-f325b9320803}</Project>
-      <Name>Dargon.Modifications.Impl</Name>
+      <Name>Dargon.Modifications.Impl_</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
       <Project>{df2d0693-ec29-4bff-a32d-c11f6d509b52}</Project>
-      <Name>Dargon.ModificationRepositories.Api</Name>
+      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.ui-wpf\Dargon.UI.WPF.csproj">
       <Project>{01a4a8de-41db-4944-8d52-39fa519e00a6}</Project>

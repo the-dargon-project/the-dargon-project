@@ -292,15 +292,15 @@
     </ProjectReference>
     <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api</Name>
+      <Name>Dargon.Modifications.Api_</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl.csproj">
+    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl_.csproj">
       <Project>{65054C16-4C56-4F57-A8C1-F325B9320803}</Project>
-      <Name>Dargon.Modifications.Impl</Name>
+      <Name>Dargon.Modifications.Impl_</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
       <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>Dargon.ModificationRepositories.Api</Name>
+      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdpatch\Dargon.Patcher.csproj">
       <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>

@@ -25,9 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Impl", "li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.LeagueOfLegends.Impl", "libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj", "{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Api", "libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj", "{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Api_", "libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj", "{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Impl", "libdargon.modification-repository-impl\Dargon.ModificationRepositories.Impl.csproj", "{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.ModificationRepositories.Impl_", "libdargon.modification-repository-impl\Dargon.ModificationRepositories.Impl_.csproj", "{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Processes.Api", "libdargon.process-api\Dargon.Processes.Api.csproj", "{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}"
 EndProject
@@ -46,9 +46,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Brainstorming", "Brainstorm
 		Brainstorming\22 September 2014 - Resolution and Compilation.txt = Brainstorming\22 September 2014 - Resolution and Compilation.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Api", "libdargon.modification-api\Dargon.Modifications.Api.csproj", "{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Api_", "libdargon.modification-api\Dargon.Modifications.Api_.csproj", "{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Impl", "libdargon.modification-impl\Dargon.Modifications.Impl.csproj", "{65054C16-4C56-4F57-A8C1-F325B9320803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Impl_", "libdargon.modification-impl\Dargon.Modifications.Impl_.csproj", "{65054C16-4C56-4F57-A8C1-F325B9320803}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DargonLibCpp", "DargonLibCpp\DargonLibCpp.vcxproj", "{4728635F-5B34-4A40-A6C8-70AEE5074DC8}"
 EndProject
@@ -110,6 +110,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ghetto-rads-dummy", "ghetto-rads-dummy\ghetto-rads-dummy.vcxproj", "{F32FC3C5-7363-4537-AE1F-35E0A6F75416}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dargon-client", "dargon-client\dargon-client.csproj", "{D2601FFA-E998-4801-A770-08CB4A6EC60F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Impl", "Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj", "{F601AB24-56FC-4ABA-A230-C3A425953B67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -984,6 +986,30 @@ Global
 		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|Win32.Build.0 = Release|Any CPU
 		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|x86.ActiveCfg = Release|Any CPU
 		{D2601FFA-E998-4801-A770-08CB4A6EC60F}.Release|x86.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Any CPU.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Any CPU.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Mixed Platforms.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Win32.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|Win32.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|x86.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Console|x86.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|Win32.Build.0 = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Debug|x86.Build.0 = Debug|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Win32.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|Win32.Build.0 = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|x86.ActiveCfg = Release|Any CPU
+		{F601AB24-56FC-4ABA-A230-C3A425953B67}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

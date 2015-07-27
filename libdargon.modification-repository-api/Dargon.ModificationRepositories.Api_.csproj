@@ -56,9 +56,9 @@
       <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
       <Name>Dargon.Game.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api.csproj">
+    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
       <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api</Name>
+      <Name>Dargon.Modifications.Api_</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

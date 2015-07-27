@@ -51,10 +51,13 @@ namespace Dargon.Client.ViewModels.Helpers {
             case WatcherChangeTypes.Changed:
                break;
             case WatcherChangeTypes.Created:
-               var viewModel = new ModificationViewModel(modificationFactory.FromLocalDirectory(e.FullPath));
-               Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
-                  modificationViewModels.Add(viewModel);
-               }));
+               var fileInfo = fileSystemProxy.GetFileInfo(e.FullPath);
+               if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
+                  var viewModel = new ModificationViewModel(modificationFactory.FromLocalDirectory(e.FullPath));
+                  Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
+                     modificationViewModels.Add(viewModel);
+                  }));
+               }
                break;
             case WatcherChangeTypes.Deleted:
                var removedViewModel = modificationViewModels.FirstOrDefault(x => x.RepositoryName.Equals(e.Name, StringComparison.OrdinalIgnoreCase));

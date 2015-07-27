@@ -49,6 +49,9 @@
     <Reference Include="Dargon.IO">
       <HintPath>..\packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Nest">
+      <HintPath>..\packages\Dargon.Nest.0.4.0\lib\net45\Dargon.Nest.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest.Egg.Api">
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>

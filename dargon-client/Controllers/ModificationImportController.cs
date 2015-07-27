@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using Dargon.Modifications;
+using Dargon.Nest;
 using Dargon.Patcher;
 using Dargon.PortableObjects;
 
@@ -126,7 +127,18 @@ namespace Dargon.Client.Controllers {
          var leagueComponent = modification.GetComponent<LeagueComponent>();
          leagueComponent.Category = category;
 
-         fileSystemProxy.MoveDirectory(workingDirectory, finalRepositoryPath);
+         var destinationNestLockPath = Path.Combine(repositoriesDirectory, "LOCK");
+         using (fileSystemProxy.OpenFile(destinationNestLockPath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None)) {
+            var temporaryNest = Path.Combine(temporaryDirectory, "working_nest");
+            fileSystemProxy.PrepareDirectory(temporaryNest);
+            var inMemoryEgg = new InMemoryEgg(repositoryName, "legacy", workingDirectory);
+            var modificationsNest = new LocalDargonNest(temporaryNest);
+            modificationsNest.InstallEgg(inMemoryEgg);
+
+            var temporaryEggPath = Path.Combine(temporaryNest, inMemoryEgg.Name);
+            fileSystemProxy.MoveDirectory(temporaryEggPath, finalRepositoryPath);
+         }
+
          fileSystemProxy.DeleteDirectory(temporaryDirectory, true);
       }
    }

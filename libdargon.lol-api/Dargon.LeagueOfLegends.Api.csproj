@@ -74,18 +74,14 @@
   <ItemGroup>
     <Compile Include="LeagueOfLegendsApiPofContext.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
+    <Compile Include="Modifications\LeagueComponent.cs" />
     <Compile Include="Modifications\LeagueModificationCategory.cs" />
-    <Compile Include="Modifications\LeagueModificationCategoryConverter.cs" />
     <Compile Include="Modifications\ICompilationTask.cs" />
     <Compile Include="Modifications\IManagableTask.cs" />
     <Compile Include="Modifications\IResolutionTask.cs" />
     <Compile Include="Modifications\ITask.cs" />
     <Compile Include="Modifications\ITaskContext.cs" />
     <Compile Include="Modifications\LeagueGameModificationLinkerService.cs" />
-    <Compile Include="Modifications\LeagueModificationObjectCompilerService.cs" />
-    <Compile Include="Modifications\LeagueModificationRepositoryService.cs" />
-    <Compile Include="Modifications\LeagueModificationResolutionService.cs" />
-    <Compile Include="Modifications\LeagueModificationCommandListCompilerService.cs" />
     <Compile Include="Modifications\ModificationTargetType.cs" />
     <Compile Include="Modifications\Status.cs" />
     <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
@@ -103,6 +99,10 @@
     <Compile Include="Session\LeagueSessionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{c56e7cec-b18c-4913-9700-6001dab20cfa}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
@@ -110,14 +110,6 @@
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
       <Name>Dargon.InjectedModule.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
-      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>

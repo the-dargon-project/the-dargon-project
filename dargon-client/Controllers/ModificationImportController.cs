@@ -25,16 +25,14 @@ namespace Dargon.Client.Controllers {
       private readonly TemporaryFileService temporaryFileService;
       private readonly ModificationComponentFactory modificationComponentFactory;
       private readonly IFileSystemProxy fileSystemProxy;
-      private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly RiotSolutionLoader riotSolutionLoader;
       private readonly ModificationImportViewModelFactory modificationImportViewModelFactory;
       
-      public ModificationImportController(string repositoriesDirectory, TemporaryFileService temporaryFileService, ModificationComponentFactory modificationComponentFactory, IFileSystemProxy fileSystemProxy, LeagueModificationRepositoryService leagueModificationRepositoryService, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
+      public ModificationImportController(string repositoriesDirectory, TemporaryFileService temporaryFileService, ModificationComponentFactory modificationComponentFactory, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory) {
          this.repositoriesDirectory = repositoriesDirectory;
          this.temporaryFileService = temporaryFileService;
          this.modificationComponentFactory = modificationComponentFactory;
          this.fileSystemProxy = fileSystemProxy;
-         this.leagueModificationRepositoryService = leagueModificationRepositoryService;
          this.riotSolutionLoader = riotSolutionLoader;
          this.modificationImportViewModelFactory = modificationImportViewModelFactory;
       }
@@ -124,6 +122,9 @@ namespace Dargon.Client.Controllers {
          var info = modification.GetComponent<InfoComponent>();
          info.Id = Guid.NewGuid();
          info.Name = friendlyModificationName;
+
+         var leagueComponent = modification.GetComponent<LeagueComponent>();
+         leagueComponent.Category = category;
 
          fileSystemProxy.MoveDirectory(workingDirectory, finalRepositoryPath);
          fileSystemProxy.DeleteDirectory(temporaryDirectory, true);

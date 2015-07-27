@@ -67,19 +67,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component.cs" />
-    <Compile Include="ComponentOrigin.cs" />
     <Compile Include="InfoComponent.cs" />
     <Compile Include="Modification.cs" />
-    <Compile Include="ModificationComponentAttribute.cs" />
     <Compile Include="ModificationComponentFactory.cs" />
     <Compile Include="ModificationServiceImpl.cs" />
     <Compile Include="ModificationsPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubdirectoryAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{c56e7cec-b18c-4913-9700-6001dab20cfa}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
+      <Project>{3008db66-80d6-4cf3-bf89-2534530e1c83}</Project>
+      <Name>Dargon.Game.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,7 +44,6 @@ namespace Dargon.Client {
       private readonly IClientConfiguration clientConfiguration;
       private readonly ModificationFactory modificationFactory;
       private readonly TemporaryFileService temporaryFileService;
-      private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
       private readonly List<object> keepalive = new List<object>();
 
       public DargonClientEgg() {
@@ -70,7 +69,6 @@ namespace Dargon.Client {
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
          modificationFactory = new ModificationFactory(modificationComponentFactory);
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
-         leagueModificationRepositoryService = localServiceClient.GetService<LeagueModificationRepositoryService>();
       }
 
       public NestResult Start(IEggParameters parameters) {
@@ -89,7 +87,7 @@ namespace Dargon.Client {
 
          var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, modificationComponentFactory, fileSystemProxy, leagueModificationRepositoryService, riotSolutionLoader, modificationImportViewModelFactory);
+         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
          var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationFactory, modificationViewModels);
          modificationListingSynchronizer.Initialize();

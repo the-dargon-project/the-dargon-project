@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Dargon.LeagueOfLegends.Modifications {
    public sealed class LeagueModificationCategory : IPortableObject
    {
-      private static readonly Dictionary<string, LeagueModificationCategory> categorizationsByName = new Dictionary<string, LeagueModificationCategory>();
+      private static readonly Dictionary<uint, LeagueModificationCategory> categorizationsByValue = new Dictionary<uint, LeagueModificationCategory>();
       private string name;
       private uint value;
 
@@ -22,14 +22,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
       public LeagueModificationCategory(string name, uint value) {
          this.name = name;
          this.value = value;
-         categorizationsByName.Add(name, this);
+         categorizationsByValue.Add(value, this);
       }
 
       public string Name => name;
       public uint Value => value;
       public override string ToString() => name;
 
-      public static LeagueModificationCategory FromString(string s) => categorizationsByName.GetValueOrDefault(s) ?? Unknown;
+      public static LeagueModificationCategory FromValue(uint value) => categorizationsByValue.GetValueOrDefault(value) ?? Unknown;
 
       public void Serialize(IPofWriter writer) {
          writer.WriteString(0, name);

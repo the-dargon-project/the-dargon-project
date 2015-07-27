@@ -11,6 +11,7 @@ namespace Dargon.LeagueOfLegends {
       private const int kBasePofId = 12000;
       public LeagueOfLegendsApiPofContext() {
          RegisterPortableObjectType(kBasePofId + 0, typeof(LeagueModificationCategory));
+         RegisterPortableObjectType(kBasePofId + 1, typeof(LeagueComponent));
       }
    }
 }

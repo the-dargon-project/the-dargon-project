@@ -95,7 +95,7 @@
     <Compile Include="DargonREPL.cs" />
     <Compile Include="ExitCommand.cs" />
     <Compile Include="HelpCommand.cs" />
-    <Compile Include="ModCommand.cs" />
+    <None Include="ModCommand.cs" />
     <Compile Include="ShutdownCommand.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="Program.cs" />
@@ -117,14 +117,6 @@
     <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
       <Project>{c4b98a85-f3b6-43fe-af0a-16e34e63e238}</Project>
       <Name>Dargon.InjectedModule.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
-      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
       <Project>{2f26cb57-5f3b-4edf-bd9b-1cadac3fa981}</Project>

@@ -177,22 +177,6 @@
       <Project>{747797D1-8A0B-4644-96B0-78D484EBC8B6}</Project>
       <Name>Dargon.Processes.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl_.csproj">
-      <Project>{65054C16-4C56-4F57-A8C1-F325B9320803}</Project>
-      <Name>Dargon.Modifications.Impl_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
-      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>Dargon.ModificationRepositories.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-impl\Dargon.ModificationRepositories.Impl_.csproj">
-      <Project>{959ADDA0-D08F-4238-B0A8-A9C715A9DB3A}</Project>
-      <Name>Dargon.ModificationRepositories.Impl_</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
       <Name>Dargon.Processes.Api</Name>

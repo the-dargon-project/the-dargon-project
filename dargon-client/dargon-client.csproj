@@ -286,6 +286,10 @@
       <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
       <Name>client-root-configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{C56E7CEC-B18C-4913-9700-6001DAB20CFA}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
       <Project>{f601ab24-56fc-4aba-a230-c3a425953b67}</Project>
       <Name>Dargon.Modifications.Impl</Name>
@@ -293,18 +297,6 @@
     <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
       <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
       <Name>Dargon.LeagueOfLegends.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-api\Dargon.Modifications.Api_.csproj">
-      <Project>{9C5CFADB-05A2-4BCD-9490-E5DEB1CF0490}</Project>
-      <Name>Dargon.Modifications.Api_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-impl\Dargon.Modifications.Impl_.csproj">
-      <Project>{65054C16-4C56-4F57-A8C1-F325B9320803}</Project>
-      <Name>Dargon.Modifications.Impl_</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api_.csproj">
-      <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
-      <Name>Dargon.ModificationRepositories.Api_</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>

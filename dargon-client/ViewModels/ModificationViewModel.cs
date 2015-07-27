@@ -14,12 +14,15 @@ namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
       private readonly Modification modification;
       private readonly InfoComponent info;
+      private readonly LeagueComponent leagueComponent;
       public event PropertyChangedEventHandler PropertyChanged;
 
       public ModificationViewModel(Modification modification) {
          this.modification = modification;
          this.info = modification.GetComponent<InfoComponent>();
          info.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+         this.leagueComponent = modification.GetComponent<LeagueComponent>();
+         leagueComponent.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
       }
 
       public string RepositoryPath => modification.RepositoryPath;
@@ -28,7 +31,7 @@ namespace Dargon.Client.ViewModels {
       public string[] Authors { get { return info.Authors; } set { info.Authors = value; OnPropertyChanged(); } }
       public string Author => Authors.Join(", ");
       public ModificationStatus Status { get { return ModificationStatus.Enabled; } set { throw new NotImplementedException(); } }
-      public LeagueModificationCategory Category => LeagueModificationCategory.Champion; // LeagueModificationCategory.FromString(File.ReadAllText(new LocalRepository(RepositoryPath).GetMetadataFilePath("CATEGORY"), Encoding.UTF8));
+      public LeagueModificationCategory Category => leagueComponent.Category; // LeagueModificationCategory.FromString(File.ReadAllText(new LocalRepository(RepositoryPath).GetMetadataFilePath("CATEGORY"), Encoding.UTF8));
 
       [NotifyPropertyChangedInvocator]
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

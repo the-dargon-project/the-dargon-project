@@ -1,4 +1,5 @@
-﻿using Dargon.Management;
+﻿using Dargon.LeagueOfLegends;
+using Dargon.Management;
 using Dargon.Modifications;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
@@ -20,16 +21,20 @@ namespace Dargon {
          // Nest Exeggutor 3000-3999
          MergeContext(new ExeggutorPofContext(3000));
 
-         // Trinket 11000-11999
-         MergeContext(new TrinketsApiPofContext());
-         MergeContext(new TrinketsImplPofContext());
-
          // Modification-Api and Impl 10000-10999
          MergeContext(new ModificationsApiPofContext());
          MergeContext(new ModificationsImplPofContext());
 
-         // Process-API and Impl 11000-11999
+         // Trinket 11000-11999
+         MergeContext(new TrinketsApiPofContext());
+         MergeContext(new TrinketsImplPofContext());
+
+         // League of Legends Api and Impl 12000-12999
+         MergeContext(new LeagueOfLegendsApiPofContext());
+
+         // Process-API and Impl 13000-13999
          MergeContext(new ProcessImplPofContext());
+
          // Wyvern Account-API 1000000-1000999
       }
    }

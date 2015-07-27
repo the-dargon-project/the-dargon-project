@@ -9,10 +9,13 @@ using ItzWarty.IO;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Dargon.Patcher;
 
 namespace Dargon.Client.Controllers {
    public class ModificationImportController {
@@ -90,9 +93,11 @@ namespace Dargon.Client.Controllers {
          importWindow.ShowDialog();
       }
 
-      public void ImportLegacyModification(string friendlyModificationName, string modificationRoot, string[] importedFilePaths) {
+      public void ImportLegacyModification(string friendlyModificationName, string modificationRoot, string[] importedFilePaths, LeagueModificationCategory category) {
          string repositoryName = Util.ExtractFileNameTokens(friendlyModificationName).Select(token => token.ToLower()).Join("-");
-         leagueModificationRepositoryService.ImportLegacyModification(repositoryName, modificationRoot, importedFilePaths, friendlyModificationName);
+         var modification = leagueModificationRepositoryService.ImportLegacyModification(repositoryName, modificationRoot, importedFilePaths, friendlyModificationName);
+         var repository = new LocalRepository(modification.RepositoryPath);
+         File.WriteAllText(repository.GetMetadataFilePath("CATEGORY"), category.Name, Encoding.UTF8);
       }
    }
 }

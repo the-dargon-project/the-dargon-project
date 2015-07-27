@@ -23,7 +23,7 @@ namespace Dargon.Client.ViewModels {
       private readonly ModificationImportEntryViewModelBase rootNodeViewModel;
       private bool isEnabled = true;
       private string modificationFriendlyName;
-      private LeagueModificationCategory modificationCategorization;
+      private LeagueModificationCategory modificationCategorization = LeagueModificationCategory.Unknown;
 
       public ModificationImportViewModel(ModificationImportController modificationImportController, ModificationImportWindow importWindow, ModificationImportEntryViewModelBase rootNodeViewModel) {
          this.modificationImportController = modificationImportController;
@@ -50,7 +50,8 @@ namespace Dargon.Client.ViewModels {
                modificationImportController.ImportLegacyModification(
                   friendlyModificationName,
                   rootNodeViewModel.Path,
-                  rootNodeViewModel.EnumerateFileNodes().Select(node => node.Path).ToArray()
+                  rootNodeViewModel.EnumerateFileNodes().Select(node => node.Path).ToArray(),
+                  modificationCategorization
                );
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
                   MessageBox.Show(importWindow, $"Imported Modification {friendlyModificationName}!");

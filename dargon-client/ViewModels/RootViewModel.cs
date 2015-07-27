@@ -27,7 +27,7 @@ namespace Dargon.Client.ViewModels {
 
          collectionViewSource.Source = Modifications;
          collectionViewSource.Filter += (s, e) => {
-            e.Accepted = (modificationTypeFilter.Value & ((ModificationViewModel)e.Item).Type.Value) != 0;
+            e.Accepted = (modificationTypeFilter.Value & ((ModificationViewModel)e.Item).Category.Value) != 0;
          };
          FilteredModifications = collectionViewSource.View;
       }

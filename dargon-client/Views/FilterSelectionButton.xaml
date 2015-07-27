@@ -9,6 +9,7 @@
              mc:Ignorable="d">
    <UserControl.Resources>
       <viewhelpers:EqualityConverter x:Key="equalityConverter" />
+      <viewhelpers:TitleCaseConverter x:Key="titleCaseConverter" />
    </UserControl.Resources>
    <Button Command="{Binding ShowModificationsOfType}" CommandParameter="{Binding Path='Filter', RelativeSource={RelativeSource FindAncestor, AncestorType=local:FilterSelectionButton}}">
       <Button.Style>
@@ -17,7 +18,7 @@
                <Setter.Value>
                   <ControlTemplate>
                      <TextBlock FontFamily="Lato Light" FontSize="15" Padding="10,4" Margin="0,0,0,-2"
-                                Text="{Binding Path='Filter', RelativeSource={RelativeSource FindAncestor, AncestorType=local:FilterSelectionButton}, FallbackValue='__FILTER__'}">
+                                Text="{Binding Path='Filter', Converter={StaticResource titleCaseConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType=local:FilterSelectionButton}, FallbackValue='__FILTER__'}">
                         <TextBlock.Resources>
                            <Style TargetType="TextBlock">
                               <Setter Property="Foreground" Value="{DynamicResource NepalBrush}"></Setter>

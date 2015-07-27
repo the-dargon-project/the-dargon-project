@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Dargon.Client.Views"
+             xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
              mc:Ignorable="d" 
              d:DesignWidth="500" d:DesignHeight="300">
+   <UserControl.Resources>
+      <helpers:TitleCaseConverter x:Key="titleCaseConverter" />
+   </UserControl.Resources>
    <Grid Margin="10,6,10,0">
       <Grid.RowDefinitions>
          <RowDefinition Height="auto" />
@@ -18,7 +22,7 @@
             <ColumnDefinition />
          </Grid.ColumnDefinitions>
          <StackPanel Orientation="Horizontal">
-            <TextBlock Grid.Column="0" FontFamily="Lato Heavy" FontSize="25" Foreground="{DynamicResource MidnightBlueBrush}" Text="{Binding ModificationTypeFilter, FallbackValue=__Filter__}"></TextBlock>
+            <TextBlock Grid.Column="0" FontFamily="Lato Heavy" FontSize="25" Foreground="{DynamicResource MidnightBlueBrush}" Text="{Binding ModificationTypeFilter, Converter={StaticResource titleCaseConverter}, FallbackValue=__Filter__}"></TextBlock>
             <TextBlock Grid.Column="0" FontFamily="Lato Heavy" FontSize="25" Foreground="{DynamicResource MidnightBlueBrush}" TextTrimming="None">&#160;Skins</TextBlock>
          </StackPanel>
          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

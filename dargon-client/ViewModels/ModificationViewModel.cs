@@ -3,9 +3,12 @@ using Dargon.Modifications;
 using ItzWarty;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Dargon.LeagueOfLegends.Modifications;
+using Dargon.Patcher;
 
 namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
@@ -22,7 +25,7 @@ namespace Dargon.Client.ViewModels {
       public string[] Authors { get { return modification.Authors; } set { modification.Authors = value; OnPropertyChanged(); } }
       public string Author => Authors.Join(", ");
       public ModificationStatus Status { get { return ModificationStatus.Enabled; } set { throw new NotImplementedException(); } }
-      public LeagueModificationCategory Type { get { return LeagueModificationCategory.Champion; } set { throw new NotImplementedException(); } }
+      public LeagueModificationCategory Category => LeagueModificationCategory.FromString(File.ReadAllText(new LocalRepository(RepositoryPath).GetMetadataFilePath("CATEGORY"), Encoding.UTF8));
 
       [NotifyPropertyChangedInvocator]
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

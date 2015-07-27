@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LeagueOfLegendsApiPofContext.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
     <Compile Include="Modifications\LeagueModificationCategory.cs" />
     <Compile Include="Modifications\LeagueModificationCategoryConverter.cs" />

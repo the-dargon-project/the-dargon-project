@@ -52,7 +52,8 @@
     <Reference Include="Dargon.Nest.Egg.Api">
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.PortableObjects">
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects.Streams">
@@ -121,6 +122,7 @@
     <Compile Include="ViewModels\ModificationImportViewModel.cs" />
     <Compile Include="ViewModels\ModificationImportViewModelFactory.cs" />
     <Compile Include="Controllers\ModificationImportController.cs" />
+    <Compile Include="Views\Helpers\TitleCaseConverter.cs" />
     <Compile Include="Views\Helpers\GifImage.cs" />
     <Compile Include="Views\MainViewSwitch.xaml.cs">
       <DependentUpon>MainViewSwitch.xaml</DependentUpon>
@@ -299,6 +301,10 @@
     <ProjectReference Include="..\libdargon.modification-repository-api\Dargon.ModificationRepositories.Api.csproj">
       <Project>{DF2D0693-EC29-4BFF-A32D-C11F6D509B52}</Project>
       <Name>Dargon.ModificationRepositories.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libdpatch\Dargon.Patcher.csproj">
+      <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>
+      <Name>Dargon.Patcher</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

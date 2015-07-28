@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Dargon.Trinkets.Spawner;
+using NLog.Layouts;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
@@ -70,8 +71,12 @@ namespace Dargon.Daemon {
 
       private void InitializeLogging() {
          var config = new LoggingConfiguration();
-         Target debuggerTarget = new DebuggerTarget();
-         Target consoleTarget = new ColoredConsoleTarget();
+         Target debuggerTarget = new DebuggerTarget() { 
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
+         Target consoleTarget = new ColoredConsoleTarget() {
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
 
 #if !DEBUG
          debuggerTarget = new AsyncTargetWrapper(debuggerTarget);

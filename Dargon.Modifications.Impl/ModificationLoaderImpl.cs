@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ItzWarty;
 
 namespace Dargon.Modifications {
@@ -13,8 +14,10 @@ namespace Dargon.Modifications {
       }
 
       public IReadOnlyList<Modification> EnumerateModifications() {
-         var repositoryDirectories = Directory.GetDirectories(repositoriesDirectory);
-         return Util.Generate(repositoryDirectories.Length, i => FromPath(repositoryDirectories[i]));
+         var repositoriesDirectoryInfo = new DirectoryInfo(repositoriesDirectory);
+         // prevents us from loading .cache as a mod
+         var repositoryDirectories = repositoriesDirectoryInfo.EnumerateDirectories().Where(di => di.Name[0] != '.');
+         return repositoryDirectories.Select(di => FromPath(di.FullName)).ToArray();
       }
 
       public Modification FromPath(string path) {

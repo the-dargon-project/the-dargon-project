@@ -22,6 +22,11 @@ namespace Dargon.LeagueOfLegends.Modifications {
       }
 
       [ManagedOperation]
+      public string EnumerateModifications() {
+         return modificationLoader.EnumerateModifications().Select(mod => mod.RepositoryName + " " + mod.RepositoryPath).Join("\r\n");
+      }
+
+      [ManagedOperation]
       public void ResolveModification(string name) {
          var repositoryPath = Path.Combine(Path.Combine(clientConfiguration.UserDataDirectoryPath, "repositories"), name);
          var modification = modificationLoader.FromPath(repositoryPath);

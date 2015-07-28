@@ -53,10 +53,14 @@ namespace Dargon.Client.ViewModels.Helpers {
             case WatcherChangeTypes.Created:
                var fileInfo = fileSystemProxy.GetFileInfo(e.FullPath);
                if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
-                  var viewModel = new ModificationViewModel(modificationLoader.FromPath(e.FullPath));
-                  Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
-                     modificationViewModels.Add(viewModel);
-                  }));
+                  if (fileInfo.Name.StartsWith(".")) {
+                     logger.Info($"Ignoring modification candidate {fileInfo.Name} as name has leading period.");
+                  } else {
+                     var viewModel = new ModificationViewModel(modificationLoader.FromPath(e.FullPath));
+                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
+                        modificationViewModels.Add(viewModel);
+                     }));
+                  }
                }
                break;
             case WatcherChangeTypes.Deleted:

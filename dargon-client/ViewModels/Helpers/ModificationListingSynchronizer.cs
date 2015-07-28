@@ -19,15 +19,15 @@ namespace Dargon.Client.ViewModels.Helpers {
       private const string kRepositoryDirectoryName = "repositories";
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IClientConfiguration clientConfiguration;
-      private readonly ModificationFactory modificationFactory;
+      private readonly ModificationLoader modificationLoader;
       private readonly ObservableCollection<ModificationViewModel> modificationViewModels;
       private FileSystemWatcher watcher;
 
-      public ModificationListingSynchronizer(IClientConfiguration clientConfiguration, IFileSystemProxy fileSystemProxy, ModificationFactory modificationFactory, ObservableCollection<ModificationViewModel> modificationViewModels) {
+      public ModificationListingSynchronizer(IClientConfiguration clientConfiguration, IFileSystemProxy fileSystemProxy, ModificationLoader modificationLoader, ObservableCollection<ModificationViewModel> modificationViewModels) {
          this.clientConfiguration = clientConfiguration;
          this.modificationViewModels = modificationViewModels;
          this.fileSystemProxy = fileSystemProxy;
-         this.modificationFactory = modificationFactory;
+         this.modificationLoader = modificationLoader;
       }
 
       public string RepositoriesDirectoryPath => Path.Combine(clientConfiguration.UserDataDirectoryPath, kRepositoryDirectoryName);
@@ -53,7 +53,7 @@ namespace Dargon.Client.ViewModels.Helpers {
             case WatcherChangeTypes.Created:
                var fileInfo = fileSystemProxy.GetFileInfo(e.FullPath);
                if (fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
-                  var viewModel = new ModificationViewModel(modificationFactory.FromLocalDirectory(e.FullPath));
+                  var viewModel = new ModificationViewModel(modificationLoader.FromPath(e.FullPath));
                   Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
                      modificationViewModels.Add(viewModel);
                   }));

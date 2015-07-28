@@ -14,14 +14,14 @@ namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {
       private readonly Modification modification;
       private readonly InfoComponent info;
-      private readonly LeagueComponent leagueComponent;
+      private readonly LeagueMetadataComponent leagueComponent;
       public event PropertyChangedEventHandler PropertyChanged;
 
       public ModificationViewModel(Modification modification) {
          this.modification = modification;
          this.info = modification.GetComponent<InfoComponent>();
          info.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
-         this.leagueComponent = modification.GetComponent<LeagueComponent>();
+         this.leagueComponent = modification.GetComponent<LeagueMetadataComponent>();
          leagueComponent.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
       }
 

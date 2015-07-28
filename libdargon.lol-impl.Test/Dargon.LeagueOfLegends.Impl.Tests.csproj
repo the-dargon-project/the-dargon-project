@@ -71,7 +71,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Lifecycle\LeagueLifecycleServiceImplTests.cs" />
+    <None Include="Lifecycle\LeagueLifecycleServiceImplTests.cs" />
+    <Compile Include="CompletionLinkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -88,25 +88,30 @@
   <ItemGroup>
     <Compile Include="LeagueGameServiceImpl.cs" />
     <Compile Include="FileSystem\RiotFileSystem.cs" />
+    <Compile Include="Utilities\CompletionLink.cs" />
+    <Compile Include="Lifecycle\LeagueLifecycleService.cs" />
     <Compile Include="Lifecycle\LeagueTrinketSpawnConfigurationFactory.cs" />
     <Compile Include="Lifecycle\LeagueTrinketSpawnConfigurationFactoryImpl.cs" />
-    <Compile Include="Modifications\LeagueGameModificationLinkerServiceImpl.cs" />
-    <Compile Include="Modifications\LeagueModificationCommandListCompilerServiceImpl.cs" />
-    <Compile Include="Modifications\LeagueModificationsMob.cs" />
-    <Compile Include="Modifications\ModificationCompilationTable.cs" />
-    <Compile Include="Modifications\LeagueModificationObjectCompilerServiceImpl.cs" />
-    <Compile Include="Modifications\LeagueModificationOperationServiceBase.cs" />
-    <Compile Include="Modifications\LeagueModificationResolutionServiceImpl.cs" />
     <Compile Include="Lifecycle\LeagueLifecycleServiceImpl.cs" />
-    <Compile Include="Modifications\LeagueModificationRepositoryServiceImpl.cs" />
-    <Compile Include="Modifications\ModificationResolutionTable.cs" />
-    <Compile Include="Modifications\ResolutionTask.cs" />
+    <Compile Include="Modifications\LeagueModificationsMob.cs" />
+    <Compile Include="Processes\LeagueProcessDetectedArgs.cs" />
+    <Compile Include="Processes\LeagueProcessType.cs" />
+    <Compile Include="Processes\LeagueProcessWatcherService.cs" />
     <Compile Include="Processes\LeagueProcessWatcherServiceImpl.cs" />
     <Compile Include="RADS\ArchiveNotFoundException.cs" />
+    <Compile Include="RADS\IRadsArchiveReference.cs" />
+    <Compile Include="RADS\IRadsProjectReference.cs" />
     <Compile Include="RADS\RadsArchiveReference.cs" />
     <Compile Include="RADS\RadsProjectReference.cs" />
+    <Compile Include="RADS\RadsService.cs" />
     <Compile Include="RADS\RadsServiceImpl.cs" />
+    <Compile Include="Session\ILeagueSession.cs" />
     <Compile Include="Session\LeagueSession.cs" />
+    <Compile Include="Session\LeagueSessionCreatedArgs.cs" />
+    <Compile Include="Session\LeagueSessionPhase.cs" />
+    <Compile Include="Session\LeagueSessionPhaseChangedArgs.cs" />
+    <Compile Include="Session\LeagueSessionProcessLaunchedArgs.cs" />
+    <Compile Include="Session\LeagueSessionService.cs" />
     <Compile Include="Session\Phases\LeaguePhaseBase.cs" />
     <Compile Include="Session\Phases\LeaguePhaseClient.cs" />
     <Compile Include="Session\Phases\LeaguePhaseContext.cs" />
@@ -124,9 +129,21 @@
       <Project>{9E41DC5D-E409-45E5-AE89-191DB4252EE0}</Project>
       <Name>Dargon.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\client-common\client-common.csproj">
+      <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
+      <Name>client-common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{c56e7cec-b18c-4913-9700-6001dab20cfa}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
+      <Project>{F601AB24-56FC-4ABA-A230-C3A425953B67}</Project>
+      <Name>Dargon.Modifications.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>

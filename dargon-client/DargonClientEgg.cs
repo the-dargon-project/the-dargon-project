@@ -42,7 +42,7 @@ namespace Dargon.Client {
       private readonly IPofContext pofContext;
       private readonly IPofSerializer pofSerializer;
       private readonly IClientConfiguration clientConfiguration;
-      private readonly ModificationFactory modificationFactory;
+      private readonly ModificationLoader modificationLoader;
       private readonly TemporaryFileService temporaryFileService;
       private readonly List<object> keepalive = new List<object>();
 
@@ -67,7 +67,7 @@ namespace Dargon.Client {
 
          clientConfiguration = new ClientConfiguration();
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         modificationFactory = new ModificationFactory(modificationComponentFactory);
+         modificationLoader = new ModificationLoaderImpl(clientConfiguration.RepositoriesDirectoryPath, modificationComponentFactory);
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
       }
 
@@ -89,7 +89,7 @@ namespace Dargon.Client {
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
          var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
-         var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationFactory, modificationViewModels);
+         var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationLoader, modificationViewModels);
          modificationListingSynchronizer.Initialize();
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;

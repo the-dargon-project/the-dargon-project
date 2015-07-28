@@ -19,6 +19,7 @@ namespace Dargon.Modifications {
 
       public TComponent Create<TComponent>(string metadataRootPath) where TComponent : Component, new() {
          fileSystemProxy.PrepareDirectory(metadataRootPath);
+         File.SetAttributes(metadataRootPath, File.GetAttributes(metadataRootPath) | FileAttributes.Hidden);
 
          var componentAttribute = typeof(TComponent).GetAttributeOrNull<ModificationComponentAttribute>();
          var originSubdirectoryName = componentAttribute.Origin.GetAttributeOrNull<SubdirectoryAttribute>().Name;

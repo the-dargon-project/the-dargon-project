@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Dargon.Game;
 using Dargon.PortableObjects;
-using ItzWarty;
 
 namespace Dargon.Modifications {
    [ModificationComponent(ComponentOrigin.Remote, "INFO")]

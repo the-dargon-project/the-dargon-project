@@ -8,11 +8,11 @@ using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.Management.Server;
-using Dargon.ModificationRepositories;
 using Dargon.Processes.Watching;
 using Dargon.RADS;
 using Dargon.RADS.Archives;
 using Dargon.RADS.Manifest;
+using Dargon.Services;
 using Dargon.Trinkets.Commands;
 using Dargon.Trinkets.Spawner;
 using ItzWarty;
@@ -22,16 +22,10 @@ using ItzWarty.Threading;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using Dargon.IO.Resolution;
-using Dargon.Services;
-using Dargon.VirtualFileMaps;
-using Ionic.Zlib;
-using zlib;
-using CompressionMode = Ionic.Zlib.CompressionMode;
+using Dargon.LeagueOfLegends.Utilities;
+using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends {
    public class LeagueGameServiceImpl : IGameHandler
@@ -39,57 +33,27 @@ namespace Dargon.LeagueOfLegends {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly LeagueConfiguration configuration = new LeagueConfiguration();
-      private readonly IThreadingProxy threadingProxy;
       private readonly IFileSystemProxy fileSystemProxy;
-      private readonly ILocalManagementRegistry localManagementRegistry;
-      private readonly IServiceClient localServiceClient;
-      private readonly DaemonService daemonService;
-      private readonly TemporaryFileService temporaryFileService;
-      private readonly IProcessProxy processProxy;
-      private readonly ProcessWatcherService processWatcherService;
-      private readonly ModificationRepositoryService modificationRepositoryService;
-      private readonly TrinketSpawner trinketSpawner;
       private readonly RadsServiceImpl radsService;
-      private readonly CommandFactory commandFactory;
-      private readonly LeagueModificationRepositoryService leagueModificationRepositoryService;
-      private readonly LeagueModificationResolutionService leagueModificationResolutionService;
-      private readonly LeagueModificationObjectCompilerService leagueModificationObjectCompilerService;
-      private readonly LeagueModificationCommandListCompilerService leagueModificationCommandListCompilerService;
-      private readonly LeagueGameModificationLinkerService leagueGameModificationLinkerService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
-      private readonly LeagueSessionServiceImpl leagueSessionService;
-      private readonly RiotFileSystem gameFileSystem;
-      private readonly LeagueTrinketSpawnConfigurationFactory leagueTrinketSpawnConfigurationFactory;
-      private readonly LeagueLifecycleService leagueLifecycleService;
 
-      public LeagueGameServiceImpl(IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationRepositoryService modificationRepositoryService, TrinketSpawner trinketSpawner)
+      public LeagueGameServiceImpl(ClientConfiguration clientConfiguration, IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationLoader modificationLoader, TrinketSpawner trinketSpawner)
       {
          logger.Info("Initializing League Game Service");
-         this.threadingProxy = threadingProxy;
          this.fileSystemProxy = fileSystemProxy;
-         this.localManagementRegistry = localManagementRegistry;
-         this.localServiceClient = localServiceClient;
-         this.daemonService = daemonService;
-         this.temporaryFileService = temporaryFileService;
-         this.processProxy = processProxy;
-         this.processWatcherService = processWatcherService;
-         this.modificationRepositoryService = modificationRepositoryService;
-         this.trinketSpawner = trinketSpawner;
 
+         var leagueConfiguration = new LeagueConfiguration();
+         var riotSolutionLoader = new RiotSolutionLoader();
          this.radsService = new RadsServiceImpl(configuration.RadsPath);
-         this.commandFactory = new CommandFactoryImpl();
-         this.leagueModificationRepositoryService = new LeagueModificationRepositoryServiceImpl(modificationRepositoryService);
-         localServiceClient.RegisterService(leagueModificationRepositoryService, typeof(LeagueModificationRepositoryService));
-         this.leagueModificationResolutionService = new LeagueModificationResolutionServiceImpl(threadingProxy, daemonService, radsService);
-         this.leagueModificationObjectCompilerService = new LeagueModificationObjectCompilerServiceImpl(threadingProxy, daemonService);
-         this.leagueModificationCommandListCompilerService = new LeagueModificationCommandListCompilerServiceImpl(commandFactory);
-         this.leagueGameModificationLinkerService = new LeagueGameModificationLinkerServiceImpl(temporaryFileService, radsService, leagueModificationRepositoryService, commandFactory);
+         var commandFactory = new CommandFactoryImpl();
          this.leagueProcessWatcherService = new LeagueProcessWatcherServiceImpl(processWatcherService);
-         this.leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
-         this.gameFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
-         this.leagueTrinketSpawnConfigurationFactory = new LeagueTrinketSpawnConfigurationFactoryImpl();
-         this.leagueLifecycleService = new LeagueLifecycleServiceImpl(trinketSpawner, leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueModificationCommandListCompilerService, leagueGameModificationLinkerService, leagueSessionService, radsService, leagueTrinketSpawnConfigurationFactory).With(x => x.Initialize());
-         this.localManagementRegistry.RegisterInstance(new LeagueModificationsMob(leagueModificationRepositoryService, leagueModificationResolutionService, leagueModificationObjectCompilerService, leagueGameModificationLinkerService));
+         var leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
+         var riotFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
+         var leagueTrinketSpawnConfigurationFactory = new LeagueTrinketSpawnConfigurationFactoryImpl();
+         var leagueBuildHelperSomething = new LeagueBuildUtilities(leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory);
+         localManagementRegistry.RegisterInstance(new LeagueModificationsMob(clientConfiguration, modificationLoader, leagueBuildHelperSomething));
+         var lifecycleService = new LeagueLifecycleServiceImpl(trinketSpawner, leagueBuildHelperSomething, leagueSessionService, radsService, leagueTrinketSpawnConfigurationFactory, modificationLoader);
+         lifecycleService.Initialize();
          RunDebugActions();
       }
 
@@ -260,22 +224,6 @@ namespace Dargon.LeagueOfLegends {
             }
             yeehaw:
             if (true) { }
-         }
-      }
-   }
-
-   public class LeagueConfiguration
-   {
-      public string RadsPath
-      {
-         get
-         {
-            if (Directory.Exists(@"V:\Riot Games\League of Legends\RADS"))
-               return @"V:\Riot Games\League of Legends\RADS";
-            else if (Directory.Exists(@"T:\Games\LeagueOfLegends\RADS"))
-               return @"T:\Games\LeagueOfLegends\RADS";
-            else
-               return @"C:\Riot Games\League of Legends\RADS";
          }
       }
    }

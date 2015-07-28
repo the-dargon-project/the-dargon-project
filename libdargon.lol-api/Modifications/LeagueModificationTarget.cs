@@ -3,7 +3,7 @@
 namespace Dargon.LeagueOfLegends.Modifications
 {
    [Flags]
-   public enum ModificationTargetType : uint
+   public enum LeagueModificationTarget : uint
    {
       Invalid  = 0,
       Client   = 0x00000001U,

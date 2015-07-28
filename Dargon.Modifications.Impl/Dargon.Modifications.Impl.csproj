@@ -67,10 +67,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InfoComponent.cs" />
-    <Compile Include="Modification.cs" />
+    <Compile Include="ModificationLoaderImpl.cs" />
+    <Compile Include="ModificationImpl.cs" />
     <Compile Include="ModificationComponentFactory.cs" />
-    <Compile Include="ModificationServiceImpl.cs" />
     <Compile Include="ModificationsPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

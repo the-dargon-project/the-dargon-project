@@ -119,12 +119,12 @@ namespace Dargon.Client.Controllers {
          }
 
          var workingDirectoryInfo = fileSystemProxy.GetDirectoryInfo(workingDirectory);
-         var modification = new Modification(workingDirectoryInfo.Name, workingDirectoryInfo.FullName, modificationComponentFactory);
+         var modification = new ModificationImpl(workingDirectoryInfo.Name, workingDirectoryInfo.FullName, modificationComponentFactory);
          var info = modification.GetComponent<InfoComponent>();
          info.Id = Guid.NewGuid();
          info.Name = friendlyModificationName;
 
-         var leagueComponent = modification.GetComponent<LeagueComponent>();
+         var leagueComponent = modification.GetComponent<LeagueMetadataComponent>();
          leagueComponent.Category = category;
 
          var destinationNestLockPath = Path.Combine(repositoriesDirectory, "LOCK");

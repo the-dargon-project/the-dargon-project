@@ -4,7 +4,6 @@ using Dargon.Game;
 using Dargon.LeagueOfLegends;
 using Dargon.Management;
 using Dargon.Management.Server;
-using Dargon.ModificationRepositories;
 using Dargon.Modifications;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
@@ -127,10 +126,10 @@ namespace Dargon.Daemon {
          keepalive.Add(localManagementServer);
 
          // construct root Dargon dependencies.
-         var configuration = new ClientConfiguration();
+         var clientConfiguration = new ClientConfiguration();
 
          // construct system-state dependencies
-         var systemState = new ClientSystemStateImpl(fileSystemProxy, configuration.ConfigurationDirectoryPath);
+         var systemState = new ClientSystemStateImpl(fileSystemProxy, clientConfiguration.ConfigurationDirectoryPath);
          localManagementServer.RegisterInstance(new ClientSystemStateMob(systemState));
 
          // construct libdsp dependencies
@@ -143,13 +142,13 @@ namespace Dargon.Daemon {
          keepalive.Add(localServiceClient);
 
          // construct Dargon Daemon dependencies
-         var core = new DaemonServiceImpl(configuration);
+         var core = new DaemonServiceImpl(clientConfiguration);
          DaemonService daemonService = core;
          localServiceClient.RegisterService(daemonService, typeof(DaemonService));
          localManagementServer.RegisterInstance(new DaemonServiceMob(core));
 
          // construct miscellanious common Dargon dependencies
-         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(configuration, fileSystemProxy).With(x => x.Initialize());
+         TemporaryFileService temporaryFileService = new TemporaryFileServiceImpl(clientConfiguration, fileSystemProxy).With(x => x.Initialize());
          localServiceClient.RegisterService(temporaryFileService, typeof(TemporaryFileService));
          IDtpNodeFactory dtpNodeFactory = new DefaultDtpNodeFactory();
 
@@ -157,12 +156,8 @@ namespace Dargon.Daemon {
          ExeggutorService exeggutorService = localServiceClient.GetService<ExeggutorService>();
 
          // construct modification and repository dependencies
-         IModificationMetadataSerializer modificationMetadataSerializer = new ModificationMetadataSerializer(fileSystemProxy);
-         IModificationMetadataFactory modificationMetadataFactory = new ModificationMetadataFactory();
-         IBuildConfigurationLoader buildConfigurationLoader = new BuildConfigurationLoader();
-         IModificationLoader modificationLoader = new ModificationLoader(modificationMetadataSerializer, buildConfigurationLoader);
-         ModificationRepositoryService modificationRepositoryService = new ModificationRepositoryServiceImpl(configuration, fileSystemProxy, temporaryFileService, modificationLoader, modificationMetadataSerializer, modificationMetadataFactory).With(s => s.Initialize());
-         localServiceClient.RegisterService(modificationRepositoryService, typeof(ModificationRepositoryService));
+         var modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
+         ModificationLoader modificationLoader = new ModificationLoaderImpl(clientConfiguration.RepositoriesDirectoryPath, modificationComponentFactory);
 
          // construct process watching/injection dependencies
 //         IProcessInjector processInjector = new ProcessInjector();
@@ -211,7 +206,7 @@ namespace Dargon.Daemon {
 //         logger.Info("######################################");
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(threadingProxy, fileSystemProxy, localManagementServer, localServiceClient, daemonService, temporaryFileService, processProxy, processWatcherService, modificationRepositoryService, trinketSpawner);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(clientConfiguration, threadingProxy, fileSystemProxy, localManagementServer, localServiceClient, daemonService, temporaryFileService, processProxy, processWatcherService, modificationLoader, trinketSpawner);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
 
          return core;

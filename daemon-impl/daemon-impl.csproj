@@ -141,6 +141,14 @@
       <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{C56E7CEC-B18C-4913-9700-6001DAB20CFA}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
+      <Project>{F601AB24-56FC-4ABA-A230-C3A425953B67}</Project>
+      <Name>Dargon.Modifications.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>

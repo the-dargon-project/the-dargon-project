@@ -12,8 +12,8 @@ using NLog;
 using Component = Dargon.Modifications.Component;
 
 namespace Dargon.LeagueOfLegends.Modifications {
-   [ModificationComponent(ComponentOrigin.Remote, "LEAGUE")]
-   public class LeagueComponent : Component {
+   [ModificationComponent(ComponentOrigin.Remote, "LEAGUE_METADATA")]
+   public class LeagueMetadataComponent : Component {
       private const int kVersion = 1;
 
       public event PropertyChangedEventHandler PropertyChanged;
@@ -30,7 +30,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          var version = reader.ReadS32(0);
          category = LeagueModificationCategory.FromValue(reader.ReadU32(1));
 
-         Trace.Assert(version == kVersion, $"Unexpected {nameof(LeagueComponent)} kVersion {version} expected {kVersion}!");
+         Trace.Assert(version == kVersion, $"Unexpected {nameof(LeagueMetadataComponent)} kVersion {version} expected {kVersion}!");
       }
 
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {

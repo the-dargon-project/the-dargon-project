@@ -72,7 +72,8 @@ namespace Dargon.Client.Controllers {
                var modificationTypeCounts = new ConcurrentDictionary<LeagueModificationCategory, int>();
                foreach (var file in fileNodes) {
                   if (file.ResolutionState == ResolutionState.ResolutionSuccessful) {
-                     if (file.ResolutionPath.IndexOf("DATA/Characters", StringComparison.OrdinalIgnoreCase) != -1) {
+                     if (file.ResolutionPath.IndexOf("DATA/Characters", StringComparison.OrdinalIgnoreCase) != -1 ||
+                         file.ResolutionPath.IndexOf("assets/images/champions", StringComparison.OrdinalIgnoreCase) != -1) {
                         if (file.ResolutionPath.IndexOf("ward", StringComparison.OrdinalIgnoreCase) != -1) {
                            modificationTypeCounts.AddOrUpdate(LeagueModificationCategory.Ward, 1, (existing, count) => count + 1);
                         } else {
@@ -92,6 +93,8 @@ namespace Dargon.Client.Controllers {
                if (highestCategorization.Value >= categorizationCounts * 2.0 / 3.0) {
                   modificationType = modificationTypeCounts.MaxBy(key => key.Value, Comparer<int>.Default).Key;
                }
+               Console.WriteLine("Highest categorization: " + highestCategorization.Key.Name);
+               modificationTypeCounts.ForEach(x => Console.WriteLine(x.Key.Name + ": " + x.Value));
                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
                   modificationImportViewModel.ModificationCategorization = modificationType;
                }));

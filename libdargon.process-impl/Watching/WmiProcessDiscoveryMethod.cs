@@ -36,19 +36,19 @@ namespace Dargon.Processes.Watching
       /// </param>
       private void ProcessStartHandler(object sender, EventArrivedEventArgs e)
       {
-         var eventArgs = new ProcessFoundEventArgs(
-            e.NewEvent.Properties["ProcessName"].Value.ToString(),
-            Int32.Parse(e.NewEvent.Properties["ProcessID"].Value.ToString()),
-            Int32.Parse(e.NewEvent.Properties["ParentProcessID"].Value.ToString())
-         );
+         try {
+            var eventArgs = new ProcessFoundEventArgs(
+               e.NewEvent.Properties["ProcessName"].Value.ToString(),
+               Int32.Parse(e.NewEvent.Properties["ProcessID"].Value.ToString()),
+               Int32.Parse(e.NewEvent.Properties["ParentProcessID"].Value.ToString())
+               );
 
-         // e.NewEvent causes a memory leak. 
-         // See https://social.msdn.microsoft.com/Forums/vstudio/en-US/158d5f4b-1238-4854-a66c-b51e37550c52/memory-leak-in-wmi-when-querying-event-logs
-         e.NewEvent.Dispose();
-
-         var capture = ProcessDiscovered;
-         if (capture != null)
-            capture("ProcessWatcher", eventArgs);
+            ProcessDiscovered?.Invoke("ProcessWatcher", eventArgs);
+         } finally {
+            // e.NewEvent causes a memory leak. 
+            // See https://social.msdn.microsoft.com/Forums/vstudio/en-US/158d5f4b-1238-4854-a66c-b51e37550c52/memory-leak-in-wmi-when-querying-event-logs
+            e.NewEvent.Dispose();
+         }
       }
 
       /// <summary>

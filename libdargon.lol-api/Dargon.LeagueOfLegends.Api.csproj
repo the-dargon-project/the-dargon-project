@@ -83,6 +83,7 @@
     <Compile Include="LeagueConfiguration.cs" />
     <Compile Include="LeagueOfLegendsApiPofContext.cs" />
     <Compile Include="Modifications\LeagueBuildUtilities.cs" />
+    <Compile Include="Modifications\LeagueBuildUtilitiesConfiguration.cs" />
     <Compile Include="Modifications\LeagueMetadataComponent.cs" />
     <Compile Include="Modifications\LeagueModificationCategory.cs" />
     <Compile Include="Modifications\LeagueModificationTarget.cs" />

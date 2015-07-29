@@ -25,7 +25,7 @@ using Component = Dargon.Modifications.Component;
 
 namespace Dargon.LeagueOfLegends.Modifications {
    public class LeagueBuildUtilities {
-      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+      private readonly Logger logger = null;
 
       private readonly SystemState systemState;
       private readonly LeagueConfiguration leagueConfiguration;
@@ -33,26 +33,31 @@ namespace Dargon.LeagueOfLegends.Modifications {
       private readonly RiotSolutionLoader riotSolutionLoader;
       private readonly TemporaryFileService temporaryFileService;
       private readonly CommandFactory commandFactory;
+      private readonly LeagueBuildUtilitiesConfiguration leagueBuildUtilitiesConfiguration;
       private readonly Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>> cache = new Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>>();
 
-      public LeagueBuildUtilities(SystemState systemState, LeagueConfiguration leagueConfiguration, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, TemporaryFileService temporaryFileService, CommandFactory commandFactory) {
+      public LeagueBuildUtilities(SystemState systemState, LeagueConfiguration leagueConfiguration, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, TemporaryFileService temporaryFileService, CommandFactory commandFactory, LeagueBuildUtilitiesConfiguration leagueBuildUtilitiesConfiguration) {
          this.systemState = systemState;
          this.leagueConfiguration = leagueConfiguration;
          this.fileSystemProxy = fileSystemProxy;
          this.riotSolutionLoader = riotSolutionLoader;
          this.temporaryFileService = temporaryFileService;
          this.commandFactory = commandFactory;
+         this.leagueBuildUtilitiesConfiguration = leagueBuildUtilitiesConfiguration;
+         if (leagueBuildUtilitiesConfiguration.IsLoggingEnabled) {
+            logger = LogManager.GetCurrentClassLogger();
+         }
       }
-
+      
       public void LoadProjectAndResolver(RiotProjectType projectType, out RiotProject riotProject, out Resolver resolver) {
          Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>> tuple;
          if (cache.TryGetValue(projectType, out tuple) &&
              tuple.Item1.TryGetTarget(out riotProject) &&
              tuple.Item3.TryGetTarget(out resolver) &&
              File.GetLastWriteTime(riotProject.ReleaseManifest.Path) == tuple.Item2) {
-            logger.Info("Successfully saved project and resolver from GCing: " + projectType);
+            logger?.Info("Successfully saved project and resolver from GCing: " + projectType);
          } else {
-            logger.Info("Constructing new project and resolver: " + projectType);
+            logger?.Info("Constructing new project and resolver: " + projectType);
             var riotProjectLoader = new RiotProjectLoader(leagueConfiguration.RadsPath);
             riotProject = riotProjectLoader.LoadProject(projectType);
             resolver = new Resolver(riotProject.ReleaseManifest.Root, new ResolverConfigurationImpl(systemState));
@@ -62,9 +67,9 @@ namespace Dargon.LeagueOfLegends.Modifications {
       }
 
       public bool ResolveModification(Modification modification, CancellationToken cancellationToken) {
-         logger.Info($"Begin resolving modification {modification.RepositoryName}.");
+         logger?.Info($"Begin resolving modification {modification.RepositoryName}.");
          if (cancellationToken.IsCancellationRequested) {
-            logger.Info($"End resolving modification {modification.RepositoryName}.");
+            logger?.Info($"End resolving modification {modification.RepositoryName}.");
             return false;
          }
 
@@ -82,7 +87,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          var relativeResolvableFilePaths = resolvableFiles.Select(f => f.FullName.Substring(contentPath.Length + 1));
          foreach (var resolvableFilePath in relativeResolvableFilePaths) {
             if (cancellationToken.IsCancellationRequested) {
-               logger.Info($"End resolving modification {modification.RepositoryName}.");
+               logger?.Info($"End resolving modification {modification.RepositoryName}.");
                return false;
             }
             LeagueResolutionTableValue entryValue;
@@ -111,14 +116,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
             }
          }
          resolutionTableComponent.NotifyUpdated();
-         logger.Info($"End resolving modification {modification.RepositoryName}.");
+         logger?.Info($"End resolving modification {modification.RepositoryName}.");
          return true;
       }
 
       public bool CompileModification(Modification modification, CancellationToken cancellationToken) {
-         logger.Info($"Begin compiling modification {modification.RepositoryName}.");
+         logger?.Info($"Begin compiling modification {modification.RepositoryName}.");
          if (cancellationToken.IsCancellationRequested) {
-            logger.Info($"End resolving modification {modification.RepositoryName}.");
+            logger?.Info($"End resolving modification {modification.RepositoryName}.");
             return false;
          }
          var resolutionTableComponent = modification.GetComponent<LeagueResolutionTableComponent>();
@@ -132,7 +137,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          File.SetAttributes(objectsPath, File.GetAttributes(objectsPath) | FileAttributes.Hidden);
          foreach (var contentRelativePath in contentRelativePaths) {
             if (cancellationToken.IsCancellationRequested) {
-               logger.Info($"End resolving modification {modification.RepositoryName}.");
+               logger?.Info($"End resolving modification {modification.RepositoryName}.");
                return false;
             }
             LeagueResolutionTableValue resolutionTableValue;
@@ -152,7 +157,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                }
             }
          }
-         logger.Info($"End resolving modification {modification.RepositoryName}.");
+         logger?.Info($"End resolving modification {modification.RepositoryName}.");
          return true;
       }
 
@@ -170,11 +175,11 @@ namespace Dargon.LeagueOfLegends.Modifications {
             foreach (var contentRelativePath in contentRelativePaths) {
                LeagueResolutionTableValue resolutionTableValue;
                if (!resolutionTable.TryGetValue(contentRelativePath, out resolutionTableValue)) {
-                  logger.Warn($"Not linking {contentRelativePath}: resolution table lookup failed");
+                  logger?.Warn($"Not linking {contentRelativePath}: resolution table lookup failed");
                   continue;
                }
                if (resolutionTableValue.Target != LeagueModificationTarget.Client) {
-                  logger.Warn($"Not linking {contentRelativePath}: does not target air client.");
+                  logger?.Warn($"Not linking {contentRelativePath}: does not target air client.");
                   continue;
                }
                string replacedPath = resolutionTableValue.ResolvedPath;
@@ -205,16 +210,16 @@ namespace Dargon.LeagueOfLegends.Modifications {
             foreach (var contentRelativePath in contentRelativePaths) {
                LeagueResolutionTableValue resolutionTableValue;
                if (!resolutionTable.TryGetValue(contentRelativePath, out resolutionTableValue)) {
-                  logger.Warn($"Not linking {contentRelativePath}: resolution table lookup failed");
+                  logger?.Warn($"Not linking {contentRelativePath}: resolution table lookup failed");
                   continue;
                }
                if (resolutionTableValue.Target != LeagueModificationTarget.Game) {
-                  logger.Warn($"Not linking {contentRelativePath}: does not target game client.");
+                  logger?.Warn($"Not linking {contentRelativePath}: does not target game client.");
                   continue;
                }
                var manifestEntry = gameManifest.Root.GetRelativeOrNull<ReleaseManifestFileEntry>(resolutionTableValue.ResolvedPath);
                if (manifestEntry == null) {
-                  logger.Warn($"Not linking {contentRelativePath}: could not find {resolutionTableValue.ResolvedPath} in manifest.");
+                  logger?.Warn($"Not linking {contentRelativePath}: could not find {resolutionTableValue.ResolvedPath} in manifest.");
                   continue;
                }
                List<KeyValuePair<RiotArchive, SectorCollection>> archivePairs;
@@ -222,7 +227,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                   archivePairs = new List<KeyValuePair<RiotArchive, SectorCollection>>();
                   IReadOnlyList<RiotArchive> archives;
                   if (!archiveLoader.TryLoadArchives(manifestEntry.ArchiveId, out archives)) {
-                     logger.Error($"Not linking {contentRelativePath}: could not load archives for {manifestEntry.ArchiveId}!");
+                     logger?.Error($"Not linking {contentRelativePath}: could not load archives for {manifestEntry.ArchiveId}!");
                      continue;
                   }
                   archives.ForEach(archive => {
@@ -245,7 +250,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                   }
                }
                if (rafEntry == null) {
-                  logger.Warn($"Not linking {contentRelativePath}: could not find {resolutionTableValue.ResolvedPath} in {manifestEntry.ArchiveId} archives.");
+                  logger?.Warn($"Not linking {contentRelativePath}: could not find {resolutionTableValue.ResolvedPath} in {manifestEntry.ArchiveId} archives.");
                   continue;
                }
 
@@ -265,14 +270,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
                manifestEntry.CompressedSize = (uint)objectsFileLength;
                manifestEntry.DecompressedSize = (uint)originalFileLength;
 
-               logger.Warn("Successfully linked " + resolutionTableValue.ResolvedPath  + " in archive " + manifestEntry.ArchiveId + ".");
+               logger?.Warn("Successfully linked " + resolutionTableValue.ResolvedPath  + " in archive " + manifestEntry.ArchiveId + ".");
             }
          }
 
          var commandList = new DefaultCommandList();
          var versionStringUtilities = new VersionStringUtilities();
          var tempDir = temporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromMinutes(1));
-         logger.Info("Allocated temporary directory " + tempDir);
+         logger?.Info("Allocated temporary directory " + tempDir);
          foreach (var archivePair in archivePairsById) {
             string versionString = versionStringUtilities.GetVersionString(archivePair.Key);
 
@@ -289,7 +294,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                   vfmSerializer.Serialize(archiveData.Value, writer);
                   commandList.Add(commandFactory.CreateFileRemappingCommand(archiveData.Key.DatFilePath, vfmFileStream.Name));
                }
-               logger.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
+               logger?.Info("Wrote VFM " + vfmFileName + " to " + tempDir);
 
                // Serialize the RAF
                var rafFileName = versionString + "/" + archiveFileName;
@@ -299,7 +304,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                   writer.Write(archiveData.Key.GetDirectoryFile().GetBytes());
                   commandList.Add(commandFactory.CreateFileRedirectionCommand(archiveData.Key.RAFFilePath, rafFileStream.Name));
                }
-               logger.Info("Wrote RAF " + rafFileName + " to " + tempDir);
+               logger?.Info("Wrote RAF " + rafFileName + " to " + tempDir);
             }
          }
 
@@ -310,7 +315,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
             new ReleaseManifestWriter(gameManifest).Save(writer);
             commandList.Add(commandFactory.CreateFileRedirectionCommand(gameManifest.Path, manifestFileStream.Name));
          }
-         logger.Info("Wrote release manifest to " + tempDir);
+         logger?.Info("Wrote release manifest to " + tempDir);
          return commandList;
       }
    }

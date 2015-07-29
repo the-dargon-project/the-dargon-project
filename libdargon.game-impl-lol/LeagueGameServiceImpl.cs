@@ -51,7 +51,8 @@ namespace Dargon.LeagueOfLegends {
          var leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          var riotFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          var leagueTrinketSpawnConfigurationFactory = new LeagueTrinketSpawnConfigurationFactoryImpl();
-         var leagueBuildUtilities = new LeagueBuildUtilities(systemState, leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory);
+         var leagueBuildUtilitiesConfiguration = new LeagueBuildUtilitiesConfiguration(systemState);
+         var leagueBuildUtilities = new LeagueBuildUtilities(systemState, leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory, leagueBuildUtilitiesConfiguration);
          localManagementRegistry.RegisterInstance(new LeagueModificationsMob(clientConfiguration, modificationLoader, leagueBuildUtilities));
          var lifecycleService = new LeagueLifecycleServiceImpl(trinketSpawner, leagueBuildUtilities, leagueSessionService, radsService, leagueTrinketSpawnConfigurationFactory, modificationLoader);
          lifecycleService.Initialize();

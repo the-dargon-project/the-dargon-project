@@ -3,8 +3,8 @@ using ItzWarty.Collections;
 using ItzWarty.Processes;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using SCG = System.Collections.Generic;
 
 namespace Dargon.Processes.Watching
 {
@@ -33,11 +33,11 @@ namespace Dargon.Processes.Watching
       internal void HandleProcessWatcherNewProcessFound(object sender, ProcessFoundEventArgs e)
       {
          var lowerProcessName = e.ProcessName.ToLower();
-//         logger.Info("$$$$$$$$$$");
-//         logger.Info(lowerProcessName);
-//         logger.Info("$$$$$$$$$$");
-         var handlers = processSpawnedHandlersByProcessName.GetValueOrDefault(lowerProcessName);
-         if (handlers != null) {
+         //         logger.Info("$$$$$$$$$$");
+         //         logger.Info(lowerProcessName);
+         //         logger.Info("$$$$$$$$$$");
+         HashSet<Action<CreatedProcessDescriptor>> handlers;
+         if (processSpawnedHandlersByProcessName.TryGetValue(lowerProcessName, out handlers)) {
             foreach (var handler in handlers) {
                try {
                   handler(new CreatedProcessDescriptor(e.ProcessName, e.ProcessID, e.ParentProcessID));
@@ -48,7 +48,7 @@ namespace Dargon.Processes.Watching
          }
       }
 
-      public void Subscribe(Action<CreatedProcessDescriptor> handler, IEnumerable<string> names, bool retroactive)
+      public void Subscribe(Action<CreatedProcessDescriptor> handler, SCG.IEnumerable<string> names, bool retroactive)
       {
          var lowerCaseNames = new ItzWarty.Collections.HashSet<string>(names.Select(FormatProcessName));
          foreach (var lowerCaseName in lowerCaseNames) {

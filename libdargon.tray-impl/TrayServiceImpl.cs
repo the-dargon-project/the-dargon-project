@@ -35,7 +35,10 @@ namespace Dargon.Tray
 
          notifyIcon.ContextMenu = menu;
 
-         daemonService.BeginShutdown += (sender, args) => notifyIcon.Visible = false;
+         daemonService.BeginShutdown += (sender, args) => {
+            notifyIcon.Visible = false;
+            notifyIcon.Dispose();
+         };
          Application.Run();
       }
    }

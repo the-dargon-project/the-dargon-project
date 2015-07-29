@@ -105,6 +105,7 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
                modification.RepositoryName,
                add => new CompletionChain(cancellationToken => leagueBuildUtilities.CompileModification(modification, cancellationToken))
             );
+
             var resolutionLink = resolutionChain.CreateLink("resolution_" + DateTime.Now.ToFileTimeUtc());
             var compilationLink = compilationChain.CreateLink("compilation_" + DateTime.Now.ToFileTimeUtc());
             resolutionLink.Tail(compilationLink.StartAndWaitForChain);

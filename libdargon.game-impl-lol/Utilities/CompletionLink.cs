@@ -82,7 +82,14 @@ namespace Dargon.LeagueOfLegends.Utilities {
             return false;
          } else {
             cancellationTokenSource.Cancel();
-            task?.Wait();
+            try {
+               task?.Wait();
+            } catch (AggregateException aggregateException) {
+               if (aggregateException.InnerExceptions.Count != 1 ||
+                   !(aggregateException.InnerExceptions[0] is TaskCanceledException)) {
+                  throw;
+               }
+            }
             if (!isCompletedUninterrupted) {
                this.next = next;
                next.previous = this;
@@ -104,6 +111,11 @@ namespace Dargon.LeagueOfLegends.Utilities {
          previous?.HandleCompletion();
          completionHandlers.ForEach(x => x.Invoke());
          completionLatch.Set();
+         if (this.previous != null) {
+            this.previous.next = null;
+            this.previous = null;
+         }
+         this.completionHandlers.Clear();
       }
 
       public void Wait() => completionLatch.WaitOne();

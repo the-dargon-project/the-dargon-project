@@ -32,6 +32,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
       private readonly RiotSolutionLoader riotSolutionLoader;
       private readonly TemporaryFileService temporaryFileService;
       private readonly CommandFactory commandFactory;
+      private readonly Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>> cache = new Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>>();
 
       public LeagueBuildUtilities(LeagueConfiguration leagueConfiguration, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, TemporaryFileService temporaryFileService, CommandFactory commandFactory) {
          this.leagueConfiguration = leagueConfiguration;
@@ -41,15 +42,35 @@ namespace Dargon.LeagueOfLegends.Modifications {
          this.commandFactory = commandFactory;
       }
 
+      public void LoadProjectAndResolver(RiotProjectType projectType, out RiotProject riotProject, out Resolver resolver) {
+         Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>> tuple;
+         if (cache.TryGetValue(projectType, out tuple) &&
+             tuple.Item1.TryGetTarget(out riotProject) &&
+             tuple.Item3.TryGetTarget(out resolver) &&
+             File.GetLastWriteTime(riotProject.ReleaseManifest.Path) == tuple.Item2) {
+            logger.Info("Successfully saved project and resolver from GCing: " + projectType);
+         } else {
+            logger.Info("Constructing new project and resolver: " + projectType);
+            var riotProjectLoader = new RiotProjectLoader(leagueConfiguration.RadsPath);
+            riotProject = riotProjectLoader.LoadProject(projectType);
+            resolver = new Resolver(riotProject.ReleaseManifest.Root);
+            var manifestLastModified = File.GetLastWriteTime(riotProject.ReleaseManifest.Path);
+            cache[projectType] = new Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>(new WeakReference<RiotProject>(riotProject), manifestLastModified, new WeakReference<Resolver>(resolver));
+         }
+      }
+
       public bool ResolveModification(Modification modification, CancellationToken cancellationToken) {
+         logger.Info($"Begin resolving modification {modification.RepositoryName}.");
          if (cancellationToken.IsCancellationRequested) {
+            logger.Info($"End resolving modification {modification.RepositoryName}.");
             return false;
          }
-         var riotSolution = riotSolutionLoader.Load(leagueConfiguration.RadsPath, RiotProjectType.AirClient | RiotProjectType.GameClient);
-         var airProject = riotSolution.ProjectsByType[RiotProjectType.AirClient];
-         var gameProject = riotSolution.ProjectsByType[RiotProjectType.GameClient];
-         var airResolver = new Resolver(airProject.ReleaseManifest.Root);
-         var gameResolver = new Resolver(gameProject.ReleaseManifest.Root);
+
+         RiotProject airProject, gameProject;
+         Resolver airResolver, gameResolver;
+
+         LoadProjectAndResolver(RiotProjectType.AirClient, out airProject, out airResolver);
+         LoadProjectAndResolver(RiotProjectType.GameClient, out gameProject, out gameResolver);
 
          var resolutionTableComponent = modification.GetComponent<LeagueResolutionTableComponent>();
          var resolutionTable = resolutionTableComponent.Table;
@@ -59,6 +80,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          var relativeResolvableFilePaths = resolvableFiles.Select(f => f.FullName.Substring(contentPath.Length + 1));
          foreach (var resolvableFilePath in relativeResolvableFilePaths) {
             if (cancellationToken.IsCancellationRequested) {
+               logger.Info($"End resolving modification {modification.RepositoryName}.");
                return false;
             }
             LeagueResolutionTableValue entryValue;
@@ -87,11 +109,14 @@ namespace Dargon.LeagueOfLegends.Modifications {
             }
          }
          resolutionTableComponent.NotifyUpdated();
+         logger.Info($"End resolving modification {modification.RepositoryName}.");
          return true;
       }
 
       public bool CompileModification(Modification modification, CancellationToken cancellationToken) {
+         logger.Info($"Begin compiling modification {modification.RepositoryName}.");
          if (cancellationToken.IsCancellationRequested) {
+            logger.Info($"End resolving modification {modification.RepositoryName}.");
             return false;
          }
          var resolutionTableComponent = modification.GetComponent<LeagueResolutionTableComponent>();
@@ -105,6 +130,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
          File.SetAttributes(objectsPath, File.GetAttributes(objectsPath) | FileAttributes.Hidden);
          foreach (var contentRelativePath in contentRelativePaths) {
             if (cancellationToken.IsCancellationRequested) {
+               logger.Info($"End resolving modification {modification.RepositoryName}.");
                return false;
             }
             LeagueResolutionTableValue resolutionTableValue;
@@ -124,6 +150,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                }
             }
          }
+         logger.Info($"End resolving modification {modification.RepositoryName}.");
          return true;
       }
 

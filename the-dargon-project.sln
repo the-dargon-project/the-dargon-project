@@ -104,6 +104,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Modifications.Api", "Dargon.Modifications.Api\Dargon.Modifications.Api.csproj", "{C56E7CEC-B18C-4913-9700-6001DAB20CFA}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Console|Any CPU = Console|Any CPU
 		Console|Mixed Platforms = Console|Mixed Platforms

@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.IO">
-      <HintPath>..\packages\Dargon.IO.0.1.0\lib\net45\Dargon.IO.dll</HintPath>
+    <Reference Include="Dargon.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.IO.0.1.1\lib\net45\Dargon.IO.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -41,6 +42,9 @@
     </Reference>
     <Reference Include="Dargon.RADS">
       <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.SystemState.Api">
+      <HintPath>..\packages\Dargon.SystemState.Api.0.1.0\lib\net45\Dargon.SystemState.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

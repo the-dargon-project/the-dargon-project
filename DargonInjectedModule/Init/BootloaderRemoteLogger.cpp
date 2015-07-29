@@ -10,8 +10,12 @@ using namespace dargon::IO::DSP;
 using namespace dargon::IO::DSP::ClientImpl;
 
 BootloaderRemoteLogger::BootloaderRemoteLogger(std::shared_ptr<const bootstrap_context> context)
-   : m_context(context) {}
+   : m_context(context) {
+
+}
 
 void BootloaderRemoteLogger::Log(UINT32 file_loggerLevel, LoggingFunction file_logger) {
-   m_context->dtp_session->Log(file_loggerLevel, file_logger);
+   if (isLoggingEnabled) {
+      m_context->dtp_session->Log(file_loggerLevel, file_logger);
+   }
 }

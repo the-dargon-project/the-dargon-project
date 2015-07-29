@@ -33,6 +33,7 @@ namespace dargon {
    class logger
    {
    public:
+      static bool isLoggingEnabled;
       virtual void Log(UINT32 file_loggerLevel, LoggingFunction loggingFunction) = 0;
    };
 }

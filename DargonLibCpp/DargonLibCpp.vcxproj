@@ -94,6 +94,7 @@
     <ClCompile Include="base.cpp" />
     <ClCompile Include="guid.cpp" />
     <ClCompile Include="io\IPCObject.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="vfm\vfm_file.cpp" />
     <ClCompile Include="vfm\vfm_file_sector.cpp" />

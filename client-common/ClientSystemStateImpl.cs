@@ -17,12 +17,22 @@ namespace Dargon {
       }
 
       public string Get(string key, string defaultValue) {
+         string result;
+         if (!TryGetInternal(key, out result)) {
+            result = defaultValue;
+         }
+         return result;
+      }
+
+      private bool TryGetInternal(string key, out string value) {
          var path = BuildKeyPath(key);
          var fileInfo = fileSystemProxy.GetFileSystemInfo(path);
          if (fileInfo.Exists && !fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
-            return fileSystemProxy.ReadAllText(path);
+            value = fileSystemProxy.ReadAllText(path);
+            return true;
          } else {
-            return defaultValue;
+            value = null;
+            return false;
          }
       }
 
@@ -30,6 +40,21 @@ namespace Dargon {
          var path = BuildKeyPath(key);
          fileSystemProxy.PrepareParentDirectory(path);
          fileSystemProxy.WriteAllText(path, value);
+      }
+
+      public bool GetBoolean(string key, bool defaultValue) {
+         string valueString;
+         bool valueParsed;
+         if (TryGetInternal(key, out valueString) &&
+             bool.TryParse(valueString, out valueParsed)) {
+            return valueParsed;
+         } else {
+            return defaultValue;
+         }
+      }
+
+      public void SetBoolean(string key, bool value) {
+         Set(key, value.ToString());
       }
 
       private string BuildKeyPath(string key) {

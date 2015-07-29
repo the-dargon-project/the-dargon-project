@@ -27,6 +27,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
    public class LeagueBuildUtilities {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly SystemState systemState;
       private readonly LeagueConfiguration leagueConfiguration;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly RiotSolutionLoader riotSolutionLoader;
@@ -34,7 +35,8 @@ namespace Dargon.LeagueOfLegends.Modifications {
       private readonly CommandFactory commandFactory;
       private readonly Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>> cache = new Dictionary<RiotProjectType, Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>>();
 
-      public LeagueBuildUtilities(LeagueConfiguration leagueConfiguration, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, TemporaryFileService temporaryFileService, CommandFactory commandFactory) {
+      public LeagueBuildUtilities(SystemState systemState, LeagueConfiguration leagueConfiguration, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, TemporaryFileService temporaryFileService, CommandFactory commandFactory) {
+         this.systemState = systemState;
          this.leagueConfiguration = leagueConfiguration;
          this.fileSystemProxy = fileSystemProxy;
          this.riotSolutionLoader = riotSolutionLoader;
@@ -53,7 +55,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
             logger.Info("Constructing new project and resolver: " + projectType);
             var riotProjectLoader = new RiotProjectLoader(leagueConfiguration.RadsPath);
             riotProject = riotProjectLoader.LoadProject(projectType);
-            resolver = new Resolver(riotProject.ReleaseManifest.Root);
+            resolver = new Resolver(riotProject.ReleaseManifest.Root, new ResolverConfigurationImpl(systemState));
             var manifestLastModified = File.GetLastWriteTime(riotProject.ReleaseManifest.Path);
             cache[projectType] = new Tuple<WeakReference<RiotProject>, DateTime, WeakReference<Resolver>>(new WeakReference<RiotProject>(riotProject), manifestLastModified, new WeakReference<Resolver>(resolver));
          }

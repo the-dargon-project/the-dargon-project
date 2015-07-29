@@ -37,7 +37,7 @@ namespace Dargon.LeagueOfLegends {
       private readonly RadsServiceImpl radsService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
 
-      public LeagueGameServiceImpl(ClientConfiguration clientConfiguration, IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationLoader modificationLoader, TrinketSpawner trinketSpawner)
+      public LeagueGameServiceImpl(ClientConfiguration clientConfiguration, IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, SystemState systemState, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationLoader modificationLoader, TrinketSpawner trinketSpawner)
       {
          logger.Info("Initializing League Game Service");
 
@@ -51,7 +51,7 @@ namespace Dargon.LeagueOfLegends {
          var leagueSessionService = new LeagueSessionServiceImpl(processProxy, leagueProcessWatcherService);
          var riotFileSystem = new RiotFileSystem(radsService, RiotProjectType.GameClient);
          var leagueTrinketSpawnConfigurationFactory = new LeagueTrinketSpawnConfigurationFactoryImpl();
-         var leagueBuildUtilities = new LeagueBuildUtilities(leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory);
+         var leagueBuildUtilities = new LeagueBuildUtilities(systemState, leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory);
          localManagementRegistry.RegisterInstance(new LeagueModificationsMob(clientConfiguration, modificationLoader, leagueBuildUtilities));
          var lifecycleService = new LeagueLifecycleServiceImpl(trinketSpawner, leagueBuildUtilities, leagueSessionService, radsService, leagueTrinketSpawnConfigurationFactory, modificationLoader);
          lifecycleService.Initialize();

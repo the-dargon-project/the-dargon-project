@@ -1,15 +1,13 @@
-﻿using System;
-using Dargon.LeagueOfLegends.Processes;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Dargon.Processes;
+﻿using Dargon.LeagueOfLegends.Processes;
 using ItzWarty;
 using ItzWarty.Processes;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
-namespace Dargon.LeagueOfLegends.Session
-{
+namespace Dargon.LeagueOfLegends.Session {
    public class LeagueSessionServiceImpl : LeagueSessionService
    {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -17,7 +15,6 @@ namespace Dargon.LeagueOfLegends.Session
       private readonly IProcessProxy processProxy;
       private readonly LeagueProcessWatcherService leagueProcessWatcherService;
 
-      private readonly ISet<LeagueSession> sessions = new HashSet<LeagueSession>();
       private readonly Dictionary<int, LeagueSession> sessionsByProcessId = new Dictionary<int, LeagueSession>();
       private readonly object synchronization = new object();
 
@@ -48,6 +45,36 @@ namespace Dargon.LeagueOfLegends.Session
             }
 
             logger.Info("Handling process " + processId + " launch");
+
+            if (e.ProcessType == LeagueProcessType.RadsUserKernel && sessionsByProcessId.Any()) {
+               var sessions = sessionsByProcessId.Values.Distinct();
+               var session = sessions.First();
+               IProcess foregroundProcess;
+               if (session.TryGetProcess(LeagueProcessType.GameClient, out foregroundProcess) ||
+                   session.TryGetProcess(LeagueProcessType.PvpNetClient, out foregroundProcess) ||
+                   session.TryGetProcess(LeagueProcessType.Launcher, out foregroundProcess)) {
+                  var foregroundProcessDerp= Process.GetProcessById(foregroundProcess.Id);
+
+                  List<IntPtr> processWindowHandles = new List<IntPtr>();
+                  foreach (ProcessThread thread in foregroundProcessDerp.Threads) {
+                     WinAPI.EnumThreadWindows(thread.Id, (hWnd, lparam) => {
+                        processWindowHandles.Add(hWnd);
+                        return true;
+                     }, IntPtr.Zero);
+                  }
+
+                  foreach (var processWindowHandle in processWindowHandles) {
+                     if (WinAPI.IsWindowVisible(processWindowHandle)) {
+                        WinAPI.SetForegroundWindow(processWindowHandle);
+                        WinAPI.ShowWindow(processWindowHandle, WinAPI.WindowShowStyle.Minimize);
+                        WinAPI.ShowWindow(processWindowHandle, WinAPI.WindowShowStyle.Restore);
+                     }
+                  }
+
+                  Process.GetProcessById(process.Id).Kill();
+                  return;
+               }
+            }
 
             process.EnableRaisingEvents = true;
             process.Exited += (a, b) => HandleLeagueProcessQuit(process, e.ProcessType);

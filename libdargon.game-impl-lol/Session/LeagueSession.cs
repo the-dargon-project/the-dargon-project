@@ -46,7 +46,6 @@ namespace Dargon.LeagueOfLegends.Session
             return;
          }
 
-
          if (type == LeagueProcessType.RadsUserKernel)
             phaseContext.HandleRadsUserKernelLaunched(process);
          else if (type == LeagueProcessType.Launcher)
@@ -82,6 +81,7 @@ namespace Dargon.LeagueOfLegends.Session
       }
 
       public IProcess GetProcessOrNull(LeagueProcessType processType) { return processesByType.GetValueOrDefault(processType); }
+      public bool TryGetProcess(LeagueProcessType processType, out IProcess process) { return processesByType.TryGetValue(processType, out process); }
 
       protected virtual void OnProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e)
       {

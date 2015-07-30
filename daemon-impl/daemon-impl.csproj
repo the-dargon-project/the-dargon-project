@@ -64,6 +64,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.2.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Services.0.2.1\lib\net45\Dargon.Services.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.SystemState.Api.0.1.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
@@ -126,10 +130,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.csproj">
-      <Project>{9e41dc5d-e409-45e5-ae89-191db4252ee0}</Project>
-      <Name>Dargon.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\client-common\client-common.csproj">
       <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
       <Name>client-common</Name>

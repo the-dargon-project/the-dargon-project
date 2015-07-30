@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.2.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Services.0.2.1\lib\net45\Dargon.Services.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Transport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Transport.0.2.0\lib\net45\Dargon.Transport.dll</HintPath>
@@ -97,10 +101,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.csproj">
-      <Project>{9e41dc5d-e409-45e5-ae89-191db4252ee0}</Project>
-      <Name>Dargon.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
       <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
       <Name>client-root-configuration</Name>

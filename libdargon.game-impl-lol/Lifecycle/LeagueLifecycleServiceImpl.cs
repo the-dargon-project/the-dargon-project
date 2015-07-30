@@ -10,8 +10,12 @@ using ItzWarty.Collections;
 using ItzWarty.Processes;
 using NLog;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Dargon.LeagueOfLegends.Utilities;
 using Dargon.Modifications;
 using PhaseChange = System.Tuple<Dargon.LeagueOfLegends.Session.LeagueSessionPhase, Dargon.LeagueOfLegends.Session.LeagueSessionPhase>;
@@ -66,6 +70,28 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          session.ProcessLaunched += HandleSessionProcessLaunched;
       }
 
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern int SuspendThread(IntPtr hThread);
+
+      [DllImport("kernel32.dll")]
+      static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+
+      [DllImport("kernel32.dll")]
+      static extern uint ResumeThread(IntPtr hThread);
+
+      [Flags]
+      public enum ThreadAccess : int {
+         TERMINATE = (0x0001),
+         SUSPEND_RESUME = (0x0002),
+         GET_CONTEXT = (0x0008),
+         SET_CONTEXT = (0x0010),
+         SET_INFORMATION = (0x0020),
+         QUERY_INFORMATION = (0x0040),
+         SET_THREAD_TOKEN = (0x0080),
+         IMPERSONATE = (0x0100),
+         DIRECT_IMPERSONATION = (0x0200)
+      }
+
       internal void HandleSessionProcessLaunched(ILeagueSession session, LeagueSessionProcessLaunchedArgs e) 
       { 
          logger.Info("Process Launched " + e.Type + ": " + e.Process.Id);
@@ -75,12 +101,23 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          }
       }
 
-      internal void HandlePreclientProcessLaunched(IProcess process)
-      {
+      internal void HandlePreclientProcessLaunched(IProcess processInput) {
+         var process = Process.GetProcessById(processInput.Id);
+         var threads = process.Threads.Cast<ProcessThread>().ToArray();
+         var suspendedThreadsHandles = threads.Select(thread => OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id)).ToArray();
+
+         foreach (var suspendedThreadHandle in suspendedThreadsHandles) {
+            SuspendThread(suspendedThreadHandle);
+         }
+
          trinketSpawner.SpawnTrinket(
-            process,
+            processInput,
             leagueTrinketSpawnConfigurationFactory.GetPreclientConfiguration()
          );
+
+         foreach (var suspendedThreadHandle in suspendedThreadsHandles) {
+            ResumeThread(suspendedThreadHandle);
+         }
       }
 
       internal void HandleSessionPhaseChanged(ILeagueSession session, LeagueSessionPhaseChangedArgs e) 

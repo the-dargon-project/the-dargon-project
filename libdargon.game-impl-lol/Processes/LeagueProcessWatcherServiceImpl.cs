@@ -97,9 +97,9 @@ namespace Dargon.LeagueOfLegends.Processes
             processType = LeagueProcessType.BugSplat;
          }
 
-         logger.Info("###########");
-         logger.Info((@event == null) + " " + lowerProcessName + " " + processType);
-         logger.Info("###########");
+//         logger.Info("###########");
+//         logger.Info((@event == null) + " " + lowerProcessName + " " + processType);
+//         logger.Info("###########");
 
          if (processType != LeagueProcessType.Invalid) {
             logger.Info(lowerProcessName);

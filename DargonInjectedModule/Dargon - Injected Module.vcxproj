@@ -54,7 +54,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(WindowsSDK_IncludePath);C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Include;C:\detours\header;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;C:\my-repositories\the-dargon-project\utf8cpp;$(IncludePath)</IncludePath>
+    <IncludePath>$(WindowsSDK_IncludePath);C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Include;C:\detours\header;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;../../utf8cpp;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Lib\x86;C:\detours\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Console|Win32'">
@@ -73,7 +73,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.;..\DargonLibCpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)/../DargonLibCpp/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
@@ -240,7 +240,7 @@
     <ClCompile Include="Subsystems\FileSubsystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DargonLibCpp\DargonLibCpp.vcxproj">
+    <ProjectReference Include="..\DargonLibCpp\src\DargonLibCpp.vcxproj">
       <Project>{4728635f-5b34-4a40-a6c8-70aee5074dc8}</Project>
     </ProjectReference>
   </ItemGroup>

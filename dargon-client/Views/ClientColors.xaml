@@ -39,9 +39,14 @@
 
    <Color A="255" R="236" G="240" B="241" x:Key="CloudColor" />
    <SolidColorBrush Color="{StaticResource CloudColor}" x:Key="CloudBrush" />
+   
+   <Color A="255" R="172" G="172" B="172" x:Key="SilverChaliceColor" />
+   <SolidColorBrush Color="{StaticResource SilverChaliceColor}" x:Key="SilverChaliceBrush" />
 
    <SolidColorBrush Color="{StaticResource RomanColor}" x:Key="ModificationBrokenBrush" />
    <SolidColorBrush Color="{StaticResource DustyGrayColor}" x:Key="ModificationDisabledBrush" />
    <SolidColorBrush Color="{StaticResource PastelGreenColor}" x:Key="ModificationEnabledBrush" />
    <SolidColorBrush Color="{StaticResource HavelockBlueColor}" x:Key="ModificationUpdateAvailableBrush" />
+   <Color A="74" R="0" G="0" B="0" x:Key="ModificationHoverBackgroundColor" />
+   <SolidColorBrush Color="{StaticResource ModificationHoverBackgroundColor}" x:Key="ModificationHoverBackgroundBrush" />
 </ResourceDictionary>

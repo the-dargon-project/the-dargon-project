@@ -7,7 +7,7 @@
              xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
              mc:Ignorable="d" 
              MinWidth="116" MinHeight="83" Background="Red">
-   <Grid>
+   <Grid x:Name="ElementRoot">
       <Grid.RowDefinitions>
          <RowDefinition Height="75" />
          <RowDefinition Height="8" />
@@ -29,33 +29,130 @@
             </LinearGradientBrush>
          </Rectangle.Fill>
       </Rectangle>
-      <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="3,0,0,3">
-         <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}"></TextBlock>
-         <StackPanel Orientation="Horizontal" Margin="0,0,0,-1">
-            <TextBlock FontFamily="Lato" FontSize="9" Foreground="White">By&#160;</TextBlock>
-            <TextBlock FontFamily="Lato" FontSize="9" Foreground="White" Text="{Binding Author, FallbackValue=__AUTHOR__}"></TextBlock>
-         </StackPanel>
-      </StackPanel>
-      <Rectangle Grid.Row="1">
-         <Rectangle.Style>
-            <Style TargetType="{x:Type Rectangle}">
-               <Setter Property="Fill" Value="Magenta"/>
+
+
+      <Grid VerticalAlignment="Top" Background="{DynamicResource ModificationHoverBackgroundBrush}">
+         <Grid.Style>
+            <Style TargetType="Grid">
+               <Setter Property="Opacity" Value="0"></Setter>
                <Style.Triggers>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Enabled}">
-                     <Setter Property="Fill" Value="{DynamicResource ModificationEnabledBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Disabled}">
-                  <Setter Property="Fill" Value="{DynamicResource ModificationDisabledBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Broken}">
-                     <Setter Property="Fill" Value="{DynamicResource ModificationBrokenBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.UpdateAvailable}">
-                     <Setter Property="Fill" Value="{DynamicResource ModificationUpdateAvailableBrush}"/>
+                  <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                     <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.EnterActions>
+                     <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.ExitActions>
                   </DataTrigger>
                </Style.Triggers>
             </Style>
-         </Rectangle.Style>
-      </Rectangle>
+         </Grid.Style>
+         <StackPanel Grid.Row="0" Margin="3,0,0,3">
+            <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}"></TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,-1">
+               <TextBlock FontFamily="Lato" FontSize="9" Foreground="White">By&#160;</TextBlock>
+               <TextBlock FontFamily="Lato" FontSize="9" Foreground="White" Text="{Binding Author, FallbackValue=__AUTHOR__}"></TextBlock>
+            </StackPanel>
+         </StackPanel>
+      </Grid>
+
+      <Grid VerticalAlignment="Bottom">
+         <StackPanel Grid.Row="0" Margin="3,0,0,3">
+            <StackPanel.Style>
+               <Style TargetType="StackPanel">
+                  <Setter Property="Opacity" Value="1"></Setter>
+                  <Style.Triggers>
+                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                        <DataTrigger.EnterActions>
+                           <BeginStoryboard>
+                              <Storyboard>
+                                 <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity"/>
+                              </Storyboard>
+                           </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                           <BeginStoryboard>
+                              <Storyboard>
+                                 <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity"/>
+                              </Storyboard>
+                           </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                     </DataTrigger>
+                  </Style.Triggers>
+               </Style>
+            </StackPanel.Style>
+
+            <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}"></TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,-1">
+               <TextBlock FontFamily="Lato" FontSize="9" Foreground="White">By&#160;</TextBlock>
+               <TextBlock FontFamily="Lato" FontSize="9" Foreground="White" Text="{Binding Author, FallbackValue=__AUTHOR__}"></TextBlock>
+            </StackPanel>
+         </StackPanel>
+
+         <Border Grid.Row="0" VerticalAlignment="Stretch" Background="{DynamicResource ModificationHoverBackgroundBrush}">
+            <Border.Style>
+               <Style TargetType="Border">
+                  <Setter Property="Opacity" Value="0"></Setter>
+                  <Style.Triggers>
+                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                        <DataTrigger.EnterActions>
+                           <BeginStoryboard>
+                              <Storyboard>
+                                 <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity"/>
+                              </Storyboard>
+                           </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                           <BeginStoryboard>
+                              <Storyboard>
+                                 <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity"/>
+                              </Storyboard>
+                           </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                     </DataTrigger>
+                  </Style.Triggers>
+               </Style>
+            </Border.Style>
+            
+            <Grid Margin="3">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition />
+                  <ColumnDefinition Width="Auto" />
+               </Grid.ColumnDefinitions>
+               <TextBlock Grid.Column="0" FontFamily="Lato Regular" FontSize="11" Foreground="White" Text="{Binding Harglbargl, FallbackValue=__Status__}" VerticalAlignment="Center"></TextBlock>
+               <Rectangle Grid.Column="1" Fill="Red" Width="10" Height="10" VerticalAlignment="Center"></Rectangle>
+            </Grid>
+         </Border>
+      </Grid>
+      <ProgressBar Value="50" BorderThickness="0" Grid.Row="1">
+         <ProgressBar.Style>
+            <Style TargetType="{x:Type ProgressBar}">
+               <Setter Property="Foreground" Value="Magenta"/>
+               <Setter Property="Background" Value="{DynamicResource SilverChaliceBrush}"/>
+               <Style.Triggers>
+                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Enabled}">
+                     <Setter Property="Foreground" Value="{DynamicResource ModificationEnabledBrush}"/>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Disabled}">
+                     <Setter Property="Foreground" Value="{DynamicResource ModificationDisabledBrush}"/>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Broken}">
+                     <Setter Property="Foreground" Value="{DynamicResource ModificationBrokenBrush}"/>
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.UpdateAvailable}">
+                     <Setter Property="Foreground" Value="{DynamicResource ModificationUpdateAvailableBrush}"/>
+                  </DataTrigger>
+               </Style.Triggers>
+            </Style>
+         </ProgressBar.Style>
+      </ProgressBar>
    </Grid>
 </UserControl>

@@ -12,6 +12,8 @@ using Dargon.Client.Controllers;
 using Dargon.Client.Controllers.Phases;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
+using Dargon.Nest.Eggxecutor;
+using Dargon.PortableObjects;
 using Dargon.Services;
 using ItzWarty;
 using ItzWarty.IO;
@@ -23,18 +25,22 @@ namespace Dargon.Client.ViewModels.Helpers {
 
       private const string kRepositoryDirectoryName = "repositories";
       private readonly HashSet<string> displayedModificationNames = new HashSet<string>(); 
+      private readonly IPofSerializer pofSerializer;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly IClientConfiguration clientConfiguration;
       private readonly TemporaryFileService temporaryFileService;
+      private readonly ExeggutorService exeggutorService;
       private readonly ModificationLoader modificationLoader;
       private readonly ObservableCollection<ModificationViewModel> modificationViewModels;
       private readonly LeagueBuildUtilities leagueBuildUtilities;
       private FileSystemWatcher watcher;
 
-      public ModificationListingSynchronizer(IFileSystemProxy fileSystemProxy, IClientConfiguration clientConfiguration, TemporaryFileService temporaryFileService, ModificationLoader modificationLoader, ObservableCollection<ModificationViewModel> modificationViewModels, LeagueBuildUtilities leagueBuildUtilities) {
+      public ModificationListingSynchronizer(IPofSerializer pofSerializer, IFileSystemProxy fileSystemProxy, IClientConfiguration clientConfiguration, TemporaryFileService temporaryFileService, ExeggutorService exeggutorService, ModificationLoader modificationLoader, ObservableCollection<ModificationViewModel> modificationViewModels, LeagueBuildUtilities leagueBuildUtilities) {
+         this.pofSerializer = pofSerializer;
          this.fileSystemProxy = fileSystemProxy;
          this.clientConfiguration = clientConfiguration;
          this.temporaryFileService = temporaryFileService;
+         this.exeggutorService = exeggutorService;
          this.modificationLoader = modificationLoader;
          this.modificationViewModels = modificationViewModels;
          this.leagueBuildUtilities = leagueBuildUtilities;
@@ -81,7 +87,7 @@ namespace Dargon.Client.ViewModels.Helpers {
                      viewModel.SetController(controller);
                      viewModel.SetModification(modification);
                      var modificationPhaseManager = new ModificationPhaseManager();
-                     var modificationPhaseFactory = new ModificationPhaseFactory(fileSystemProxy, temporaryFileService, modificationPhaseManager, modificationLoader, viewModel, leagueBuildUtilities, modification);
+                     var modificationPhaseFactory = new ModificationPhaseFactory(pofSerializer, fileSystemProxy, temporaryFileService, exeggutorService, modificationPhaseManager, modificationLoader, viewModel, leagueBuildUtilities, modification);
                      modificationPhaseManager.Transition(modificationPhaseFactory.Idle());
                      controller.SetModificationPhaseManager(modificationPhaseManager);
                      controller.Initialize();

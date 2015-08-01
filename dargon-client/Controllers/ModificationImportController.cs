@@ -25,6 +25,7 @@ using Dargon.PortableObjects;
 
 namespace Dargon.Client.Controllers {
    public class ModificationImportController {
+      private readonly IPofSerializer pofSerializer;
       private readonly string repositoriesDirectory;
       private readonly TemporaryFileService temporaryFileService;
       private readonly ExeggutorService exeggutorService;
@@ -36,7 +37,8 @@ namespace Dargon.Client.Controllers {
       private readonly ModificationLoader modificationLoader;
       private readonly LeagueBuildUtilities leagueBuildUtilities;
 
-      public ModificationImportController(string repositoriesDirectory, TemporaryFileService temporaryFileService, ExeggutorService exeggutorService, ModificationComponentFactory modificationComponentFactory, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory, ObservableCollection<ModificationViewModel> modificationViewModels, ModificationLoader modificationLoader, LeagueBuildUtilities leagueBuildUtilities) {
+      public ModificationImportController(IPofSerializer pofSerializer, string repositoriesDirectory, TemporaryFileService temporaryFileService, ExeggutorService exeggutorService, ModificationComponentFactory modificationComponentFactory, IFileSystemProxy fileSystemProxy, RiotSolutionLoader riotSolutionLoader, ModificationImportViewModelFactory modificationImportViewModelFactory, ObservableCollection<ModificationViewModel> modificationViewModels, ModificationLoader modificationLoader, LeagueBuildUtilities leagueBuildUtilities) {
+         this.pofSerializer = pofSerializer;
          this.repositoriesDirectory = repositoriesDirectory;
          this.temporaryFileService = temporaryFileService;
          this.exeggutorService = exeggutorService;
@@ -150,7 +152,7 @@ namespace Dargon.Client.Controllers {
                importWindow.Close();
 
                var modificationPhaseManager = new ModificationPhaseManager();
-               var modificationPhaseFactory = new ModificationPhaseFactory(fileSystemProxy, temporaryFileService, modificationPhaseManager, modificationLoader, viewModel, leagueBuildUtilities, temporaryModification);
+               var modificationPhaseFactory = new ModificationPhaseFactory(pofSerializer, fileSystemProxy, temporaryFileService, exeggutorService, modificationPhaseManager, modificationLoader, viewModel, leagueBuildUtilities, temporaryModification);
                controller.SetModificationPhaseManager(modificationPhaseManager);
                modificationPhaseManager.Transition(modificationPhaseFactory.Importing(importedDirectoryPath, importedFilePaths, finalRepositoryPath));
                controller.Initialize();

@@ -11,6 +11,9 @@ using Dargon.Client.Controllers.Helpers;
 using Dargon.Client.ViewModels;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
+using Dargon.Modifications.ThumbnailGenerator;
+using Dargon.Nest.Eggxecutor;
+using Dargon.PortableObjects;
 using ItzWarty;
 using ItzWarty.IO;
 using NLog;
@@ -35,17 +38,21 @@ namespace Dargon.Client.Controllers.Phases {
    }
 
    public class ModificationPhaseFactory {
+      private readonly IPofSerializer pofSerializer;
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly TemporaryFileService temporaryFileService;
+      private readonly ExeggutorService exeggutorService;
       private readonly ModificationPhaseManager phaseManager;
       private readonly ModificationLoader modificationLoader;
       private readonly ModificationViewModel viewModel;
       private readonly LeagueBuildUtilities leagueBuildUtilities;
       private Modification modification;
 
-      public ModificationPhaseFactory(IFileSystemProxy fileSystemProxy, TemporaryFileService temporaryFileService, ModificationPhaseManager phaseManager, ModificationLoader modificationLoader, ModificationViewModel viewModel, LeagueBuildUtilities leagueBuildUtilities, Modification modification) {
+      public ModificationPhaseFactory(IPofSerializer pofSerializer, IFileSystemProxy fileSystemProxy, TemporaryFileService temporaryFileService, ExeggutorService exeggutorService, ModificationPhaseManager phaseManager, ModificationLoader modificationLoader, ModificationViewModel viewModel, LeagueBuildUtilities leagueBuildUtilities, Modification modification) {
+         this.pofSerializer = pofSerializer;
          this.fileSystemProxy = fileSystemProxy;
          this.temporaryFileService = temporaryFileService;
+         this.exeggutorService = exeggutorService;
          this.phaseManager = phaseManager;
          this.modificationLoader = modificationLoader;
          this.viewModel = viewModel;
@@ -69,6 +76,7 @@ namespace Dargon.Client.Controllers.Phases {
       }
 
       private ModificationPhase Initialize(ModificationPhaseBase phase) {
+         phase.PofSerializer = pofSerializer;
          phase.FileSystemProxy = fileSystemProxy;
          phase.PhaseFactory = this;
          phase.PhaseManager = phaseManager;
@@ -76,6 +84,7 @@ namespace Dargon.Client.Controllers.Phases {
          phase.ModificationLoader = modificationLoader;
          phase.ViewModel = viewModel;
          phase.TemporaryFileService = temporaryFileService;
+         phase.ExeggutorService = exeggutorService;
          phase.LeagueBuildUtilities = leagueBuildUtilities;
          return phase;
       }
@@ -85,6 +94,7 @@ namespace Dargon.Client.Controllers.Phases {
       public abstract void HandleEnter();
       public abstract void HandleExit();
 
+      public IPofSerializer PofSerializer { get; set; }
       public IFileSystemProxy FileSystemProxy { get; set; }
       public ModificationPhaseFactory PhaseFactory { get; set; }
       public ModificationPhaseManager PhaseManager { get; set; }
@@ -93,6 +103,7 @@ namespace Dargon.Client.Controllers.Phases {
       public ModificationViewModel ViewModel { get; set; }
       public TemporaryFileService TemporaryFileService { get; set; }
       public LeagueBuildUtilities LeagueBuildUtilities { get; set; }
+      public ExeggutorService ExeggutorService { get; set; }
    }
 
    public class ModificationImportingPhase : ModificationPhaseBase {
@@ -126,6 +137,25 @@ namespace Dargon.Client.Controllers.Phases {
          Directory.Move(temporaryDirectory, finalRepositoryPath);
          PhaseFactory.SetModification(Modification = ModificationLoader.FromPath(finalRepositoryPath));
 
+         var thumbnailDirectory = Path.Combine(finalRepositoryPath, "thumbnails");
+         FileSystemProxy.PrepareDirectory(thumbnailDirectory);
+         var thumbnailGenerationTask = Task.Factory.StartNew(() => {
+            using (var ms = new MemoryStream())
+            using (var writer = new BinaryWriter(ms)) {
+               PofSerializer.Serialize(writer, new ThumbnailGenerationParameters {
+                  DestinationDirectory = thumbnailDirectory,
+                  SourceDirectory = importedDirectoryPath,
+                  ThumbnailsToGenerate = 3
+               });
+               ExeggutorService.SpawnHatchling(
+                  "thumbnail-generator",
+                  new SpawnConfiguration {
+                     InstanceName = "thumbnail-generator-" + DateTime.UtcNow.GetUnixTime(),
+                     Arguments = ms.GetBuffer()
+                  });
+            }
+         }, TaskCreationOptions.LongRunning);
+
          var contentDirectory = Path.Combine(finalRepositoryPath, "content");
          FileSystemProxy.PrepareDirectory(contentDirectory);
          for (var i = 0; i < relativeImportedFilePaths.Length; i++) {
@@ -141,6 +171,7 @@ namespace Dargon.Client.Controllers.Phases {
 
          LeagueBuildUtilities.CompileModification(Modification, CancellationToken.None);
          UpdateProgress(1);
+         thumbnailGenerationTask.Wait();
          PhaseManager.Transition(PhaseFactory.Idle());
       }
 

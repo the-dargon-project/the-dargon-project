@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
+using Castle.Components.DictionaryAdapter.Xml;
 using Castle.DynamicProxy;
 using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels;
@@ -26,6 +27,7 @@ using Dargon.IO.Resolution;
 using Dargon.LeagueOfLegends;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
+using Dargon.Modifications.ThumbnailGenerator;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
@@ -67,7 +69,10 @@ namespace Dargon.Client {
          driveNodeFactory = new DriveNodeFactory(streamFactory);
          riotSolutionLoader = new RiotSolutionLoader();
 
-         pofContext = new ClientPofContext();
+         pofContext = new PofContext().With(x => {
+            x.MergeContext(new ClientPofContext());
+            x.MergeContext(new ThumbnailGeneratorApiPofContext());
+         });
          pofSerializer = new PofSerializer(pofContext);
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
@@ -107,8 +112,8 @@ namespace Dargon.Client {
          var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
-         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, exeggutorService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory, modificationViewModels, modificationLoader, leagueBuildUtilities);
-         var modificationListingSynchronizer = new ModificationListingSynchronizer(fileSystemProxy, clientConfiguration, temporaryFileService, modificationLoader, modificationViewModels, leagueBuildUtilities);
+         var rootViewModelCommandFactory = new ModificationImportController(pofSerializer, repositoriesDirectory, temporaryFileService, exeggutorService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory, modificationViewModels, modificationLoader, leagueBuildUtilities);
+         var modificationListingSynchronizer = new ModificationListingSynchronizer(pofSerializer, fileSystemProxy, clientConfiguration, temporaryFileService, exeggutorService, modificationLoader, modificationViewModels, leagueBuildUtilities);
          modificationListingSynchronizer.Initialize();
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;

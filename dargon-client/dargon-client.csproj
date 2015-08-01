@@ -152,6 +152,9 @@
     <Compile Include="Views\MainViewSwitch.xaml.cs">
       <DependentUpon>MainViewSwitch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ModificationEntryStatusIndicator.xaml.cs">
+      <DependentUpon>ModificationEntryStatusIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ModificationImportDirectoryView.xaml.cs">
       <DependentUpon>ModificationImportDirectoryView.xaml</DependentUpon>
     </Compile>
@@ -213,6 +216,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ModificationEntryStatusIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ModificationEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -335,6 +342,15 @@
       <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>
       <Name>Dargon.Patcher</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spinner_on_dark.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\spinner_on_dark_2.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Check_wider.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -146,12 +146,15 @@
             </Border.Style>
             
             <Grid Margin="3">
+               <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+               </Grid.RowDefinitions>
                <Grid.ColumnDefinitions>
                   <ColumnDefinition />
                   <ColumnDefinition Width="Auto" />
                </Grid.ColumnDefinitions>
                <TextBlock Grid.Column="0" FontFamily="Lato Regular" FontSize="11" Foreground="White" Text="{Binding Harglbargl, FallbackValue=__Status__}" VerticalAlignment="Center"></TextBlock>
-               <Rectangle Grid.Column="1" Fill="Red" Width="10" Height="10" VerticalAlignment="Center"></Rectangle>
+               <local:ModificationEntryStatusIndicator Grid.Column="1" VerticalAlignment="Center" />
             </Grid>
          </Border>
       </Grid>

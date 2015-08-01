@@ -7,23 +7,103 @@
              xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
              xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
              mc:Ignorable="d" 
-             MinWidth="116" MinHeight="83" Background="Red">
+             Width="116" MinHeight="83" Background="Red">
    <UserControl.Resources>
       <helpers:LogicalOrConverter x:Key="logicalOrConverter" />
       <helpers:ForceStatusDisplayConverter x:Key="forceStatusDisplayConverter" />
+      <helpers:TitleCaseConverter x:Key="titleCaseConverter" />
    </UserControl.Resources>
    <Grid x:Name="ElementRoot">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition />
+      </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
          <RowDefinition Height="75" />
          <RowDefinition Height="8" />
       </Grid.RowDefinitions>
-      <Image Grid.Row="0" Source="../Resources/MockEzreal.png" />
-      <Rectangle Grid.Row="0" Opacity="0.8">
+      <Image Grid.Row="0" Source="C:\Users\ItzWarty\.dargon\repositories\tencent-art-pack-8-74\thumbnails\56536968e41b148132a812c05b1a770b_1438400384.jpg" Stretch="UniformToFill" />
+
+      <Rectangle Grid.Row="0">
+         <Rectangle.Style>
+            <Style TargetType="Rectangle">
+               <Setter Property="Opacity" Value="1"></Setter>
+               <Style.Triggers>
+                  <DataTrigger Value="True">
+                     <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource logicalOrConverter}">
+                           <Binding RelativeSource="{RelativeSource AncestorType=local:ModificationEntryView}" Path="IsMouseOver" />
+                           <Binding Path="Status" Converter="{StaticResource forceStatusDisplayConverter}" />
+                        </MultiBinding>
+                     </DataTrigger.Binding>
+                     <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.EnterActions>
+                     <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.ExitActions>
+                  </DataTrigger>
+               </Style.Triggers>
+            </Style>
+         </Rectangle.Style>
          <Rectangle.Fill>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
                <GradientStop Offset="0">
                   <GradientStop.Color>
                      <Color A="0" R="0" G="0" B="0" />
+                  </GradientStop.Color>
+               </GradientStop>
+               <GradientStop Offset="1.00">
+                  <GradientStop.Color>
+                     <Color A="75" R="0" G="0" B="0" />
+                  </GradientStop.Color>
+               </GradientStop>
+            </LinearGradientBrush>
+         </Rectangle.Fill>
+      </Rectangle>
+
+      <Rectangle Grid.Row="0">
+         <Rectangle.Style>
+            <Style TargetType="Rectangle">
+               <Setter Property="Opacity" Value="0"></Setter>
+               <Style.Triggers>
+                  <DataTrigger Value="True">
+                     <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource logicalOrConverter}">
+                           <Binding RelativeSource="{RelativeSource AncestorType=local:ModificationEntryView}" Path="IsMouseOver" />
+                           <Binding Path="Status" Converter="{StaticResource forceStatusDisplayConverter}" />
+                        </MultiBinding>
+                     </DataTrigger.Binding>
+                     <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.EnterActions>
+                     <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                           <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="Opacity"/>
+                           </Storyboard>
+                        </BeginStoryboard>
+                     </DataTrigger.ExitActions>
+                  </DataTrigger>
+               </Style.Triggers>
+            </Style>
+         </Rectangle.Style>
+         <Rectangle.Fill>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+               <GradientStop Offset="0">
+                  <GradientStop.Color>
+                     <Color A="40" R="0" G="0" B="0" />
                   </GradientStop.Color>
                </GradientStop>
                <GradientStop Offset="1.00">
@@ -66,9 +146,9 @@
                </Style.Triggers>
             </Style>
          </Grid.Style>
-         <StackPanel Grid.Row="0" Margin="3,0,0,3">
+         <StackPanel Grid.Row="0" Margin="3,0,3,3">
             <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}"></TextBlock>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,-1">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                <TextBlock FontFamily="Lato" FontSize="9" Foreground="White">By&#160;</TextBlock>
                <TextBlock FontFamily="Lato" FontSize="9" Foreground="White" Text="{Binding Author, FallbackValue=__AUTHOR__}"></TextBlock>
             </StackPanel>
@@ -76,7 +156,7 @@
       </Grid>
 
       <Grid VerticalAlignment="Bottom">
-         <StackPanel Grid.Row="0" Margin="3,0,0,3">
+         <StackPanel Grid.Row="0" Margin="3,0,3,3">
             <StackPanel.Style>
                <Style TargetType="StackPanel">
                   <Setter Property="Opacity" Value="1"></Setter>
@@ -107,8 +187,8 @@
                </Style>
             </StackPanel.Style>
 
-            <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}"></TextBlock>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,-1">
+            <TextBlock FontFamily="Lato Heavy" FontSize="11" Foreground="White" Margin="0,0,0,-2" Text="{Binding Name, FallbackValue=__NAME__}" ></TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                <TextBlock FontFamily="Lato" FontSize="9" Foreground="White">By&#160;</TextBlock>
                <TextBlock FontFamily="Lato" FontSize="9" Foreground="White" Text="{Binding Author, FallbackValue=__AUTHOR__}"></TextBlock>
             </StackPanel>
@@ -145,15 +225,15 @@
                </Style>
             </Border.Style>
             
-            <Grid Margin="3">
+            <Grid Margin="3" VerticalAlignment="Stretch">
                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
                </Grid.RowDefinitions>
                <Grid.ColumnDefinitions>
                   <ColumnDefinition />
                   <ColumnDefinition Width="Auto" />
                </Grid.ColumnDefinitions>
-               <TextBlock Grid.Column="0" FontFamily="Lato Regular" FontSize="11" Foreground="White" Text="{Binding Harglbargl, FallbackValue=__Status__}" VerticalAlignment="Center"></TextBlock>
+               <TextBlock Grid.Column="0" FontFamily="Lato Regular" FontSize="11" Foreground="White" Text="{Binding Status, FallbackValue=__Status__, Converter={StaticResource titleCaseConverter}}" VerticalAlignment="Center"></TextBlock>
                <local:ModificationEntryStatusIndicator Grid.Column="1" VerticalAlignment="Center" />
             </Grid>
          </Border>

@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Dargon.Client.Views"
              xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
+             xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
              mc:Ignorable="d" 
              MinWidth="116" MinHeight="83" Background="Red">
+   <UserControl.Resources>
+      <helpers:LogicalOrConverter x:Key="logicalOrConverter" />
+      <helpers:ForceStatusDisplayConverter x:Key="forceStatusDisplayConverter" />
+   </UserControl.Resources>
    <Grid x:Name="ElementRoot">
       <Grid.RowDefinitions>
          <RowDefinition Height="75" />
@@ -36,7 +41,13 @@
             <Style TargetType="Grid">
                <Setter Property="Opacity" Value="0"></Setter>
                <Style.Triggers>
-                  <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                  <DataTrigger Value="True">
+                     <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource logicalOrConverter}">
+                           <Binding RelativeSource="{RelativeSource AncestorType=local:ModificationEntryView}" Path="IsMouseOver" />
+                           <Binding Path="Status" Converter="{StaticResource forceStatusDisplayConverter}" />
+                        </MultiBinding>
+                     </DataTrigger.Binding>
                      <DataTrigger.EnterActions>
                         <BeginStoryboard>
                            <Storyboard>
@@ -70,7 +81,13 @@
                <Style TargetType="StackPanel">
                   <Setter Property="Opacity" Value="1"></Setter>
                   <Style.Triggers>
-                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                     <DataTrigger Value="True">
+                        <DataTrigger.Binding>
+                           <MultiBinding Converter="{StaticResource logicalOrConverter}">
+                              <Binding RelativeSource="{RelativeSource AncestorType=local:ModificationEntryView}" Path="IsMouseOver" />
+                              <Binding Path="Status" Converter="{StaticResource forceStatusDisplayConverter}" />
+                           </MultiBinding>
+                        </DataTrigger.Binding>
                         <DataTrigger.EnterActions>
                            <BeginStoryboard>
                               <Storyboard>
@@ -102,7 +119,13 @@
                <Style TargetType="Border">
                   <Setter Property="Opacity" Value="0"></Setter>
                   <Style.Triggers>
-                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:ModificationEntryView}, Path=IsMouseOver}" Value="True" >
+                     <DataTrigger Value="True">
+                        <DataTrigger.Binding>
+                           <MultiBinding Converter="{StaticResource logicalOrConverter}">
+                              <Binding RelativeSource="{RelativeSource AncestorType=local:ModificationEntryView}" Path="IsMouseOver" />
+                              <Binding Path="Status" Converter="{StaticResource forceStatusDisplayConverter}" />
+                           </MultiBinding>
+                        </DataTrigger.Binding>
                         <DataTrigger.EnterActions>
                            <BeginStoryboard>
                               <Storyboard>

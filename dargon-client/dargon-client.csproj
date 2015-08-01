@@ -145,6 +145,8 @@
     <Compile Include="ViewModels\ModificationImportViewModel.cs" />
     <Compile Include="ViewModels\ModificationImportViewModelFactory.cs" />
     <Compile Include="Controllers\ModificationImportController.cs" />
+    <Compile Include="Views\Helpers\ForceStatusDisplayConverter.cs" />
+    <Compile Include="Views\Helpers\LogicalOrConverter.cs" />
     <Compile Include="Views\Helpers\TitleCaseConverter.cs" />
     <Compile Include="Views\Helpers\GifImage.cs" />
     <Compile Include="Views\MainViewSwitch.xaml.cs">

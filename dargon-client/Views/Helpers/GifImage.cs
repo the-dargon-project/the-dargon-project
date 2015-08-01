@@ -23,7 +23,7 @@ namespace Dargon.Client.Views.Helpers {
          }
 
          _gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + this.GifSource), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-         _animation = new Int32Animation(0, _gifDecoder.Frames.Count - 1, new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count / 10, (int)((_gifDecoder.Frames.Count / 10.0 - _gifDecoder.Frames.Count / 10) * 1000))));
+         _animation = new Int32Animation(0, 5 * (_gifDecoder.Frames.Count) - 1, new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count / 10, (int)((_gifDecoder.Frames.Count / 10.0 - _gifDecoder.Frames.Count / 10) * 1000))));
          _animation.RepeatBehavior = RepeatBehavior.Forever;
          this.Source = _gifDecoder.Frames[0];
          _isInitialized = true;
@@ -51,7 +51,7 @@ namespace Dargon.Client.Views.Helpers {
 
       static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev) {
          var gifImage = obj as GifImage;
-         gifImage.Source = gifImage._gifDecoder.Frames[(int)ev.NewValue];
+         gifImage.Source = gifImage._gifDecoder.Frames[(int)(ev.NewValue) / 5];
       }
 
       /// <summary>

@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="BootstrapConfigurationGeneratorImpl.cs" />
     <Compile Include="BootstrapConfigurationImpl.cs" />
-    <Compile Include="Commands\CommandFactoryImpl.cs" />
     <Compile Include="Commands\CommandListProxy.cs" />
     <Compile Include="Commands\DefaultCommandList.cs" />
     <Compile Include="DimInstanceContext.cs" />

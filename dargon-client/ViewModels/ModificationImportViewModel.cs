@@ -45,24 +45,22 @@ namespace Dargon.Client.ViewModels {
          }
 
          IsEnabled = false;
-         ThreadPool.QueueUserWorkItem((y) => {
+         Task.Factory.StartNew(() => {
             try {
                modificationImportController.ImportLegacyModification(
                   friendlyModificationName,
                   rootNodeViewModel.Path,
                   rootNodeViewModel.EnumerateFileNodes().Select(node => node.Path).ToArray(),
-                  modificationCategorization
+                  modificationCategorization,
+                  importWindow
                );
-               Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() => {
-                  MessageBox.Show(importWindow, $"Imported Modification {friendlyModificationName}!");
-                  importWindow.Close();
-               }));
             } catch (Exception e) {
                MessageBox.Show(e.ToString());
                IsEnabled = true;
             }
-         });
+         }, TaskCreationOptions.LongRunning);
       });
+
 
 
       public event PropertyChangedEventHandler PropertyChanged;

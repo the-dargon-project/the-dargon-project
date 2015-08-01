@@ -23,14 +23,21 @@ using Dargon.RADS;
 using ItzWarty;
 using ItzWarty.IO;
 using Dargon.IO.Resolution;
+using Dargon.LeagueOfLegends;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
+using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
+using Dargon.Trinkets.Commands;
 using ItzWarty.Collections;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using NLog.Targets.Wrappers;
 
 namespace Dargon.Client {
    public class DargonClientEgg : INestApplicationEgg {
@@ -44,9 +51,13 @@ namespace Dargon.Client {
       private readonly IClientConfiguration clientConfiguration;
       private readonly ModificationLoader modificationLoader;
       private readonly TemporaryFileService temporaryFileService;
+      private readonly ExeggutorService exeggutorService;
+      private readonly LeagueBuildUtilities leagueBuildUtilities;
       private readonly List<object> keepalive = new List<object>();
 
       public DargonClientEgg() {
+         InitializeLogging();
+
          IStreamFactory streamFactory = new StreamFactory();
          ICollectionFactory collectionFactory = new CollectionFactory();
          IThreadingProxy threadingProxy = new ThreadingProxy(new ThreadingFactory(), new SynchronizationFactory());
@@ -68,7 +79,15 @@ namespace Dargon.Client {
          clientConfiguration = new ClientConfiguration();
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
          modificationLoader = new ModificationLoaderImpl(clientConfiguration.RepositoriesDirectoryPath, modificationComponentFactory);
+
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
+         exeggutorService = localServiceClient.GetService<ExeggutorService>();
+
+         SystemState systemState = new ClientSystemStateImpl(fileSystemProxy, clientConfiguration.ConfigurationDirectoryPath);
+         LeagueConfiguration leagueConfiguration = new LeagueConfiguration();
+         CommandFactory commandFactory = new CommandFactoryImpl();
+         LeagueBuildUtilitiesConfiguration leagueBuildUtilitiesConfiguration = new LeagueBuildUtilitiesConfiguration(systemState);
+         leagueBuildUtilities = new LeagueBuildUtilities(systemState, leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory, leagueBuildUtilitiesConfiguration);
       }
 
       public NestResult Start(IEggParameters parameters) {
@@ -87,9 +106,9 @@ namespace Dargon.Client {
 
          var modificationImportViewModelFactory = new ModificationImportViewModelFactory(fileSystemProxy, driveNodeFactory);
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory);
          ObservableCollection<ModificationViewModel> modificationViewModels = new ObservableCollection<ModificationViewModel>();
-         var modificationListingSynchronizer = new ModificationListingSynchronizer(clientConfiguration, fileSystemProxy, modificationLoader, modificationViewModels);
+         var rootViewModelCommandFactory = new ModificationImportController(repositoriesDirectory, temporaryFileService, exeggutorService, modificationComponentFactory, fileSystemProxy, riotSolutionLoader, modificationImportViewModelFactory, modificationViewModels, modificationLoader, leagueBuildUtilities);
+         var modificationListingSynchronizer = new ModificationListingSynchronizer(fileSystemProxy, clientConfiguration, temporaryFileService, modificationLoader, modificationViewModels, leagueBuildUtilities);
          modificationListingSynchronizer.Initialize();
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;
@@ -98,6 +117,34 @@ namespace Dargon.Client {
 
       public NestResult Shutdown() {
          return NestResult.Success;
+      }
+
+      private void InitializeLogging() {
+         var config = new LoggingConfiguration();
+         Target debuggerTarget = new DebuggerTarget() {
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
+         Target consoleTarget = new ColoredConsoleTarget() {
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
+
+#if !DEBUG
+         debuggerTarget = new AsyncTargetWrapper(debuggerTarget);
+         consoleTarget = new AsyncTargetWrapper(consoleTarget);
+#else
+         AsyncTargetWrapper a; // Placeholder for optimizing imports
+#endif
+
+         config.AddTarget("debugger", debuggerTarget);
+         config.AddTarget("console", consoleTarget);
+
+         var debuggerRule = new LoggingRule("*", LogLevel.Trace, debuggerTarget);
+         config.LoggingRules.Add(debuggerRule);
+
+         var consoleRule = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+         config.LoggingRules.Add(consoleRule);
+
+         LogManager.Configuration = config;
       }
    }
 }

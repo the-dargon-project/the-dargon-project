@@ -34,6 +34,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
+    </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
@@ -53,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
+    <Compile Include="Commands\CommandFactoryImpl.cs" />
     <Compile Include="Commands\CommandList.cs" />
     <Compile Include="ManageableBootstrapConfiguration.cs" />
     <Compile Include="ReadableBootstrapConfiguration.cs" />

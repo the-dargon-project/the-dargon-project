@@ -58,6 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.3.1\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
@@ -131,6 +135,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Helpers\DirectoryHelpers.cs" />
+    <Compile Include="Controllers\ModificationController.cs" />
+    <Compile Include="Controllers\Phases\ModificationImportingPhase.cs" />
     <Compile Include="ViewModels\Helpers\ModificationListingSynchronizer.cs" />
     <Compile Include="ViewModels\ModificationImportEntryDirectoryViewModel.cs" />
     <Compile Include="ViewModels\ModificationImportEntryFileViewModel.cs" />
@@ -305,6 +312,14 @@
     <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
       <Project>{f601ab24-56fc-4aba-a230-c3a425953b67}</Project>
       <Name>Dargon.Modifications.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.ThumbnailGenerator.Api\Dargon.ThumbnailGenerator.Api.csproj">
+      <Project>{b9c41736-e9a9-44c8-9bca-17bccd7f57d0}</Project>
+      <Name>Dargon.ThumbnailGenerator.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
+      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
+      <Name>Dargon.Trinkets.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
       <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>

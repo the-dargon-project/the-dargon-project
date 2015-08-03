@@ -15,6 +15,10 @@ namespace Dargon.Modifications {
 
       public IReadOnlyList<Modification> EnumerateModifications() {
          var repositoriesDirectoryInfo = new DirectoryInfo(repositoriesDirectory);
+         if (!repositoriesDirectoryInfo.Exists) {
+            repositoriesDirectoryInfo.Create();
+         }
+
          // prevents us from loading .cache as a mod
          var repositoryDirectories = repositoriesDirectoryInfo.EnumerateDirectories().Where(di => di.Name[0] != '.');
          return repositoryDirectories.Select(di => FromPath(di.FullName)).ToArray();

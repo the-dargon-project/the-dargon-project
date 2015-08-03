@@ -71,7 +71,6 @@
     <Compile Include="ModificationLoaderImpl.cs" />
     <Compile Include="ModificationImpl.cs" />
     <Compile Include="ModificationComponentFactory.cs" />
-    <Compile Include="ModificationsPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

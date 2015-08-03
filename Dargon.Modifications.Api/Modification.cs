@@ -3,6 +3,6 @@ namespace Dargon.Modifications {
       string RepositoryName { get; }
       string RepositoryPath { get; }
       string MetadataPath { get; }
-      TComponent GetComponent<TComponent>() where TComponent : Component, new();
+      TComponent GetComponent<TComponent>() where TComponent : Component;
    }
 }

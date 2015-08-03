@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
-using Dargon.PortableObjects;
+﻿using Dargon.PortableObjects;
+using System.ComponentModel;
 
 namespace Dargon.Modifications {
-   public interface Component : INotifyPropertyChanged, IPortableObject { }
+   public interface Component : INotifyPropertyChanged, IPortableObject {
+      void Load(Component component);
+   }
 }

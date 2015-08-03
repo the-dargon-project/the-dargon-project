@@ -12,6 +12,7 @@
       <helpers:LogicalOrConverter x:Key="logicalOrConverter" />
       <helpers:ForceStatusDisplayConverter x:Key="forceStatusDisplayConverter" />
       <helpers:TitleCaseConverter x:Key="titleCaseConverter" />
+      <helpers:PathToBitmapImageConverter x:Key="pathToBitmapImageConverter" />
    </UserControl.Resources>
    <Grid x:Name="ElementRoot">
       <Grid.ColumnDefinitions>
@@ -21,7 +22,7 @@
          <RowDefinition Height="75" />
          <RowDefinition Height="8" />
       </Grid.RowDefinitions>
-      <Image Grid.Row="0" Source="C:\Users\ItzWarty\.dargon\repositories\tencent-art-pack-8-74\thumbnails\56536968e41b148132a812c05b1a770b_1438400384.jpg" Stretch="UniformToFill" />
+      <helpers:HighQualityImage Grid.Row="0" Source="{Binding SelectedThumbnailPath, Converter={StaticResource pathToBitmapImageConverter}}" Stretch="UniformToFill" />
 
       <Rectangle Grid.Row="0">
          <Rectangle.Style>

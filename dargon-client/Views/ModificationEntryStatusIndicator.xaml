@@ -24,7 +24,7 @@
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>
-                        <helpers:GifImage Stretch="Uniform" GifSource="../Resources/spinner_on_dark_2.gif" AutoStart="True" />
+                        <helpers:GifImage Stretch="None" GifSource="../Resources/spinner_on_dark_2.gif" AutoStart="True" />
                      </ControlTemplate>
                   </Setter.Value>
                </Setter>

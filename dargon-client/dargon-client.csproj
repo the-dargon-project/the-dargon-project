@@ -137,7 +137,12 @@
   <ItemGroup>
     <Compile Include="Controllers\Helpers\DirectoryHelpers.cs" />
     <Compile Include="Controllers\ModificationController.cs" />
+    <Compile Include="Controllers\Phases\ModificationIdlePhase.cs" />
     <Compile Include="Controllers\Phases\ModificationImportingPhase.cs" />
+    <Compile Include="Controllers\Phases\ModificationPhase.cs" />
+    <Compile Include="Controllers\Phases\ModificationPhaseBase.cs" />
+    <Compile Include="Controllers\Phases\ModificationPhaseFactory.cs" />
+    <Compile Include="Controllers\Phases\ModificationPhaseManager.cs" />
     <Compile Include="ViewModels\Helpers\ModificationListingSynchronizer.cs" />
     <Compile Include="ViewModels\ModificationImportEntryDirectoryViewModel.cs" />
     <Compile Include="ViewModels\ModificationImportEntryFileViewModel.cs" />
@@ -146,7 +151,9 @@
     <Compile Include="ViewModels\ModificationImportViewModelFactory.cs" />
     <Compile Include="Controllers\ModificationImportController.cs" />
     <Compile Include="Views\Helpers\ForceStatusDisplayConverter.cs" />
+    <Compile Include="Views\Helpers\HighQualityImage.cs" />
     <Compile Include="Views\Helpers\LogicalOrConverter.cs" />
+    <Compile Include="Views\Helpers\PathToBitmapImageConverter.cs" />
     <Compile Include="Views\Helpers\TitleCaseConverter.cs" />
     <Compile Include="Views\Helpers\GifImage.cs" />
     <Compile Include="Views\MainViewSwitch.xaml.cs">

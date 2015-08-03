@@ -19,10 +19,10 @@ namespace Dargon.Modifications {
       public string RepositoryPath => repositoryPath;
       public string MetadataPath => Path.Combine(repositoryPath, "metadata");
 
-      public TComponent GetComponent<TComponent>() where TComponent : Component, new() {
+      public TComponent GetComponent<TComponent>() where TComponent : Component {
          return (TComponent)componentsByType.GetOrAdd(
             typeof(TComponent),
-            (add) => modificationComponentFactory.Create<TComponent>(MetadataPath)
+            (add) => modificationComponentFactory.Create<TComponent>(this, MetadataPath)
          );
       }
    }

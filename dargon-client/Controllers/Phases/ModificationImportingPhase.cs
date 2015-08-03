@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,103 +10,13 @@ using System.Windows;
 using System.Windows.Threading;
 using Dargon.Client.Controllers.Helpers;
 using Dargon.Client.ViewModels;
-using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
 using Dargon.Modifications.ThumbnailGenerator;
 using Dargon.Nest.Eggxecutor;
-using Dargon.PortableObjects;
 using ItzWarty;
-using ItzWarty.IO;
 using NLog;
 
 namespace Dargon.Client.Controllers.Phases {
-   public interface ModificationPhase {
-      void HandleEnter();
-      void HandleExit();
-   }
-
-   public class ModificationPhaseManager {
-      private readonly object synchronization = new object();
-      private ModificationPhase currentPhase = null;
-
-      public void Transition(ModificationPhase phase) {
-         lock (synchronization) {
-            currentPhase?.HandleExit();
-            currentPhase = phase;
-            currentPhase.HandleEnter();
-         }
-      }
-   }
-
-   public class ModificationPhaseFactory {
-      private readonly IPofSerializer pofSerializer;
-      private readonly IFileSystemProxy fileSystemProxy;
-      private readonly TemporaryFileService temporaryFileService;
-      private readonly ExeggutorService exeggutorService;
-      private readonly ModificationPhaseManager phaseManager;
-      private readonly ModificationLoader modificationLoader;
-      private readonly ModificationViewModel viewModel;
-      private readonly LeagueBuildUtilities leagueBuildUtilities;
-      private Modification modification;
-
-      public ModificationPhaseFactory(IPofSerializer pofSerializer, IFileSystemProxy fileSystemProxy, TemporaryFileService temporaryFileService, ExeggutorService exeggutorService, ModificationPhaseManager phaseManager, ModificationLoader modificationLoader, ModificationViewModel viewModel, LeagueBuildUtilities leagueBuildUtilities, Modification modification) {
-         this.pofSerializer = pofSerializer;
-         this.fileSystemProxy = fileSystemProxy;
-         this.temporaryFileService = temporaryFileService;
-         this.exeggutorService = exeggutorService;
-         this.phaseManager = phaseManager;
-         this.modificationLoader = modificationLoader;
-         this.viewModel = viewModel;
-         this.leagueBuildUtilities = leagueBuildUtilities;
-         this.modification = modification;
-      }
-
-      public void SetModification(Modification modification) {
-         this.modification = modification;
-      }
-
-      public ModificationPhase Idle() {
-         return Initialize(new ModificationIdlePhase());
-      }
-
-      public ModificationPhase Importing(string importedDirectoryPath, string[] importedFilePaths, string finalRepositoryPath) {
-         importedDirectoryPath = Path.GetFullPath(importedDirectoryPath);
-         importedFilePaths = importedFilePaths.Select(Path.GetFullPath).ToArray();
-         var relativeImportedFilePaths = Util.Generate(importedFilePaths.Length, i => importedFilePaths[i].Substring(importedDirectoryPath.Length + 1));
-         return Initialize(new ModificationImportingPhase(importedDirectoryPath, relativeImportedFilePaths, finalRepositoryPath));
-      }
-
-      private ModificationPhase Initialize(ModificationPhaseBase phase) {
-         phase.PofSerializer = pofSerializer;
-         phase.FileSystemProxy = fileSystemProxy;
-         phase.PhaseFactory = this;
-         phase.PhaseManager = phaseManager;
-         phase.Modification = modification;
-         phase.ModificationLoader = modificationLoader;
-         phase.ViewModel = viewModel;
-         phase.TemporaryFileService = temporaryFileService;
-         phase.ExeggutorService = exeggutorService;
-         phase.LeagueBuildUtilities = leagueBuildUtilities;
-         return phase;
-      }
-   }
-
-   public abstract class ModificationPhaseBase : ModificationPhase {
-      public abstract void HandleEnter();
-      public abstract void HandleExit();
-
-      public IPofSerializer PofSerializer { get; set; }
-      public IFileSystemProxy FileSystemProxy { get; set; }
-      public ModificationPhaseFactory PhaseFactory { get; set; }
-      public ModificationPhaseManager PhaseManager { get; set; }
-      public Modification Modification { get; set; }
-      public ModificationLoader ModificationLoader { get; set; }
-      public ModificationViewModel ViewModel { get; set; }
-      public TemporaryFileService TemporaryFileService { get; set; }
-      public LeagueBuildUtilities LeagueBuildUtilities { get; set; }
-      public ExeggutorService ExeggutorService { get; set; }
-   }
-
    public class ModificationImportingPhase : ModificationPhaseBase {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -135,7 +46,9 @@ namespace Dargon.Client.Controllers.Phases {
          var temporaryDirectory = TemporaryFileService.AllocateTemporaryDirectory(TimeSpan.FromHours(1));
          DirectoryHelpers.DirectoryCopy(Modification.RepositoryPath, temporaryDirectory, true);
          Directory.Move(temporaryDirectory, finalRepositoryPath);
-         PhaseFactory.SetModification(Modification = ModificationLoader.FromPath(finalRepositoryPath));
+         Modification = ModificationLoader.FromPath(finalRepositoryPath);
+         PhaseFactory.SetModification(Modification);
+         ViewModel.SetModification(Modification);
 
          var thumbnailDirectory = Path.Combine(finalRepositoryPath, "thumbnails");
          FileSystemProxy.PrepareDirectory(thumbnailDirectory);
@@ -153,6 +66,8 @@ namespace Dargon.Client.Controllers.Phases {
                      InstanceName = "thumbnail-generator-" + DateTime.UtcNow.GetUnixTime(),
                      Arguments = ms.GetBuffer()
                   });
+               var thumbnailComponent = Modification.GetComponent<ThumbnailComponent>();
+               thumbnailComponent.SelectThumbnailIfUnselected();
             }
          }, TaskCreationOptions.LongRunning);
 
@@ -179,15 +94,6 @@ namespace Dargon.Client.Controllers.Phases {
          Application.Current.Dispatcher.BeginInvoke(new Action(() => {
             ViewModel.StatusProgress = percentage;
          }), DispatcherPriority.Send);
-      }
-
-      public override void HandleExit() { }
-   }
-
-   public class ModificationIdlePhase : ModificationPhaseBase {
-      public override void HandleEnter() {
-         ViewModel.Status = ModificationStatus.Enabled;
-         ViewModel.StatusProgress = 1;
       }
 
       public override void HandleExit() { }

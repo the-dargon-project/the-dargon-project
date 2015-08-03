@@ -10,6 +10,7 @@ namespace Dargon.Modifications {
       private const int kBasePofId = 10000;
       public ModificationsPofContext() {
          RegisterPortableObjectType(kBasePofId + 0, typeof(InfoComponent));
+         RegisterPortableObjectType(kBasePofId + 1, typeof(ThumbnailComponent));
       }
    }
 }

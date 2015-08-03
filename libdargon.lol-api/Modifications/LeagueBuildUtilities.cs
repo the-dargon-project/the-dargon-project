@@ -360,6 +360,11 @@ namespace Dargon.LeagueOfLegends.Modifications {
          table = reader.ReadMap<string, TValue>(0);
       }
 
+      public void Load(Component component) {
+         var source = (FileTableComponentBase<TValue>)component;
+         table = source.Table;
+      }
+
       public void NotifyUpdated() {
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Table)));
       }

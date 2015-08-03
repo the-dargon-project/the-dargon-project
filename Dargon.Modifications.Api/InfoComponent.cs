@@ -35,15 +35,23 @@ namespace Dargon.Modifications {
 
       public void Deserialize(IPofReader reader) {
          var version = reader.ReadU32(0);
-         id = reader.ReadGuid(1);
-         name = reader.ReadString(2);
-         authors = reader.ReadArray<string>(3);
-         website = reader.ReadString(4);
+         Id = reader.ReadGuid(1);
+         Name = reader.ReadString(2);
+         Authors = reader.ReadArray<string>(3);
+         Website = reader.ReadString(4);
          Targets = reader.ReadArray<uint>(5).Select(GameType.FromValue).ToArray();
 
          Trace.Assert(version == kVersion);
       }
 
+      public void Load(Component component) {
+         var source = (InfoComponent)component;
+         Id = source.Id;
+         Name = source.Name;
+         Authors = source.Authors;
+         Website = source.Website;
+         Targets = source.Targets;
+      }
 
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -27,7 +27,11 @@ namespace Dargon.Client.ViewModels {
 
          collectionViewSource.Source = Modifications;
          collectionViewSource.Filter += (s, e) => {
-            e.Accepted = (modificationTypeFilter.Value & ((ModificationViewModel)e.Item).Category.Value) != 0;
+            if (modificationTypeFilter == LeagueModificationCategory.All) {
+               e.Accepted = true;
+            } else {
+               e.Accepted = (modificationTypeFilter.Value & ((ModificationViewModel)e.Item).Category.Value) != 0;
+            }
          };
          FilteredModifications = collectionViewSource.View;
       }
@@ -53,7 +57,7 @@ namespace Dargon.Client.ViewModels {
          var dialog = new FolderBrowserDialog();
          dialog.Description = "Select Modification Folder:";
          dialog.ShowNewFolderButton = false;
-
+         
          var dialogResult = dialog.ShowDialog();
          if (dialogResult == DialogResult.OK) {
             var modificationPath = dialog.SelectedPath;

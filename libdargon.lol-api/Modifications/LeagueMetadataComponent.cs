@@ -33,6 +33,11 @@ namespace Dargon.LeagueOfLegends.Modifications {
          Trace.Assert(version == kVersion, $"Unexpected {nameof(LeagueMetadataComponent)} kVersion {version} expected {kVersion}!");
       }
 
+      public void Load(Component component) {
+         var source = (LeagueMetadataComponent)component;
+         Category = source.Category;
+      }
+
       protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
       }

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Dargon.Client">
+                    xmlns:local="clr-namespace:Dargon.Client"
+                    xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers">
    <Color A="255" R="22" G="31" B="39" x:Key="MirageColor" />
    <SolidColorBrush Color="{StaticResource MirageColor}" x:Key="MirageBrush" />
 
@@ -47,11 +48,17 @@
    <SolidColorBrush Color="{StaticResource TulipTreeColor}" x:Key="TulipTreeBrush" />
 
    <Color A="74" R="0" G="0" B="0" x:Key="ModificationHoverBackgroundColor" />
-   
    <SolidColorBrush Color="{StaticResource ModificationHoverBackgroundColor}" x:Key="ModificationHoverBackgroundBrush" />
-   <SolidColorBrush Color="{StaticResource RomanColor}" x:Key="ModificationBrokenBrush" />
-   <SolidColorBrush Color="{StaticResource DustyGrayColor}" x:Key="ModificationDisabledBrush" />
-   <SolidColorBrush Color="{StaticResource PastelGreenColor}" x:Key="ModificationEnabledBrush" />
-   <SolidColorBrush Color="{StaticResource TulipTreeColor}" x:Key="ModificationUpdateAvailableBrush" />
-   <SolidColorBrush Color="{StaticResource HavelockBlueColor}" x:Key="ModificationUpdatingBrush" />
+   
+   <helpers:Alias x:Key="ModificationEnabledColor" ResourceKey="PastelGreenColor" />
+   <helpers:Alias x:Key="ModificationDisabledColor" ResourceKey="DustyGrayColor" />
+   <helpers:Alias x:Key="ModificationBrokenColor" ResourceKey="ModificationBrokenBrush" />
+   <helpers:Alias x:Key="ModificationUpdateAvailableColor" ResourceKey="TulipTreeColor" />
+   <helpers:Alias x:Key="ModificationUpdatingColor" ResourceKey="HavelockBlueColor" />
+   
+<!--   <SolidColorBrush Color="{StaticResource ModificationBrokenColor}" x:Key="ModificationBrokenBrush" />-->
+<!--   <SolidColorBrush Color="{StaticResource ModificationDisabledColor}" x:Key="ModificationDisabledBrush" />-->
+<!--   <SolidColorBrush Color="{StaticResource ModificationEnabledColor}" x:Key="ModificationEnabledBrush" />-->
+<!--   <SolidColorBrush Color="{StaticResource ModificationUpdateAvailableColor}" x:Key="ModificationUpdateAvailableBrush" />-->
+<!--   <SolidColorBrush Color="{StaticResource ModificationUpdatingColor}" x:Key="ModificationUpdatingBrush" />-->
 </ResourceDictionary>

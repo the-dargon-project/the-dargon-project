@@ -7,13 +7,17 @@
              xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
              xmlns:helpers="clr-namespace:Dargon.Client.Views.Helpers"
              mc:Ignorable="d" 
-             Width="116" MinHeight="83" Background="Red">
+             Width="116" MinHeight="83" Background="{DynamicResource CloudBrush}">
    <UserControl.Resources>
       <helpers:LogicalOrConverter x:Key="logicalOrConverter" />
       <helpers:ForceStatusDisplayConverter x:Key="forceStatusDisplayConverter" />
       <helpers:TitleCaseConverter x:Key="titleCaseConverter" />
       <helpers:PathToBitmapImageConverter x:Key="pathToBitmapImageConverter" />
+      <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+         <StackPanel Margin="-35,0,0,0" Background="White"/>
+      </ItemsPanelTemplate>
    </UserControl.Resources>
+   
    <Grid x:Name="ElementRoot">
       <Grid.ColumnDefinitions>
          <ColumnDefinition />
@@ -22,6 +26,7 @@
          <RowDefinition Height="75" />
          <RowDefinition Height="8" />
       </Grid.RowDefinitions>
+      
       <helpers:HighQualityImage Grid.Row="0" Source="{Binding SelectedThumbnailPath, Converter={StaticResource pathToBitmapImageConverter}}" Stretch="UniformToFill" />
 
       <Rectangle Grid.Row="0">
@@ -239,30 +244,41 @@
             </Grid>
          </Border>
       </Grid>
-      <ProgressBar Value="{Binding StatusProgress, FallbackValue=0.7}" Maximum="1" BorderThickness="0" Grid.Row="1">
-         <ProgressBar.Style>
-            <Style TargetType="{x:Type ProgressBar}">
-               <Setter Property="Foreground" Value="Magenta"/>
-               <Setter Property="Background" Value="{DynamicResource SilverChaliceBrush}"/>
-               <Style.Triggers>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Enabled}">
-                     <Setter Property="Foreground" Value="{DynamicResource ModificationEnabledBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Disabled}">
-                     <Setter Property="Foreground" Value="{DynamicResource ModificationDisabledBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Broken}">
-                     <Setter Property="Foreground" Value="{DynamicResource ModificationBrokenBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.UpdateAvailable}">
-                     <Setter Property="Foreground" Value="{DynamicResource ModificationUpdateAvailableBrush}"/>
-                  </DataTrigger>
-                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationStatus.Updating}">
-                     <Setter Property="Foreground" Value="{DynamicResource ModificationUpdatingBrush}"/>
-                  </DataTrigger>
-               </Style.Triggers>
-            </Style>
-         </ProgressBar.Style>
-      </ProgressBar>
+      <local:ModificationEntryProgressIndicator Grid.Row="1" />
+<!--      <ProgressBar Value="{Binding StatusProgress, FallbackValue=0.7}" Maximum="1" BorderThickness="0" Grid.Row="1" Name="ProgressBar">-->
+<!--         <ProgressBar.Style>-->
+<!--            <Style TargetType="{x:Type ProgressBar}">-->
+<!--               <Setter Property="Foreground" Value="Magenta"/>-->
+<!--               <Setter Property="Background" Value="{DynamicResource SilverChaliceBrush}"/>-->
+<!--               <Style.Triggers>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Enabled}">-->
+<!--                     <DataTrigger.EnterActions>-->
+<!--                        <BeginStoryboard>-->
+<!--                           <Storyboard TargetProperty="Background">-->
+<!--                              <ColorAnimation -->
+<!--                                 To="{DynamicResource ModificationEnabledColor}"              -->
+<!--                                 Duration="0:0:5.0"-->
+<!--                                 AutoReverse="False"/>-->
+<!--                           </Storyboard>-->
+<!--                        </BeginStoryboard>-->
+<!--                     </DataTrigger.EnterActions>-->
+<!--~1~                     <Setter Property="Foreground" Value="{DynamicResource ModificationEnabledBrush}"/>@1@-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Disabled}">-->
+<!--                     <Setter Property="Foreground" Value="{DynamicResource ModificationDisabledBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Broken}">-->
+<!--                     <Setter Property="Foreground" Value="{DynamicResource ModificationBrokenBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.UpdateAvailable}">-->
+<!--                     <Setter Property="Foreground" Value="{DynamicResource ModificationUpdateAvailableBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Updating}">-->
+<!--                     <Setter Property="Foreground" Value="{DynamicResource ModificationUpdatingBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--               </Style.Triggers>-->
+<!--            </Style>-->
+<!--         </ProgressBar.Style>-->
+<!--      </ProgressBar>-->
    </Grid>
 </UserControl>

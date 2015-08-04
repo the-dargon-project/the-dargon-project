@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Dargon.Client.Views.ModificationEntryProgressIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dargon.Client.Views"
+             xmlns:viewmodel="clr-namespace:Dargon.Client.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="300" Background="{DynamicResource SilverChaliceBrush}">
+   <Grid>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid Name="fred"></Grid>
+<!--         <Rectangle.Style>-->
+<!--            <Style TargetType="{x:Type Rectangle}">-->
+<!--               <Setter Property="Fill" Value="Magenta" />-->
+<!--               <Style.Triggers>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Enabled}">-->
+<!--                     <DataTrigger.EnterActions>-->
+<!--                        <BeginStoryboard>-->
+<!--                           <Storyboard TargetProperty="Fill">-->
+<!--                              <ColorAnimation To="{DynamicResource ModificationEnabledColor}" FillBehavior=" Stop" Duration="0:0:1"/>-->
+<!--                           </Storyboard>-->
+<!--                        </BeginStoryboard>-->
+<!--                     </DataTrigger.EnterActions>-->
+<!--                     ~1~                     <Setter Property="Fill" Value="{DynamicResource ModificationEnabledBrush}"/>@1@-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Disabled}">-->
+<!--                     <Setter Property="Fill" Value="{DynamicResource ModificationDisabledBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Broken}">-->
+<!--                     <Setter Property="Fill" Value="{DynamicResource ModificationBrokenBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.UpdateAvailable}">-->
+<!--                     <Setter Property="Fill" Value="{DynamicResource ModificationUpdateAvailableBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--                  <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodel:ModificationEntryStatus.Updating}">-->
+<!--                     <Setter Property="Fill" Value="{DynamicResource ModificationUpdatingBrush}"/>-->
+<!--                  </DataTrigger>-->
+<!--               </Style.Triggers>-->
+<!--            </Style>-->
+<!--         </Rectangle.Style>-->
+   </Grid>
+</UserControl>

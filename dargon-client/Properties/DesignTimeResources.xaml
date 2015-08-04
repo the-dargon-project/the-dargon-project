@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Dargon.Client.Properties">
    <ResourceDictionary.MergedDictionaries>
-      <ResourceDictionary Source="/dargon-client;component/Views/ClientColors.xaml"/>
+      <ResourceDictionary Source="/nest-main;component/Views/ClientColors.xaml"/>
    </ResourceDictionary.MergedDictionaries>
-
 </ResourceDictionary>

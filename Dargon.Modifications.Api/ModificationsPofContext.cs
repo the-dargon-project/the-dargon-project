@@ -11,6 +11,7 @@ namespace Dargon.Modifications {
       public ModificationsPofContext() {
          RegisterPortableObjectType(kBasePofId + 0, typeof(InfoComponent));
          RegisterPortableObjectType(kBasePofId + 1, typeof(ThumbnailComponent));
+         RegisterPortableObjectType(kBasePofId + 2, typeof(EnabledComponent));
       }
    }
 }

@@ -11,7 +11,7 @@
    <UserControl.Resources>
       <Style TargetType="{x:Type local:ModificationEntryStatusIndicator}">
          <Style.Triggers>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodels:ModificationStatus.Enabled}">
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodels:ModificationEntryStatus.Enabled}">
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>
@@ -20,7 +20,7 @@
                   </Setter.Value>
                </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodels:ModificationStatus.Updating}">
+            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewmodels:ModificationEntryStatus.Updating}">
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>

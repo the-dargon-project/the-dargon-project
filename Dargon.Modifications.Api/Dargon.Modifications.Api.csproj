@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="ComponentOrigin.cs" />
+    <Compile Include="EnabledComponent.cs" />
     <Compile Include="InfoComponent.cs" />
     <Compile Include="Modification.cs" />
     <Compile Include="ModificationComponentAttribute.cs" />

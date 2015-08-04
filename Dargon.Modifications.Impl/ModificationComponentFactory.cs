@@ -52,22 +52,23 @@ namespace Dargon.Modifications {
          }
 
          object synchronization = new object();
-         var fsw = new FileSystemWatcher(metadataRootPath);
+         var fsw = new FileSystemWatcher(new DirectoryInfo(modification.RepositoryPath).Parent.FullName);
+         fsw.EnableRaisingEvents = true;
          fsw.Changed += (s, e) => {
             if (Path.GetFullPath(e.FullPath) != Path.GetFullPath(path)) {
                return;
             }
-            if (e.ChangeType != WatcherChangeTypes.Changed) {
-               return;
-            }
-            lock (synchronization) {
-               using (var fs = fileSystemProxy.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
-                  var newComponent = serializer.Deserialize<TComponent>(fs.Reader);
-                  component.Load(newComponent);
+            if (e.ChangeType == WatcherChangeTypes.Deleted) {
+               fsw.Dispose();
+            } else {
+               lock (synchronization) {
+                  using (var fs = fileSystemProxy.OpenFile(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+                     var newComponent = serializer.Deserialize<TComponent>(fs.Reader);
+                     component.Load(newComponent);
+                  }
                }
             }
          };
-         fsw.EnableRaisingEvents = true;
          component.PropertyChanged += (s, e) => {
             fileSystemProxy.PrepareParentDirectory(path);
             logger.Info("BEGIN WRITING FILE " + path);

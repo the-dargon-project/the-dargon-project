@@ -48,7 +48,8 @@ namespace Dargon.Trinkets.Spawner {
                kTrinketEggName,
                new SpawnConfiguration {
                   Arguments = ms.ToArray(),
-                  InstanceName = kTrinketEggName + "_" + targetProcessId
+                  InstanceName = kTrinketEggName + "_" + targetProcessId,
+                  StartFlags = HatchlingStartFlags.StartAsynchronously
                });
          }
       }

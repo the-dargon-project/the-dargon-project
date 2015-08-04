@@ -31,7 +31,7 @@ namespace Dargon.Client.Controllers.Phases {
       }
 
       public override void HandleEnter() {
-         ViewModel.Status = ModificationStatus.Updating;
+         ViewModel.StatusOverride = ModificationEntryStatus.Updating;
          ViewModel.StatusProgress = 0;
          Task.Factory.StartNew(new Action(() => {
             try {
@@ -49,6 +49,9 @@ namespace Dargon.Client.Controllers.Phases {
          Modification = ModificationLoader.FromPath(finalRepositoryPath);
          PhaseFactory.SetModification(Modification);
          ViewModel.SetModification(Modification);
+
+         var enabledComponent = Modification.GetComponent<EnabledComponent>();
+         enabledComponent.IsEnabled = true;
 
          var thumbnailDirectory = Path.Combine(finalRepositoryPath, "thumbnails");
          FileSystemProxy.PrepareDirectory(thumbnailDirectory);

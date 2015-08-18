@@ -107,11 +107,12 @@ HANDLE WINAPI FileSubsystem::MyCreateFileA(LPCSTR lpFilePath, DWORD dwDesiredAcc
 HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
    // MountPointManager
-   if (dargon::narrow(lpFilePath).find("windows") != -1 || 
-       dargon::narrow(lpFilePath).find("Windows") != -1 ||
-       dargon::narrow(lpFilePath).find("MountPointManager") != -1 ||
-       dargon::narrow(lpFilePath).find("microsoft") != -1 ||
-       dargon::narrow(lpFilePath).find("Microsoft") != -1) {
+   std::wstring wideFilePath(lpFilePath);
+   if (wideFilePath.find(L"windows") != -1 || 
+       wideFilePath.find(L"Windows") != -1 ||
+       wideFilePath.find(L"MountPointManager") != -1 ||
+       wideFilePath.find(L"microsoft") != -1 ||
+       wideFilePath.find(L"Microsoft") != -1) {
 //      std::cout << std::dec << "SKIP " << dargon::narrow(lpFilePath) << std::endl;
       return m_trampCreateFileW(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
    }

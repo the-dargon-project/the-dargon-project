@@ -18,13 +18,13 @@ namespace Dargon {
 
       public string Get(string key, string defaultValue) {
          string result;
-         if (!TryGetInternal(key, out result)) {
+         if (!TryGet(key, out result)) {
             result = defaultValue;
          }
          return result;
       }
 
-      private bool TryGetInternal(string key, out string value) {
+      public bool TryGet(string key, out string value) {
          var path = BuildKeyPath(key);
          var fileInfo = fileSystemProxy.GetFileSystemInfo(path);
          if (fileInfo.Exists && !fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
@@ -41,19 +41,50 @@ namespace Dargon {
          fileSystemProxy.PrepareParentDirectory(path);
          fileSystemProxy.WriteAllText(path, value);
       }
+      
+      public bool Get(string key, bool defaultValue) {
+         bool result;
+         if (!TryGet(key, out result)) {
+            result = defaultValue;
+         }
+         return result;
+      }
 
-      public bool GetBoolean(string key, bool defaultValue) {
+      public bool TryGet(string key, out bool value) {
          string valueString;
-         bool valueParsed;
-         if (TryGetInternal(key, out valueString) &&
-             bool.TryParse(valueString, out valueParsed)) {
-            return valueParsed;
+         if (TryGet(key, out valueString) &&
+             bool.TryParse(valueString, out value)) {
+            return true;
          } else {
-            return defaultValue;
+            value = false;
+            return false;
          }
       }
 
-      public void SetBoolean(string key, bool value) {
+      public void Set(string key, bool value) {
+         Set(key, value.ToString());
+      }
+
+      public int Get(string key, int defaultValue) {
+         int result;
+         if (!TryGet(key, out result)) {
+            result = defaultValue;
+         }
+         return result;
+      }
+
+      public bool TryGet(string key, out int value) {
+         string valueString;
+         if (TryGet(key, out valueString) &&
+             int.TryParse(valueString, out value)) {
+            return true;
+         } else {
+            value = 0;
+            return false;
+         }
+      }
+
+      public void Set(string key, int value) {
          Set(key, value.ToString());
       }
 

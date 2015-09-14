@@ -34,8 +34,8 @@
       <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.SystemState.Api.0.1.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

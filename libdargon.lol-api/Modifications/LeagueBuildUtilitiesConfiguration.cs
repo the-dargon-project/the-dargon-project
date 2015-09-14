@@ -13,7 +13,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
 
       public LeagueBuildUtilitiesConfiguration(SystemState systemState) {
          this.systemState = systemState;
-         this.isLoggingEnabled = systemState.GetBoolean(kEnableBuildLoggingKey, false);
+         this.isLoggingEnabled = systemState.Get(kEnableBuildLoggingKey, false);
       }
 
       public bool IsLoggingEnabled => isLoggingEnabled;

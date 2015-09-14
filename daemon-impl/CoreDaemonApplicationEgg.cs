@@ -41,33 +41,28 @@ namespace Dargon.Daemon {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
       private const int kDaemonManagementPort = 21001;
       private DaemonServiceImpl daemonService;
-      private Thread mainThread;
+      private List<object> keepalive;
 
       public NestResult Start(IEggParameters parameters) {
          if (!logger.IsErrorEnabled) {
             InitializeLogging();
          }
 
-#if DEBUG
-         logger.Error("COMPILED IN DEBUG MODE");
-#endif
+         LogIfDebugBuild();
 
-         List<object> keepalive;
          daemonService = CreateDaemonCore(parameters, out keepalive);
-         mainThread = new Thread(() => {
-            daemonService.Run();
-            GC.KeepAlive(keepalive);
-            parameters.Host.Shutdown();
-         }) { IsBackground = false }.With(t => t.Start());
-
          return NestResult.Success;
       }
 
       public NestResult Shutdown() {
          daemonService.Shutdown();
-         mainThread.Join();
-
          return NestResult.Success;
+      }
+
+      private void LogIfDebugBuild() {
+#if DEBUG
+         logger.Error("COMPILED IN DEBUG MODE");
+#endif
       }
 
       private void InitializeLogging() {
@@ -148,7 +143,7 @@ namespace Dargon.Daemon {
          keepalive.Add(localServiceClient);
 
          // construct Dargon Daemon dependencies
-         var core = new DaemonServiceImpl(clientConfiguration);
+         var core = new DaemonServiceImpl(parameters.Host, clientConfiguration);
          DaemonService daemonService = core;
          localServiceClient.RegisterService(daemonService, typeof(DaemonService));
          localManagementServer.RegisterInstance(new DaemonServiceMob(core));

@@ -1,37 +1,33 @@
 ﻿using NLog;
 using System;
 using System.Threading;
+using Dargon.Nest.Egg;
 
 namespace Dargon.Daemon {
    public class DaemonServiceImpl : DaemonService {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly IEggHost host;
       private readonly IClientConfiguration configuration;
-      private readonly CountdownEvent shutdownSignal = new CountdownEvent(1);
       private bool isShutdownSignalled = false;
 
-      public event EventHandler BeginShutdown;
+      public event EventHandler ShuttingDown;
 
-      public DaemonServiceImpl(IClientConfiguration configuration) {
+      public DaemonServiceImpl(IEggHost host, IClientConfiguration configuration) {
          logger.Info("Initializing Daemon");
 
+         this.host = host;
          this.configuration = configuration;
       }
 
-      public IClientConfiguration Configuration { get { return configuration; } }
-      public bool IsShutdownSignalled { get { return isShutdownSignalled; } }
-
-      public void Run() {
-         shutdownSignal.Wait();
-      }
+      public IClientConfiguration Configuration => configuration;
+      public bool IsShutdownSignalled => isShutdownSignalled;
 
       public void Shutdown() {
          if (!isShutdownSignalled) {
             isShutdownSignalled = true;
-            var capture = BeginShutdown;
-            if (capture != null)
-               capture(this, new EventArgs());
-            shutdownSignal.Signal();
+            ShuttingDown?.Invoke(this, new EventArgs());
+            host.Shutdown();
          }
       }
    }

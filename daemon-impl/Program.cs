@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System.Threading;
+using NLog;
 
 namespace Dargon.Daemon {
    public static class Program {
@@ -7,6 +8,7 @@ namespace Dargon.Daemon {
 
       public static void Main(string[] args) {
          new CoreDaemonApplicationEgg().Start(null);
+         new CountdownEvent(1).Wait();
       }
    }
 }

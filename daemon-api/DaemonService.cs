@@ -6,7 +6,7 @@ namespace Dargon.Daemon {
    public interface DaemonService {
       IClientConfiguration Configuration { get; }
 
-      event EventHandler BeginShutdown;
+      event EventHandler ShuttingDown;
       bool IsShutdownSignalled { get; }
       void Shutdown();
    }

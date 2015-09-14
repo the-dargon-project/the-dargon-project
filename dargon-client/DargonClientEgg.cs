@@ -46,6 +46,7 @@ namespace Dargon.Client {
       private readonly ExeggutorService exeggutorService;
       private readonly LeagueBuildUtilities leagueBuildUtilities;
       private readonly List<object> keepalive = new List<object>();
+      private IEggHost host;
 
       public DargonClientEgg() {
          InitializeLogging();
@@ -86,6 +87,7 @@ namespace Dargon.Client {
       }
 
       public NestResult Start(IEggParameters parameters) {
+         this.host = parameters.Host;
          var userInterfaceThread = new Thread(UserInterfaceThreadStart);
          userInterfaceThread.SetApartmentState(ApartmentState.STA);
          userInterfaceThread.Start();
@@ -108,9 +110,13 @@ namespace Dargon.Client {
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;
          application.Run(window);
+         Shutdown();
       }
 
       public NestResult Shutdown() {
+         var application = Application.Current;
+         application.Dispatcher.Invoke(() => { application.Shutdown(); });
+         host?.Shutdown();
          return NestResult.Success;
       }
 

@@ -11,12 +11,11 @@ using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Processes.Watching;
 using Dargon.Services;
+using Dargon.Services.Clustering;
 using Dargon.Transport;
 using Dargon.Tray;
-using Dargon.Trinkets;
 using Dargon.Trinkets.Commands;
-using Dargon.Trinkets.Components;
-using Dargon.VirtualFileMaps;
+using Dargon.Trinkets.Spawner;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
@@ -27,14 +26,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Dargon.Services.Clustering;
-using Dargon.Trinkets.Spawner;
-using NLog.Layouts;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
@@ -130,7 +122,7 @@ namespace Dargon.Daemon {
          var clientConfiguration = new ClientConfiguration();
 
          // construct system-state dependencies
-         var systemState = new ClientSystemStateImpl(fileSystemProxy, clientConfiguration.ConfigurationDirectoryPath);
+         var systemState = new ClientSystemStateFactory(fileSystemProxy, clientConfiguration).Create();
          localManagementServer.RegisterInstance(new ClientSystemStateMob(systemState));
 
          // construct libdsp dependencies

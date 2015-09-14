@@ -79,7 +79,7 @@ namespace Dargon.Client {
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
          exeggutorService = localServiceClient.GetService<ExeggutorService>();
 
-         SystemState systemState = new ClientSystemStateImpl(fileSystemProxy, clientConfiguration.ConfigurationDirectoryPath);
+         var systemState = new ClientSystemStateFactory(fileSystemProxy, clientConfiguration).Create();
          LeagueConfiguration leagueConfiguration = new LeagueConfiguration();
          CommandFactory commandFactory = new CommandFactoryImpl();
          LeagueBuildUtilitiesConfiguration leagueBuildUtilitiesConfiguration = new LeagueBuildUtilitiesConfiguration(systemState);

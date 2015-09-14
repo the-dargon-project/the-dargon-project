@@ -14,7 +14,7 @@ namespace Dargon.Daemon {
       public event EventHandler ShuttingDown;
 
       public DaemonServiceImpl(IEggHost host, IClientConfiguration configuration) {
-         logger.Info("Initializing Daemon");
+         logger.Info("Constructing Daemon Service");
 
          this.host = host;
          this.configuration = configuration;

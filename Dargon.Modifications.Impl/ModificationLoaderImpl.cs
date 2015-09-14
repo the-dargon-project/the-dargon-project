@@ -8,8 +8,8 @@ namespace Dargon.Modifications {
       private readonly string repositoriesDirectory;
       private readonly ModificationComponentFactory modificationComponentFactory;
 
-      public ModificationLoaderImpl(string repositoriesDirectory, ModificationComponentFactory modificationComponentFactory) {
-         this.repositoriesDirectory = repositoriesDirectory;
+      public ModificationLoaderImpl(IClientConfiguration clientConfiguration, ModificationComponentFactory modificationComponentFactory) {
+         this.repositoriesDirectory = clientConfiguration.RepositoriesDirectoryPath;
          this.modificationComponentFactory = modificationComponentFactory;
       }
 

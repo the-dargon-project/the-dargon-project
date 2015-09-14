@@ -27,6 +27,7 @@ using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.Collections.Generic;
+using Dargon.Ryu;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
@@ -34,6 +35,7 @@ namespace Dargon.Daemon {
       private const int kDaemonManagementPort = 21001;
       private DaemonServiceImpl daemonService;
       private List<object> keepalive;
+      private RyuContainer ryu;
 
       public NestResult Start(IEggParameters parameters) {
          if (!logger.IsErrorEnabled) {
@@ -42,7 +44,22 @@ namespace Dargon.Daemon {
 
          LogIfDebugBuild();
 
-         daemonService = CreateDaemonCore(parameters, out keepalive);
+         ryu = new RyuFactory().Create();
+
+         ryu.Set<IEggHost>(parameters?.Host);
+
+         ryu.Touch<ItzWartyCommonsRyuPackage>();
+         ryu.Touch<ItzWartyProxiesRyuPackage>();
+
+         // Dargon.management
+         var managementServerEndpoint = ryu.Get<INetworkingProxy>().CreateAnyEndPoint(kDaemonManagementPort);
+         ryu.Set<IManagementServerConfiguration>(new ManagementServerConfiguration(managementServerEndpoint));
+
+         ((RyuContainerImpl)ryu).SetLoggerEnabled(true);
+         ((RyuContainerImpl)ryu).Setup(true);
+         
+         logger.Info("Initialized.");
+         
          return NestResult.Success;
       }
 
@@ -150,7 +167,7 @@ namespace Dargon.Daemon {
 
          // construct modification and repository dependencies
          var modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         ModificationLoader modificationLoader = new ModificationLoaderImpl(clientConfiguration.RepositoriesDirectoryPath, modificationComponentFactory);
+         ModificationLoader modificationLoader = new ModificationLoaderImpl(clientConfiguration, modificationComponentFactory);
 
          // construct process watching/injection dependencies
 //         IProcessInjector processInjector = new ProcessInjector();
@@ -199,8 +216,8 @@ namespace Dargon.Daemon {
 //         logger.Info("######################################");
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(clientConfiguration, threadingProxy, fileSystemProxy, systemState, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationLoader, trinketSpawner);
-         IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
+//         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(clientConfiguration, threadingProxy, fileSystemProxy, systemState, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationLoader, trinketSpawner);
+//         IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
 
          return core;
       }

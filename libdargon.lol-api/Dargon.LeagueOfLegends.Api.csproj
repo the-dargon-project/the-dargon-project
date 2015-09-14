@@ -37,8 +37,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
+      <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.RADS">
       <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>

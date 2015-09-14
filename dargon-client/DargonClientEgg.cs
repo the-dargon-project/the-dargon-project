@@ -74,7 +74,7 @@ namespace Dargon.Client {
 
          clientConfiguration = new ClientConfiguration();
          ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         modificationLoader = new ModificationLoaderImpl(clientConfiguration.RepositoriesDirectoryPath, modificationComponentFactory);
+         modificationLoader = new ModificationLoaderImpl(clientConfiguration, modificationComponentFactory);
 
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
          exeggutorService = localServiceClient.GetService<ExeggutorService>();

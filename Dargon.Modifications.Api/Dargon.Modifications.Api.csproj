@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.PortableObjects">
-      <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,6 +68,7 @@
     <Compile Include="Modification.cs" />
     <Compile Include="ModificationComponentAttribute.cs" />
     <Compile Include="ModificationLoader.cs" />
+    <Compile Include="ModificationsApiRyuPackage.cs" />
     <Compile Include="ModificationsPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubdirectoryAttribute.cs" />

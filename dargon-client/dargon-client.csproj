@@ -74,8 +74,8 @@
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.3.1\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.3.2\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
@@ -89,7 +89,7 @@
       <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.Ryu.Api.0.3.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.Services.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

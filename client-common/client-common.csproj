@@ -33,6 +33,10 @@
     <Reference Include="Dargon.Management.Api">
       <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
       <Private>True</Private>
@@ -51,7 +55,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientCommonRyuPackage.cs" />
     <Compile Include="ClientConfiguration.cs" />
     <Compile Include="ClientSystemStateFactory.cs" />
     <Compile Include="IClientConfiguration.cs" />

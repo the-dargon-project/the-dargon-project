@@ -5,9 +5,9 @@ using System;
 namespace Dargon.CLI.Generic {
    public class StatusCommand<TService> : ICommand
       where TService : class, IStatusService {
-      private readonly IServiceClient serviceClient;
+      private readonly ServiceClient serviceClient;
 
-      public StatusCommand(IServiceClient serviceClient) { this.serviceClient = serviceClient; }
+      public StatusCommand(ServiceClient serviceClient) { this.serviceClient = serviceClient; }
 
       public string Name { get { return "status"; } }
 

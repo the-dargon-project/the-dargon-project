@@ -9,7 +9,7 @@ namespace Dargon.CLI {
    public class ServiceCommand : DispatcherCommand {
       private const string kCommandName = "service";
 
-      public ServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
+      public ServiceCommand(ServiceClient serviceClient) : base(kCommandName) {
          RegisterCommand(new InjectedModuleServiceCommand(serviceClient));
          RegisterCommand(new ProcessInjectionServiceCommand(serviceClient));
       }
@@ -41,7 +41,7 @@ namespace Dargon.CLI {
       public class InjectedModuleServiceCommand : DispatcherCommand {
          private const string kCommandName = "injected-module";
 
-         public InjectedModuleServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
+         public InjectedModuleServiceCommand(ServiceClient serviceClient) : base(kCommandName) {
             //TODO: Dead code
 //            RegisterCommand(new StatusCommand<InjectedModuleService>(serviceClient));
          }
@@ -50,7 +50,7 @@ namespace Dargon.CLI {
       public class ProcessInjectionServiceCommand : DispatcherCommand {
          private const string kCommandName = "process-injection";
 
-         public ProcessInjectionServiceCommand(IServiceClient serviceClient) : base(kCommandName) {
+         public ProcessInjectionServiceCommand(ServiceClient serviceClient) : base(kCommandName) {
 //            RegisterCommand(new StatusCommand<ProcessInjectionService>(serviceClient));
          }
       }

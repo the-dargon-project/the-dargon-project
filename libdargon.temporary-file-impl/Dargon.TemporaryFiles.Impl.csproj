@@ -40,8 +40,8 @@
       <HintPath>..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
     <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>

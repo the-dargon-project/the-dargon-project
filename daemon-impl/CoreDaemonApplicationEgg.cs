@@ -32,13 +32,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Dargon.Services.Clustering;
 using Dargon.Trinkets.Spawner;
 using NLog.Layouts;
 
 namespace Dargon.Daemon {
    public class CoreDaemonApplicationEgg : INestApplicationEgg {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-      private const int kDaemonManagementPort = 21000;
+      private const int kDaemonManagementPort = 21001;
       private DaemonServiceImpl daemonService;
       private Thread mainThread;
 
@@ -139,11 +140,11 @@ namespace Dargon.Daemon {
 
          // construct libdsp dependencies
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         ServiceClientFactoryImpl serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
 
          // construct libdsp local service node
-         IClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
-         IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+         ClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
+         ServiceClient localServiceClient = serviceClientFactory.Construct(clusteringConfiguration);
          keepalive.Add(localServiceClient);
 
          // construct Dargon Daemon dependencies
@@ -211,7 +212,7 @@ namespace Dargon.Daemon {
 //         logger.Info("######################################");
 
          // construct additional Dargon dependencies
-         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(clientConfiguration, threadingProxy, fileSystemProxy, systemState, localManagementServer, localServiceClient, daemonService, temporaryFileService, processProxy, processWatcherService, modificationLoader, trinketSpawner);
+         IGameHandler leagueGameServiceImpl = new LeagueGameServiceImpl(clientConfiguration, threadingProxy, fileSystemProxy, systemState, localManagementServer, daemonService, temporaryFileService, processProxy, processWatcherService, modificationLoader, trinketSpawner);
          IGameHandler ffxiiiGameServiceImpl = new FFXIIIGameServiceImpl(daemonService, processProxy, processWatcherService);
 
          return core;

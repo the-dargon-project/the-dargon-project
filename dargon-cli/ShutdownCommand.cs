@@ -4,9 +4,9 @@ using System;
 
 namespace Dargon.CLI {
    public class ShutdownCommand : ICommand {
-      private readonly IServiceClient serviceClient;
+      private readonly ServiceClient serviceClient;
 
-      public ShutdownCommand(IServiceClient serviceClient) {
+      public ShutdownCommand(ServiceClient serviceClient) {
          this.serviceClient = serviceClient;
       }
 

@@ -2,8 +2,6 @@
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
-using Dargon.Services.Clustering.Host;
-using Dargon.Services.Server;
 using ItzWarty.Collections;
 using ItzWarty.IO;
 using ItzWarty.Networking;
@@ -30,7 +28,7 @@ namespace Dargon.CLI {
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
          var serviceConfiguration = new ClientClusteringConfiguration();
-         var serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         var serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var localEndPoint = tcpEndPointFactory.CreateLoopbackEndPoint(serviceConfiguration.Port);
          var reconnectAttempts = 10;
          var reconnectDelay = 1000;
@@ -51,11 +49,11 @@ namespace Dargon.CLI {
          }
       }
 
-      private static IServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactory serviceClientFactory, ClientClusteringConfiguration clusteringConfiguration) {
-         IServiceClient serviceClient = null;
+      private static ServiceClient TryConnectToEndpoint(int reconnectAttempts, int reconnectDelay, ServiceClientFactoryImpl serviceClientFactory, ClientClusteringConfiguration clusteringConfiguration) {
+         ServiceClient serviceClient = null;
          for (var i = 0; i < reconnectAttempts && serviceClient == null; i++) {
             try {
-               serviceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+               serviceClient = serviceClientFactory.Construct(clusteringConfiguration);
             } catch (Exception e) {
                Console.WriteLine(e);
                if (i == 0) {

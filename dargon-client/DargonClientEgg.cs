@@ -1,45 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Dargon.Client.Views;
-using Dargon.Nest.Egg;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media.Animation;
-using Castle.Components.DictionaryAdapter.Xml;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels;
 using Dargon.Client.ViewModels.Helpers;
-using Dargon.FileSystems;
-using Dargon.IO;
+using Dargon.Client.Views;
 using Dargon.IO.Drive;
-using Dargon.RADS;
-using ItzWarty;
-using ItzWarty.IO;
-using Dargon.IO.Resolution;
 using Dargon.LeagueOfLegends;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
 using Dargon.Modifications.ThumbnailGenerator;
+using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
-using Dargon.Services;
+using Dargon.RADS;
 using Dargon.Trinkets.Commands;
+using ItzWarty;
 using ItzWarty.Collections;
+using ItzWarty.IO;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading;
+using System.Windows;
+using Dargon.Services;
+using Dargon.Services.Clustering;
 
 namespace Dargon.Client {
    public class DargonClientEgg : INestApplicationEgg {
@@ -76,9 +66,9 @@ namespace Dargon.Client {
          pofSerializer = new PofSerializer(pofContext);
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
-         IClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(new ProxyGenerator(), streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+         ClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
+         ServiceClientFactoryImpl serviceClientFactory = new ServiceClientFactoryImpl(new ProxyGenerator(), streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         ServiceClient localServiceClient = serviceClientFactory.Construct(clusteringConfiguration);
          keepalive.Add(localServiceClient);
 
          clientConfiguration = new ClientConfiguration();

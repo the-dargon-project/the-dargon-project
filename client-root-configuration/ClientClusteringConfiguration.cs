@@ -1,11 +1,11 @@
-﻿using Dargon.Services;
+﻿using System.Net;
+using Dargon.Services;
+using Dargon.Services.Clustering;
 
 namespace Dargon {
-   public class ClientClusteringConfiguration : ClusteringConfiguration {
-      private const int kDargonPort = 21337;
-      private const int kHeartBeatInterval = 30000;
+   public class ClientClusteringConfiguration : ClusteringConfigurationImpl {
+      private const int kNestClusterPort = 21999;
 
-      public ClientClusteringConfiguration() : base(kDargonPort, kHeartBeatInterval) {
-      }
+      public ClientClusteringConfiguration() : base(IPAddress.Loopback, kNestClusterPort, ClusteringRole.HostOrGuest) { }
    }
 }

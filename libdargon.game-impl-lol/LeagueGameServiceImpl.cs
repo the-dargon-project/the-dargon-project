@@ -8,11 +8,11 @@ using Dargon.LeagueOfLegends.Processes;
 using Dargon.LeagueOfLegends.RADS;
 using Dargon.LeagueOfLegends.Session;
 using Dargon.Management.Server;
+using Dargon.Modifications;
 using Dargon.Processes.Watching;
 using Dargon.RADS;
 using Dargon.RADS.Archives;
 using Dargon.RADS.Manifest;
-using Dargon.Services;
 using Dargon.Trinkets.Commands;
 using Dargon.Trinkets.Spawner;
 using ItzWarty;
@@ -24,8 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Dargon.LeagueOfLegends.Utilities;
-using Dargon.Modifications;
 
 namespace Dargon.LeagueOfLegends {
    public class LeagueGameServiceImpl : IGameHandler
@@ -37,7 +35,7 @@ namespace Dargon.LeagueOfLegends {
       private readonly RadsServiceImpl radsService;
       private readonly LeagueProcessWatcherServiceImpl leagueProcessWatcherService;
 
-      public LeagueGameServiceImpl(ClientConfiguration clientConfiguration, IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, SystemState systemState, ILocalManagementRegistry localManagementRegistry, IServiceClient localServiceClient, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationLoader modificationLoader, TrinketSpawner trinketSpawner)
+      public LeagueGameServiceImpl(ClientConfiguration clientConfiguration, IThreadingProxy threadingProxy, IFileSystemProxy fileSystemProxy, SystemState systemState, ILocalManagementRegistry localManagementRegistry, DaemonService daemonService, TemporaryFileService temporaryFileService, IProcessProxy processProxy, ProcessWatcherService processWatcherService, ModificationLoader modificationLoader, TrinketSpawner trinketSpawner)
       {
          logger.Info("Initializing League Game Service");
 

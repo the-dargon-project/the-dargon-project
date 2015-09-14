@@ -7,6 +7,7 @@ using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Processes.Injection;
 using Dargon.Services;
+using Dargon.Services.Clustering;
 using Dargon.Services.Messaging;
 using Dargon.Transport;
 using Dargon.Trinkets.Transport;
@@ -46,11 +47,11 @@ namespace Dargon.Trinkets.Proxy {
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
          ProxyGenerator proxyGenerator = new ProxyGenerator();
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         var serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
 
          // construct libdsp local service node
-         IClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
-         IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(clusteringConfiguration);
+         ClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
+         ServiceClient localServiceClient = serviceClientFactory.Construct(clusteringConfiguration);
          keepaliveObjects.Add(localServiceClient);
 
          temporaryFileService = localServiceClient.GetService<TemporaryFileService>();

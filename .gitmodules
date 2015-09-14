@@ -1,3 +1,0 @@
-[submodule "bsdiffnet"]
-	path = bsdiffnet
-	url = https://github.com/LogosBible/bsdiff.net.git

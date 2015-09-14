@@ -1,8 +1,13 @@
-﻿using Dargon.Client.ViewModels;
+﻿using Dargon.Client.Controllers.Phases;
+using Dargon.Client.ViewModels;
 using Dargon.Client.Views;
 using Dargon.IO;
 using Dargon.IO.Resolution;
 using Dargon.LeagueOfLegends.Modifications;
+using Dargon.Modifications;
+using Dargon.Nest;
+using Dargon.Nest.Eggxecutor;
+using Dargon.PortableObjects;
 using Dargon.RADS;
 using ItzWarty;
 using ItzWarty.IO;
@@ -12,16 +17,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using Dargon.Client.Controllers.Phases;
-using Dargon.Modifications;
-using Dargon.Nest;
-using Dargon.Nest.Eggxecutor;
-using Dargon.Patcher;
-using Dargon.PortableObjects;
 
 namespace Dargon.Client.Controllers {
    public class ModificationImportController {

@@ -1,18 +1,12 @@
 ﻿using Dargon.Client.Annotations;
+using Dargon.Client.Controllers;
+using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
 using ItzWarty;
 using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Dargon.Client.Controllers;
-using Dargon.LeagueOfLegends.Modifications;
-using Dargon.Patcher;
 
 namespace Dargon.Client.ViewModels {
    public class ModificationViewModel : INotifyPropertyChanged {

@@ -393,10 +393,6 @@
       <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
       <Name>Dargon.TemporaryFiles.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdpatch\Dargon.Patcher.csproj">
-      <Project>{9699e719-25fa-41df-b966-b43cf50f9b00}</Project>
-      <Name>Dargon.Patcher</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\spinner_on_dark.gif" />

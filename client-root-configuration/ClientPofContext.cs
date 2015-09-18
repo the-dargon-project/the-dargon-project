@@ -12,9 +12,6 @@ namespace Dargon {
       public ClientPofContext() {
          // Nest Exeggutor 3000-3999
          MergeContext(new ExeggutorPofContext(3000));
-
-         // League of Legends Api and Impl 12000-12999
-         MergeContext(new LeagueOfLegendsApiPofContext());
       }
    }
 }

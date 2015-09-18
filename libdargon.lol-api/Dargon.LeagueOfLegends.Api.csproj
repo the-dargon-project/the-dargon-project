@@ -43,6 +43,10 @@
     <Reference Include="Dargon.RADS">
       <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
       <Private>True</Private>
@@ -83,6 +87,7 @@
   <ItemGroup>
     <Compile Include="LeagueConfiguration.cs" />
     <Compile Include="LeagueOfLegendsApiPofContext.cs" />
+    <Compile Include="LeagueOfLegendsApiRyuPackage.cs" />
     <Compile Include="Modifications\LeagueBuildUtilities.cs" />
     <Compile Include="Modifications\LeagueBuildUtilitiesConfiguration.cs" />
     <Compile Include="Modifications\LeagueMetadataComponent.cs" />

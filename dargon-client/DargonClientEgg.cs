@@ -1,93 +1,55 @@
-﻿using Castle.DynamicProxy;
-using Dargon.Client.Controllers;
+﻿using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels;
 using Dargon.Client.ViewModels.Helpers;
 using Dargon.Client.Views;
 using Dargon.IO.Drive;
-using Dargon.LeagueOfLegends;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
-using Dargon.Modifications.ThumbnailGenerator;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
-using Dargon.PortableObjects.Streams;
 using Dargon.RADS;
-using Dargon.Trinkets.Commands;
-using ItzWarty;
-using ItzWarty.Collections;
+using Dargon.Ryu;
+using Dargon.Services;
 using ItzWarty.IO;
-using ItzWarty.Networking;
-using ItzWarty.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using Dargon.Services;
-using Dargon.Services.Clustering;
+using Dargon.Management.Server;
+using ItzWarty;
+using ItzWarty.Networking;
 
 namespace Dargon.Client {
    public class DargonClientEgg : INestApplicationEgg {
+      private int kClientManagementPort = 21002;
       private const string kRepositoryDirectoryName = "repositories";
 
-      private readonly IFileSystemProxy fileSystemProxy;
-      private readonly DriveNodeFactory driveNodeFactory;
-      private readonly RiotSolutionLoader riotSolutionLoader;
-      private readonly IPofContext pofContext;
-      private readonly IPofSerializer pofSerializer;
-      private readonly IClientConfiguration clientConfiguration;
-      private readonly ModificationLoader modificationLoader;
-      private readonly TemporaryFileService temporaryFileService;
-      private readonly ExeggutorService exeggutorService;
-      private readonly LeagueBuildUtilities leagueBuildUtilities;
-      private readonly List<object> keepalive = new List<object>();
+      private readonly RyuContainer ryu; 
       private IEggHost host;
 
       public DargonClientEgg() {
          InitializeLogging();
-
-         IStreamFactory streamFactory = new StreamFactory();
-         ICollectionFactory collectionFactory = new CollectionFactory();
-         IThreadingProxy threadingProxy = new ThreadingProxy(new ThreadingFactory(), new SynchronizationFactory());
-         IDnsProxy dnsProxy = new DnsProxy();
-         INetworkingProxy networkingProxy = new NetworkingProxy(new SocketFactory(new TcpEndPointFactory(dnsProxy), new NetworkingInternalFactory(threadingProxy, streamFactory)), new TcpEndPointFactory(dnsProxy));
-         fileSystemProxy = new FileSystemProxy(streamFactory);
-         driveNodeFactory = new DriveNodeFactory(streamFactory);
-         riotSolutionLoader = new RiotSolutionLoader();
-
-         pofContext = new PofContext().With(x => {
-            x.MergeContext(new ClientPofContext());
-            x.MergeContext(new ThumbnailGeneratorApiPofContext());
-         });
-         pofSerializer = new PofSerializer(pofContext);
-         PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
-
-         ClusteringConfiguration clusteringConfiguration = new ClientClusteringConfiguration();
-         ServiceClientFactoryImpl serviceClientFactory = new ServiceClientFactoryImpl(new ProxyGenerator(), streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         ServiceClient localServiceClient = serviceClientFactory.Construct(clusteringConfiguration);
-         keepalive.Add(localServiceClient);
-
-         clientConfiguration = new ClientConfiguration();
-         ModificationComponentFactory modificationComponentFactory = new ModificationComponentFactory(fileSystemProxy, pofContext, new SlotSourceFactoryImpl(), pofSerializer);
-         modificationLoader = new ModificationLoaderImpl(clientConfiguration, modificationComponentFactory);
-
-         temporaryFileService = localServiceClient.GetService<TemporaryFileService>();
-         exeggutorService = localServiceClient.GetService<ExeggutorService>();
-
-         var systemState = new ClientSystemStateFactory(fileSystemProxy, clientConfiguration).Create();
-         LeagueConfiguration leagueConfiguration = new LeagueConfiguration();
-         CommandFactory commandFactory = new CommandFactoryImpl();
-         LeagueBuildUtilitiesConfiguration leagueBuildUtilitiesConfiguration = new LeagueBuildUtilitiesConfiguration(systemState);
-         leagueBuildUtilities = new LeagueBuildUtilities(systemState, leagueConfiguration, fileSystemProxy, riotSolutionLoader, temporaryFileService, commandFactory, leagueBuildUtilitiesConfiguration);
+         ryu = new RyuFactory().Create();
+         ((RyuContainerImpl)ryu).SetLoggerEnabled(true);
       }
 
       public NestResult Start(IEggParameters parameters) {
-         this.host = parameters.Host;
+         this.host = parameters?.Host;
+
+         ryu.Touch<ItzWartyCommonsRyuPackage>();
+         ryu.Touch<ItzWartyProxiesRyuPackage>();
+
+         // Dargon.management
+         var managementServerEndpoint = ryu.Get<INetworkingProxy>().CreateAnyEndPoint(kClientManagementPort);
+         ryu.Set<IManagementServerConfiguration>(new ManagementServerConfiguration(managementServerEndpoint));
+
+         ((RyuContainerImpl)ryu).Setup(true);
+
          var userInterfaceThread = new Thread(UserInterfaceThreadStart);
          userInterfaceThread.SetApartmentState(ApartmentState.STA);
          userInterfaceThread.Start();
@@ -95,6 +57,17 @@ namespace Dargon.Client {
       }
 
       private void UserInterfaceThreadStart() {
+         var clientConfiguration = ryu.Get<IClientConfiguration>();
+         var fileSystemProxy = ryu.Get<IFileSystemProxy>();
+         var driveNodeFactory = new DriveNodeFactory(ryu.Get<IStreamFactory>());
+         var pofContext = ryu.Get<IPofContext>();
+         var pofSerializer = ryu.Get<IPofSerializer>();
+         var temporaryFileService = ryu.Get<ServiceClient>().GetService<TemporaryFileService>();
+         var exeggutorService = ryu.Get<ServiceClient>().GetService<ExeggutorService>();
+         var riotSolutionLoader = ryu.Get<RiotSolutionLoader>();
+         var modificationLoader = ryu.Get<ModificationLoader>();
+         var leagueBuildUtilities = ryu.Get<LeagueBuildUtilities>();
+
          var application = Application.Current ?? new Application();
          var dispatcher = application.Dispatcher;
          var window = new MainWindow();

@@ -14,14 +14,9 @@ namespace Dargon {
       }
 
       [ManagedOperation]
-      public string Get(string key) {
-         return systemState.Get(key, null);
-      }
+      public string Get(string key) => systemState.Get(key, null);
 
       [ManagedOperation]
-      public bool Set(string key, string value) {
-         systemState.Set(key, value);
-         return true;
-      }
+      public void Set(string key, string value) => systemState.Set(key, value);
    }
 }

@@ -14,19 +14,12 @@ namespace Dargon.Daemon {
       }
 
       [ManagedOperation]
-      public string GetConfiguration() {
-         return daemonService.Configuration.ToString();
-      }
+      public string GetConfiguration() => daemonService.Configuration.ToString();
 
       [ManagedOperation]
-      public bool IsShutdownSignalled() {
-         return daemonService.IsShutdownSignalled;
-      }
+      public bool IsShutdownSignalled() => daemonService.IsShutdownSignalled;
 
       [ManagedOperation]
-      public bool Shutdown() {
-         daemonService.Shutdown();
-         return true;
-      }
+      public void Shutdown() => daemonService.Shutdown();
    }
 }

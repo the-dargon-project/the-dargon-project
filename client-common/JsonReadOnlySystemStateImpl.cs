@@ -45,7 +45,10 @@ namespace Dargon {
       }
 
       public static SystemState FromFile(string jsonPath) {
-         var json = File.ReadAllText(jsonPath);
+         return FromJson(File.ReadAllText(jsonPath));
+      }
+
+      public static SystemState FromJson(string json) {
          var jObject = JObject.Parse(json);
          return new JsonReadOnlySystemStateImpl(jObject);
       }

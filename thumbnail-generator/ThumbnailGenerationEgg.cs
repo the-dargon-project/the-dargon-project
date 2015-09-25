@@ -1,7 +1,6 @@
 ﻿using Dargon.Management;
 using Dargon.Management.Server;
 using Dargon.Modifications.ThumbnailGenerator;
-using Dargon.Modifications.ThumbnailGenerator.Impl;
 using Dargon.Nest.Egg;
 using Dargon.PortableObjects;
 using ItzWarty;

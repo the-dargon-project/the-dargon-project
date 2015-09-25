@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public class TextureConverter : IDisposable {
       private Direct3D direct3d;
       private Panel panel;

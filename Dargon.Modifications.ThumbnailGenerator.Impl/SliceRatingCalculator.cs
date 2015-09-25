@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AForge.Math;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public class SliceRatingCalculator {
       public double ComputeRating(Bitmap originalImage, Histogram edgeDensityHistogram, int resultWidth, int resultHeight) {
          var wingSpreadFactor = edgeDensityHistogram.GetRange(0.2).Length / (double)edgeDensityHistogram.GetRange(0.6).Length;

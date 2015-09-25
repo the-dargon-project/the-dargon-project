@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using AForge.Imaging.Filters;
 using AForge.Math;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public static class DebuggingUtilities {
       public static void ShowImage(Bitmap bitmap) {
          var form = new Form { ClientSize = bitmap.Size };

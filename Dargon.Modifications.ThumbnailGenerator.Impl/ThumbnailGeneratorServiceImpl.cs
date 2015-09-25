@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math;
 using ItzWarty;
 using Point = System.Drawing.Point;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public interface ThumbnailGeneratorService {
       void GenerateThumbnails(ThumbnailGenerationParameters parameters);
    }

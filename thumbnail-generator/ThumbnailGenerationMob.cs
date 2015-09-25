@@ -1,6 +1,5 @@
 using Dargon.Management;
 using Dargon.Modifications.ThumbnailGenerator;
-using Dargon.Modifications.ThumbnailGenerator.Impl;
 
 namespace Dargon.ThumbnailGenerator {
    public class ThumbnailGenerationMob {

@@ -7,7 +7,7 @@
     <ProjectGuid>{D199B14A-7BEA-4B4C-923F-37DA45388D52}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Modifications.ThumbnailGenerator.Impl</RootNamespace>
+    <RootNamespace>Dargon.Modifications.ThumbnailGenerator</RootNamespace>
     <AssemblyName>Dargon.Modifications.ThumbnailGenerator.Impl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

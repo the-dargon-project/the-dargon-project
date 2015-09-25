@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public class EdgeDensityRankComparer : IComparer<float> {
       public int Compare(float x, float y) {
          var result = x.CompareTo(y);

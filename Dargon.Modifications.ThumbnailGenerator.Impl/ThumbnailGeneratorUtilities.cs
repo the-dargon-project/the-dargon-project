@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AForge;
 using AForge.Math;
 using ItzWarty;
 using NLog;
-using SharpDX.Direct3D9;
 
-namespace Dargon.Modifications.ThumbnailGenerator.Impl {
+namespace Dargon.Modifications.ThumbnailGenerator {
    public class ThumbnailGeneratorUtilities {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 

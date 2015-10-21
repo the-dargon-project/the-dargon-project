@@ -8,11 +8,9 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace Dargon.Modifications.ThumbnailGenerator {
    public class TextureConverter : IDisposable {
-      private Direct3D direct3d;
-      private Panel panel;
-      private Device device;
-
-      public TextureConverter() {}
+      private readonly Direct3D direct3d;
+      private readonly Panel panel;
+      private readonly Device device;
 
       public TextureConverter(Direct3D direct3d, Panel panel, Device device) {
          this.direct3d = direct3d;
@@ -44,7 +42,6 @@ namespace Dargon.Modifications.ThumbnailGenerator {
                var resultData = resultBitmap.LockBits(new Rectangle(0, 0, textureWidth, textureHeight), ImageLockMode.WriteOnly, PixelFormat.Format32bppRgb);
                for (var y = 0; y < textureHeight; y++) {
                   Utilities.CopyMemory(resultData.Scan0 + y * resultData.Stride, renderTargetData.DataPointer + y * renderTargetData.Pitch, textureWidth * 4);
-                  // optimize away multiply/adds
                }
                resultBitmap.UnlockBits(resultData);
                renderTarget.UnlockRectangle();
@@ -57,20 +54,6 @@ namespace Dargon.Modifications.ThumbnailGenerator {
          device.Dispose();
          panel.Dispose();
          direct3d.Dispose();
-      }
-   }
-
-   public class TextureConverterFactory {
-      public TextureConverter Create() {
-         var presentParameters = new PresentParameters {
-            BackBufferCount = 2, // 1
-            SwapEffect = SwapEffect.Discard,
-            Windowed = true,
-         };
-         var direct3d = new Direct3D();
-         var panel = new Panel(); // { ClientSize = new Size(1, 1)};
-         var device = new Device(direct3d, 0, DeviceType.Hardware, panel.Handle, CreateFlags.SoftwareVertexProcessing, presentParameters);
-         return new TextureConverter(direct3d, panel, device);
       }
    }
 }

@@ -147,15 +147,15 @@ namespace dargon { namespace IO {
                              PFunctionCloseHandle closeHandle,
                              PFunctionSetFilePointer setFilePointer,
                              PFunctionSetFilePointerEx setFilePointerEx) {
-         _createEventA = createEventA;
-         _createEventW = createEventW;
-         _createFileA = createFileA;
-         _createFileW = createFileW;
-         _readFile = readFile;
-         _writeFile = writeFile;
-         _closeHandle = closeHandle;
-         _setFilePointer = setFilePointer;
-         _setFilePointerEx = setFilePointerEx;
+         if (createEventA)       _createEventA = createEventA;
+         if (createEventW)       _createEventW = createEventW;
+         if (createFileA)        _createFileA = createFileA;
+         if (createFileW)        _createFileW = createFileW;
+         if (readFile)           _readFile = readFile;
+         if (writeFile)          _writeFile = writeFile;
+         if (closeHandle)        _closeHandle = closeHandle;
+         if (setFilePointer)     _setFilePointer = setFilePointer;
+         if (setFilePointerEx)   _setFilePointerEx = setFilePointerEx;
       }
    };
 } }

@@ -76,7 +76,7 @@ namespace Dargon.Trinkets.Proxy {
          if (injectionSuccessful) {
             var process = processProxy.GetProcessById(configuration.TargetProcessId);
             process.Exited += (o, s) => {
-               Shutdown();
+               Shutdown(ShutdownReason.None);
             };
             process.EnableRaisingEvents = true;
          }
@@ -84,7 +84,7 @@ namespace Dargon.Trinkets.Proxy {
          return injectionSuccessful ? NestResult.Success : NestResult.Failure;
       }
 
-      public NestResult Shutdown() {
+      public NestResult Shutdown(ShutdownReason reason) {
          trinketDtpServer.Dispose();
          host.Shutdown();
          return NestResult.Success;

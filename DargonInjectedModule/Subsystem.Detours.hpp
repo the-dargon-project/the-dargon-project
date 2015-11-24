@@ -58,7 +58,7 @@
          { \
             if(m_tramp##DetouredMethodName != NULL) \
             { \
-               DetourRemove((BYTE*)m_tramp##DetouredMethodName, (BYTE*)m_real##DetouredMethodName); \
+               /*DetourRemove((BYTE*)m_tramp##DetouredMethodName, (BYTE*)m_real##DetouredMethodName); /**/ \
             } \
          }
 
@@ -79,9 +79,21 @@
             { /**/ \
                std::cout << "Attempt Detour: " #FriendlyFunctionName " " << std::endl; /**/ \
                m_real##FriendlyFunctionName = (DetouredMethodType*)GetProcAddress(ModuleHandle, DetouredMethodName); /**/ \
+               m_tramp##FriendlyFunctionName = m_real##FriendlyFunctionName; /**/ \
                std::cout << "real" #FriendlyFunctionName ": " << m_real##FriendlyFunctionName << std::endl; /**/ \
-               m_tramp##FriendlyFunctionName = (DetouredMethodType*)DetourFunction((PBYTE)m_real##FriendlyFunctionName, (PBYTE)&TrampolineName); /**/ \
-               std::cout << "Done!" << std::endl; /**/ \
+               if (DetourTransactionBegin() != NO_ERROR) { \
+                  std::cout << "DetourTransactionBegin failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourUpdateThread(GetCurrentThread()) != NO_ERROR) { \
+                  std::cout << "DetourUpdateThread failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourAttach(&(PVOID&)m_tramp##FriendlyFunctionName, (PVOID)TrampolineName) != NO_ERROR) { \
+                  std::cout << "DetourAttach failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourTransactionCommit() != NO_ERROR) { \
+                  std::cout << "DetourTransactionBegin failed with error " << GetLastError() << std::endl; \
+               } \
+               std::cout << "Done! Tramp: " << m_tramp##FriendlyFunctionName << std::endl; /**/ \
             }else{ /**/ \
                std::cout << "Already detoured " #FriendlyFunctionName "!: " << m_real##FriendlyFunctionName << std::endl; /**/ \
             } /**/ \
@@ -91,6 +103,18 @@
             if(m_tramp##FriendlyFunctionName != NULL) \
             { \
                std::cout << "Attempt undetour: " << m_real##FriendlyFunctionName << "  " << m_tramp##FriendlyFunctionName << std::endl; \
-               DetourRemove((BYTE*)m_tramp##FriendlyFunctionName, (BYTE*)&TrampolineName); \
+               if (DetourTransactionBegin() != NO_ERROR) { \
+                  std::cout << "DetourTransactionBegin failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourUpdateThread(GetCurrentThread()) != NO_ERROR) { \
+                  std::cout << "DetourUpdateThread failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourDetach(&(PVOID&)m_tramp##FriendlyFunctionName, (PVOID)TrampolineName) != NO_ERROR) { \
+                  std::cout << "DetourAttach failed with error " << GetLastError() << std::endl; \
+               } \
+               if (DetourTransactionCommit() != NO_ERROR) { \
+                  std::cout << "DetourTransactionBegin failed with error " << GetLastError() << std::endl; \
+               } \
+               std::cout << "Done!" << std::endl; /**/ \
             } \
          }

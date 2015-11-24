@@ -24,6 +24,28 @@ namespace dargon {
       {
       }
 
+      TEST_METHOD(AddAndAddOrUpdateTest) {
+         auto value = "asdf";
+         dict.insert(10, value);
+         dict.add_or_update(
+            10,
+            [](unsigned int add) { return "error"; },
+            [](unsigned int update, std::string existing) { return existing + "jkl;"; });
+         Assert::AreEqual(dict.get_value_or_default(10).c_str(), "asdfjkl;");
+      }
+
+      TEST_METHOD(ConditionalRemoveSadPathTest) {
+         dict.insert(10, "asdf");
+         dict.conditional_remove(10, [](unsigned int key, std::string value) { return value == "qwerty"; });
+         Assert::AreEqual(1U, dict.size());
+      }
+
+      TEST_METHOD(ConditionalRemoveHappyPathTest) {
+         dict.insert(10, "asdf");
+         dict.conditional_remove(10, [](unsigned int key, std::string value) { return key == 10; });
+         Assert::AreEqual(0U, dict.size());
+      }
+
       TEST_METHOD(SingleThreadedTest) 
       {
          const unsigned int entryCount = 10000;
@@ -97,7 +119,7 @@ namespace dargon {
                Assert::IsTrue(dict.contains(value));
             }
             size_t matchCount = 0;
-            for (auto item : dict) {
+            for (auto& item : dict) {
                if (items.find(item.first) != items.end()) {
                   matchCount++;
                }
@@ -128,13 +150,13 @@ namespace dargon {
    private:
       void AddRemoveThread(std::vector<std::pair<TKey, TValue>>& values, const countdown_event* beginAddSignal, countdown_event* endAddSignal, const countdown_event* beginRemoveSignal, countdown_event* endRemoveSignal, const countdown_event* beginAddAndRemoveSignal, const countdown_event* endAddAndRemoveSignal, countdown_event* cleanedUpSignal) {
          beginAddSignal->wait();
-         for (auto value : values) {
+         for (auto& value : values) {
             dict.insert(value.first, value.second);
          }
          endAddSignal->signal();
 
          beginRemoveSignal->wait();   
-         for (auto value : values) {
+         for (auto& value : values) {
             Assert::IsTrue(dict.remove(value.first));
          }
          endRemoveSignal->signal();
@@ -145,8 +167,7 @@ namespace dargon {
          std::mt19937 mt(rd());
          std::uniform_int_distribution<TKey> dist(0, values.size() - 1);
          while (!endAddAndRemoveSignal->wait(0)) {
-            for (auto i = 0; i < values.size(); i++) {
-               auto value = values[dist(mt)];
+            for (auto& value : values) {
                if (added.find(value.first) == added.end()) {
                   added.insert(value.first);
                   dict.insert(value.first, value.second);

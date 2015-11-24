@@ -7,7 +7,7 @@ using ItzWarty.Processes;
 
 namespace Dargon.Trinkets.Spawner {
    public class TrinketSpawnerImpl : TrinketSpawner {
-      private const string kTrinketEggName = "trinket";
+      private const string kTrinketEggName = "trinket-proxy";
 
       private readonly IStreamFactory streamFactory;
       private readonly IPofSerializer pofSerializer;

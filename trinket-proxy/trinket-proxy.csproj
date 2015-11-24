@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Trinkets.Proxy</RootNamespace>
-    <AssemblyName>nest-main</AssemblyName>
+    <AssemblyName>trinket-proxy</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,10 +32,6 @@
   <ItemGroup>
     <Reference Include="Castle.Core">
       <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dargon.Nest.Egg.Api">
-      <HintPath>..\..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects">
@@ -113,6 +109,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+      <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
+      <Name>Dargon.Nest.Egg.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\client-root-configuration\client-root-configuration.csproj">
       <Project>{12B4F1A3-319C-4116-BC4C-D3C8C7BC1A0D}</Project>
       <Name>client-root-configuration</Name>

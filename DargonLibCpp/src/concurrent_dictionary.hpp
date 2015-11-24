@@ -52,6 +52,7 @@ namespace dargon {
          auto it = dict.find(key);
          if (it == dict.end()) {
             dict.insert(PairType(key, add(key)));
+            count++;
          } else {
             it->second = update(key, it->second);
          }
@@ -66,6 +67,7 @@ namespace dargon {
             bool remove = remove_if(it->first, it->second);
             if (remove) {
                dict.erase(it);
+               count--;
             }
             return remove;
          }

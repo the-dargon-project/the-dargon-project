@@ -105,7 +105,7 @@
     <ClCompile Include="ConcurrentDictionaryTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DargonLibCpp.vcxproj">
+    <ProjectReference Include="..\src\DargonLibCpp.vcxproj">
       <Project>{4728635f-5b34-4a40-a6c8-70aee5074dc8}</Project>
     </ProjectReference>
   </ItemGroup>

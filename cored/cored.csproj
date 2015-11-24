@@ -49,14 +49,6 @@
       <HintPath>..\..\packages\Dargon.Management.Impl.0.2.0\lib\net45\Dargon.Management.Impl.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dargon.Nest.Exeggutor.Api.0.3.2\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
@@ -147,6 +139,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+      <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
+      <Name>Dargon.Nest.Egg.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\client-common\client-common.csproj">
       <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
       <Name>client-common</Name>
@@ -166,6 +162,10 @@
     <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
       <Project>{F601AB24-56FC-4ABA-A230-C3A425953B67}</Project>
       <Name>Dargon.Modifications.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Trinkets.Exeggutor\Dargon.Trinkets.Spawner.Impl.csproj">
+      <Project>{ee656d9b-7327-40c5-aaad-62051d0a6813}</Project>
+      <Name>Dargon.Trinkets.Spawner.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj">
       <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>

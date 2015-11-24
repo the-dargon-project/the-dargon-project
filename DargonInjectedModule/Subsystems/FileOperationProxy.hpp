@@ -7,6 +7,10 @@
 #include "FileSubsystemTypedefs.hpp"
 
 namespace dargon { namespace Subsystems {
+   struct FOP_TAG {
+      DWORD initial_thread;
+   };
+
    class FileOperationProxy {
    private:
       std::atomic_int ref_count;
@@ -19,11 +23,15 @@ namespace dargon { namespace Subsystems {
       virtual ~FileOperationProxy() { }
 
       int __IncrementReferenceCount() {
-         return ++ref_count;
+         ++ref_count;
+         return ref_count;
       }
-      int __DecrementReferenceCount() { 
-         return --ref_count;
+      int __DecrementReferenceCount() {
+         --ref_count;
+         return ref_count;
       }
+
+      FOP_TAG tag;
 
       virtual HANDLE Create(LPCWSTR lpFilePath, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile) = 0;
       virtual BOOL Read(void* buffer, uint32_t byte_count, OUT uint32_t* bytes_read, LPOVERLAPPED lpOverlapped) = 0;

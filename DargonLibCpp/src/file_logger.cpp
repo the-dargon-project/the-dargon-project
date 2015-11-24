@@ -31,6 +31,8 @@ file_logger::file_logger(std::string fileName)
 
 void file_logger::Log(UINT32 file_loggerLevel, LoggingFunction loggingFunction)
 {
+   return;
+
    if(file_loggerLevel < m_file_loggerFilter)
       return;
 

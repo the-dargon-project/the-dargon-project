@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Game.Api", "libdargon.game-api\Dargon.Game.Api.csproj", "{3008DB66-80D6-4CF3-BF89-2534530E1C83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "daemon-impl", "daemon-impl\daemon-impl.csproj", "{AB5F3378-D1FB-4397-B337-E440837CD185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cored", "daemon-impl\cored.csproj", "{AB5F3378-D1FB-4397-B337-E440837CD185}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EA2EFC04-2ADC-4B82-AB97-424A043A590F} = {EA2EFC04-2ADC-4B82-AB97-424A043A590F}
 		{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981} = {2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}

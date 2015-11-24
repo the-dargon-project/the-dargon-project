@@ -41,7 +41,7 @@ namespace Dargon.Daemon {
          return NestResult.Success;
       }
 
-      public NestResult Shutdown() {
+      public NestResult Shutdown(ShutdownReason reason) {
          ryu.Get<DaemonService>().Shutdown();
          return NestResult.Success;
       }

@@ -219,6 +219,7 @@ namespace Dargon.LeagueOfLegends.Modifications {
                   logger?.Warn($"Not linking {contentRelativePath}: could not find {resolutionTableValue.ResolvedPath} in manifest.");
                   continue;
                }
+
                List<KeyValuePair<RiotArchive, SectorCollection>> archivePairs;
                if (!archivePairsById.TryGetValue(manifestEntry.ArchiveId, out archivePairs)) {
                   archivePairs = new List<KeyValuePair<RiotArchive, SectorCollection>>();

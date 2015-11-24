@@ -22,7 +22,7 @@ namespace Dargon.Trinkets {
       public string GetInjectedModulePath() {
          // Todo: This is so ghetto I "can't even".
          var fi = fileSystemProxy.GetFileInfo(Assembly.GetAssembly(typeof(TrinketInternalUtilities)).Location);
-         return Path.Combine(fi.Parent.FullName, "..", "trinket-dim", "Dargon - Injected Module.dll");
+         return Path.Combine(fi.Parent.FullName, "..", "trinket-dim", "trinket-dim.dll");
       }
    }
 }

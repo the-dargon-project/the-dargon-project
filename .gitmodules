@@ -1,0 +1,4 @@
+[submodule "bsdiffnet"]
+	path = bsdiffnet
+	url = git@github.com:LogosBible/bsdiff.net.git
+	branch = master

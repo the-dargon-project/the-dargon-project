@@ -4,6 +4,9 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dargon.Processes.Injection;
+using Microsoft.Win32;
+using Dargon.Transport;
 
 namespace Dargon.InjectedModule {
    public class InjectedModuleServiceImpl : InjectedModuleService

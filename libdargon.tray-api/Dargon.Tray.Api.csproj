@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0759F916-00B7-4A23-847A-A12E19DD2777}</ProjectGuid>
+    <ProjectGuid>{D1B60364-F7E9-4FA2-B3CC-B667A6AA510E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Tray</RootNamespace>

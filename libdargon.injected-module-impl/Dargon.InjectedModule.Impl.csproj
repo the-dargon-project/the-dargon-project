@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dargon.Transport">
-      <HintPath>..\packages\Dargon.Transport.0.1.0\lib\net45\Dargon.Transport.dll</HintPath>
+      <HintPath>..\..\..\dependencies\Dargon.Transport\bin\Debug\Dargon.Transport.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.Utilities">
@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
-      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
-      <Name>Dargon.InjectedModule.Api</Name>
+    <ProjectReference Include="..\Dargon.Processes.Injection.Api\Dargon.Processes.Injection.Api.csproj">
+      <Project>{286076f5-02d3-4f0a-9d82-feb7638b57ff}</Project>
+      <Name>Dargon.Processes.Injection.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
       <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>

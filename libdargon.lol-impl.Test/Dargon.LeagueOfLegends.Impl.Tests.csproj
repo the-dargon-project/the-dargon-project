@@ -37,29 +37,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+      <HintPath>..\..\..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
+      <HintPath>..\..\..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NMockito, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NMockito.0.1.0\lib\net45\NMockito.dll</HintPath>
+      <HintPath>..\..\..\packages\NMockito.0.1.0\lib\net45\NMockito.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+      <HintPath>..\..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -74,26 +74,11 @@
     <None Include="Lifecycle\LeagueLifecycleServiceImplTests.cs" />
     <Compile Include="CompletionLinkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
-      <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
-      <Name>Dargon.Trinkets.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dargon.Trinkets.Exeggutor\Dargon.Trinkets.Spawner.Impl.csproj">
-      <Project>{EE656D9B-7327-40C5-AAAD-62051D0A6813}</Project>
-      <Name>Dargon.Trinkets.Spawner.Impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj">
-      <Project>{44A785B4-87A2-4616-99EF-638206D4A685}</Project>
-      <Name>Dargon.Trinkets.Spawner.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
-      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
-      <Name>Dargon.InjectedModule.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.game-impl-lol\Dargon.LeagueOfLegends.Impl.csproj">
-      <Project>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</Project>
+      <Project>{30859c8e-c7d9-4fb5-8ceb-55bc5acbf61b}</Project>
       <Name>Dargon.LeagueOfLegends.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
@@ -104,9 +89,6 @@
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
       <Name>Dargon.ManageableServices</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D00D055-8C83-4616-B56E-357665DCC73F}</ProjectGuid>
+    <ProjectGuid>{10350E84-851B-449E-ACF9-48B96FCABD17}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Tray</RootNamespace>
@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,11 +52,11 @@
       <Name>common-resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\daemon-api\daemon-api.csproj">
-      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
+      <Project>{1B8CE813-A56C-47BE-9783-032B8710369F}</Project>
       <Name>daemon-api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.tray-api\Dargon.Tray.Api.csproj">
-      <Project>{0759F916-00B7-4A23-847A-A12E19DD2777}</Project>
+      <Project>{D1B60364-F7E9-4FA2-B3CC-B667A6AA510E}</Project>
       <Name>Dargon.Tray.Api</Name>
     </ProjectReference>
   </ItemGroup>

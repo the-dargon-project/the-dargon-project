@@ -1,10 +1,9 @@
-﻿using System;
+﻿using NMockito;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Dargon.LeagueOfLegends.Modifications;
 using Dargon.LeagueOfLegends.Utilities;
-using NMockito;
 using Xunit;
 
 namespace Dargon.LeagueOfLegends {

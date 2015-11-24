@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Dargon.IO;
+﻿using Dargon.IO;
 using Dargon.IO.Resolution;
 using Dargon.Modifications;
 using Dargon.PortableObjects;
@@ -21,6 +11,13 @@ using Ionic.Zlib;
 using ItzWarty;
 using ItzWarty.IO;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using Component = Dargon.Modifications.Component;
 
 namespace Dargon.LeagueOfLegends.Modifications {

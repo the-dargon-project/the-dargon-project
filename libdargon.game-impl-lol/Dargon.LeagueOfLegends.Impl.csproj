@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props" Condition="Exists('..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C6D9EC6-2C67-46D3-92B5-A0059E1D305E}</ProjectGuid>
+    <ProjectGuid>{30859C8E-C7D9-4FB5-8CEB-55BC5ACBF61B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.LeagueOfLegends</RootNamespace>
@@ -13,7 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>87848bc9</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,83 +36,96 @@
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.FileSystems.Api">
-      <HintPath>..\packages\Dargon.FileSystems.Api.0.1.0\lib\net45\Dargon.FileSystems.Api.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.FileSystems.Api.0.1.0\lib\net45\Dargon.FileSystems.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.FileSystems.Impl">
-      <HintPath>..\packages\Dargon.FileSystems.Impl.0.1.0\lib\net45\Dargon.FileSystems.Impl.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.FileSystems.Impl.0.1.0\lib\net45\Dargon.FileSystems.Impl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.IO.0.1.2\lib\net45\Dargon.IO.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.IO.0.1.2\lib\net45\Dargon.IO.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Management.Api">
-      <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.PortableObjects.Streams.0.3.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.PortableObjects.Streams.0.3.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.RADS">
-      <HintPath>..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.VirtualFileMaps">
-      <HintPath>..\packages\Dargon.VirtualFileMaps.0.1.0\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
+      <HintPath>..\..\..\packages\Dargon.VirtualFileMaps.0.1.0\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+      <HintPath>..\..\..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ItzWarty.Commons.0.4.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\ItzWarty.Commons.0.4.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
     <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
     <Reference Include="LibGit2Sharp, Version=0.20.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\LibGit2Sharp.0.20.0.0\lib\net40\LibGit2Sharp.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\LibGit2Sharp.0.20.2.0\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Nito.AsyncEx, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
     </Reference>
     <Reference Include="Nito.AsyncEx.Concurrent">
-      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <HintPath>..\..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Nito.AsyncEx.Enlightenment, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -159,67 +172,35 @@
       <Project>{EC9C64E2-4CAA-421D-B71B-E85493A1C961}</Project>
       <Name>client-common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\daemon-api\daemon-api.csproj">
-      <Project>{EA2EFC04-2ADC-4B82-AB97-424A043A590F}</Project>
-      <Name>daemon-api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
-      <Project>{c56e7cec-b18c-4913-9700-6001dab20cfa}</Project>
+      <Project>{531722D6-6938-4AC8-B61B-9E375E124528}</Project>
       <Name>Dargon.Modifications.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
-      <Project>{F601AB24-56FC-4ABA-A230-C3A425953B67}</Project>
-      <Name>Dargon.Modifications.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Api\Dargon.Trinkets.Api.csproj">
       <Project>{73F0BA41-EC51-41DC-92B3-25785FAA227C}</Project>
       <Name>Dargon.Trinkets.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dargon.Trinkets.Impl\Dargon.Trinkets.Impl.csproj">
-      <Project>{2AEE9ECF-CF69-469E-8443-24C9962153BA}</Project>
-      <Name>Dargon.Trinkets.Impl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Spawner.Impl\Dargon.Trinkets.Spawner.Api.csproj">
       <Project>{44A785B4-87A2-4616-99EF-638206D4A685}</Project>
       <Name>Dargon.Trinkets.Spawner.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.injected-module-api\Dargon.InjectedModule.Api.csproj">
-      <Project>{C4B98A85-F3B6-43FE-AF0A-16E34E63E238}</Project>
-      <Name>Dargon.InjectedModule.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libdargon.game-api\Dargon.Game.Api.csproj">
-      <Project>{3008DB66-80D6-4CF3-BF89-2534530E1C83}</Project>
-      <Name>Dargon.Game.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libdargon.lol-api\Dargon.LeagueOfLegends.Api.csproj">
-      <Project>{FC2ED8AC-0D8B-45C3-82B1-E47F3D20833E}</Project>
+      <Project>{89321533-C85E-4EAB-BC6E-9D301031E56E}</Project>
       <Name>Dargon.LeagueOfLegends.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.process-api\Dargon.Processes.Api.csproj">
-      <Project>{2F26CB57-5F3B-4EDF-BD9B-1CADAC3FA981}</Project>
+      <Project>{63CFB1EE-F606-4896-9920-DAEB6728B397}</Project>
       <Name>Dargon.Processes.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\libdargon.service-base\Dargon.ManageableServices.csproj">
       <Project>{9cfa80ee-76dc-498c-9c4e-52891851944a}</Project>
       <Name>Dargon.ManageableServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libdargon.temporary-file-api\Dargon.TemporaryFiles.Api.csproj">
-      <Project>{B782AD94-B3F1-483B-BA92-DA0C4C8548E3}</Project>
-      <Name>Dargon.TemporaryFiles.Api</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.0.20.0.0\build\net40\LibGit2Sharp.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

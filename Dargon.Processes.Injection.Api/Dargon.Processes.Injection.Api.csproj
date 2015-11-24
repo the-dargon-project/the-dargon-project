@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E5A704E7-B9FD-4911-ADB6-8762491234D5}</ProjectGuid>
+    <ProjectGuid>{286076F5-02D3-4F0A-9D82-FEB7638B57FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Processes.Injection</RootNamespace>

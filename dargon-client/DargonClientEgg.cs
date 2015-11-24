@@ -83,10 +83,10 @@ namespace Dargon.Client {
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;
          application.Run(window);
-         Shutdown();
+         Shutdown(ShutdownReason.None);
       }
 
-      public NestResult Shutdown() {
+      public NestResult Shutdown(ShutdownReason reason) {
          var application = Application.Current;
          application.Dispatcher.Invoke(() => { application.Shutdown(); });
          host?.Shutdown();

@@ -60,7 +60,7 @@ namespace Dargon.ThumbnailGenerator {
          return NestResult.Success;
       }
 
-      public NestResult Shutdown() {
+      public NestResult Shutdown(ShutdownReason reason) {
          shutdownLatch.Set();
          parameters?.Host.Shutdown();
          return NestResult.Success;

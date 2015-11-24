@@ -32,58 +32,58 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.IO.0.1.2\lib\net45\Dargon.IO.dll</HintPath>
+    <Reference Include="Dargon.IO">
+      <HintPath>..\..\packages\Dargon.IO.0.1.2\lib\net45\Dargon.IO.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    <Reference Include="Dargon.PortableObjects">
+      <HintPath>..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.RADS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
+    <Reference Include="Dargon.RADS">
+      <HintPath>..\..\packages\Dargon.RADS.0.1.0\lib\net45\Dargon.RADS.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+    <Reference Include="Dargon.Ryu.Api">
+      <HintPath>..\..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.SystemState.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
+    <Reference Include="Dargon.SystemState.Api">
+      <HintPath>..\..\packages\Dargon.SystemState.Api.0.2.1\lib\net45\Dargon.SystemState.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
+    <Reference Include="Dargon.Utilities">
+      <HintPath>..\..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.VirtualFileMaps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Dargon.VirtualFileMaps.0.1.0\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
+    <Reference Include="Dargon.VirtualFileMaps">
+      <HintPath>..\..\packages\Dargon.VirtualFileMaps.0.1.0\lib\net45\Dargon.VirtualFileMaps.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\..\packages\ItzWarty.Commons.0.3.7\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
-      <HintPath>..\..\..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
+    <Reference Include="zlib.net">
+      <HintPath>..\..\packages\zlib.net.1.0.4.0\lib\zlib.net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

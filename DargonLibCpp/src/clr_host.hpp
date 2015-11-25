@@ -4,6 +4,7 @@
 
 struct ICLRMetaHost;
 struct ICLRRuntimeInfo;
+struct ICLRRuntimeHost;
 
 namespace dargon {
    class clr_host {

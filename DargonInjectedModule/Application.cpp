@@ -8,6 +8,7 @@
 #include "IO/DIM/CommandManager.hpp"
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "file_logger.hpp"
+#include "clr_host.hpp"
 
 #include "Application.hpp"
 #include "Configuration.hpp"
@@ -96,6 +97,11 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
 
    // initialize command manager
    command_manager->Initialize();
+
+   // boot up the clr
+   dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
+   auto path = L"V:/my-repositories/dargon-root/dargon/clr-hosted-egg-example/bin/Debug/clr-hosted-egg-example.dll";
+   dargon::clr_host::load_assembly(path);
 
    // Suspend count can be >1 due to LAUNCH_SUSPENDED override by another instance.
    if (main_thread_handle != INVALID_HANDLE_VALUE) {

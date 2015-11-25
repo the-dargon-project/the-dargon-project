@@ -18,5 +18,3 @@
 // TODO: reference additional headers your program requires here
 #include <Windows.h>
 #include <MetaHost.h>
-
-#pragma comment(lib, "mscoree.lib")

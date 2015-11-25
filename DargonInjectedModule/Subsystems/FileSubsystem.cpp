@@ -17,6 +17,9 @@ using namespace dargon::Subsystems;
 
 const bool kDebugEnabled = true;
 
+// Hook-logging in i/o code can lead to deadlock
+const bool kEnableInterceptLogging = false;
+
 FileSubsystem::FileSubsystem() : Subsystem() { }
 
 std::mutex mutex;
@@ -194,7 +197,9 @@ BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
       hObject,
       [&](const HANDLE test, std::shared_ptr<FileOperationProxy> existing) {
          if (existing->__DecrementReferenceCount() == 0) {
-            std::cout << hObject << " T" << ::GetCurrentThreadId() << " CLOSE HANDLE " << std::endl;
+            if (kEnableInterceptLogging) {
+               std::cout << hObject << " T" << ::GetCurrentThreadId() << " CLOSE HANDLE " << std::endl;
+            }
             proxyToClose = existing;
             return true;
          } else {
@@ -384,7 +389,9 @@ HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCW
 
    HANDLE fileHandle = proxy->Create(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
    proxy->tag.initial_thread = ::GetCurrentThreadId();
-   std::cout << fileHandle << " T" << ::GetCurrentThreadId() << " CREATE FILE " << dargon::narrow(filePath) << std::endl;
+   if (kEnableInterceptLogging) {
+      std::cout << fileHandle << " T" << ::GetCurrentThreadId() << " CREATE FILE " << dargon::narrow(filePath) << std::endl;
+   }
 
    fileOperationProxiesByHandle.add_or_update(
       fileHandle,

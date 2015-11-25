@@ -44,11 +44,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>.;$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(WindowsSDK_IncludePath);C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Include;C:\the-dargon-project\source\ThirdParty\detours\header;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;C:\the-dargon-project\source\ThirdParty\utf8cpp;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28February 2007%29\Lib\x86;C:\the-dargon-project\source\ThirdParty\detours\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,6 +94,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="base.cpp" />
+    <ClCompile Include="clr_host.cpp" />
     <ClCompile Include="guid.cpp" />
     <ClCompile Include="io\IPCObject.cpp" />
     <ClCompile Include="logger.cpp" />
@@ -100,6 +103,7 @@
     <ClCompile Include="vfm\vfm_file_sector.cpp" />
     <ClCompile Include="vfm\vfm_sector_factory.cpp" />
     <ClInclude Include="base.hpp" />
+    <ClInclude Include="clr_host.hpp" />
     <ClInclude Include="concurrent_dictionary.hpp" />
     <ClInclude Include="concurrent_set.hpp" />
     <ClInclude Include="dargon.hpp" />

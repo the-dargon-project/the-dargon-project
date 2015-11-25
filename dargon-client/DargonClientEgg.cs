@@ -31,6 +31,7 @@ namespace Dargon.Client {
 
       private readonly RyuContainer ryu; 
       private IEggHost host;
+      private Application application;
 
       public DargonClientEgg() {
          InitializeLogging();
@@ -68,7 +69,7 @@ namespace Dargon.Client {
          var modificationLoader = ryu.Get<ModificationLoader>();
          var leagueBuildUtilities = ryu.Get<LeagueBuildUtilities>();
 
-         var application = Application.Current ?? new Application();
+         application = Application.Current ?? new Application();
          var dispatcher = application.Dispatcher;
          var window = new MainWindow();
 
@@ -83,13 +84,12 @@ namespace Dargon.Client {
          var rootViewModel = new RootViewModel(rootViewModelCommandFactory, window, modificationViewModels);
          window.DataContext = rootViewModel;
          application.Run(window);
-         Shutdown(ShutdownReason.None);
+         host?.Shutdown(ShutdownReason.None);
       }
 
       public NestResult Shutdown(ShutdownReason reason) {
-         var application = Application.Current;
+         // host shutdown is called by UI thread.
          application.Dispatcher.Invoke(() => { application.Shutdown(); });
-         host?.Shutdown();
          return NestResult.Success;
       }
 

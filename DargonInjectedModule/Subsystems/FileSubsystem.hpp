@@ -3,6 +3,9 @@
 #include "stdafx.h"
 #include <unordered_map>
 #include <concurrent_dictionary.hpp>
+
+#include <TrinketNatives.hpp>
+
 #include "../Subsystem.hpp"
 #include "../Subsystem.Detours.hpp"
 #include "FileSubsystemTypedefs.hpp"
@@ -14,9 +17,12 @@ namespace dargon { namespace Subsystems {
    {
       static dargon::concurrent_dictionary<FileIdentifier, std::shared_ptr<FileOperationProxyFactory>, FileIdentifierHash> proxyFactoriesByFileIdentifier;
       static dargon::concurrent_dictionary<HANDLE, std::shared_ptr<FileOperationProxy>> fileOperationProxiesByHandle;
+   
+   private:
+      static dargon::FileHookEventPublisher* fileHookEventPublisher;
 
    public:
-      FileSubsystem();
+      FileSubsystem(dargon::FileHookEventPublisher* fileHookEventPublisher);
       bool Initialize() override;
       bool Uninitialize() override;
 

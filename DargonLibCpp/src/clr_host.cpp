@@ -19,16 +19,16 @@ void dargon::clr_host::init(std::wstring version) {
    std::cout << "GetInterface -> " << hr << std::endl;
 }
 
-void dargon::clr_host::load_assembly(std::wstring path) {
+void dargon::clr_host::load_assembly(std::wstring path, std::wstring args) {
    HRESULT hr;
    hr = runtimeHost->Start();
    std::cout << "Runtime.Start -> " << hr << std::endl;
    DWORD returnValue;
    hr = runtimeHost->ExecuteInDefaultAppDomain(
       path.c_str(),
-      L"TrinketProgram",
-      L"Main",
-      L"Hello from C++!",
+      L"TrinketEntryPoint",
+      L"TrinketMain",
+      args.c_str(),
       &returnValue);
    std::cout << "execute return code: " << returnValue << std::endl;
    std::cout << "execute hresult: " << std::hex << hr << std::endl;

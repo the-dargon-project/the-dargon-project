@@ -36,7 +36,8 @@ int main(int argc, wchar_t* argv[]) {
 
    // initialize subsystem dependencies
    dargon::Subsystem::Initialize(bootstrap_context, configuration, logger);
-   auto file_subsystem = std::make_shared<dargon::Subsystems::FileSubsystem>();
+   dargon::FileHookEventPublisher* fileHookEventPublisher = new dargon::NullFileHookEventPublisher();
+   auto file_subsystem = std::make_shared<dargon::Subsystems::FileSubsystem>(fileHookEventPublisher);
    file_subsystem->Initialize();
 
    // initialize command manager

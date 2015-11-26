@@ -20,7 +20,11 @@ const bool kDebugEnabled = true;
 // Hook-logging in i/o code can lead to deadlock
 const bool kEnableInterceptLogging = false;
 
-FileSubsystem::FileSubsystem() : Subsystem() { }
+FileSubsystem::FileSubsystem(
+   FileHookEventPublisher* fileHookEventPublisher
+) : Subsystem() {
+   FileSubsystem::fileHookEventPublisher = fileHookEventPublisher;
+}
 
 std::mutex mutex;
 
@@ -110,6 +114,8 @@ void FileSubsystem::AddFileOverride(FileIdentifier fileIdentifier, std::shared_p
 // - static ---------------------------------------------------------------------------------------
 concurrent_dictionary<FileIdentifier, std::shared_ptr<FileOperationProxyFactory>, FileIdentifierHash> FileSubsystem::proxyFactoriesByFileIdentifier;
 concurrent_dictionary<HANDLE, std::shared_ptr<FileOperationProxy>> FileSubsystem::fileOperationProxiesByHandle;
+FileHookEventPublisher* FileSubsystem::fileHookEventPublisher;
+
 
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventA, FunctionCreateEventA, "CreateEventA", MyCreateEventA);
 DIM_IMPL_STATIC_DETOUR(FileSubsystem, CreateEventW, FunctionCreateEventW, "CreateEventW", MyCreateEventW);
@@ -374,6 +380,16 @@ HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCW
    GetFileInformationByHandle(queryFileHandle, &fileInfo);
    CloseHandle(queryFileHandle);
 
+   CreateFileArgs args = {};
+   args.path = lpFilePath;
+   args.desiredAccess = dwDesiredAccess;
+   args.creationDisposition = dwCreationDisposition;
+   args.shareMode = dwShareMode;
+
+   CreateFileEventArgsPre eventArgsPre = {};
+   eventArgsPre.arguments = &args;
+   fileHookEventPublisher->PublishCreateFileEventPre(&eventArgsPre);
+
    FileIdentifier fileIdentifier = GetFileIdentifier(lpFilePath);
    fileIdentifier.targetFileIndexHigh = fileInfo.nFileIndexHigh;
    fileIdentifier.targetFileIndexLow = fileInfo.nFileIndexLow;
@@ -398,6 +414,11 @@ HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCW
       [proxy](const HANDLE add) { proxy->__IncrementReferenceCount(); return proxy; },
       [proxy, &filePath](const HANDLE update, std::shared_ptr<FileOperationProxy> existing) { std::cout << ":( T_T" << dargon::narrow(filePath) << std::endl; return existing; }
     );
+
+   CreateFileEventArgsPost eventArgsPost = {};
+   eventArgsPost.arguments = &args;
+   eventArgsPost.retval = fileHandle;
+   fileHookEventPublisher->PublishCreateFileEventPost(&eventArgsPost);
 
    return fileHandle;
 }

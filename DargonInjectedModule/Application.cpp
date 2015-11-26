@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <memory>
 #include <process.h>
+#include <sstream>
 #include <Windows.h>
 
 #include "util.hpp"
@@ -8,7 +9,9 @@
 #include "IO/DIM/CommandManager.hpp"
 #include "IO/DSP/DSPExNodeSession.hpp"
 #include "file_logger.hpp"
+
 #include "clr_host.hpp"
+#include "TrinketNatives.hpp"
 
 #include "Application.hpp"
 #include "Configuration.hpp"
@@ -72,14 +75,28 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
 
    // load configuration
    auto configuration = Configuration::Parse(flags, properties);
-   
+
+   // boot up the clr
+   auto trinketNatives = std::make_shared<TrinketNatives>();
+   trinketNatives->startCanary = TRINKET_NATIVES_START_CANARY;
+   trinketNatives->tailCanary = TRINKET_NATIVES_TAIL_CANARY;
+
+   dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
+   auto path = L"C:/my-repositories/dargon-root/dargon/trinket-managed/bin/Debug/trinket-managed.exe";
+   std::wstringstream arguments;
+   arguments << reinterpret_cast<uint64_t>(trinketNatives.get());
+   dargon::clr_host::load_assembly(path, arguments.str());
+
+   // validate c# code hasn't corrupted trinketNatives state
+   trinketNatives->Validate();
+
    // construct command manager
    auto command_manager = std::make_shared<CommandManager>(dtp_session, configuration);
    
    // initialize subsystem dependencies
    std::cout << "Initializing Subsystems" << std::endl;
    Subsystem::Initialize(context, configuration, logger);
-   auto file_subsystem = std::make_shared<FileSubsystem>();
+   auto file_subsystem = std::make_shared<FileSubsystem>(trinketNatives->fileHookEventPublisher);
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();
    kernel_subsystem->Initialize();
@@ -97,11 +114,6 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
 
    // initialize command manager
    command_manager->Initialize();
-
-   // boot up the clr
-   dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
-   auto path = L"V:/my-repositories/dargon-root/dargon/clr-hosted-egg-example/bin/Debug/clr-hosted-egg-example.dll";
-   dargon::clr_host::load_assembly(path);
 
    // Suspend count can be >1 due to LAUNCH_SUSPENDED override by another instance.
    if (main_thread_handle != INVALID_HANDLE_VALUE) {

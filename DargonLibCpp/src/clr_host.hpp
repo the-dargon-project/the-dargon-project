@@ -14,7 +14,7 @@ namespace dargon {
 
    public:
       static void init(std::wstring version);
-      static void load_assembly(std::wstring path);
+      static void load_assembly(std::wstring path, std::wstring arguments);
    };
 
    class clr_utilities {

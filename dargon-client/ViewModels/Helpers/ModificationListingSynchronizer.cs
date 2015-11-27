@@ -51,6 +51,8 @@ namespace Dargon.Client.ViewModels.Helpers {
       public void Initialize() {
          modificationViewModels.CollectionChanged += HandleViewModelCollectionChanged;
 
+         fileSystemProxy.PrepareDirectory(RepositoriesDirectoryPath);
+
          watcher = new FileSystemWatcher(RepositoriesDirectoryPath);
          watcher.IncludeSubdirectories = false;
          watcher.EnableRaisingEvents = true;

@@ -9,6 +9,7 @@ using namespace dargon;
 
 const std::string Configuration::EnableCommandListFlag = "--enable-dim-command-list";
 const std::string Configuration::EnableFileSystemHooksFlag = "--enable-filesystem-hooks";
+const std::string Configuration::EnableTrinketManagedFlag = "--enable-trinket-managed";
 const std::string Configuration::LaunchSuspendedKey = "launchsuspended";
 
 std::shared_ptr<Configuration> Configuration::Parse(flags_t flags, property_pairs_t property_pairs) {

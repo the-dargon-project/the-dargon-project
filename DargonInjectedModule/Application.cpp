@@ -79,16 +79,19 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    // boot up the clr
    auto trinketNatives = std::make_shared<TrinketNatives>();
    trinketNatives->startCanary = TRINKET_NATIVES_START_CANARY;
+   trinketNatives->fileHookEventPublisher = new NullFileHookEventPublisher();
    trinketNatives->tailCanary = TRINKET_NATIVES_TAIL_CANARY;
 
-   dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
-   auto path = L"C:/my-repositories/dargon-root/dargon/trinket-managed/bin/Debug/trinket-managed.exe";
-   std::wstringstream arguments;
-   arguments << reinterpret_cast<uint64_t>(trinketNatives.get());
-   dargon::clr_host::load_assembly(path, arguments.str());
+   if (configuration->IsFlagSet(Configuration::EnableTrinketManagedFlag)) {
+      dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
+      auto path = L"C:/my-repositories/dargon-root/dargon/trinket-managed/bin/Debug/trinket-managed.exe";
+      std::wstringstream arguments;
+      arguments << reinterpret_cast<uint64_t>(trinketNatives.get());
+      dargon::clr_host::load_assembly(path, arguments.str());
 
-   // validate c# code hasn't corrupted trinketNatives state
-   trinketNatives->Validate();
+      // validate c# code hasn't corrupted trinketNatives state
+      trinketNatives->Validate();
+   }
 
    // construct command manager
    auto command_manager = std::make_shared<CommandManager>(dtp_session, configuration);

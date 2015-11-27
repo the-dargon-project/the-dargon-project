@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Dargon.Nest.Egg;
 using Dargon.Trinkets.Hosted;
 using Dargon.Trinkets.Hosted.Hooks;

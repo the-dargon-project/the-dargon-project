@@ -51,7 +51,7 @@ namespace Dargon.Client.Controllers {
 
       public void ShowModificationImportWindowDialog(string modificationPath) {
          var rootNodeViewModel = modificationImportViewModelFactory.FromDirectory(modificationPath);
-         var solution = riotSolutionLoader.Load(@"V:\Riot Games\League of Legends\RADS", RiotProjectType.AirClient | RiotProjectType.GameClient);
+         var solution = riotSolutionLoader.Load(@"C:\Riot Games\League of Legends\RADS", RiotProjectType.AirClient | RiotProjectType.GameClient);
          var airResolver = new Resolver(solution.ProjectsByType[RiotProjectType.AirClient].ReleaseManifest.Root);
          var gameResolver = new Resolver(solution.ProjectsByType[RiotProjectType.GameClient].ReleaseManifest.Root);
 

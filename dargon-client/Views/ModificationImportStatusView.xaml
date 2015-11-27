@@ -15,7 +15,7 @@
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>
-                        <helpers:GifImage Stretch="Uniform" GifSource="../Resources/spinner.gif" AutoStart="True" />
+                        <helpers:GifImage Stretch="Uniform" GifSource="/dargon-client;component/Resources/spinner.gif" AutoStart="True" />
                      </ControlTemplate>
                   </Setter.Value>
                </Setter>
@@ -24,7 +24,7 @@
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>
-                        <Image Source="/Resources/Check.png" />
+                        <Image Source="/dargon-client;component/Resources/Check.png" />
                      </ControlTemplate>
                   </Setter.Value>
                </Setter>
@@ -33,7 +33,7 @@
                <Setter Property="Template">
                   <Setter.Value>
                      <ControlTemplate>
-                        <Image Source="/Resources/X.png" />
+                        <Image Source="/dargon-client;component/Resources/X.png" />
                      </ControlTemplate>
                   </Setter.Value>
                </Setter>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Dargon.Client.Views"
              mc:Ignorable="d">
    <StackPanel Orientation="Horizontal">
-      <Image Width="10" VerticalAlignment="Center" Margin="0,0,3,0" Source="/Resources/Folder.png" />
+      <Image Width="10" VerticalAlignment="Center" Margin="0,0,3,0" Source="/dargon-client;component/Resources/Folder.png" />
       <TextBlock Text="{Binding Name}" />
    </StackPanel>
 </UserControl>

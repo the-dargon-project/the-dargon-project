@@ -18,13 +18,13 @@ namespace Dargon.Client.Views.Helpers {
 
       private void Initialize() {
          if (string.IsNullOrEmpty(GifSource)) {
-            StopAnimation();
+            //StopAnimation();
             return;
          }
 
          _gifDecoder = new GifBitmapDecoder(new Uri("pack://application:,,," + this.GifSource), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
          _animation = new Int32Animation(0, 5 * (_gifDecoder.Frames.Count) - 1, new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count / 10, (int)((_gifDecoder.Frames.Count / 10.0 - _gifDecoder.Frames.Count / 10) * 1000))));
-         _animation.RepeatBehavior = RepeatBehavior.Forever;
+         //_animation.RepeatBehavior = RepeatBehavior.Forever;
          this.Source = _gifDecoder.Frames[0];
          _isInitialized = true;
 

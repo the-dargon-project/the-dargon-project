@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,10 @@ namespace Dargon.Client.Controllers {
 
       public void SetModificationPhaseManager(ModificationPhaseManager modificationPhaseManager) {
          this.modificationPhaseManager = modificationPhaseManager;
+      }
+
+      public void RemoveModification() {
+         Directory.Delete(modification.RepositoryPath, true);
       }
    }
 }

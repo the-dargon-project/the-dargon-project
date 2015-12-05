@@ -33,6 +33,7 @@ namespace Dargon.Client.Views {
                viewModel.Items.Add(new ContextMenuItemViewModel { Text = currentEnabledState ? "Disable" : "Enable", ClickedHandler = HandleEnabledClicked });
                viewModel.Items.Add(new ContextMenuItemViewModel { Text = "Configure" });
                viewModel.Items.Add(new ContextMenuItemViewModel { Text = "About" });
+               viewModel.Items.Add(new ContextMenuItemViewModel { Text = "Remove", ClickedHandler = HandleRemoveClicked });
                var menu = new CustomContextMenu();
                menu.DataContext = viewModel;
                menu.WindowState = WindowState.Minimized;
@@ -46,6 +47,10 @@ namespace Dargon.Client.Views {
 
       private void HandleEnabledClicked() {
          ViewModel.IsEnabled = !ViewModel.IsEnabled;
+      }
+
+      private void HandleRemoveClicked() {
+         Controller.RemoveModification();
       }
    }
 }

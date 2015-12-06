@@ -377,9 +377,9 @@
     <Resource Include="Resources\spinner.gif" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Eggs.Api.csproj">
       <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
-      <Name>Dargon.Nest.Egg.Api</Name>
+      <Name>Dargon.Nest.Eggs.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\nest\Dargon.Nest.Exeggutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
       <Project>{7d1d757d-531b-49f0-8f63-b4e3563be606}</Project>

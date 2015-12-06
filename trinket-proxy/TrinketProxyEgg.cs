@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Castle.DynamicProxy;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Processes.Injection;

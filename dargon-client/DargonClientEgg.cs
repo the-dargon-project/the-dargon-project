@@ -5,7 +5,6 @@ using Dargon.Client.Views;
 using Dargon.IO.Drive;
 using Dargon.LeagueOfLegends.Modifications;
 using Dargon.Modifications;
-using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.RADS;
@@ -21,6 +20,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using Dargon.Management.Server;
+using Dargon.Nest.Eggs;
 using ItzWarty;
 using ItzWarty.Networking;
 

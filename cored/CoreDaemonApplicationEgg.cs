@@ -1,5 +1,5 @@
 ﻿using Dargon.Management.Server;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.Ryu;
 using ItzWarty;
 using ItzWarty.Networking;

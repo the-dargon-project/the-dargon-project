@@ -1,7 +1,6 @@
 ﻿using Dargon.Management;
 using Dargon.Management.Server;
 using Dargon.Modifications.ThumbnailGenerator;
-using Dargon.Nest.Egg;
 using Dargon.PortableObjects;
 using ItzWarty;
 using ItzWarty.Collections;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using Dargon.Nest.Eggs;
 
 namespace Dargon.ThumbnailGenerator {
    public class ThumbnailGenerationEgg : INestApplicationEgg {

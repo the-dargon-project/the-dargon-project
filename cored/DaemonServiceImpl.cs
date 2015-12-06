@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Threading;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 
 namespace Dargon.Daemon {
    public class DaemonServiceImpl : DaemonService {

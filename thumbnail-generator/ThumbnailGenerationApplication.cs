@@ -15,7 +15,7 @@ using System.Threading;
 using Dargon.Nest.Eggs;
 
 namespace Dargon.ThumbnailGenerator {
-   public class ThumbnailGenerationEgg : INestApplicationEgg {
+   public class ThumbnailGenerationApplication : NestApplication {
       private const int kDaemonManagementPort = 21003;
 
       private readonly CollectionFactory collectionFactory;
@@ -26,9 +26,9 @@ namespace Dargon.ThumbnailGenerator {
       private readonly ThumbnailGeneratorService thumbnailGeneratorService;
       private readonly ManualResetEvent shutdownLatch = new ManualResetEvent(false);
       private readonly List<object> keepalive = new List<object>();
-      private IEggParameters parameters;
+      private HatchlingParameters parameters;
 
-      public ThumbnailGenerationEgg() {
+      public ThumbnailGenerationApplication() {
          collectionFactory = new CollectionFactory();
          var streamFactory = new StreamFactory();
          var processProxy = new ProcessProxy();
@@ -42,7 +42,7 @@ namespace Dargon.ThumbnailGenerator {
          thumbnailGeneratorService = new ThumbnailGeneratorServiceImpl();
       }
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
          var thumbnailGenerationParameters = parameters == null ? null : pofSerializer.Deserialize<ThumbnailGenerationParameters>(new MemoryStream(parameters.Arguments));
 
          this.parameters = parameters;

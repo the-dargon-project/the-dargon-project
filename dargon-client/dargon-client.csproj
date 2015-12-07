@@ -270,7 +270,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DargonClientEgg.cs" />
+    <Compile Include="DargonClientApplication.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\Helpers\ActionCommand.cs" />
     <Compile Include="Views\Helpers\EqualityConverter.cs" />

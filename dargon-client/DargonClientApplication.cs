@@ -1,4 +1,5 @@
-﻿using Dargon.Client.Controllers;
+﻿using System;
+using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels;
 using Dargon.Client.ViewModels.Helpers;
 using Dargon.Client.Views;
@@ -25,21 +26,23 @@ using ItzWarty;
 using ItzWarty.Networking;
 
 namespace Dargon.Client {
-   public class DargonClientEgg : INestApplicationEgg {
+   public class DargonClientApplication : NestApplication {
       private int kClientManagementPort = 21002;
       private const string kRepositoryDirectoryName = "repositories";
 
       private readonly RyuContainer ryu; 
-      private IEggHost host;
+      private HatchlingParameters parameters;
+      private HatchlingHost host;
       private Application application;
 
-      public DargonClientEgg() {
+      public DargonClientApplication() {
          InitializeLogging();
          ryu = new RyuFactory().Create();
          ((RyuContainerImpl)ryu).SetLoggerEnabled(true);
       }
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
+         this.parameters = parameters;
          this.host = parameters?.Host;
 
          ryu.Touch<ItzWartyCommonsRyuPackage>();
@@ -88,8 +91,15 @@ namespace Dargon.Client {
       }
 
       public NestResult Shutdown(ShutdownReason reason) {
+         Console.WriteLine($"Received shutdown signal with reason: {reason}.");
+
+         if (reason == ShutdownReason.Update) {
+            host?.SetRestartToken(parameters);
+         }
+
          // host shutdown is called by UI thread.
          application.Dispatcher.Invoke(() => { application.Shutdown(); });
+
          return NestResult.Success;
       }
 

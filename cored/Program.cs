@@ -7,7 +7,7 @@ namespace Dargon.Daemon {
       private const int kDaemonManagementPort = 21000;
 
       public static void Main(string[] args) {
-         new CoreDaemonApplicationEgg().Start(null);
+         new CoreDaemonApplication().Start(null);
          new CountdownEvent(1).Wait();
       }
    }

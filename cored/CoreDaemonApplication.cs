@@ -9,23 +9,23 @@ using NLog.Targets;
 using NLog.Targets.Wrappers;
 
 namespace Dargon.Daemon {
-   public class CoreDaemonApplicationEgg : INestApplicationEgg {
+   public class CoreDaemonApplication : NestApplication {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       private const int kDaemonManagementPort = 21001;
 
       private readonly RyuContainer ryu;
 
-      public CoreDaemonApplicationEgg() {
+      public CoreDaemonApplication() {
          ryu = new RyuFactory().Create();
          ((RyuContainerImpl)ryu).SetLoggerEnabled(true);
       }
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
          InitializeLogging();
          LogIfDebugBuild();
 
-         ryu.Set<IEggHost>(parameters?.Host);
+         ryu.Set<HatchlingHost>(parameters?.Host);
 
          ryu.Touch<ItzWartyCommonsRyuPackage>();
          ryu.Touch<ItzWartyProxiesRyuPackage>();

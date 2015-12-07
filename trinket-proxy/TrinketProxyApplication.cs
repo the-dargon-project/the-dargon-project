@@ -19,7 +19,7 @@ using ItzWarty.Processes;
 using ItzWarty.Threading;
 
 namespace Dargon.Trinkets.Proxy {
-   public class TrinketProxyEgg : INestApplicationEgg {
+   public class TrinketProxyApplication : NestApplication {
       private readonly StreamFactory streamFactory;
       private readonly IProcessProxy processProxy;
       private readonly PofSerializer pofSerializer;
@@ -29,9 +29,9 @@ namespace Dargon.Trinkets.Proxy {
       private readonly TrinketDtpServerFactoryImpl trinketDtpServerFactory;
       private readonly List<object> keepaliveObjects = new List<object>();
       private TrinketDtpServer trinketDtpServer;
-      private IEggHost host;
+      private HatchlingHost host;
 
-      public TrinketProxyEgg() {
+      public TrinketProxyApplication() {
          streamFactory = new StreamFactory();
          processProxy = new ProcessProxy();
          var pofContext = new PofContext().With(x => {
@@ -66,7 +66,7 @@ namespace Dargon.Trinkets.Proxy {
          trinketDtpServerFactory = new TrinketDtpServerFactoryImpl(streamFactory, transportNodeFactory, bootstrapConfigurationGenerator);
       }
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
          host = parameters.Host;
          var configuration = pofSerializer.Deserialize<TrinketStartupConfiguration>(streamFactory.CreateMemoryStream(parameters.Arguments).Reader);
          trinketDtpServer = trinketDtpServerFactory.Create(configuration);

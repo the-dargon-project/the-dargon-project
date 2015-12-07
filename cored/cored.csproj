@@ -127,7 +127,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreDaemonApplicationEgg.cs" />
+    <Compile Include="CoreDaemonApplication.cs" />
     <Compile Include="DaemonImplRyuPackage.cs" />
     <Compile Include="DaemonServiceImpl.cs" />
     <Compile Include="DaemonServiceMob.cs" />

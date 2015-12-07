@@ -7,13 +7,13 @@ namespace Dargon.Daemon {
    public class DaemonServiceImpl : DaemonService {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IEggHost host;
+      private readonly HatchlingHost host;
       private readonly IClientConfiguration configuration;
       private bool isShutdownSignalled = false;
 
       public event EventHandler ShuttingDown;
 
-      public DaemonServiceImpl(IEggHost host, IClientConfiguration configuration) {
+      public DaemonServiceImpl(HatchlingHost host, IClientConfiguration configuration) {
          logger.Info("Constructing Daemon Service");
 
          this.host = host;

@@ -140,12 +140,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Direct3D9HookEventPublisherNativeToBusProxy.h" />
     <ClInclude Include="FileHookEventPublisherNativeToManagedProxy.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Direct3D9HookEventPublisherNativeToBusProxy.cpp" />
     <ClCompile Include="FileHookEventPublisherNativeToManagedProxy.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

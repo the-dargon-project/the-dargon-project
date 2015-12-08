@@ -11,6 +11,8 @@
     <AssemblyName>trinket-managed</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,8 +37,21 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Fody.Constructors">
+      <HintPath>..\..\packages\Constructors.Fody.0.0.5\Lib\dotnet\Fody.Constructors.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,11 +61,63 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugProgram.cs" />
+    <Compile Include="LeagueRadsWatcher.cs" />
+    <Compile Include="LeagueTextureSwapper.cs" />
+    <Compile Include="LeagueTextureWatcher.cs" />
+    <Compile Include="LeagueTrinketConfiguration.cs" />
+    <Compile Include="LeagueTrinketRole.cs" />
+    <Compile Include="Management\Air\AirDebugMob.cs" />
+    <Compile Include="Management\Game\LeagueTextureSwapperMob.cs" />
     <Compile Include="TrinketEntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HostedTrinketNestApplicationEgg.cs" />
+    <Compile Include="HostedTrinketApplication.cs" />
+    <Compile Include="TrinketManagedRyuPackage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\Dargon.IO\Dargon.IO.csproj">
+      <Project>{d28af7fa-367c-472c-954d-694319528208}</Project>
+      <Name>Dargon.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.Management.Api\Dargon.Management.Api.csproj">
+      <Project>{38f12d7e-897d-404c-8958-6b0603628328}</Project>
+      <Name>Dargon.Management.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.Management.Impl\Dargon.Management.Impl.csproj">
+      <Project>{d14a148b-d3bd-4c18-8e09-f474f99c966c}</Project>
+      <Name>Dargon.Management.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.PortableObject.Streams\Dargon.PortableObjects.Streams.csproj">
+      <Project>{49882b74-813d-462c-89ef-1ddf4142d663}</Project>
+      <Name>Dargon.PortableObjects.Streams</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.PortableObjects\Dargon.PortableObjects.csproj">
+      <Project>{da87b9e0-3584-4448-97b5-9877cac44352}</Project>
+      <Name>Dargon.PortableObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.RADS\Dargon.RADS.csproj">
+      <Project>{abf2ed7e-f5a9-4a4d-a983-3d356a126a02}</Project>
+      <Name>Dargon.RADS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.Ryu\Dargon.Ryu.Api\Dargon.Ryu.Api.csproj">
+      <Project>{be844deb-2f95-407e-973e-ae3f3983b54d}</Project>
+      <Name>Dargon.Ryu.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.Ryu\Dargon.Ryu.Impl\Dargon.Ryu.Impl.csproj">
+      <Project>{2ed5c703-8a91-4701-9ae9-da86aa93a169}</Project>
+      <Name>Dargon.Ryu.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Dargon.Utilities\Dargon.Utilities.csproj">
+      <Project>{d2a303a1-665f-4f6f-9bc6-3d91a8f02978}</Project>
+      <Name>Dargon.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\ItzWarty.Proxies.Api\ItzWarty.Proxies.Api.csproj">
+      <Project>{6aaa4f38-0c18-4d29-b7a2-edddd08dc5ff}</Project>
+      <Name>ItzWarty.Proxies.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\ItzWarty.Proxies.Impl\ItzWarty.Proxies.Impl.csproj">
+      <Project>{16a9f397-500c-4863-bb0e-ac2fa63214a1}</Project>
+      <Name>ItzWarty.Proxies.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Hosted.Hooks.Api\Dargon.Trinkets.Hosted.Hooks.Api.csproj">
       <Project>{db85f2c6-af38-49c8-b44c-2c8262a967c7}</Project>
       <Name>Dargon.Trinkets.Hosted.Hooks.Api</Name>
@@ -59,7 +126,7 @@
       <Project>{097b6b08-4034-408a-b3c0-a12e8f9e8893}</Project>
       <Name>ItzWarty.Commons</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+    <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Eggs.Api.csproj">
       <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
       <Name>Dargon.Nest.Egg.Api</Name>
     </ProjectReference>
@@ -68,7 +135,23 @@
       <Name>Dargon.Trinkets.Hosted.Hooks.Impl.Native</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.1.29.3\build\dotnet\Fody.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Fody.1.29.3\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.1.29.3\build\dotnet\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

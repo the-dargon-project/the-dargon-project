@@ -42,9 +42,6 @@
     <ClInclude Include="ThirdParty\guicon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Subsystems\D3D9SubsystemTypedefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -183,6 +180,15 @@
     <ClInclude Include="Commands\FileRemappingCommandHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Subsystems\Direct3D9Subsystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystems\Direct3D9SubsystemTypedefs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -288,6 +294,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\FileRemappingCommandHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\Direct3D9Subsystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystems\SystemState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

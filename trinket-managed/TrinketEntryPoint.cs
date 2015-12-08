@@ -1,10 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using Dargon.Nest.Egg;
+﻿using Dargon.Nest.Eggs;
 using Dargon.Trinkets.Hosted;
-using Dargon.Trinkets.Hosted.Hooks;
 using ItzWarty;
+using System;
 
 /// <summary>
 /// Do not rename or place in namespace!
@@ -17,7 +14,7 @@ public static class TrinketEntryPoint {
       try {
          Console.WriteLine($"Entered {nameof(TrinketMain)}");
          var configuration = ParseConfiguration(args);
-         var egg = new HostedTrinketNestApplicationEgg();
+         var egg = new HostedTrinketApplication();
          var result = egg.Start(configuration);
          return result == NestResult.Success ? 0 : 1;
       } catch (Exception e) {

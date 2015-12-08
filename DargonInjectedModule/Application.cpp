@@ -18,9 +18,11 @@
 #include "Commands/FileRedirectionCommandHandler.hpp"
 #include "Commands/FileRemappingCommandHandler.hpp"
 #include "Subsystems/FileSubsystem.hpp"
-#include "Subsystems/KernelSubsystem.hpp"
 #include "Subsystems/RedirectedFileOperationProxyFactoryFactory.hpp"
 #include "Subsystems/RemappedFileOperationProxyFactoryFactory.hpp"
+#include "Subsystems/KernelSubsystem.hpp"
+#include "Subsystems/Direct3D9Subsystem.hpp"
+#include "SystemState.hpp"
 #include "vfm/vfm_reader.hpp"
 
 using namespace dargon;
@@ -80,11 +82,12 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    auto trinketNatives = std::make_shared<TrinketNatives>();
    trinketNatives->startCanary = TRINKET_NATIVES_START_CANARY;
    trinketNatives->fileHookEventPublisher = new NullFileHookEventPublisher();
+   trinketNatives->direct3D9HookEventPublisher = new NullDirect3D9HookEventPublisher();
    trinketNatives->tailCanary = TRINKET_NATIVES_TAIL_CANARY;
 
-   if (configuration->IsFlagSet(Configuration::EnableTrinketManagedFlag)) {
+   if (CheckFeatureToggle(L"enable-trinket-managed") || configuration->IsFlagSet(Configuration::EnableTrinketManagedFlag)) {
       dargon::clr_host::init(dargon::clr_utilities::pick_runtime_version());
-      auto path = L"C:/my-repositories/dargon-root/dargon/trinket-managed/bin/Debug/trinket-managed.exe";
+      auto path = L"V:/my-repositories/dargon-root/deploy/nest_client/deployments/dargon-client/bundles/trinket/trinket-managed/trinket-managed.exe";
       std::wstringstream arguments;
       arguments << reinterpret_cast<uint64_t>(trinketNatives.get());
       dargon::clr_host::load_assembly(path, arguments.str());
@@ -103,8 +106,11 @@ void Application::Initialize(std::shared_ptr<const bootstrap_context> context) {
    file_subsystem->Initialize();
    auto kernel_subsystem = std::make_shared<KernelSubsystem>();
    kernel_subsystem->Initialize();
+   auto direct3d9_subsystem = std::make_shared<Direct3D9Subsystem>(trinketNatives->direct3D9HookEventPublisher);
+   direct3d9_subsystem->Initialize();
    subsystems.push_back(file_subsystem);
    subsystems.push_back(kernel_subsystem);
+   subsystems.push_back(direct3d9_subsystem);
 
    // initialize command handlers
    auto redirected_file_operation_proxy_factory_factory = std::make_shared<RedirectedFileOperationProxyFactoryFactory>(io_proxy);

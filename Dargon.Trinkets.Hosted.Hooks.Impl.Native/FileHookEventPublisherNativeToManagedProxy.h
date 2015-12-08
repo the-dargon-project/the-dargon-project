@@ -19,6 +19,12 @@ namespace Dargon {
 
                virtual void PublishCreateFileEventPre(dargon::CreateFileEventArgsPre* x) override;
                virtual void PublishCreateFileEventPost(dargon::CreateFileEventArgsPost* x) override;
+
+               virtual void PublishReadFileEventPre(dargon::ReadFileEventArgsPre* x) override;
+               virtual void PublishReadFileEventPost(dargon::ReadFileEventArgsPost* x) override;
+
+               virtual void PublishCloseHandleEventPre(dargon::CloseHandleEventArgsPre* x) override;
+               virtual void PublishCloseHandleEventPost(dargon::CloseHandleEventArgsPost* x) override;
             };
 
             public ref class FileHookEventPublisherNativeToBusProxyFactory {

@@ -49,8 +49,8 @@ bool FileSubsystem::Initialize()
       InstallReadFileDetour(hModuleKernel32);
       InstallWriteFileDetour(hModuleKernel32);
       InstallCloseHandleDetour(hModuleKernel32);
-      //      InstallSetFilePointerDetour(hModuleKernel32);
-      //      InstallSetFilePointerExDetour(hModuleKernel32);
+      InstallSetFilePointerDetour(hModuleKernel32);
+      InstallSetFilePointerExDetour(hModuleKernel32);
       m_trampCreateEventA = nullptr;
       m_trampCreateEventW = nullptr;
       m_trampCreateFileA = nullptr;
@@ -58,8 +58,8 @@ bool FileSubsystem::Initialize()
 //      m_trampReadFile = nullptr;
 //      m_trampWriteFile = nullptr;
 //      m_trampCloseHandle = nullptr;
-      m_trampSetFilePointer = nullptr;
-      m_trampSetFilePointerEx = nullptr;
+//      m_trampSetFilePointer = nullptr;
+//      m_trampSetFilePointerEx = nullptr;
 //      s_bootstrap_context->io_proxy->__Override(m_trampCreateEventA, m_trampCreateEventW, m_trampCreateFileA, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer, m_trampSetFilePointerEx);
       s_bootstrap_context->io_proxy->__Override(nullptr, nullptr, nullptr, m_trampCreateFileW, m_trampReadFile, m_trampWriteFile, m_trampCloseHandle, m_trampSetFilePointer, m_trampSetFilePointerEx);
 
@@ -162,23 +162,42 @@ HANDLE WINAPI FileSubsystem::MyCreateFileW(LPCWSTR lpFilePath, DWORD dwDesiredAc
 
 BOOL WINAPI FileSubsystem::MyReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped)
 {
-//   if (kDebugEnabled) {
-//      s_logger->Log(
-//         LL_VERBOSE,
-//         [=](std::ostream& os) {
-//         os << "ReadFile: hFile: " << hFile
-//            << " nNumberOfBytesToRead: " << nNumberOfBytesToRead
-//            << " lpNumberOfBytesRead: " << lpNumberOfBytesRead
-//            << " lpOverlapped: " << lpOverlapped << std::endl;
-//      });
-//   }
-
-   BOOL result;
+   BOOL result = 0;
    auto proxy = fileOperationProxiesByHandle.get_value_or_default(hFile);
    if (proxy == nullptr) {
       result = m_trampReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
    } else {
+      LARGE_INTEGER file_offset = {};
+      if (lpOverlapped == nullptr) {
+         LARGE_INTEGER zero = {};
+         m_trampSetFilePointerEx(hFile, zero, &file_offset, FILE_CURRENT);
+      } else {
+         file_offset.LowPart = lpOverlapped->Offset;
+         file_offset.HighPart = lpOverlapped->OffsetHigh;
+      }
+
+      ReadFileArgs args = {};
+      args.hFile = hFile;
+      args.lpBuffer = lpBuffer;
+      args.nNumberOfBytesToRead = nNumberOfBytesToRead;
+      args.lpNumberOfBytesRead = reinterpret_cast<std::uint32_t*>(lpNumberOfBytesRead);
+      args.fileOffset = file_offset.QuadPart;
+
+      ReadFileEventArgsPre preArgs = {};
+      preArgs.arguments = &args;
+
+      fileHookEventPublisher->PublishReadFileEventPre(&preArgs);
+
       result = proxy->Read(lpBuffer, nNumberOfBytesToRead, (uint32_t*)lpNumberOfBytesRead, lpOverlapped);
+      auto error = ::GetLastError();
+
+      ReadFileEventArgsPost postArgs = {};
+      postArgs.arguments = &args;
+      postArgs.retval = result;
+
+      fileHookEventPublisher->PublishReadFileEventPost(&postArgs);
+
+      ::SetLastError(error);
    }
    return result;
 }
@@ -215,7 +234,24 @@ BOOL WINAPI FileSubsystem::MyCloseHandle(HANDLE hObject)
       });
    if (closeHandle) {
       if (proxyToClose) {
-         proxyToClose->Close();
+         CloseHandleArgs args = { };
+         args.handle = hObject;
+
+         CloseHandleEventArgsPre preArgs = { };
+         preArgs.arguments = &args;
+         
+         fileHookEventPublisher->PublishCloseHandleEventPre(&preArgs);
+         
+         result = proxyToClose->Close();
+         auto error = GetLastError();
+
+         CloseHandleEventArgsPost postArgs = { };
+         postArgs.arguments = &args;
+         postArgs.retval = result;
+         
+         fileHookEventPublisher->PublishCloseHandleEventPost(&postArgs);
+
+         SetLastError(error);
       } else {
          result = m_trampCloseHandle(hObject);
       }
@@ -404,6 +440,8 @@ HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCW
    }
 
    HANDLE fileHandle = proxy->Create(lpFilePath, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+   auto error = GetLastError();
+   
    proxy->tag.initial_thread = ::GetCurrentThreadId();
    if (kEnableInterceptLogging) {
       std::cout << fileHandle << " T" << ::GetCurrentThreadId() << " CREATE FILE " << dargon::narrow(filePath) << std::endl;
@@ -420,6 +458,7 @@ HANDLE WINAPI FileSubsystem::InternalCreateFileW(bool isPermittedRecursion, LPCW
    eventArgsPost.retval = fileHandle;
    fileHookEventPublisher->PublishCreateFileEventPost(&eventArgsPost);
 
+   SetLastError(error);
    return fileHandle;
 }
 

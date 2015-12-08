@@ -10,6 +10,26 @@
 #include "util.hpp"
 using namespace dargon;
 
+bool CheckFeatureToggle(std::wstring name) {
+   bool result = false;
+   WCHAR userHomePath[MAX_PATH];
+   if (SUCCEEDED(::SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, userHomePath))) {
+      std::wstringstream ss;
+      ss << userHomePath << L"/.dargon/configuration/system-state/" << name;
+
+      std::fstream fs(ss.str().c_str(), std::fstream::in);
+      if (fs.good()) {
+         std::string token;
+         fs >> token;
+         if (!fs.fail() && dargon::iequals(token, "True")) {
+            result = true;
+         }
+      }
+      fs.close();
+   }
+   return result;
+}
+
 /// <summary>
 /// Entry point of our application, the component of Dargon that is executed in the
 /// memory of League of Legends.exe.  From here, we simply pass control to
@@ -22,21 +42,13 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
       case DLL_PROCESS_ATTACH:
       {
          DisableThreadLibraryCalls(hModule);
-         WCHAR userHomePath[MAX_PATH];
-         if (SUCCEEDED(::SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, userHomePath))) {
-            WCHAR enableTrinketDimConsoleToggleAbsolutePath[MAX_PATH];
-            auto enableTrinketDimConsoleToggleRelativePath = L".dargon/configuration/system-state/enable-trinket-dim-console";
-            ::PathCombine(enableTrinketDimConsoleToggleAbsolutePath, userHomePath, enableTrinketDimConsoleToggleRelativePath);
-            std::fstream fs(enableTrinketDimConsoleToggleAbsolutePath, std::fstream::in);
-            if (fs.good()) {
-               std::string token;
-               fs >> token;
-               if (!fs.fail() && dargon::iequals(token, "True")) {
-                  RedirectIOToConsole();
-                  dargon::logger::isLoggingEnabled = true;
-               }
-            }
-            fs.close();
+         if (CheckFeatureToggle(L"enable-trinket-dim-console")) {
+            RedirectIOToConsole();
+            dargon::logger::isLoggingEnabled = true;
+         }
+         if (CheckFeatureToggle(L"enable-trinket-pause-after-injection")) {
+            std::cout << "Pausing after injection for 5 seconds..." << std::endl;
+            Sleep(5000);
          }
          Application::HandleDllEntry(hModule);
       }

@@ -68,8 +68,7 @@ namespace Dargon.LeagueOfLegends.Processes
       /// </summary>
       /// <param name="s"></param>
       /// <param name="e"></param>
-      private void HandleNewProcessFound(CreatedProcessDescriptor desc)
-      {
+      private void HandleNewProcessFound(CreatedProcessDescriptor desc) {
          if (!enabled)
             return;
 

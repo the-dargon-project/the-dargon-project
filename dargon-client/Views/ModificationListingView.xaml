@@ -26,7 +26,15 @@
             <TextBlock Grid.Column="0" FontFamily="Lato Heavy" FontSize="25" Foreground="{DynamicResource MidnightBlueBrush}" TextTrimming="None">&#160;Skins</TextBlock>
          </StackPanel>
          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Button Grid.Column="0" FontFamily="Lato Medium" FontSize="12" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource MidnightBlueBrush}" Margin="10,0,0,0" Padding="5" Command="{Binding ImportModification}">Import Skin</Button>
+            <Button Grid.Column="0" FontFamily="Lato Medium" FontSize="12" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource MidnightBlueBrush}" Margin="10,0,0,0" Padding="5" Click="ImportModificationDropdown_Click" Content="Import Skin &#x25BE;" x:Name="ImportModificationDropdown">
+               <Button.ContextMenu>
+                  <ContextMenu>
+                     <ContextMenu.Items>
+                        <MenuItem Header="From Folder" Command="{Binding ImportFolderModification}" />
+                     </ContextMenu.Items>
+                  </ContextMenu>
+               </Button.ContextMenu>
+            </Button>
             <Button Grid.Column="0" FontFamily="Lato Medium" FontSize="12" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource MidnightBlueBrush}" Margin="10,0,0,0" Padding="5" Command="{Binding FakeSave}">Save</Button>
          </StackPanel>
       </Grid>

@@ -1,4 +1,5 @@
-﻿using Dargon.Client.Annotations;
+﻿using System;
+using Dargon.Client.Annotations;
 using Dargon.Client.Controllers;
 using Dargon.Client.ViewModels.Helpers;
 using Dargon.Client.Views;
@@ -9,7 +10,9 @@ using System.Threading;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
+using WindowsFormsApplication1;
 using Dargon.LeagueOfLegends.Modifications;
+using ItzWarty;
 using Cursors = System.Windows.Input.Cursors;
 
 namespace Dargon.Client.ViewModels {
@@ -53,7 +56,7 @@ namespace Dargon.Client.ViewModels {
          collectionViewSource.View.Refresh();
       });
 
-      public ICommand ImportModification => new ActionCommand((x) => {
+      public ICommand ImportFolderModification => new ActionCommand((x) => {
          var dialog = new FolderBrowserDialog();
          dialog.Description = "Select Modification Folder:";
          dialog.ShowNewFolderButton = false;

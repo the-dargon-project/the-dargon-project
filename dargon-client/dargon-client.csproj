@@ -202,6 +202,9 @@
     <Compile Include="Views\Helpers\ForceStatusDisplayConverter.cs" />
     <Compile Include="Views\Helpers\HighQualityImage.cs" />
     <Compile Include="Views\Helpers\LogicalOrConverter.cs" />
+    <Compile Include="Views\Helpers\OpenFileOrFolderDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Views\Helpers\PathToBitmapImageConverter.cs" />
     <Compile Include="Views\Helpers\TitleCaseConverter.cs" />
     <Compile Include="Views\Helpers\GifImage.cs" />

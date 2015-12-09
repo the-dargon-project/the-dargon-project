@@ -42,7 +42,7 @@ namespace Dargon.Modifications.ThumbnailGenerator {
             }
             var range = thumbnailGeneratorUtilities.GetRangeOfWidth(imagesAndHistogram.EdgeDensityHistogram, desiredWidth);
 
-            var horizontalCrop = new Crop(new Rectangle(range.Min, 0, range.Max - range.Min, imagesAndHistogram.OriginalImage.Height)).Apply(imagesAndHistogram.OriginalImage);
+            var horizontalCrop = new Crop(new Rectangle(range.Min, 0, range.Max - range.Min + 1, imagesAndHistogram.OriginalImage.Height)).Apply(imagesAndHistogram.OriginalImage);
             var horizontalCrop24bpp = horizontalCrop.Clone(new Rectangle(Point.Empty, horizontalCrop.Size), PixelFormat.Format24bppRgb);
             imagesAndHistogram.SliceImage = horizontalCrop24bpp;
             var resizer = new ResizeBicubic(sliceSize.Width, sliceSize.Height);

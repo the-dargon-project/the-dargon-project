@@ -8,8 +8,12 @@ using ItzWarty;
 using ItzWarty.IO;
 using System;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using Dargon.DDS;
+using Dargon.Modifications;
 
 namespace dargon_asset_dumper {
    public static class Program {
@@ -27,10 +31,166 @@ namespace dargon_asset_dumper {
          dispatcher.RegisterCommand(new AliasCommand("dir", new ListDirectoryCommand()));
          dispatcher.RegisterCommand(new DumpCommand(fileSystemProxy));
          dispatcher.RegisterCommand(new SetWindowWidthCommand());
+         dispatcher.RegisterCommand(new CreateLevelProjectCommand(fileSystemProxy));
+         dispatcher.RegisterCommand(new BuildLevelProjectCommand(fileSystemProxy));
          dispatcher.Eval(LoadSolutionCommand.kLoadSolutionCommand + " " + (ConfigurationManager.AppSettings?["radsPath"] ?? ""));
          new ReplCore(dispatcher).Run();
       }
    }
+
+   public class CreateLevelProjectCommand : ICommand {
+      private readonly IFileSystemProxy fileSystemProxy;
+
+      public CreateLevelProjectCommand(IFileSystemProxy fileSystemProxy) {
+         this.fileSystemProxy = fileSystemProxy;
+      }
+
+      public string Name => "create-level-project";
+
+      public int Eval(string args) {
+         string name, mapId;
+         args = Util.NextToken(args, out name);
+         args = Util.NextToken(args, out mapId);
+
+         var projectDirectory = $"C:/DargonDump/{name}";
+         var devDirectory = $"{projectDirectory}/dev";
+         var startNode = Globals.RootNode.GetRelativeOrNull($"/LEVELS/{mapId}");
+         foreach (var node in startNode.GetLeaves()) {
+            if (node.Name.StartsWith("2x_") || node.Name.StartsWith("4x_")) {
+               continue;
+            }
+            var nodePath = node.GetPath();
+            Console.Write("Dumping: " + nodePath + " ... ");
+            var dataStreamComponent = node.GetComponentOrNull<DataStreamComponent>();
+            if (dataStreamComponent == null) {
+               Console.WriteLine("Failed. No datastream component.");
+               continue;
+            }
+            var outputPath = devDirectory + "/" + nodePath;
+            if (File.Exists(outputPath)) {
+               Console.WriteLine("Already exists.");
+            } else {
+               using (var stream = dataStreamComponent.CreateRead()) {
+                  fileSystemProxy.PrepareParentDirectory(outputPath);
+                  using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None)) {
+                     stream.__Stream.CopyTo(fs);
+                  }
+               }
+               Console.WriteLine("Done.");
+            }
+         }
+
+         // convert all dds to pngs
+         var converter = new TextureConverterFactory().Create();
+         foreach (var filePath in Directory.EnumerateFiles(devDirectory, "*", SearchOption.AllDirectories)) {
+            if (!new FileInfo(filePath).Name.EndsWith(".dds", StringComparison.OrdinalIgnoreCase)) continue;
+            var bitmap = converter.ConvertToBitmap(filePath);
+            File.Delete(filePath);
+            bitmap.Save(filePath.Substring(0, filePath.Length - 4) + ".png", ImageFormat.Png);
+         }
+
+         // combine grnd_terrain_ dds files (5x5 grid)
+         var sceneTexturesDirectory = Path.Combine(devDirectory, "LEVELS", mapId, "scene", "textures");
+         var groundTerrainTexturePaths = Directory.EnumerateFiles(sceneTexturesDirectory, "grnd_terrain_*.png", SearchOption.TopDirectoryOnly).OrderBy(x => x).ToArray();
+         var bitmaps = groundTerrainTexturePaths.Select(converter.ConvertToBitmap).ToArray();
+         var n = (int)Math.Sqrt(bitmaps.Length);
+         var stitchedBitmap = new Bitmap(bitmaps[0].Width * n, bitmaps[0].Height * n);
+         using (var g = Graphics.FromImage(stitchedBitmap)) {
+            for (var y = 0; y < n; y++) {
+               for (var x = 0; x < n; x++) {
+                  var bitmap = bitmaps[y * n + x];
+                  g.DrawImage(bitmap, new Point(bitmap.Width * x, bitmap.Height * y));
+               }
+            }
+         }
+         groundTerrainTexturePaths.ForEach(File.Delete);
+         stitchedBitmap.Save(Path.Combine(sceneTexturesDirectory, "grnd_terrain.png"));
+
+         Globals.CurrentProject = args;
+         return 0;
+      }
+   }
+
+   public class BuildLevelProjectCommand : ICommand {
+      private readonly IFileSystemProxy fileSystemProxy;
+
+      public string Name => "build-level-project";
+
+      public BuildLevelProjectCommand(IFileSystemProxy fileSystemProxy) {
+         this.fileSystemProxy = fileSystemProxy;
+      }
+
+      public int Eval(string args) {
+         string name, mapId;
+         args = Util.NextToken(args, out name);
+         args = Util.NextToken(args, out mapId);
+
+         var projectDirectory = $"C:/DargonDump/{name}";
+         var devDirectory = Path.GetFullPath($"{projectDirectory}/dev");
+         var outDirectory = Path.GetFullPath($"{projectDirectory}/out");
+
+         // copy all files to out directory
+//         if (Directory.Exists(outDirectory)) {
+//            Directory.Delete(outDirectory, true);
+//         }
+//
+         foreach (var filePath in Directory.EnumerateFiles(devDirectory, "*", SearchOption.AllDirectories)) {
+            var outputPath = outDirectory + filePath.Substring(devDirectory.Length);
+            fileSystemProxy.PrepareParentDirectory(outputPath);
+            if (!fileSystemProxy.Exists(outputPath)) {
+               fileSystemProxy.CopyFile(filePath, outputPath);
+            }
+         }
+
+         // break up grnd_terrain.png
+         var sceneTexturesDirectory = Path.Combine(outDirectory, "LEVELS", mapId, "scene", "textures");
+         var groundTerrainBitmapPath = Path.Combine(sceneTexturesDirectory, "grnd_terrain.png");
+         using (var groundTerrainBitmap = Image.FromFile(groundTerrainBitmapPath)) {
+            int n = 5;
+            for (var y = 0; y < n; y++) {
+               for (var x = 0; x < n; x++) {
+                  var sliceBitmap = new Bitmap(groundTerrainBitmap.Width / n, groundTerrainBitmap.Height / n);
+                  using (var g = Graphics.FromImage(sliceBitmap)) {
+                     g.DrawImage(
+                        groundTerrainBitmap,
+                        new Rectangle(0, 0, sliceBitmap.Width, sliceBitmap.Height),
+                        new Rectangle(sliceBitmap.Width * x, sliceBitmap.Height * y, sliceBitmap.Width, sliceBitmap.Height),
+                        GraphicsUnit.Pixel);
+                  }
+                  sliceBitmap.Save(Path.Combine(sceneTexturesDirectory, $"grnd_terrain_{(char)('a' + y * n + x)}.png"));
+               }
+            }
+         }
+         File.Delete(groundTerrainBitmapPath);
+
+         // scale all images to 2x and 4x (downscaled) reps
+         foreach (var filePath in Directory.EnumerateFiles(outDirectory, "*", SearchOption.AllDirectories).ToArray()) {
+            var fileInfo = new FileInfo(filePath);
+            if (!fileInfo.Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) continue;
+            using (var sourceBitmap = Bitmap.FromFile(filePath)) {
+               using (var halfBitmap = new Bitmap(sourceBitmap, new Size(sourceBitmap.Width / 2, sourceBitmap.Height / 2))) {
+                  halfBitmap.Save(fileInfo.DirectoryName + "/2x_" + fileInfo.Name);
+               }
+               using (var halfBitmap = new Bitmap(sourceBitmap, new Size(sourceBitmap.Width / 4, sourceBitmap.Height / 4))) {
+                  halfBitmap.Save(fileInfo.DirectoryName + "/4x_" + fileInfo.Name);
+               }
+            }
+         }
+
+         // convert all pngs to dds
+         var converter = new TextureConverterFactory().Create();
+         foreach (var filePath in Directory.EnumerateFiles(outDirectory, "*", SearchOption.AllDirectories)) {
+            if (!new FileInfo(filePath).Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) continue;
+            var outputPath = filePath.Substring(0, filePath.Length - 4) + ".dds";
+            Console.WriteLine("Convert " + filePath + " => " + outputPath);
+            converter.ConvertAndSaveToTexture(filePath, outputPath);
+            File.Delete(filePath);
+         }
+
+         return 0;
+      }
+   }
+
 
    public class SetWindowWidthCommand : ICommand {
       public string Name => "sww";
@@ -52,10 +212,10 @@ namespace dargon_asset_dumper {
       public static bool TryResolvePath(string relativePath, out ReadableDargonNode node) {
          relativePath = relativePath.Replace('\\', '/');
 
-         var currentNode = DumperGlobals.CurrentNode;
+         var currentNode = Globals.CurrentNode;
          while (relativePath.Length > 0) {
             if (relativePath[0] == '/') {
-               currentNode = DumperGlobals.RootNode;
+               currentNode = Globals.RootNode;
                relativePath = relativePath.Substring(1);
             } else {
                var delimiterIndex = relativePath.IndexOf('/');
@@ -110,7 +270,7 @@ namespace dargon_asset_dumper {
             DumperUtils.PrintUnableToResolvePath(relativePath);
             return 1;
          } else {
-            Console.WriteLine("Listing directory " + DumperGlobals.CurrentNode.GetPath());
+            Console.WriteLine("Listing directory " + Globals.CurrentNode.GetPath());
             PrettyPrint.List(
                nextNode.Children.OrderBy(x => x.Name),
                new PrettyFormatter<ReadableDargonNode> {
@@ -127,7 +287,7 @@ namespace dargon_asset_dumper {
       public string Name => "pwd";
 
       public int Eval(string args) {
-         Console.WriteLine(DumperGlobals.CurrentNode.GetPath());
+         Console.WriteLine(Globals.CurrentNode.GetPath());
          return 0;
       }
    }
@@ -144,8 +304,8 @@ namespace dargon_asset_dumper {
             DumperUtils.PrintUnableToResolvePath(relativePath);
             return 1;
          } else {
-            DumperGlobals.CurrentNode = nextNode;
-            Console.WriteLine("Switched to directory " + DumperGlobals.CurrentNode.GetPath());
+            Globals.CurrentNode = nextNode;
+            Console.WriteLine("Switched to directory " + Globals.CurrentNode.GetPath());
             return 0;
          }
       }
@@ -162,7 +322,7 @@ namespace dargon_asset_dumper {
 
       public int Eval(string args) {
          string dumpDirectory = ConfigurationManager.AppSettings?["dumpPath"] ?? "C:/DargonDump";
-         var startNode = DumperGlobals.CurrentNode;
+         var startNode = Globals.CurrentNode;
          foreach (var node in startNode.GetLeaves()) {
             Console.Write("Dumping: " + node.GetPath() + " ... ");
             var dataStreamComponent = node.GetComponentOrNull<DataStreamComponent>();
@@ -183,10 +343,15 @@ namespace dargon_asset_dumper {
       }
    }
 
-   public static class DumperGlobals {
+   public static class DumpOperations {
+
+   }
+
+   public static class Globals {
       public static RiotSolution Solution { set; get; }
       public static ReadableDargonNode RootNode { get; set; }
       public static ReadableDargonNode CurrentNode { get; set; }
+      public static string CurrentProject { get; set; }
    }
 
    public class LoadSolutionCommand : ICommand {
@@ -209,8 +374,8 @@ namespace dargon_asset_dumper {
          }
          Console.WriteLine($"Switching to RADS solution at path `{radsPath}`.");
          var riotProjectLoader = new RiotProjectLoader(streamFactory);
-         var solution = DumperGlobals.Solution = new RiotSolutionLoader(riotProjectLoader).Load(radsPath);
-         DumperGlobals.RootNode = DumperGlobals.CurrentNode = solution.ProjectsByType[RiotProjectType.GameClient].ReleaseManifest.Root;
+         var solution = Globals.Solution = new RiotSolutionLoader(riotProjectLoader).Load(radsPath);
+         Globals.RootNode = Globals.CurrentNode = solution.ProjectsByType[RiotProjectType.GameClient].ReleaseManifest.Root;
          return 0;
       }
    }

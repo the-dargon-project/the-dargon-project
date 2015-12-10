@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,6 +79,18 @@
     <ProjectReference Include="..\..\dependencies\ItzWarty.Proxies.Impl\ItzWarty.Proxies.Impl.csproj">
       <Project>{16a9f397-500c-4863-bb0e-ac2fa63214a1}</Project>
       <Name>ItzWarty.Proxies.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.DDS\Dargon.DDS.csproj">
+      <Project>{fee4b8b0-2cfd-45c1-89ee-fc61c7d2b279}</Project>
+      <Name>Dargon.DDS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Api\Dargon.Modifications.Api.csproj">
+      <Project>{531722d6-6938-4ac8-b61b-9e375e124528}</Project>
+      <Name>Dargon.Modifications.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Modifications.Impl\Dargon.Modifications.Impl.csproj">
+      <Project>{fb2c4896-dbb2-44eb-9312-0eed43cfe69f}</Project>
+      <Name>Dargon.Modifications.Impl</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

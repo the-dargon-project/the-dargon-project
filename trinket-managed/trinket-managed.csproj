@@ -128,7 +128,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\nest\Dargon.Nest.Egg.Api\Dargon.Nest.Eggs.Api.csproj">
       <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
-      <Name>Dargon.Nest.Egg.Api</Name>
+      <Name>Dargon.Nest.Eggs.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dargon.Trinkets.Hosted.Hooks.Impl.Native\Dargon.Trinkets.Hosted.Hooks.Impl.Native.vcxproj">
       <Project>{08eb1a26-7629-430a-b6bd-cb8ecc7e1f38}</Project>

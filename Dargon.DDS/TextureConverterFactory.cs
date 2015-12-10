@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using SharpDX.Direct3D9;
 
-namespace Dargon.Modifications.ThumbnailGenerator {
+namespace Dargon.DDS {
    public class TextureConverterFactory {
       public TextureConverter Create() {
          var presentParameters = new PresentParameters {

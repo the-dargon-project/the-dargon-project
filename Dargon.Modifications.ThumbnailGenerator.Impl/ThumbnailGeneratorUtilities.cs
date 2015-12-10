@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using AForge;
 using AForge.Math;
+using Dargon.DDS;
 using ItzWarty;
 using NLog;
 

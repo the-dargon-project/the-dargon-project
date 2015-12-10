@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using AForge.Imaging.Filters;
+using Dargon.DDS;
 using ItzWarty;
 
 namespace Dargon.Modifications.ThumbnailGenerator {

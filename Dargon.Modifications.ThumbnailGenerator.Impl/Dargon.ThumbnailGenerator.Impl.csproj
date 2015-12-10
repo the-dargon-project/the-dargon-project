@@ -95,12 +95,14 @@
     <Compile Include="SliceCombiner.cs" />
     <Compile Include="SlicePicker.cs" />
     <Compile Include="SliceRatingCalculator.cs" />
-    <Compile Include="TextureConverter.cs" />
-    <Compile Include="TextureConverterFactory.cs" />
     <Compile Include="ThumbnailGeneratorServiceImpl.cs" />
     <Compile Include="ThumbnailGeneratorUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.DDS\Dargon.DDS.csproj">
+      <Project>{fee4b8b0-2cfd-45c1-89ee-fc61c7d2b279}</Project>
+      <Name>Dargon.DDS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Modifications.ThumbnailGenerator.Api\Dargon.ThumbnailGenerator.Api.csproj">
       <Project>{B9C41736-E9A9-44C8-9BCA-17BCCD7F57D0}</Project>
       <Name>Dargon.ThumbnailGenerator.Api</Name>

@@ -22,6 +22,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
    {
       case DLL_PROCESS_ATTACH:
       {
+//         MessageBoxW(NULL, L"HI", nullptr, MB_OK);
+//         __debugbreak();
          DisableThreadLibraryCalls(hModule);
          if (CheckFeatureToggle(L"enable-trinket-dim-console")) {
             RedirectIOToConsole();

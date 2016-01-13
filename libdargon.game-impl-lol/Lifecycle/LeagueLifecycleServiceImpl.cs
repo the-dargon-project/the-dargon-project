@@ -156,30 +156,35 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          radsService.Resume();
 
          var modifications = modificationLoader.EnumerateModifications();
-         int compilationsRemaining = modifications.Count;
-         foreach (var modification in modifications) {
-            var resolutionChain = resolutionChainsByModificationName.GetOrAdd(
-               modification.RepositoryName,
-               add => new CompletionChain(cancellationToken => leagueBuildUtilities.ResolveModification(modification, cancellationToken))
+         var spawnTrinketAction = new Action(() => {
+            var airClientCommands = leagueBuildUtilities.LinkAirModifications(modifications);
+            trinketSpawner.SpawnTrinket(
+               session.GetProcessOrNull(LeagueProcessType.PvpNetClient),
+               leagueTrinketSpawnConfigurationFactory.GetClientConfiguration(airClientCommands)
             );
-            var compilationChain = compilationChainsByModificationName.GetOrAdd(
-               modification.RepositoryName,
-               add => new CompletionChain(cancellationToken => leagueBuildUtilities.CompileModification(modification, cancellationToken))
-            );
-            var resolutionLink = resolutionChain.CreateLink("resolution_" + DateTime.Now.ToFileTimeUtc());
-            var compilationLink = compilationChain.CreateLink("compilation_" + DateTime.Now.ToFileTimeUtc());
-            resolutionLink.Tail(compilationLink.StartAndWaitForChain);
-            compilationLink.Tail(() => {
-               logger.Info("Compilation counter at " + compilationsRemaining);
-               if (Interlocked.Decrement(ref compilationsRemaining) == 0) {
-                  var airClientCommands = leagueBuildUtilities.LinkAirModifications(modifications);
-                  trinketSpawner.SpawnTrinket(
-                     session.GetProcessOrNull(LeagueProcessType.PvpNetClient),
-                     leagueTrinketSpawnConfigurationFactory.GetClientConfiguration(airClientCommands)
-                  );
-               }
-            });
-            resolutionChain.StartNext(resolutionLink);
+         });
+         if (modifications.None()) {
+            spawnTrinketAction();
+         } else {
+            int compilationsRemaining = modifications.Count;
+            foreach (var modification in modifications) {
+               var resolutionChain = resolutionChainsByModificationName.GetOrAdd(
+                  modification.RepositoryName,
+                  add => new CompletionChain(cancellationToken => leagueBuildUtilities.ResolveModification(modification, cancellationToken)));
+               var compilationChain = compilationChainsByModificationName.GetOrAdd(
+                  modification.RepositoryName,
+                  add => new CompletionChain(cancellationToken => leagueBuildUtilities.CompileModification(modification, cancellationToken)));
+               var resolutionLink = resolutionChain.CreateLink("resolution_" + DateTime.Now.ToFileTimeUtc());
+               var compilationLink = compilationChain.CreateLink("compilation_" + DateTime.Now.ToFileTimeUtc());
+               resolutionLink.Tail(compilationLink.StartAndWaitForChain);
+               compilationLink.Tail(() => {
+                  logger.Info("Compilation counter at " + compilationsRemaining);
+                  if (Interlocked.Decrement(ref compilationsRemaining) == 0) {
+                     spawnTrinketAction();
+                  }
+               });
+               resolutionChain.StartNext(resolutionLink);
+            }
          }
       }
 
@@ -188,30 +193,34 @@ namespace Dargon.LeagueOfLegends.Lifecycle {
          logger.Info("Handling Client to Game Phase Transition!");
 
          var modifications = modificationLoader.EnumerateModifications();
-         int compilationsRemaining = modifications.Count;
-         foreach (var modification in modifications) {
-            var resolutionChain = resolutionChainsByModificationName.GetOrAdd(
-               modification.RepositoryName,
-               add => new CompletionChain(cancellationToken => leagueBuildUtilities.ResolveModification(modification, cancellationToken))
-            );
-            var compilationChain = compilationChainsByModificationName.GetOrAdd(
-               modification.RepositoryName,
-               add => new CompletionChain(cancellationToken => leagueBuildUtilities.CompileModification(modification, cancellationToken))
-            );
-            var resolutionLink = resolutionChain.CreateLink("resolution_" + DateTime.Now.ToFileTimeUtc());
-            var compilationLink = compilationChain.CreateLink("compilation_" + DateTime.Now.ToFileTimeUtc());
-            resolutionLink.Tail(compilationLink.StartAndWaitForChain);
-            compilationLink.Tail(() => {
-               logger.Info("Compilation counter at " + compilationsRemaining);
-               if (Interlocked.Decrement(ref compilationsRemaining) == 0) {
-                  var gameModifications = leagueBuildUtilities.LinkGameModifications(modifications);
-                  trinketSpawner.SpawnTrinket(
-                     session.GetProcessOrNull(LeagueProcessType.GameClient),
-                     leagueTrinketSpawnConfigurationFactory.GetGameConfiguration(gameModifications)
+         var spawnTrinketAction = new Action(() => {
+            var gameModifications = leagueBuildUtilities.LinkGameModifications(modifications);
+            trinketSpawner.SpawnTrinket(
+               session.GetProcessOrNull(LeagueProcessType.GameClient),
+               leagueTrinketSpawnConfigurationFactory.GetGameConfiguration(gameModifications));
+         });
+         if (modifications.None()) {
+            spawnTrinketAction();
+         } else {
+            int compilationsRemaining = modifications.Count;
+            foreach (var modification in modifications) {
+               var resolutionChain = resolutionChainsByModificationName.GetOrAdd(
+                  modification.RepositoryName,
+                  add => new CompletionChain(cancellationToken => leagueBuildUtilities.ResolveModification(modification, cancellationToken))
                   );
-               }
-            });
-            resolutionChain.StartNext(resolutionLink);
+               var compilationChain = compilationChainsByModificationName.GetOrAdd(
+                  modification.RepositoryName,
+                  add => new CompletionChain(cancellationToken => leagueBuildUtilities.CompileModification(modification, cancellationToken))
+                  );
+               var resolutionLink = resolutionChain.CreateLink("resolution_" + DateTime.Now.ToFileTimeUtc());
+               var compilationLink = compilationChain.CreateLink("compilation_" + DateTime.Now.ToFileTimeUtc());
+               resolutionLink.Tail(compilationLink.StartAndWaitForChain);
+               compilationLink.Tail(() => {
+                  logger.Info("Compilation counter at " + compilationsRemaining);
+                  if (Interlocked.Decrement(ref compilationsRemaining) == 0) {}
+               });
+               resolutionChain.StartNext(resolutionLink);
+            }
          }
       }
    }

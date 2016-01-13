@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cassert>
 
 #include "vfm_file.hpp"
 #include "vfm_sector.hpp"
